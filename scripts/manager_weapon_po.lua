@@ -1,21 +1,15 @@
 function onInit()
 end
 
-function getWeaponType(nodeWeapon)
+function getDamageTypes(nodeWeapon)
     if not nodeWeapon then 
         return nil; 
     end;
     
-    local sWeaponType = DB.getValue(nodeWeapon, "weaponType", nil);
-    if sWeaponType then
-        return sWeaponType;
-    else
-        -- If the weaponType property wasn't set, we'll have to dig through the damages to see if there is a known damage type
-        return getWeaponTypeFromDamageList(nodeWeapon);
-    end 
+    return getDamageTypesFromDamageList(nodeWeapon);
 end
 
-function getWeaponTypeFromDamageList(nodeWeapon)
+function getDamageTypesFromDamageList(nodeWeapon)
     local aDamageTypes = {};
     
     for _, nodeDamage in pairs(DB.getChildren(nodeWeapon, "damagelist")) do
@@ -27,7 +21,7 @@ function getWeaponTypeFromDamageList(nodeWeapon)
         end
     end 
     
-    return UtilityPO.toCSV(aDamageTypes);
+    return aDamageTypes;
 end
 
 function isBludgeoning(sDamageType)

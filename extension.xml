@@ -7,7 +7,7 @@
     <version>1.0</version>
     <loadorder>99</loadorder>
     <description>
-      <text>Rule options and automation enhancements for 2E</text>
+      <text>Player's Option rules, house rules, and automation enhancements for 2E -- by Sterno</text>
       <website></website>
       <author>Sterno</author>
     </description>
@@ -25,7 +25,7 @@
     <script name="ArmorDamageManager" file="scripts/manager_armor_damage.lua" />-->
     
     <includefile source="campaign/record_char_weapon.xml"/>
-    <includefile source="campaign/record_char_actions.xml"/>
+    <includefile source="cta/cta_host.xml"/>
     
     <includefile source="strings/strings_player_option.xml"/>
     <script name="PlayerOptionManager" file="scripts/manager_po.lua"/>
@@ -35,6 +35,8 @@
     <script name="ActionAttackPO" file="scripts/manager_action_attack_po.lua" />
     <script name="CombatManagerPO" file="scripts/manager_combat_po.lua" />
     <script name="WeaponManagerPO" file="scripts/manager_weapon_po.lua" />
+    <script name="ArmorManagerPO" file="scripts/manager_armor_po.lua" />
+    <script name="DataCommonPO" file="scripts/data_common_po.lua" />
     <script name="UtilityPO" file="scripts/utility_po.lua" />
   </base>
     

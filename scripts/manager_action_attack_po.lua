@@ -1,12 +1,14 @@
 local fModAttack;
-local fPerformRoll;
+local fGetRoll;
 
 function onInit()
     fModAttack = ActionAttack.modAttack;
     ActionAttack.modAttack = modAttack;
-    ActionsManager.registerModHandler("attack", modAttack);   
-end
+    ActionsManager.registerModHandler("attack", modAttack); 
 
+    fGetRoll = ActionAttack.getRoll;
+    ActionAttack.getRoll = getRoll;
+end
 
 function modAttack(rSource, rTarget, rRoll)
     fModAttack(rSource, rTarget, rRoll);
@@ -16,34 +18,37 @@ function modAttack(rSource, rTarget, rRoll)
     end
 end
 
-function addWeaponTypeVsArmorMods(rSource, rTarget, rRoll)
-    Debug.console("rSource", rSource);  
-    Debug.console("rTarget", rTarget);
-    Debug.console("rRoll", rRoll);
-    --addModToRoll(rRoll, 'sword', 'armor', 2);
+function getRoll(rActor, rAction)
+    local rRoll = fGetRoll(rActor, rAction);
+    rRoll.aDamageTypes = rAction.aDamageTypes;
+    return rRoll;
 end
 
-function getWeaponType(rSource)
+function addWeaponTypeVsArmorMods(rSource, rTarget, rRoll)  
+    local aArmorWorn = getTargetArmor(rTarget);
+    local aDamageTypes = rRoll.aDamageTypes;
+    local sArmorType, sDamageType, nMod = ArmorManagerPO.getHitModifierForDamageTypeVsArmorList(aArmorWorn, aDamageTypes);
+    Debug.console("sArmorType", sArmorType, "sDamageType", sDamageType, "nMod", nMod);
+    addModToRoll(rRoll, sDamageType, sArmorType, nMod);
 end
 
-function getArmorType(rTarget)
+function getTargetArmor(rTarget)
+    local _, nodeChar = ActorManager.getTypeAndNode(rTarget);
+    local _, aArmorWorn = ItemManager2.getArmorWorn(nodeChar);
+    return aArmorWorn;
 end
 
-function getArmorModVsWeaponType(nWeapon, nArmor)
-    return 0;
-end
-
-function addModToRoll(rRoll, sWeaponType, sArmor, nBonus)
-    if nBonus == 0 then 
+function addModToRoll(rRoll, sDamageType, sArmor, nMod)
+    if nMod == 0 or nMod == nil then 
         return;
     end
     
-    local sBonus = tostring(nBonus);
-    if nBonus > 0 then
-        sBonus = "+" .. sBonus;
+    local sMod = tostring(nMod);
+    if nMod > 0 then
+        sMod = "+" .. sMod;
     end
     
-    rRoll.sDesc = rRoll.sDesc .. string.format(" [WvA: %s v %s (%s)]", sWeaponType, sArmor, sBonus);
-    rRoll.nMod = nBonus;
+    rRoll.sDesc = rRoll.sDesc .. string.format(" [WvA: %s v %s (%s)]", sDamageType, sArmor, sMod);
+    rRoll.nMod = nMod;
 end
 
