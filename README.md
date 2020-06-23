@@ -9,6 +9,10 @@ All rules are toggleable via Preferences, so you can pick and choose which of th
 
 The rules in this category either add automation for basic 2E rules, or adds rules for the 2E set of "Player's Option" books.
 
+These are in progress.
+
+## Automation Improvements
+
 ### Automate Weapon vs Armor Mods
 This option automates the optional 2E rule that gives attack bonuses and penalties depending on the damage type of the weapon vs the armor type worn. These are the "Weapon Type vs Armor Modifiers" seen on Table 52 of the Revised 2E PHB. The 2E ruleset currently implements these as modifiers that you can select before you roll an attack. Toggling this option removes the need to do that manually as it will attempt to automate it by looking at the attacker's weapon and the target's armor. This option doesn't work if it can't determine those things (such as a generic NPC "orc" that might have an AC of 5 but doesn't actually have any worn armor in its inventory), or in the case where a weapon type can't be determined. If you actually equip armor on an NPC, it will use these modifiers, even though the actual creature's AC won't change due to the armor you equipped to it.
 
@@ -21,6 +25,9 @@ The armor type is determined by doing a partial match on the armor's name. So if
 Example #1: Joe the 1st level Fighter swings his Longsword at an orc. The GM pulled this orc straight out of the Monster Manual, so the NPC record for the orc doesn't have any equipped armor in its inventory. Joe's attack roll is normal. 
 
 Example #2: This time, the GM decides that the orc probably has an AC of 6 because it's wearing chain mail. He copies the NPC record "orc" from the Monster Manual, drags some chain mail to its inventory, and equips it. This doesn't actually have an effect on the orc's AC, because the 2E ruleset currently doesn't support that. However, now when Joe the 1st level Fighter attacks the orc with his longsword, he gets a -2 to his attack roll because chain mail is more effective against slashing weapons.
+
+### Stricter Resistances
+In the current implementation of the 2E ruleset, if a creature (such as a skeleton) resists slashing and piercing damage, they'll take half damage from any slashing or piercing attack... even if other damage types are involved. So, for instance, if a cleric bashes the skeleton with a morningstar, which is a bludgeoning/piercing weapon, the skeleton will only take half damage. I believe the intent in AD&D was that the most favorable damage type to the attacker was used when multiple damage types are involved. Enabling this option would require the target to resist all damage types of the attack to take half damage, not just one of them. A side effect of this that you may or may not like is that if you made a magical flaming longsword that does "slashing, fire" damage, the skeleton wouldn't resist any because while it resists slashing, it doesn't resist fire. You might disagree with me that it should work this way, and that's cool! That's why all these options are toggleable!
 
 ## Sterno's House Rules
 

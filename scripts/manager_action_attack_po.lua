@@ -12,7 +12,7 @@ end
 
 function modAttack(rSource, rTarget, rRoll)
     fModAttack(rSource, rTarget, rRoll);
-    local bAutomateWeaponTypeVsArmorMods = OptionsManager.isOption("PlayerOption_WeaponTypeVsArmorMods", "on");
+    local bAutomateWeaponTypeVsArmorMods = OptionsManager.isOption("AdditionalAutomation_WeaponTypeVsArmorMods", "on");
     if bAutomateWeaponTypeVsArmorMods then
         addWeaponTypeVsArmorMods(rSource, rTarget, rRoll);
     end

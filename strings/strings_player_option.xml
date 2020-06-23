@@ -11,6 +11,7 @@
 	
 	<string name="option_header_automation">Additional Automation (GM)</string>
     <string name="option_label_weapontype_vs_armor_mods">Automate Weapon vs Armor mods</string>
+	<string name="option_label_stricter_resistance">Stricter Resistance Rules</string>
     
     <!-- House Rule Options -->
     <string name="option_header_sterno_house_rule">Sterno's House Rules (GM)</string>
