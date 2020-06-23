@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<root version="3.0" release="1.0" >
+
+  <properties>
+    <name>2E Player's Option</name>
+    <version>1.0</version>
+    <loadorder>99</loadorder>
+    <description>
+      <text>Rule options and automation enhancements for 2E</text>
+      <website></website>
+      <author>Sterno</author>
+    </description>
+    <ruleset>
+      <name>2E</name>
+    </ruleset>
+  </properties>
+
+  <announcement text="Rule options and automation enhancements for 2E" font="emotefont" icon="rulesetlogo_DungeonClassic" />
+  <base>    
+    <!-- High-level scripts -->
+	<!--<includefile source="campaign/record_item.xml" />
+	<includefile source="campaign/record_char_main.xml" />
+	<includefile source="strings/strings_armor_damage.xml" />
+    <script name="ArmorDamageManager" file="scripts/manager_armor_damage.lua" />-->
+    <includefile source="strings/strings_player_option.xml"/>
+    <script name="PlayerOptionManager" file="scripts/manager_po.lua"/>
+    <script name="PlayerOptionDiceManager" file="scripts/manager_dice_po.lua"/>
+    <script name="ActionHealPO" file="scripts/manager_action_heal_po.lua" />
+    <script name="ActionDamagePO" file="scripts/manager_action_damage_po.lua" />
+    <script name="ActionAttackPO" file="scripts/manager_action_attack_po.lua" />
+    <script name="CombatManagerPO" file="scripts/manager_combat_po.lua" />
+    
+  </base>
+    
+</root>
