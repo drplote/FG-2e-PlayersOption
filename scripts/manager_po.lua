@@ -5,7 +5,9 @@ end
 function registerOptions()
     
     -- Player's Option Rules
-    OptionsManager.registerOption2("PlayerOption_WeaponTypeVsArmorMods", false, "option_header_po", "option_label_weapontype_vs_armor_mods", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "on" });
+	
+	-- Additional Automation
+    OptionsManager.registerOption2("PlayerOption_WeaponTypeVsArmorMods", false, "option_header_automation", "option_label_weapontype_vs_armor_mods", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "on" });
     
     
     -- House rules
