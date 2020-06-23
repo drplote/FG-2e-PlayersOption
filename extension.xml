@@ -16,13 +16,17 @@
     </ruleset>
   </properties>
 
-  <announcement text="Rule options and automation enhancements for 2E" font="emotefont" icon="rulesetlogo_DungeonClassic" />
+  <announcement text="Rule options and automation enhancements for 2E by Sterno" font="emotefont" icon="rulesetlogo_DungeonClassic" />
   <base>    
     <!-- High-level scripts -->
 	<!--<includefile source="campaign/record_item.xml" />
 	<includefile source="campaign/record_char_main.xml" />
 	<includefile source="strings/strings_armor_damage.xml" />
     <script name="ArmorDamageManager" file="scripts/manager_armor_damage.lua" />-->
+    
+    <includefile source="campaign/record_char_weapon.xml"/>
+    <includefile source="campaign/record_char_actions.xml"/>
+    
     <includefile source="strings/strings_player_option.xml"/>
     <script name="PlayerOptionManager" file="scripts/manager_po.lua"/>
     <script name="PlayerOptionDiceManager" file="scripts/manager_dice_po.lua"/>
@@ -30,7 +34,8 @@
     <script name="ActionDamagePO" file="scripts/manager_action_damage_po.lua" />
     <script name="ActionAttackPO" file="scripts/manager_action_attack_po.lua" />
     <script name="CombatManagerPO" file="scripts/manager_combat_po.lua" />
-    
+    <script name="WeaponManagerPO" file="scripts/manager_weapon_po.lua" />
+    <script name="UtilityPO" file="scripts/utility_po.lua" />
   </base>
     
 </root>

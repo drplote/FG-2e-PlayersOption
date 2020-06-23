@@ -1,7 +1,7 @@
 local fOnHealPostRoll;
  
 function onInit()
-    fOnHealPostRoll = ActionHealer.onHealPostRoll;
+    fOnHealPostRoll = ActionHeal.onHealPostRoll;
     ActionHeal.onHealPostRoll = onHealPostRoll;
     ActionsManager.registerPostRollHandler("heal", onHealPostRoll);
 end
