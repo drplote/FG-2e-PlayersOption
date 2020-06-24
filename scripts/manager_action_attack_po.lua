@@ -1,5 +1,6 @@
 local fModAttack;
 local fGetRoll;
+local fNotifyApplyAttack;
 
 function onInit()
     fModAttack = ActionAttack.modAttack;
@@ -8,6 +9,26 @@ function onInit()
 
     fGetRoll = ActionAttack.getRoll;
     ActionAttack.getRoll = getRoll;
+	
+	fNotifyApplyAttack = ActionAttack.notifyApplyAttack;
+	ActionAttack.notifyApplyAttack = notifyApplyAttack;
+end
+
+function notifyApplyAttack(rSource, rTarget, bSecret, sAttackType, sDesc, nTotal, rResults)
+	local bGenerateHitLocations = OptionsManager.isOption("AdditionalAutomation_GenerateHitLocations", "on")
+	if bGenerateHitLocations then 
+		if rResults.sDMResults:find("%[HIT") or rResults.sDMResults:find("%[CRITICAL") then -- TODO: remove crit check once we have crit code, as it'll be handled there.
+			if rSource and rTarget then
+				local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
+				local _, nodeDefender = ActorManager.getTypeAndNode(rTarget);
+				if nodeAttacker and nodeDefender then
+					local sHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender);
+					rResults.sDMResults = rResults.sDMResults .. string.format(" [LOC: %s]", sHitLocation);
+				end
+			end
+		end
+	end
+	fNotifyApplyAttack(rSource, rTarget, bSecret, sAttackType, sDesc, nTotal, rResults);
 end
 
 function modAttack(rSource, rTarget, rRoll)

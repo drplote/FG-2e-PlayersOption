@@ -38,6 +38,7 @@
     <script name="ArmorManagerPO" file="scripts/manager_armor_po.lua" />
     <script name="DataCommonPO" file="scripts/data_common_po.lua" />
     <script name="UtilityPO" file="scripts/utility_po.lua" />
+	<script name="HitLocationManagerPO" file="scripts/manager_hit_location_po.lua" />
   </base>
     
 </root>
