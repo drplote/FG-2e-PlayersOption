@@ -1,4 +1,4 @@
-local fRollNpcHitPoints;
+        local fRollNpcHitPoints;
 
 function onInit()
     fRollNpcHitPoints = CombatManagerADND.rollNPCHitPoints;

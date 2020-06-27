@@ -31,20 +31,44 @@ function handleCrit(rSource, rTarget)
 	Debug.console("rSource", rSource);
 	Debug.console("rTarget", rTarget);
 	if rSource and rTarget then
+		local nodeWeaon = nil; TODO: get this
 		local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
 		local _, nodeDefender = ActorManager.getTypeAndNode(rTarget);
 		local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender);
-		local nSeverity = getSeverity(nodeAttacker, nodeDefender);
-		-- determine severity
-		-- Target needs to save vs death
-		-- if they fail, determine extra effects
-		-- determine damage bonus
+		local nSizeDifference = getSizeDifference(nodeWeapon, nodeDefender);
+		local nSeverity = getSeverityDieRoll(nSizeDifference);
+		local rCrit = getCritResult(nodeWeapon, rHitLocation, nSeverity);
+
+		if isDefenderAffectedByCrit(nodeDefender) then
+			-- TODO: report it?
+		end
 	end
 end
 
-function getSeverity(nodeAttacker, nodeDefender)
+function isDefenderAffectedByCrit(nodeDefender)
+	-- TODO: make a saving throw
+	-- certain creatures immune to certain effects
+	return true;
+end
+
+function getCritResult(nodeWeapon, rHitLocation, nSeverity)
+
+end
+
+function getSizeDifference(nodeWeapon, nodeDefender)
 	local nDefenderSizeCategory = ActorManagerPO.getSizeCategory(nodeDefender);
-	return nil;
-	--local nodeWeapon = nil; -- TODO
-	--local nWeaponSizeCategory = WeaponManagerPO.getSizeCategory(nodeWeapon);
+	local nWeaponSizeCategory = WeaponManagerPO.getSizeCategory(nodeWeapon);
+    return nAttackerSize - nDefenderSize;
+end
+
+function getSeverityDieRoll(nSizeDifference)
+	if nSizeDifference < 0 then
+		return DiceManagerPO.getDiceResult(1, 6);
+	elseif nSizeDifference == 1 then
+		return DiceManagerPO.getDiceResult(2, 6);
+	elseif nSizeDifference > 1 then
+		return DiceManagerPO.getDiceResult(2, 8);
+	else
+		return DiceManagerPO.getDiceResult(2, 4);
+	end
 end
