@@ -2,17 +2,16 @@ local fRollNpcHitPoints;
 
 function onInit()
     fRollNpcHitPoints = CombatManagerADND.rollNPCHitPoints;
-    CombatManagerADND.rollNPCHitPoints = rollNPCHitPoints;
+    CombatManagerADND.rollNPCHitPoints = rollNPCHitPointsOverride;
 end
 
-function rollNPCHitPoints(nodeChar)
+function rollNPCHitPointsOverride(nodeChar)
     return fRollNpcHitPoints(nodeChar) + getHpKicker(nodeChar);
 end
 
 
 function getHpKicker(nodeChar)
-    local bUseKickerOption = OptionsManager.isOption("SternoHouseRule_HpKicker", "on");
-    if not bUseKickerOption then
+    if not PlayerOptionManager.isHpKickerEnabled() then
         return 0;
     end;
     

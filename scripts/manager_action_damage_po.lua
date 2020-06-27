@@ -3,44 +3,23 @@ local fCheckReductionType;
 
 function onInit()
     fOnDamageRoll = ActionDamage.onDamageRoll;
-    ActionDamage.onDamageRoll = onDamageRoll;
-    ActionsManager.registerPostRollHandler("damage", onDamageRoll);
+    ActionDamage.onDamageRoll = onDamageRollOverride;
+    ActionsManager.registerPostRollHandler("damage", onDamageRollOverride);
 	
 	fCheckReductionType = ActionDamage.checkReductionType;
-	ActionDamage.checkReductionType = checkReductionType;
+	ActionDamage.checkReductionType = checkReductionTypeOverride;
 end
 
-function onDamageRoll(rSource, rRoll)
-    local bUsePenetration = OptionsManager.isOption("SternoHouseRule_PenetrationDice", "on");
-    if bUsePenetration then
+function onDamageRollOverride(rSource, rRoll)
+    if PlayerOptionManager.isPenetrationDiceEnabled() then
         PlayerOptionDiceManager.handlePenetration(rRoll, false);
     end
     
     fOnDamageRoll(rSource, rRoll);
 end
 
-function hasBaseDamageTypes(aDmgTypes)
-	local bBludgeoning = false;
-	local bPiercing = false;
-	local bSlashing = false;
-	
-	for _,sDmgType in pairs(aDmgTypes) do
-		local sDmgTypeLower = sDmgType:lower();
-		if sDmgTypeLower:find("bludgeoning") then
-			bBludgeoning = true;
-		elseif sDmgTypeLower:find("slashing") then
-			bSlashing = true;
-		elseif sDmgTypeLower:find("piercing") then
-			bPiercing = true;
-		end
-	end
-	
-	return bBludgeoning, bPiercing, bSlashing;
-end
-
-function checkReductionType(aReduction, aDmgType)
-	local bUseStricterResistance = OptionsManager.isOption("AdditionalAutomation_StricterResistance", "on");
-	if not bUseStricterResistance then
+function checkReductionTypeOverride(aReduction, aDmgType)
+	if not PlayerOptionManager.isStricterResistancesEnabled() then
 		return fCheckReductionType(aReduction, aDmgType);
 	end
 	
@@ -68,4 +47,23 @@ function checkReductionType(aReduction, aDmgType)
 
 		return bResistsAllBaseTypesItContains;
 	end
+end
+
+function hasBaseDamageTypes(aDmgTypes)
+	local bBludgeoning = false;
+	local bPiercing = false;
+	local bSlashing = false;
+	
+	for _,sDmgType in pairs(aDmgTypes) do
+		local sDmgTypeLower = sDmgType:lower();
+		if sDmgTypeLower:find("bludgeoning") then
+			bBludgeoning = true;
+		elseif sDmgTypeLower:find("slashing") then
+			bSlashing = true;
+		elseif sDmgTypeLower:find("piercing") then
+			bPiercing = true;
+		end
+	end
+	
+	return bBludgeoning, bPiercing, bSlashing;
 end

@@ -2,14 +2,13 @@ local fOnHealPostRoll;
  
 function onInit()
     fOnHealPostRoll = ActionHeal.onHealPostRoll;
-    ActionHeal.onHealPostRoll = onHealPostRoll;
-    ActionsManager.registerPostRollHandler("heal", onHealPostRoll);
+    ActionHeal.onHealPostRoll = onHealPostRollOverride;
+    ActionsManager.registerPostRollHandler("heal", onHealPostRollOverride);
 end
  
-function onHealPostRoll(rSource, rRoll)
-    local bUsePenetration = OptionsManager.isOption("SternoHouseRule_PenetrationDice", "on");
+function onHealPostRollOverride(rSource, rRoll)
     fOnHealPostRoll(rSource, rRoll);
-    if bUsePenetration then 
+    if PlayerOptionManager.isPenetrationDiceEnabled() then 
         PlayerOptionDiceManager.handlePenetration(rRoll, false);
     end
 end

@@ -1,6 +1,22 @@
 function onInit()
 end
 
+function getSizeCategory(nodeWeapon)
+	--TODO: eventually try to read this from properties
+	local sSize = getDefaultWeaponSize(nodeWeapon);
+	return DataManagerPO.parseSizeString(sSize);
+end
+
+function getDefaultWeaponSizeCategory(nodeWeapon)
+	local sName = DB.getValue(nodeWeapon, "name", ""):lower();
+	local sSize = "";
+	for sWeaponName, sSize in DataCommonPO.aDefaultWeaponSizes do
+		if sName:find(sWeaponName) then
+			return sSize;
+		end
+	end
+end
+
 function getDamageTypes(nodeWeapon)
     if not nodeWeapon then 
         return nil; 

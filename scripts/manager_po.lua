@@ -5,6 +5,7 @@ end
 function registerOptions()
     
     -- Player's Option Rules
+	OptionsManager.registerOption2("PlayersOption_CriticalHits", false, "option_header_po", "option_label_critical_hits", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 	
 	-- Additional Automation
     OptionsManager.registerOption2("AdditionalAutomation_WeaponTypeVsArmorMods", false, "option_header_automation", "option_label_weapontype_vs_armor_mods", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
@@ -23,4 +24,28 @@ function registerOptions()
     
     --OptionsManager.registerOption2("SternoHouseRule_ShieldDamage", false, "option_header_sterno_house_rule", "option_label_shield_damage", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
+end
+
+function isPOCritEnabled()
+	return DataCommonADND.coreVersion == "2e" and OptionsManager.isOption("PlayersOption_CriticalHits", "on")
+end
+
+function isWeaponTypeVsArmorModsEnabled()
+	return OptionsManager.isOption("AdditionalAutomation_WeaponTypeVsArmorMods", "on")
+end
+
+function isStricterResistancesEnabled()
+	return OptionsManager.isOption("AdditionalAutomation_StricterResistance", "on");
+end
+
+function isGenerateHitLocationsEnabled()
+	return OptionsManager.isOption("AdditionalAutomation_GenerateHitLocations", "on");
+end
+
+function isHpKickerEnabled()
+	return OptionsManager.isOption("SternoHouseRule_HpKicker", "on");
+end
+
+function isPenetrationDiceEnabled()
+	return OptionsManager.isOption("SternoHouseRule_HpKicker", "on");
 end

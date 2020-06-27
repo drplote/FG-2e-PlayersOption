@@ -8,6 +8,7 @@
 <root>
     <!-- Player's Option Rules -->
     <string name="option_header_po">Player's Option Rules (GM)</string>
+	<string name="option_label_critical_hits">Combat &amp; Tactics Critical Hits</string>
 	
 	<string name="option_header_automation">Additional Automation (GM)</string>
     <string name="option_label_weapontype_vs_armor_mods">Automate Weapon vs Armor mods</string>

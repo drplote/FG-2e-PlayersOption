@@ -1,30 +1,31 @@
-aArmorVsDamageTypeModifiers = {};
+aDefaultArmorVsDamageTypeModifiers = {};
 aHitLocations = {};
-aRaceSizes = {};
+aDefaultRaceSizes = {};
 aCritCharts = {};
-
+aDefaultWeaponSizes = {};
 
 function onInit()
-    initializeArmorVsDamageTypeModifiers();
+    initializeDefaultArmorVsDamageTypeModifiers();
 	initializeHitLocations();
-	initializeRaceSizes();
-	intializeCritCharts();
+	initializeDefaultRaceSizes();
+	initializeCritCharts();
+	initializeDefaultWeaponSizes();
 end
 
-function initializeArmorVsDamageTypeModifiers()
-    aArmorVsDamageTypeModifiers["banded mail"]      = {["slashing"] = -2, ["piercing"] = 0,  ["bludgeoning"] = -1};
-    aArmorVsDamageTypeModifiers["brigandine"]       = {["slashing"] = -1, ["piercing"] = -1, ["bludgeoning"] = 0};
-    aArmorVsDamageTypeModifiers["chain mail"]       = {["slashing"] = -2, ["piercing"] = 0,  ["bludgeoning"] = 2};
-    aArmorVsDamageTypeModifiers["field plate"]      = {["slashing"] = -3, ["piercing"] = -1, ["bludgeoning"] = 0};
-    aArmorVsDamageTypeModifiers["full plate"]       = {["slashing"] = -4, ["piercing"] = -3, ["bludgeoning"] = 0}; 
-    aArmorVsDamageTypeModifiers["leather armor"]    = {["slashing"] = 0,  ["piercing"] = 2,  ["bludgeoning"] = 0};
-    aArmorVsDamageTypeModifiers["padded armor"]     = {["slashing"] = 0,  ["piercing"] = 2,  ["bludgeoning"] = 0};
-    aArmorVsDamageTypeModifiers["hide armor"]       = {["slashing"] = 0,  ["piercing"] = 2,  ["bludgeoning"] = 0};
-    aArmorVsDamageTypeModifiers["plate mail"]       = {["slashing"] = -3, ["piercing"] = 0,  ["bludgeoning"] = 0};
-    aArmorVsDamageTypeModifiers["ring mail"]        = {["slashing"] = -1, ["piercing"] = -1, ["bludgeoning"] = 0};
-    aArmorVsDamageTypeModifiers["scale mail"]       = {["slashing"] = 0,  ["piercing"] = -1, ["bludgeoning"] = 0};
-    aArmorVsDamageTypeModifiers["splint mail"]      = {["slashing"] = 0,  ["piercing"] = -1, ["bludgeoning"] = -2};
-    aArmorVsDamageTypeModifiers["studded leather"]  = {["slashing"] = -2, ["piercing"] = -1, ["bludgeoning"] = 0};
+function initializeDefaultArmorVsDamageTypeModifiers()
+    aDefaultArmorVsDamageTypeModifiers["banded mail"]      = {["slashing"] = -2, ["piercing"] = 0,  ["bludgeoning"] = -1};
+    aDefaultArmorVsDamageTypeModifiers["brigandine"]       = {["slashing"] = -1, ["piercing"] = -1, ["bludgeoning"] = 0};
+    aDefaultArmorVsDamageTypeModifiers["chain mail"]       = {["slashing"] = -2, ["piercing"] = 0,  ["bludgeoning"] = 2};
+    aDefaultArmorVsDamageTypeModifiers["field plate"]      = {["slashing"] = -3, ["piercing"] = -1, ["bludgeoning"] = 0};
+    aDefaultArmorVsDamageTypeModifiers["full plate"]       = {["slashing"] = -4, ["piercing"] = -3, ["bludgeoning"] = 0}; 
+    aDefaultArmorVsDamageTypeModifiers["leather armor"]    = {["slashing"] = 0,  ["piercing"] = 2,  ["bludgeoning"] = 0};
+    aDefaultArmorVsDamageTypeModifiers["padded armor"]     = {["slashing"] = 0,  ["piercing"] = 2,  ["bludgeoning"] = 0};
+    aDefaultArmorVsDamageTypeModifiers["hide armor"]       = {["slashing"] = 0,  ["piercing"] = 2,  ["bludgeoning"] = 0};
+    aDefaultArmorVsDamageTypeModifiers["plate mail"]       = {["slashing"] = -3, ["piercing"] = 0,  ["bludgeoning"] = 0};
+    aDefaultArmorVsDamageTypeModifiers["ring mail"]        = {["slashing"] = -1, ["piercing"] = -1, ["bludgeoning"] = 0};
+    aDefaultArmorVsDamageTypeModifiers["scale mail"]       = {["slashing"] = 0,  ["piercing"] = -1, ["bludgeoning"] = 0};
+    aDefaultArmorVsDamageTypeModifiers["splint mail"]      = {["slashing"] = 0,  ["piercing"] = -1, ["bludgeoning"] = -2};
+    aDefaultArmorVsDamageTypeModifiers["studded leather"]  = {["slashing"] = -2, ["piercing"] = -1, ["bludgeoning"] = 0};
 end
 
 function initializeHitLocations()
@@ -68,10 +69,10 @@ function initializeHitLocations()
 	};	
 end
 
-function initializeRaceSizes()
+function initializeDefaultRaceSizes()
 	-- Size category: T = 1, S = 2, M = 3, L = 4, H = 5, G = 6
 	-- medium is assumed unless specified here
-	aRaceSizes = {
+	aDefaultRaceSizes = {
 		["dwarf"] = 3,
 		["elf"] = 3,
 		["gnome"] = 2,
@@ -81,7 +82,7 @@ function initializeRaceSizes()
 	};
 end
 
-function initalizeCritCharts()
+function initializeCritCharts()
 	-- aCritCharts[sCreatureType][sDamageType][nCritLocationGroup][nSeverity]
 	
 	-- crit effects:
@@ -119,9 +120,9 @@ function initalizeCritCharts()
 				[13] = {desc="Leg shattered, no move or attack, major bleeding from compound fractures, tripled damaged dice"},
 			},
 			[2] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Victim stunned 1d6 rounds"},
 				[5] = {desc="Abdomen struck, victim stunned 1 round and reduced to 1/2 move"},
 				[6] = {desc="Armor damaged, victim stunned 1d6 rounds, triple damage if no armor"},
@@ -134,9 +135,9 @@ function initalizeCritCharts()
 				[13] = {desc="Abdomen crushed, victim reduced to 0 hit points with severe internal bleeding, triped damage dice"},
 			},
 			[3] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Knockdown, stunned 1d4 round"},
 				[5] = {desc="Torso struck, victim stunned 1 round and reduced to 1/2 move"},
 				[6] = {desc="Shield damage, torso struck, 1/2 move"},
@@ -147,11 +148,11 @@ function initalizeCritCharts()
 				[11] = {desc="Torso crushed, victim reduced to 0 hit points with severe internal bleeding"},
 				[12] = {desc="Torso crushed, victim killed"},
 				[13] = {desc="Torso crushed, victim killed, tripled damage dice"},
-			}
+			},
 			[4] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Hand struck, weapon/shield dropped "},
 				[5] = {desc="Arm struck, shield damage/weapon dropped"},
 				[6] = {desc="Hand broken, -2 penalty to attacks/shield dropped "},
@@ -164,9 +165,9 @@ function initalizeCritCharts()
 				[13] = {desc="Shoulder shattered, no move or attacks, major bleeding, tripled damage dice"},
 			},
 			[5] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Victim stunned 1d6 rounds "},
 				[5] = {desc="Head struck, helm removed, victim stunned 1 round; -2 penalty to attack rolls if victim had no helm"},
 				[6] = {desc="Head struck, -2 penalty to attacks"},
@@ -181,9 +182,9 @@ function initalizeCritCharts()
 		},
 		["piercing"] = {
 			[1] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Leg struck, minor bleeding"},
 				[5] = {desc="Leg struck, minor bleeding; 1/2 move"},
 				[6] = {desc="Leg injured, major bleeding, 1/2 move"},
@@ -196,9 +197,9 @@ function initalizeCritCharts()
 				[13] = {desc="Leg severed at thigh, no move or attack, victim reduced to 0 hit points with severe bleeding, tripled damage dice"},
 			},
 			[2] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Abdomen grazed, minor bleeding"},
 				[5] = {desc="Abdomen struck, victim stunned 1 round and reduced to 1/2 move with minor bleeding"},
 				[6] = {desc="Armor damaged; victim stunned 1d6 rounds, major bleeding, 1/2 move if no armor"},
@@ -211,9 +212,9 @@ function initalizeCritCharts()
 				[13] = {desc="Abdomen destroyed, victim killed, tripled damage dice"},
 			},
 			[3] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Torso grazed, minor bleeding"},
 				[5] = {desc="Torso struck, victim stunned 1 round, reduced to 1/2 move with minor bleeding "},
 				[6] = {desc="Shield damage, torso struck, 1/2 move & minor bleeding"},
@@ -224,11 +225,11 @@ function initalizeCritCharts()
 				[11] = {desc="Torso destroyed, victim reduced to 0 hit points with severe bleeding"},
 				[12] = {desc="Torso destroyed, victim killed"},
 				[13] = {desc="Torso destroyed, victim killed, tripled damage dice"},
-			}
+			},
 			[4] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Hand struck, weapon dropped, minor bleeding; no effect on shield arm"},
 				[5] = {desc="Arm struck, shield damage/weapon dropped, minor bleeding"},
 				[6] = {desc="Hand injured, -2 penalty to attacks/shield dropped"},
@@ -241,9 +242,9 @@ function initalizeCritCharts()
 				[13] = {desc="Arm severed, no move or attacks, severe bleeding, tripled damage dice"},
 			},
 			[5] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Head grazed, stunned 1d3 rounds, minor bleeding"},
 				[5] = {desc="Head struck, helm removed, victim stunned 1 round; -2 penalty to attack rolls, minor bleeding if victim had no helm"},
 				[6] = {desc="Head struck, minor bleeding, victim blinded for 2d4 rounds by blood in eyes"},
@@ -258,9 +259,9 @@ function initalizeCritCharts()
 		},
 		["slashing"] = {
 			[1] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Leg grazed, victim knocked down"},
 				[5] = {desc="Leg struck, minor bleeding"},
 				[6] = {desc="Leg injured, minor bleeding, 2/3 move"},
@@ -273,9 +274,9 @@ function initalizeCritCharts()
 				[13] = {desc="Leg destroyed, no move or attack, severe bleeding, tripled damage dice"},
 			},
 			[2] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Abdomen grazed, minor bleeding"},
 				[5] = {desc="Abdomen struck, victim stunned 1 round and reduced to 2/3 move with minor bleeding"},
 				[6] = {desc="Armor damaged; victim stunned 1d4 rounds, minor bleeding, 2/3 move if no armor"},
@@ -288,9 +289,9 @@ function initalizeCritCharts()
 				[13] = {desc="Abdomen destroyed, victim killed, tripled damage dice"},
 			},
 			[3] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Torso grazed, minor bleeding"},
 				[5] = {desc="Torso struck, 2/3 move with minor bleeding"},
 				[6] = {desc="Shield damage, torso struck, 2/3 move & minor bleeding"},
@@ -301,11 +302,11 @@ function initalizeCritCharts()
 				[11] = {desc="Torso destroyed, victim reduced to 0 hit points with severe bleeding"},
 				[12] = {desc="Torso destroyed, victim killed"},
 				[13] = {desc="Torso destroyed, victim killed, tripled damage dice"},
-			}
+			},
 			[4] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Hand struck, weapon dropped, minor bleeding; no effect on shield arm"},
 				[5] = {desc="Arm struck, shield damage/weapon dropped, minor bleeding"},
 				[6] = {desc="Hand injured, -2 penalty to attacks/shield dropped"},
@@ -318,9 +319,9 @@ function initalizeCritCharts()
 				[13] = {desc="Arm destroyed, no move/attack, major bleeding, tripled damage dice"},
 			},
 			[5] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Head grazed, stunned 1d3 rounds, minor bleeding"},
 				[5] = {desc="Head struck, helm removed, victim stunned 1 round; -2 penalty to attack rolls, minor bleeding if victim had no helm"},
 				[6] = {desc="Eye injured, -4 penalty to all attacks; if helmed, victim is only stunned 1 round instead"},
@@ -337,9 +338,9 @@ function initalizeCritCharts()
 	aCritCharts["animal"] = {
 		["bludgeoning"] = {
 			[1] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Victim knocked down"},
 				[5] = {desc="Knee struck, victim reduced to 2/3 move"},
 				[6] = {desc="Foot/wrist broken, 2/3 move"},
@@ -352,9 +353,9 @@ function initalizeCritCharts()
 				[13] = {desc="Leg/wing shattered, no move or attack, major bleeding from compound fractures, tripled damage dice"},
 			},
 			[2] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="No unusual effect"},
 				[5] = {desc="No unusual effect"},
 				[6] = {desc="Tip of tail struck; if prehensile, any items carried are dropped, -2 penalty to tail attacks due to pain"},
@@ -367,9 +368,9 @@ function initalizeCritCharts()
 				[13] = {desc="Tail crushed, pain reduces creature to 1/2 move and -2 penalty on any attack, minor bleeding; no move or attack if animal uses tail for movement, tripled damage dice"},
 			},
 			[3] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Victim stunned 1d6 round"},
 				[5] = {desc="Abdomen struck, victim stunned 1 round and reduced to 1/2 move"},
 				[6] = {desc="Abdomen struck, victim stunned 1d6 rounds, reduced to 1/2 move"},
@@ -380,11 +381,11 @@ function initalizeCritCharts()
 				[11] = {desc="Spine crushed, no move or attack, major internal bleeding"},
 				[12] = {desc="Abdomen crushed, victim reduced to 0 hit points with severe internal bleeding"},
 				[13] = {desc="Abdomen crushed, victim reduced to 0 hit points with severe internal bleeding, tripled damage dice"},
-			}
+			},
 			[4] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Knockdown, stunned 1d4 rounds"},
 				[5] = {desc="Torso struck, victim stunned 1 round and reduced to 1/2 move"},
 				[6] = {desc="Torso struck, stunned 1d6 rounds, 1/2 move"},
@@ -397,9 +398,9 @@ function initalizeCritCharts()
 				[13] = {desc="Torso crushed, victim killed, tripled damage dice"},
 			},
 			[5] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Victim stunned 1d6 rounds"},
 				[5] = {desc="Snout struck, animal must save vs. death or retreat in pain for 1dl0 rounds"},
 				[6] = {desc="Head struck, -2 penalty to attacks"},
@@ -414,9 +415,9 @@ function initalizeCritCharts()
 		},
 		["piercing"] = {
 			[1] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Leg struck, minor bleeding"},
 				[5] = {desc="Knee struck, 2/3 move, minor bleeding"},
 				[6] = {desc="Leg injured, major bleeding, 2/3 move"},
@@ -429,9 +430,9 @@ function initalizeCritCharts()
 				[13] = {desc="Leg/wing severed at mid-thigh, no move or attack, severe bleeding, tripled damage dice"},
 			},
 			[2] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="No unusual effect"},
 				[5] = {desc="No unusual effect"},
 				[6] = {desc="Tip of tail struck; if prehensile, any items carried are dropped, minor bleeding, -2 penalty to tail attacks"},
@@ -444,9 +445,9 @@ function initalizeCritCharts()
 				[13] = {desc="Tail severed, stunned 1-3 rounds, major bleeding, 1/2 move and -2 penalty on any attack; if animal uses tail for movement, no move or attack, tripled damage dice"},
 			},
 			[3] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Abdomen grazed, minor bleeding"},
 				[5] = {desc="Abdomen struck, victim stunned 1 round and reduced to 2/3 move, minor bleeding"},
 				[6] = {desc="Abdomen struck, victim stunned 1d6 rounds, reduced to 2/3 move, minor bleeding "},
@@ -457,11 +458,11 @@ function initalizeCritCharts()
 				[11] = {desc="Spine destroyed, no move or attack, major bleeding, victim paralyzed"},
 				[12] = {desc="Abdomen destroyed, victim reduced to 0 hit points with severe bleeding"},
 				[13] = {desc="Abdomen destroyed, victim reduced to 0 hit points with severe bleeding, tripled damage dice"},
-			}
+			},
 			[4] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Torso grazed, minor bleeding"},
 				[5] = {desc="Torso struck, victim stunned 1 round and reduced to 2/3 move, minor bleeding"},
 				[6] = {desc="Torso struck, stunned 1d6 rounds, minor bleeding"},
@@ -474,9 +475,9 @@ function initalizeCritCharts()
 				[13] = {desc="Torso destroyed, victim killed, tripled damage dice"},
 			},
 			[5] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Head grazed, stunned 1 round, minor bleeding"},
 				[5] = {desc="Snout struck, minor bleeding, animal must save vs. death or retreat for 1d10 rounds"},
 				[6] = {desc="Head struck, minor bleeding, -2 penalty to attacks"},
@@ -491,9 +492,9 @@ function initalizeCritCharts()
 		},
 		["slashing"] = {
 			[1] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Leg struck, minor bleeding"},
 				[5] = {desc="Knee struck, 2/3 move, minor bleeding"},
 				[6] = {desc="Leg injured, minor bleeding, 2/3 move"},
@@ -506,9 +507,9 @@ function initalizeCritCharts()
 				[13] = {desc="Leg/wing destroyed, no move or attack, major bleeding, tripled damage dice"},
 			},
 			[2] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="No unusual effect"},
 				[5] = {desc="No unusual effect"},
 				[6] = {desc="Tip of tail struck; if prehensile, any items carried are dropped, minor bleeding, -2 penalty to tail attacks"},
@@ -521,9 +522,9 @@ function initalizeCritCharts()
 				[13] = {desc="Tail destroyed, stunned 1d2 rounds, major bleeding, 1/2 move and -2 penalty on attacks; if animal uses tail for movement, no move or attack, tripled damage dice"},
 			},
 			[3] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Abdomen grazed, minor bleeding"},
 				[5] = {desc="Abdomen struck, victim stunned 1 round and reduced to 2/3 move, minor bleeding"},
 				[6] = {desc="Abdomen struck, victim stunned 1d4 rounds, reduced to 2/3 move, minor bleeding"},
@@ -534,11 +535,11 @@ function initalizeCritCharts()
 				[11] = {desc="Spine broken, no move or attack, major bleeding, victim paralyzed"},
 				[12] = {desc="Abdomen destroyed, victim reduced to 0 hit points with severe bleeding"},
 				[13] = {desc="Abdomen destroyed, victim reduced to 0 hit points with severe bleeding, tripled damage dice"},
-			}
+			},
 			[4] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Torso grazed, minor bleeding"},
 				[5] = {desc="Torso struck, victim stunned 1 round and reduced to 2/3 move, minor bleeding"},
 				[6] = {desc="Torso struck, stunned 1d4 rounds, minor bleeding"},
@@ -551,9 +552,9 @@ function initalizeCritCharts()
 				[13] = {desc="Torso destroyed, victim killed, tripled damage dice"},
 			},
 			[5] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Head grazed, stunned 1 round, minor bleeding "},
 				[5] = {desc="Snout struck, minor bleeding, animal must save vs. death or retreat for 1d10 rounds"},
 				[6] = {desc="Eye injured, stunned 1d3 rounds, -2 penalty to attacks"},
@@ -570,9 +571,9 @@ function initalizeCritCharts()
 	aCritCharts["monster"] = {
 		["bludgeoning"] = {
 			[1] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Victim knocked down"},
 				[5] = {desc="Knee struck, victim reduced to 2/3 move, -2 penalty to attacks with that appendage"},
 				[6] = {desc="Foot/wrist broken, 2/3 move, -4 penalty to attacks with that appendage"},
@@ -585,9 +586,9 @@ function initalizeCritCharts()
 				[13] = {desc="Leg/wing shattered, no move, -4 penalty to all attacks, major bleeding from compound fracture, tripled damage dice"},
 			},
 			[2] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="No unusual effect"},
 				[5] = {desc="No unusual effect"},
 				[6] = {desc="Tip of tail struck; if prehensile, any items carried are dropped, -2 penalty to tail attacks due to pain"},
@@ -600,9 +601,9 @@ function initalizeCritCharts()
 				[13] = {desc="Tail crushed, pain reduces creature to xh move and -2 penalty on any attack, minor bleeding; if animal uses tail for movement, no move or attack, triple damage dice"},
 			},
 			[3] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Victim stunned 1d4 rounds"},
 				[5] = {desc="Abdomen struck, victim stunned 1 round and reduced to 2/3 move"},
 				[6] = {desc="Abdomen struck, victim stunned 1d6 rounds, reduced to 2/3 move "},
@@ -613,11 +614,11 @@ function initalizeCritCharts()
 				[11] = {desc="Spine crushed, no move or attack, major internal bleeding"},
 				[12] = {desc="Abdomen crushed, victim reduced to 0 hit points with severe internal bleeding"},
 				[13] = {desc="Abdomen crushed, victim reduced to 0 hit points with severe internal bleeding, tripled damage dice"},
-			}
+			},
 			[4] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Knockdown, stunned 1d4 rounds"},
 				[5] = {desc="Torso struck, victim stunned 1 round and reduced to 2/3 move"},
 				[6] = {desc="Torso struck, stunned 1d6 rounds, 2/3 move"},
@@ -630,9 +631,9 @@ function initalizeCritCharts()
 				[13] = {desc="Torso crushed, victim killed, tripled damage dice"},
 			},
 			[5] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Victim stunned 1d4 rounds"},
 				[5] = {desc="Jaw struck, -2 penalty to any bite attacks"},
 				[6] = {desc="Head struck, stunned 1 round, -2 penalty to attacks"},
@@ -647,9 +648,9 @@ function initalizeCritCharts()
 		},
 		["piercing"] = {
 			[1] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Leg grazed, minor bleeding"},
 				[5] = {desc="Knee struck, 2/3 move, minor bleeding"},
 				[6] = {desc="Leg struck, minor bleeding, 2/3 move"},
@@ -662,9 +663,9 @@ function initalizeCritCharts()
 				[13] = {desc="Leg/wing severed at mid-thigh, no move or attack, severe bleeding, tripled damage dice"},
 			},
 			[2] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="No unusual effect"},
 				[5] = {desc="No unusual effect"},
 				[6] = {desc="Tip of tail struck; if prehensile, any items carried are dropped, minor bleeding, -2 penalty to tail attacks"},
@@ -677,9 +678,9 @@ function initalizeCritCharts()
 				[13] = {desc="Tail severed, stunned 1 round, major bleeding, 1/2 move and -2 penalty on any attack; if animal uses tail for movement, no move or attack, tripled damage dice"},
 			},
 			[3] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Abdomen grazed, minor bleeding"},
 				[5] = {desc="Abdomen struck, victim stunned 1 round, minor bleeding"},
 				[6] = {desc="Abdomen struck, victim stunned 1d3 rounds, reduced to 2/3 move, minor bleeding"},
@@ -690,11 +691,11 @@ function initalizeCritCharts()
 				[11] = {desc="Spine injured, no move or attack, major bleeding, victim stunned 1d6 rounds"},
 				[12] = {desc="Abdomen destroyed, victim reduced to 0 hit points with severe bleeding"},
 				[13] = {desc="Abdomen destroyed, victim reduced to 0 hit points with severe bleeding, tripled damage dice"},
-			}
+			},
 			[4] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Torso grazed, minor bleeding"},
 				[5] = {desc="Torso struck, victim stunned 1 round, minor bleeding"},
 				[6] = {desc="Torso struck, stunned 1d3 rounds, minor bleeding"},
@@ -707,9 +708,9 @@ function initalizeCritCharts()
 				[13] = {desc="Torso destroyed, victim killed, tripled damage dice"},
 			},
 			[5] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Head grazed, minor bleeding"},
 				[5] = {desc="Snout struck, minor bleeding, monster must save vs. death or retreat for 1 round"},
 				[6] = {desc="Head struck, minor bleeding, -2 penalty to attacks"},
@@ -724,9 +725,9 @@ function initalizeCritCharts()
 		},
 		["slashing"] = {
 			[1] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Leg grazed, minor bleeding"},
 				[5] = {desc="Knee struck, 2/3 move"},
 				[6] = {desc="Leg struck, minor bleeding, 2/3 move"},
@@ -739,9 +740,9 @@ function initalizeCritCharts()
 				[13] = {desc="Leg/wing destroyed, no move or attack, major bleeding, tripled damage dice"},
 			},
 			[2] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="No unusual effect"},
 				[5] = {desc="No unusual effect"},
 				[6] = {desc="Tip of tail struck; if prehensile, any items carried are dropped, minor bleeding, -2 penalty to tail attacks"},
@@ -754,11 +755,11 @@ function initalizeCritCharts()
 				[13] = {desc="Tail destroyed, stunned 1d3 rounds, major bleeding, 1/3 move and -2 penalty on any attack; if monster uses tail for movement, no move/attack"},
 			},
 			[3] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Abdomen grazed, minor bleeding"},
-				[5] = {desc="Abdomen struck, victim stunned 1 round, minor bleeding"}
+				[5] = {desc="Abdomen struck, victim stunned 1 round, minor bleeding"},
 				[6] = {desc="Abdomen struck, victim stunned 1d3 rounds, minor bleeding"},
 				[7] = {desc="Abdomen injured, 2/3 move, minor bleeding, -2 penalty to all attacks"},
 				[8] = {desc="Spine injured, 1/2 move, minor bleeding, -4 penalty to all attacks"},
@@ -767,11 +768,11 @@ function initalizeCritCharts()
 				[11] = {desc="Spine injured, no move or attack, major bleeding, victim stunned 1d6 rounds"},
 				[12] = {desc="Abdomen destroyed, victim reduced to 0 hit points with major bleeding"},
 				[13] = {desc="Abdomen destroyed, victim reduced to 0 hit points with major bleeding, tripled damage dice"},
-			}
+			},
 			[4] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Torso grazed, minor bleeding"},
 				[5] = {desc="Torso struck, victim stunned 1 round, minor bleeding"},
 				[6] = {desc="Torso struck, stunned 1d3 rounds, minor bleeding"},
@@ -784,9 +785,9 @@ function initalizeCritCharts()
 				[13] = {desc="Torso destroyed, victim killed, tripled damage dice"},
 			},
 			[5] = {
-				[1] = {desc="No unusual effect"}
-				[2] = {desc="No unusual effect"}
-				[3] = {desc="No unusual effect"}
+				[1] = {desc="No unusual effect"},
+				[2] = {desc="No unusual effect"},
+				[3] = {desc="No unusual effect"},
 				[4] = {desc="Head grazed, minor bleeding"},
 				[5] = {desc="Snout struck, minor bleeding, monster must save vs. death or retreat for 1 round"},
 				[6] = {desc="Eye injured, stunned 1 round, -2 penalty to attacks"},
@@ -800,5 +801,66 @@ function initalizeCritCharts()
 			}
 		}
 	};
+	
+end
+
+function initializeDefaultWeaponSizes()
+	aDefaultWeaponSizes["arquebus"] = "M";
+	aDefaultWeaponSizes["battle axe"] = "M";
+	aDefaultWeaponSizes["blowgun"] = "S";
+	aDefaultWeaponSizes["bow"] = "M";
+	aDefaultWeaponSizes["club"] = "M";
+	aDefaultWeaponSizes["dagger"] = "S";
+	aDefaultWeaponSizes["dirk"] = "S";
+	aDefaultWeaponSizes["dart"] = "S";
+	aDefaultWeaponSizes["flail"] = "M";
+	aDefaultWeaponSizes["mace"] = "M";
+	aDefaultWeaponSizes["pick"] = "M";
+	aDefaultWeaponSizes["hand axe"] = "M";
+	aDefaultWeaponSizes["throwing axe"] = "M";
+	aDefaultWeaponSizes["harpoon"] = "L";
+	aDefaultWeaponSizes["javelin"] = "M";
+	aDefaultWeaponSizes["knife"] = "S";
+	aDefaultWeaponSizes["lance"] = "L";
+	aDefaultWeaponSizes["mancatcher"] = "L";
+	aDefaultWeaponSizes["morning star"] = "M";
+	aDefaultWeaponSizes["morningstar"] = "M";
+	aDefaultWeaponSizes["awl pike"] = "L";
+	aDefaultWeaponSizes["bardiche"] = "L";
+	aDefaultWeaponSizes["bec de corbin"] = "L";
+	aDefaultWeaponSizes["bill-guisarme"] = "L";
+	aDefaultWeaponSizes["fauchard"] = "L";
+	aDefaultWeaponSizes["glaive"] = "L";
+	aDefaultWeaponSizes["guisarme"] = "L";
+	aDefaultWeaponSizes["voulge"] = "L";
+	aDefaultWeaponSizes["lucern hammer"] = "L";
+	aDefaultWeaponSizes["military fork"] = "L";
+	aDefaultWeaponSizes["partisan"] = "L";
+	aDefaultWeaponSizes["ranseur"] = "L";
+	aDefaultWeaponSizes["spetum"] = "L";
+	aDefaultWeaponSizes["scourge"] = "S";
+	aDefaultWeaponSizes["sickle"] = "S";
+	aDefaultWeaponSizes["sling"] = "S";
+	aDefaultWeaponSizes["staff"] = "L"; -- we want this to come after "sling" so "staff sling" doesn't flag as large
+	aDefaultWeaponSizes["bullet"] = "S";
+	aDefaultWeaponSizes["stone"] = "S";
+	aDefaultWeaponSizes["spear"] = "M";
+	aDefaultWeaponSizes["bastard sword"] = "M";
+	aDefaultWeaponSizes["broad sword"] = "M";
+	aDefaultWeaponSizes["khopesh"] = "M";
+	aDefaultWeaponSizes["long sword"] = "M";
+	aDefaultWeaponSizes["longsword"] = "M";
+	aDefaultWeaponSizes["short sword"] = "M";
+	aDefaultWeaponSizes["shortsword"] = "S";
+	aDefaultWeaponSizes["scimitar"] = "M";
+	aDefaultWeaponSizes["two handed sword"] = "L";
+	aDefaultWeaponSizes["two-handed sword"] = "L";
+	aDefaultWeaponSizes["2 handed sword"] = "L";
+	aDefaultWeaponSizes["2-handed sword"] = "L";
+	aDefaultWeaponSizes["2-h sword"] = "L";
+	aDefaultWeaponSizes["2h sword"] = "L";
+	aDefaultWeaponSizes["trident"] = "L";
+	aDefaultWeaponSizes["warhammer"] = "M";
+	aDefaultWeaponSizes["whip"] = "M";	
 	
 end
