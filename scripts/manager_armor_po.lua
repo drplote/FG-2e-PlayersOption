@@ -48,7 +48,7 @@ function getDamageTypeVsArmorModifiers(nodeArmor)
 end
 
 function getDefaultDamageTypeVsArmorModifiers(nodeArmor)
-	local sArmorName = DB.getValue(nodeArmor, "name", "");
+	local sArmorName = DB.getValue(nodeArmor, "name", ""):lower();
 	for sArmorType, aModifiers in pairs(DataCommonPO.aDefaultArmorVsDamageTypeModifiers) do
         if sArmorName:find(sArmorType) then 
 			return aModifiers;

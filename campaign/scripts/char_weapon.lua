@@ -73,8 +73,6 @@ function onAttackAction(draginfo)
     -- NOTE: this is the only modified line in this method. the rest is the 2e implementation
     addDamageTypesToAction(nodeWeapon, rAction); 
 
-	Debug.console("char_weapon.lua", "rActor", rActor);
-	Debug.console("char_weapon.lua", "rAction", rAction);
     ActionAttack.performRoll(draginfo, rActor, rAction);
 
     return true;

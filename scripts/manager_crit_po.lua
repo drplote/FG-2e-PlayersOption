@@ -28,10 +28,8 @@ function isCriticalHit2e(rRoll, rAction)
 end
 
 function handleCrit(rSource, rTarget)
-	Debug.console("rSource", rSource);
-	Debug.console("rTarget", rTarget);
 	if rSource and rTarget then
-		local nodeWeaon = nil; TODO: get this
+		local nodeWeapon = nil; --TODO: get this
 		local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
 		local _, nodeDefender = ActorManager.getTypeAndNode(rTarget);
 		local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender);
