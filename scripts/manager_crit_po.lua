@@ -35,13 +35,23 @@ function handleCrit(rSource, rTarget)
 		local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender);
 		local nSizeDifference = getSizeDifference(nodeWeapon, nodeDefender);
 		local nSeverity = getSeverityDieRoll(nSizeDifference);
-		local rCrit = getCritResult(nodeWeapon, rHitLocation, nSeverity);
+		local rCrit = getCritResult(nodeWeapon, nodeDefender, rHitLocation, nSeverity);
 
-		if isDefenderAffectedByCrit(nodeDefender) then
-			-- TODO: report it?
+		if rCrit and isDefenderAffectedByCrit(nodeDefender) then
+			Comm.deliverChatMessage(buildCritMessage(rCrit));
 		end
+		return rCrit;
 	end
 end
+
+function buildCritMessage(rCrit)
+	-- TODO: remove save message once it's automated
+	local sCritMsg = string.format("Severity %s critical hit to the %s. %s", 
+		rCrit.nSeverity, rCrit.sHitLocation, rCrit.desc);
+	sCritMsg = sCritMsg .. " Save vs death to avoid effects.";
+	return sCritMsg;
+end
+
 
 function isDefenderAffectedByCrit(nodeDefender)
 	-- TODO: make a saving throw
@@ -49,8 +59,31 @@ function isDefenderAffectedByCrit(nodeDefender)
 	return true;
 end
 
-function getCritResult(nodeWeapon, rHitLocation, nSeverity)
+function selectRandomCritDamageType(aDamageTypes)
+	local aCritDamageTypes = getCritDamageTypes(aDamageTypes);
+	if not aCritDamageTypes or #aCritDamageTypes == 0 then
+		return nil;
+	end
+	return math.random(1, #aCritDamageTypes);
+end
 
+function getCritDamageTypes(aDamageTypes)
+	local aCritDamageTypes = {"bludgeoning", "piercing", "slashing"};
+	return UtilityPO.getIntersecting(aCritDamageTypes, aDamageTypes);
+end
+
+function getCritResult(nodeWeapon, nodeDefender, rHitLocation, nSeverity)
+	local aDamageTypes = WeaponManagerPO.getDamageTypes(nodeWeapon);
+	local sDamageType = selectRandomCritDamageType(aDamageTypes);
+	local sDefenderType = ActorManagerPO.getType(nodeDefender);
+	local rCrit = DataCommonPO.aCritCharts[sDefenderType][sDamageType][rHitLocation.locationCategory][nSeverity];
+	rCrit.sHitLocation = rHitLocation.desc;
+	rCrit.nSeverity = nSeverity;
+	if nSeverity >= 13 then
+		rCrit.dmgMultiplier = 3;
+	else
+		rCrit.dmgMultiplier = 2;
+	end
 end
 
 function getSizeDifference(nodeWeapon, nodeDefender)
@@ -60,13 +93,18 @@ function getSizeDifference(nodeWeapon, nodeDefender)
 end
 
 function getSeverityDieRoll(nSizeDifference)
+	local nRollResult = 1;
 	if nSizeDifference < 0 then
-		return DiceManagerPO.getDiceResult(1, 6);
+		nRollResult = DiceManagerPO.getDiceResult(1, 6);
 	elseif nSizeDifference == 1 then
-		return DiceManagerPO.getDiceResult(2, 6);
+		nRollResult = DiceManagerPO.getDiceResult(2, 6);
 	elseif nSizeDifference > 1 then
-		return DiceManagerPO.getDiceResult(2, 8);
+		nRollResult = DiceManagerPO.getDiceResult(2, 8);
 	else
-		return DiceManagerPO.getDiceResult(2, 4);
+		nRollResult = DiceManagerPO.getDiceResult(2, 4);
 	end
+	if nRollResult > 13 then
+		nRollResult = 13;
+	end
+	return nRollResult;
 end

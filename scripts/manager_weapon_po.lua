@@ -60,4 +60,4 @@ function isDamageType(sDamageType, aDamageTypeNames)
         end
     end
     return false;
-end
+end 

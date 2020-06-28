@@ -1,14 +1,14 @@
 aDefaultArmorVsDamageTypeModifiers = {};
 aHitLocations = {};
 aDefaultRaceSizes = {};
-aCritCharts = {};
+alocationCategorys = {};
 aDefaultWeaponSizes = {};
 
 function onInit()
     initializeDefaultArmorVsDamageTypeModifiers();
 	initializeHitLocations();
 	initializeDefaultRaceSizes();
-	initializeCritCharts();
+	initializelocationCategorys();
 	initializeDefaultWeaponSizes();
 end
 
@@ -30,42 +30,42 @@ end
 
 function initializeHitLocations()
 	aHitLocations["humanoid"] = {
-		[1]  = {desc="right leg", critchart=1},
-		[2]  = {desc="right leg", critchart=1},
-		[3]  = {desc="left leg", critchart=1},
-		[4]  = {desc="left leg", critchart=1},
-		[5]  = {desc="abdomen", critchart=2},
-		[6]  = {desc="torso", critchart=3},
-		[7]  = {desc="torso", critchart=3},
-		[8]  = {desc="right arm", critchart=4},
-		[9]  = {desc="left arm", critchart=4},
-		[10] = {desc="head", critchart=5}
+		[1]  = {desc="right leg", locationCategory=1},
+		[2]  = {desc="right leg", locationCategory=1},
+		[3]  = {desc="left leg", locationCategory=1},
+		[4]  = {desc="left leg", locationCategory=1},
+		[5]  = {desc="abdomen", locationCategory=2},
+		[6]  = {desc="torso", locationCategory=3},
+		[7]  = {desc="torso", locationCategory=3},
+		[8]  = {desc="right arm", locationCategory=4},
+		[9]  = {desc="left arm", locationCategory=4},
+		[10] = {desc="head", locationCategory=5}
 	};
 	
 	aHitLocations["animal"] = {
-		[1]  = {desc="right foreleg/wing", critchart=1},
-		[2]  = {desc="left foreleg/wing", critchart=1},
-		[3]  = {desc="right hind leg", critchart=1},
-		[4]  = {desc="left hind leg", critchart=1},
-		[5]  = {desc="tail", critchart=2},
-		[6]  = {desc="abdomen", critchart=3},
-		[7]  = {desc="abdomen", critchart=3},
-		[8]  = {desc="torso", critchart=4},
-		[9]  = {desc="torso", critchart=4},
-		[10] = {desc="head", critchart=5}
+		[1]  = {desc="right foreleg/wing", locationCategory=1},
+		[2]  = {desc="left foreleg/wing", locationCategory=1},
+		[3]  = {desc="right hind leg", locationCategory=1},
+		[4]  = {desc="left hind leg", locationCategory=1},
+		[5]  = {desc="tail", locationCategory=2},
+		[6]  = {desc="abdomen", locationCategory=3},
+		[7]  = {desc="abdomen", locationCategory=3},
+		[8]  = {desc="torso", locationCategory=4},
+		[9]  = {desc="torso", locationCategory=4},
+		[10] = {desc="head", locationCategory=5}
 	};
 	
 	aHitLocations["monster"] = {
-		[1]  = {desc="right foreleg/claw/wing", critchart=1},
-		[2]  = {desc="left foreleg/claw/wing", critchart=1},
-		[3]  = {desc="right hind leg", critchart=1},
-		[4]  = {desc="left hind leg", critchart=1},
-		[5]  = {desc="tail", critchart=2},
-		[6]  = {desc="abdomen", critchart=3},
-		[7]  = {desc="abdomen", critchart=3},
-		[8]  = {desc="torso", critchart=4},
-		[9]  = {desc="torso", critchart=4},
-		[10] = {desc="head", critchart=5}
+		[1]  = {desc="right foreleg/claw/wing", locationCategory=1},
+		[2]  = {desc="left foreleg/claw/wing", locationCategory=1},
+		[3]  = {desc="right hind leg", locationCategory=1},
+		[4]  = {desc="left hind leg", locationCategory=1},
+		[5]  = {desc="tail", locationCategory=2},
+		[6]  = {desc="abdomen", locationCategory=3},
+		[7]  = {desc="abdomen", locationCategory=3},
+		[8]  = {desc="torso", locationCategory=4},
+		[9]  = {desc="torso", locationCategory=4},
+		[10] = {desc="head", locationCategory=5}
 	};	
 end
 
@@ -82,8 +82,8 @@ function initializeDefaultRaceSizes()
 	};
 end
 
-function initializeCritCharts()
-	-- aCritCharts[sCreatureType][sDamageType][nCritLocationGroup][nSeverity]
+function initializelocationCategorys()
+	-- alocationCategorys[sCreatureType][sDamageType][nCritLocationGroup][nSeverity]
 	
 	-- crit effects:
 	-- reduced mvoe
@@ -102,7 +102,7 @@ function initializeCritCharts()
 	-- weapon/shield/item dropped
 	-- permanent stat loss
 	
-	aCritCharts["humanoid"] = {
+	alocationCategorys["humanoid"] = {
 		["bludgeoning"] = { 
 			[1] = {
 				[1] = {desc="No unusual effect"},
@@ -335,7 +335,7 @@ function initializeCritCharts()
 			}
 		}
 	};
-	aCritCharts["animal"] = {
+	alocationCategorys["animal"] = {
 		["bludgeoning"] = {
 			[1] = {
 				[1] = {desc="No unusual effect"},
@@ -568,7 +568,7 @@ function initializeCritCharts()
 			}
 		}
 	};
-	aCritCharts["monster"] = {
+	alocationCategorys["monster"] = {
 		["bludgeoning"] = {
 			[1] = {
 				[1] = {desc="No unusual effect"},

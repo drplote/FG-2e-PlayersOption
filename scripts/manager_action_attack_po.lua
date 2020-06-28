@@ -3,12 +3,12 @@ local fGetRoll;
 local fOnAttack;
 
 function onInit()
-    fModAttack = ActionAttack.modAttack;
-    ActionAttack.modAttack = modAttackOverride;
-    ActionsManager.registerModHandler("attack", modAttackOverride); 
+  fModAttack = ActionAttack.modAttack;
+  ActionAttack.modAttack = modAttackOverride;
+  ActionsManager.registerModHandler("attack", modAttackOverride); 
 
-    fGetRoll = ActionAttack.getRoll;
-    ActionAttack.getRoll = getRollOverride;
+  fGetRoll = ActionAttack.getRoll;
+  ActionAttack.getRoll = getRollOverride;
 	
 	fOnAttack = ActionAttack.onAttack;
 	ActionAttack.onAttack = onAttackOverride;

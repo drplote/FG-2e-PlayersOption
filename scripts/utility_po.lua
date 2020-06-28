@@ -16,6 +16,16 @@ function addIfUnique(set, item)
     end
 end
 
+function getIntersecting(set1, set2)
+  local aIntersecting = {};
+  for i = 1, #set1 do
+    if containsExact(set2, set1[i]) then
+      table.insert(aIntersecting, set1[i]);
+    end
+  end
+  return aIntersecting; 
+end
+
 function intersects(compareSet, actualSet)
 	for i = 1, #actualSet do
 		if containsExact(compareSet, actualSet[i]) then
