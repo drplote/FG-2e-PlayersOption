@@ -126,12 +126,15 @@ function onAttackOverride(rSource, rTarget, rRoll)
     rAction.sResult = "crit";
   	if PlayerOptionManager.isPOCritEnabled() then
   		  local rCrit = CritManagerPO.handleCrit(rSource, rTarget);
-        table.insert(rAction.aMessages, string.format(" [CRITICAL HIT: %s]", rCrit.message));
-  	else
-        table.insert(rAction.aMessages, "[CRITICAL HIT]");
         if PlayerOptionManager.isGenerateHitLocationsEnabled() then
-  	       addHitLocation(rSource, rTarget, rAction);
+          addHitLocationToAction(rAction, rCrit.sHitLocation);
         end
+        addCritInfoToAction(rAction, rCrit);
+  	else
+        if PlayerOptionManager.isGenerateHitLocationsEnabled() then
+          addHitLocation(rSource, rTarget, rAction);
+        end
+        table.insert(rAction.aMessages, "[CRITICAL HIT]");
     end
   elseif rAction.nFirstDie == 1 then
     rAction.sResult = "fumble";
@@ -274,13 +277,28 @@ function modAttackOverride(rSource, rTarget, rRoll)
     end
 end
 
+function addHitLocationToAction(rAction, sHitLocation)
+    table.insert(rAction.aMessages, string.format("[LOC: %s]", sHitLocation));
+end
+
+function addCritInfoToAction(rAction, rCrit)
+    table.insert(rAction.aMessages, string.format("[CRITICAL HIT: %s]", rCrit.message));
+    local sDmgMult = "2x";
+    if rCrit.dmgMultiplier == 3 then
+      sDmgMult = "3x";
+    end
+
+    table.insert(rAction.aMessages, string.format("[CRIT DMG: %s]", sDmgMult));
+end
+
+
 function addHitLocation(rSource, rTarget, rAction)
 	if rSource and rTarget then
 		local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
 		local _, nodeDefender = ActorManager.getTypeAndNode(rTarget);
 		if nodeAttacker and nodeDefender then
 			local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender);
-			table.insert(rAction.aMessages, string.format(" [LOC: %s]", rHitLocation.desc));
+      addHitLocationToAction(rAction, rHitLocation.desc);
 		end
 	end
 end
