@@ -1,14 +1,10 @@
 local fModAttack;
-local fGetRoll;
 local fOnAttack;
 
 function onInit()
   fModAttack = ActionAttack.modAttack;
   ActionAttack.modAttack = modAttackOverride;
   ActionsManager.registerModHandler("attack", modAttackOverride); 
-
-  fGetRoll = ActionAttack.getRoll;
-  ActionAttack.getRoll = getRollOverride;
 	
 	fOnAttack = ActionAttack.onAttack;
 	ActionAttack.onAttack = onAttackOverride;
@@ -128,12 +124,15 @@ function onAttackOverride(rSource, rTarget, rRoll)
     rAction.bSpecial = true;
     bHitTarget = true;
     rAction.sResult = "crit";
-    table.insert(rAction.aMessages, "[CRITICAL HIT]");
-	if PlayerOptionManager.isPOCritEnabled() then
-		CritManagerPO.handleCrit(rSource, rTarget, rAction);
-	elseif PlayerOptionManager.isGenerateHitLocationsEnabled() then
-	    addHitLocation(rSource, rTarget, rAction);
-	end
+  	if PlayerOptionManager.isPOCritEnabled() then
+  		  local rCrit = CritManagerPO.handleCrit(rSource, rTarget);
+        table.insert(rAction.aMessages, string.format(" [CRITICAL HIT: %s]", rCrit.message));
+  	else
+        table.insert(rAction.aMessages, "[CRITICAL HIT]");
+        if PlayerOptionManager.isGenerateHitLocationsEnabled() then
+  	       addHitLocation(rSource, rTarget, rAction);
+        end
+    end
   elseif rAction.nFirstDie == 1 then
     rAction.sResult = "fumble";
     if bPsionic then
@@ -267,19 +266,12 @@ function onAttackOverride(rSource, rTarget, rRoll)
   end
 end
 
-
 function modAttackOverride(rSource, rTarget, rRoll)
     fModAttack(rSource, rTarget, rRoll);
 	
     if PlayerOptionManager.isWeaponTypeVsArmorModsEnabled() then
         addWeaponTypeVsArmorMods(rSource, rTarget, rRoll);
     end
-end
-
-function getRollOverride(rActor, rAction)
-    local rRoll = fGetRoll(rActor, rAction);
-    rRoll.aDamageTypes = rAction.aDamageTypes;
-    return rRoll;
 end
 
 function addHitLocation(rSource, rTarget, rAction)
@@ -294,7 +286,7 @@ function addHitLocation(rSource, rTarget, rAction)
 end
 
 function addWeaponTypeVsArmorMods(rSource, rTarget, rRoll)  
-    local sArmorType, sDamageType, nMod = ArmorManagerPO.getHitModifierForDamageTypesVsCharacter(rTarget, rRoll.aDamageTypes);
+    local sArmorType, sDamageType, nMod = ArmorManagerPO.getHitModifiersForSourceVsCharacter(rSource, rTarget);
     addWeaponTypeVsArmorModToRoll(rRoll, sDamageType, sArmorType, nMod);
 end
 

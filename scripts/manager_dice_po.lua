@@ -58,7 +58,7 @@ function getDiceResult(nNumDice, nNumSides, nPenetration, nBonus) -- nPenetratio
 	if not nBonus then nBonus = 0; end
 	local nTotal = 0;
 	for i = 1, nNumDice, 1 do
-		nTotal = nTotal + getDieResult(nNumDice, nPenetration);
+		nTotal = nTotal + getDieResult(nNumSides, nPenetration);
 	end
 	if nBonus then
 		nTotal = nTotal + nBonus;

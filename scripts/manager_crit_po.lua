@@ -14,7 +14,7 @@ function isCriticalHitCombatAndTactics(rRoll, rAction, nDefenseVal)
 		local nRequiredCritRoll = PlayerOptionManager.getRequiredCritRoll();
 		local bMustHitBy5 = PlayerOptionManager.mustCritHitBy5();
 
-		return rAction.nFirstDie >= getRequiredCritRoll and (not bMustHitBy5 or nHitDifference >= 5);
+		return rAction.nFirstDie >= PlayerOptionManager.getRequiredCritRoll() and (not bMustHitBy5 or nHitDifference >= 5);
 	end
 	return false;
 end
@@ -29,19 +29,31 @@ function isCriticalHit2e(rRoll, rAction)
 	return rAction.nFirstDie >= nCritThreshold
 end
 
+function getWeaponInfo(rSource)
+	local rWeaponInfo = {};
+	if rSource.itemPath then
+		rWeaponInfo.nodeWeapon = DB.findNode(rSource.itemPath);
+		if rWeaponInfo.nodeWeapon then
+			rWeaponInfo.size = WeaponManagerPO.getSizeCategory(rWeaponInfo.nodeWeapon);
+		else
+			local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
+			rWeaponInfo.size = ActorManagerPO.getSizeCategory(nodeAttacker) - 2;
+		end
+	end
+
+	rWeaponInfo.aDamageTypes = rSource.aDamageTypes;
+	return rWeaponInfo;
+end
+
 function handleCrit(rSource, rTarget)
 	if rSource and rTarget then
-		local nodeWeapon = nil; --TODO: get this
+		local rWeaponInfo = getWeaponInfo(rSource);
 		local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
 		local _, nodeDefender = ActorManager.getTypeAndNode(rTarget);
 		local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender);
-		local nSizeDifference = getSizeDifference(nodeWeapon, nodeDefender);
+		local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender, rWeaponInfo);
 		local nSeverity = getSeverityDieRoll(nSizeDifference);
-		local rCrit = getCritResult(nodeWeapon, nodeDefender, rHitLocation, nSeverity);
-
-		if rCrit and isDefenderAffectedByCrit(nodeDefender) then
-			Comm.deliverChatMessage(buildCritMessage(rCrit));
-		end
+		local rCrit = getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity);
 		return rCrit;
 	end
 end
@@ -66,7 +78,7 @@ function selectRandomCritDamageType(aDamageTypes)
 	if not aCritDamageTypes or #aCritDamageTypes == 0 then
 		return nil;
 	end
-	return math.random(1, #aCritDamageTypes);
+	return aCritDamageTypes[math.random(1, #aCritDamageTypes)];
 end
 
 function getCritDamageTypes(aDamageTypes)
@@ -74,10 +86,13 @@ function getCritDamageTypes(aDamageTypes)
 	return UtilityPO.getIntersecting(aCritDamageTypes, aDamageTypes);
 end
 
-function getCritResult(nodeWeapon, nodeDefender, rHitLocation, nSeverity)
-	local aDamageTypes = WeaponManagerPO.getDamageTypes(nodeWeapon);
-	local sDamageType = selectRandomCritDamageType(aDamageTypes);
+function getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity)
+	local sDamageType = selectRandomCritDamageType(rWeaponInfo.aDamageTypes);
 	local sDefenderType = ActorManagerPO.getType(nodeDefender);
+	if not sDamageType or not sDefenderType or not rHitLocation or not rHitLocation.locationCategory or not nSeverity then
+		Debug.console("couldn't generate crit", "sDefenderType", sDefenderType, "sDamageType", sDamageType, "rHitLocation", rHitLocation, "nSeverity", nSeverity);
+	end
+	
 	local rCrit = DataCommonPO.aCritCharts[sDefenderType][sDamageType][rHitLocation.locationCategory][nSeverity];
 	rCrit.sHitLocation = rHitLocation.desc;
 	rCrit.nSeverity = nSeverity;
@@ -86,12 +101,15 @@ function getCritResult(nodeWeapon, nodeDefender, rHitLocation, nSeverity)
 	else
 		rCrit.dmgMultiplier = 2;
 	end
+
+	rCrit.message = buildCritMessage(rCrit);
+	return rCrit;
 end
 
-function getSizeDifference(nodeWeapon, nodeDefender)
+function getSizeDifference(nodeAttacker, nodeDefender, rWeaponInfo)
 	local nDefenderSizeCategory = ActorManagerPO.getSizeCategory(nodeDefender);
-	local nWeaponSizeCategory = WeaponManagerPO.getSizeCategory(nodeWeapon);
-    return nAttackerSize - nDefenderSize;
+	local nAttackerSizeCategory = rWeaponInfo.size or 0;
+	return nAttackerSizeCategory - nDefenderSizeCategory;    
 end
 
 function getSeverityDieRoll(nSizeDifference)

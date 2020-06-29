@@ -12,14 +12,14 @@ end
 
 function addIfUnique(set, item)
     if not contains(set, item) then
-        table.insert(set, item);
+        table.insert(set, item);                                              
     end
 end
 
 function getIntersecting(set1, set2)
   local aIntersecting = {};
   for i = 1, #set1 do
-    if containsExact(set2, set1[i]) then
+    if contains(set2, set1[i]) then
       table.insert(aIntersecting, set1[i]);
     end
   end
@@ -28,7 +28,7 @@ end
 
 function intersects(compareSet, actualSet)
 	for i = 1, #actualSet do
-		if containsExact(compareSet, actualSet[i]) then
+		if contains(compareSet, actualSet[i]) then
 			return true;
 		end
 	end

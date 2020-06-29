@@ -12,7 +12,7 @@ end
 
 function onDamageRollOverride(rSource, rRoll)
     if PlayerOptionManager.isPenetrationDiceEnabled() then
-        PlayerOptionDiceManager.handlePenetration(rRoll, false);
+        DiceManagerPO.handlePenetration(rRoll, false);
     end
     
     fOnDamageRoll(rSource, rRoll);

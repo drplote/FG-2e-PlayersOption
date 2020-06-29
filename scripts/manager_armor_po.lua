@@ -1,6 +1,10 @@
 function onInit()
 end
 
+function getHitModifiersForSourceVsCharacter(rSource, rChar)
+    return getHitModifierForDamageTypesVsCharacter(rChar, rSource.aDamageTypes);
+end
+
 function getHitModifierForDamageTypesVsCharacter(rChar, aDamageTypes)
 	local aArmorWorn = getCharArmor(rChar);
 	return getHitModifierForDamageTypesVsArmorList(aArmorWorn, aDamageTypes);

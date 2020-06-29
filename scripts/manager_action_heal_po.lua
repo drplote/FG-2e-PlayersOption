@@ -9,6 +9,6 @@ end
 function onHealPostRollOverride(rSource, rRoll)
     fOnHealPostRoll(rSource, rRoll);
     if PlayerOptionManager.isPenetrationDiceEnabled() then 
-        PlayerOptionDiceManager.handlePenetration(rRoll, false);
+        DiceManagerPO.handlePenetration(rRoll, false);
     end
 end

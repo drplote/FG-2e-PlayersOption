@@ -3,18 +3,19 @@ end
 
 function getSizeCategory(nodeWeapon)
 	--TODO: eventually try to read this from properties
-	local sSize = getDefaultWeaponSize(nodeWeapon);
+	local sSize = getDefaultWeaponSizeCategory(nodeWeapon);
 	return DataManagerPO.parseSizeString(sSize);
 end
 
 function getDefaultWeaponSizeCategory(nodeWeapon)
 	local sName = DB.getValue(nodeWeapon, "name", ""):lower();
-	local sSize = "";
-	for sWeaponName, sSize in DataCommonPO.aDefaultWeaponSizes do
+	for sWeaponName, sSize in pairs(DataCommonPO.aDefaultWeaponSizes) do
 		if sName:find(sWeaponName) then
 			return sSize;
 		end
 	end
+    Debug.console("couldn't find size for ", sName);
+    return "";
 end
 
 function getDamageTypes(nodeWeapon)
