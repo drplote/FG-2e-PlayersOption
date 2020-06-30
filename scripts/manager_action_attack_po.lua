@@ -278,17 +278,11 @@ function modAttackOverride(rSource, rTarget, rRoll)
 end
 
 function addHitLocationToAction(rAction, sHitLocation)
-    table.insert(rAction.aMessages, string.format("[LOC: %s]", sHitLocation));
+    table.insert(rAction.aMessages, string.format("[Location: %s]", sHitLocation));
 end
 
 function addCritInfoToAction(rAction, rCrit)
     table.insert(rAction.aMessages, string.format("[CRITICAL HIT: %s]", rCrit.message));
-    local sDmgMult = "2x";
-    if rCrit.dmgMultiplier == 3 then
-      sDmgMult = "3x";
-    end
-
-    table.insert(rAction.aMessages, string.format("[CRIT DMG: %s]", sDmgMult));
 end
 
 

@@ -60,9 +60,19 @@ end
 
 function buildCritMessage(rCrit)
 	-- TODO: remove save message once it's automated
-	local sCritMsg = string.format("Severity %s critical hit to the %s. %s", 
-		rCrit.nSeverity, rCrit.sHitLocation, rCrit.desc);
-	sCritMsg = sCritMsg .. " Save vs death to avoid effects.";
+	local sCritMsg = string.format("In the %s, %s vs %s (severity %s). %s", 
+		rCrit.sHitLocation,
+		rCrit.sDamageType,
+		rCrit.sDefenderType,
+		rCrit.nSeverity, 
+		rCrit.desc);
+
+    local sDmgMult = "2x";
+    if rCrit.dmgMultiplier == 3 then
+      sDmgMult = "3x";
+    end
+
+	sCritMsg = string.format("%s Save vs death to avoid effects. %s damage dice regardless of save result.", sCritMsg, sDmgMult);
 	return sCritMsg;
 end
 
@@ -88,14 +98,16 @@ end
 
 function getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity)
 	local sDamageType = selectRandomCritDamageType(rWeaponInfo.aDamageTypes);
-	local sDefenderType = ActorManagerPO.getType(nodeDefender);
+	local sDefenderType = ActorManagerPO.getTypeForHitLocation(nodeDefender);
 	if not sDamageType or not sDefenderType or not rHitLocation or not rHitLocation.locationCategory or not nSeverity then
 		Debug.console("couldn't generate crit", "sDefenderType", sDefenderType, "sDamageType", sDamageType, "rHitLocation", rHitLocation, "nSeverity", nSeverity);
 	end
 	
 	local rCrit = DataCommonPO.aCritCharts[sDefenderType][sDamageType][rHitLocation.locationCategory][nSeverity];
+	rCrit.sDefenderType = sDefenderType;
 	rCrit.sHitLocation = rHitLocation.desc;
 	rCrit.nSeverity = nSeverity;
+	rCrit.sDamageType = sDamageType;
 	if nSeverity >= 13 then
 		rCrit.dmgMultiplier = 3;
 	else

@@ -2,7 +2,7 @@ function onInit()
 end
 
 function getHitLocation(nodeAttacker, nodeDefender)
-	local sDefenderType = ActorManagerPO.getType(nodeDefender);
+	local sDefenderType = ActorManagerPO.getTypeForHitLocation(nodeDefender);
 	local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender);
 	local nHitLocationRoll = getHitLocationDieRoll(nSizeDifference);
 	return lookupHitLocation(sDefenderType, nHitLocationRoll);

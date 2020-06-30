@@ -1,7 +1,7 @@
 function onInit()
 end
 
-function getType(nodeActor)
+function getTypeForHitLocation(nodeActor)
 	if ActorManager.isPC(nodeActor) then
 		return "humanoid";
 	else
@@ -10,10 +10,22 @@ function getType(nodeActor)
 			return "humanoid";
 		elseif sType:find("animal") then
 			return "animal";
-		else	
+		elseif sType:find("monster") then
 			return "monster";
+		else
+			return getDefaultActorTypeForCrit(nodeActor);
 		end
 	end
+end
+
+function getDefaultActorTypeForCrit(nodeActor)
+	local sName = DB.getValue(nodeActor, "name", ""):lower();
+	for sCreatureName, sCreatureType in pairs(DataCommonPO.aDefaultCreatureTypes) do
+		if sName:find(sCreatureName) then
+			return sCreatureType;
+		end
+	end
+	return "monster"; -- Default to monster if we can't find anything else.
 end
 
 function getSizeCategory(nodeActor)

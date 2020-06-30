@@ -3,6 +3,7 @@ aHitLocations = {};
 aDefaultRaceSizes = {};
 aCritCharts = {};
 aDefaultWeaponSizes = {};
+aDefaultCreatureTypes = {};
 
 function onInit()
     initializeDefaultArmorVsDamageTypeModifiers();
@@ -10,6 +11,7 @@ function onInit()
 	initializeDefaultRaceSizes();
 	initializelocationCategorys();
 	initializeDefaultWeaponSizes();
+	initializeDefaultCreatureTypes();
 end
 
 function initializeDefaultArmorVsDamageTypeModifiers()
@@ -866,5 +868,10 @@ function initializeDefaultWeaponSizes()
 		["warhammer"] = "M",
 		["whip"] = "M"
 	};
-	
+end
+
+function initializeDefaultCreatureTypes()
+	aDefaultCreatureTypes = {
+		["skeleton"] = "humanoid"
+	}
 end
