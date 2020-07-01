@@ -53,7 +53,13 @@ This option automates the optional 2E rule that gives attack bonuses and penalti
 
 If an attacker's weapon does more than one damage type (such as a morningstar), it will assume the damage type most favorable to the attacker is hitting. If the defender is for some reason wearing more than one suit of armor, it will assume that the most favorable set of armor is being worn.
 
-The damage type of the weapon is determined by looking at the text in the "damage" entries for the weapon. In particular, it is looking for the words "slashing", "piercing", or "bludgeoning", though with a small edit to the data file you could house-rule modifiers for damage types such as acid, lightning, etc.
+#### Weapon Type Determination
+
+I try to determine the damage type of the weapon by looking at all of the possible damage types on the action that was used to roll the attack. If, for example, you attack with a morningstar from the PHB, this will look at the damage entries and see that it has bludgeoning and piercing damage. It is looking for the keywords "slashing", "bludgeoning", and "piercing". With edits to data_common_po.lua, however, you could easily add modifiers against more damage types if you wished, such as fire or acid.
+
+A planned future improvement is to allow this to be specified in the "properties" section of a weapon item, and it will look there first before digging into the damage entries.
+
+#### Armor Type Determination
 
 The armor type is determined by doing a partial match on the armor's name. So if the armor your character has equipped is "Chain Mail", it will have no trouble matching this to the chain mail armor type. Likewise, it will have no problem with "+3 chain mail", "Chain mail +3", or even "Steve's Super Awesome Set of Chain Mail armor". As long as the words chain mail are there, it will be happy. If you typo it as "chian mail", you're out of luck. Likewise, if your armor is for some reason named "chain mail plate mail" or something else that would give two hits, the results are going to be kind of unpredictable. So don't do that.
 
@@ -61,12 +67,14 @@ Example #1: Joe the 1st level Fighter swings his Longsword at an orc. The GM pul
 
 Example #2: This time, the GM decides that the orc probably has an AC of 6 because it's wearing chain mail. He copies the NPC record "orc" from the Monster Manual, drags some chain mail to its inventory, and equips it. This doesn't actually have an effect on the orc's AC, because the 2E ruleset currently doesn't support that. However, now when Joe the 1st level Fighter attacks the orc with his longsword, he gets a -2 to his attack roll because chain mail is more effective against slashing weapons.
 
+A planned future improvement is to allow you to specify these modifiers in the "properties" section of the armor item.
+
 ### Stricter Resistance Rules
 In the current implementation of the 2E ruleset, if a creature (such as a skeleton) resists slashing and piercing damage, they'll take half damage from any slashing or piercing attack... even if other damage types are involved. So, for instance, if a cleric bashes the skeleton with a morningstar, which is a bludgeoning/piercing weapon, the skeleton will only take half damage. I believe the intent in AD&D was that the most favorable damage type to the attacker was used when multiple damage types are involved. Enabling this option would require the target to resist all damage types of the attack to take half damage, not just one of them. A side effect of this that you may or may not like is that if you made a magical flaming longsword that does "slashing, fire" damage, the skeleton wouldn't resist any because while it resists slashing, it doesn't resist fire. You might disagree with me that it should work this way, and that's cool! That's why all these options are toggleable!
 
 ### Generate Hit Locations
 
-Toggling this option on simply adds some text in the chat window during a hit to indicate where the attacker hit. It has no real effect other than adding some additional flavor to combat. It determines the hit location using the same rules as critical hit location from the Player's Option: Combat & Tactics book.
+Toggling this option on simply adds some text in the chat window during a hit to indicate where the attacker hit. It has no real effect other than adding some additional flavor to combat. It determines the hit location using the same rules as critical hit location from the Player's Option: Combat & Tactics book. Note that this option being off doesn't effect critical hits; those are required for the Player's Option critical hits to work and generate a hit location even if this option is diabled.
 
 ## Sterno's House Rules
 
@@ -85,6 +93,8 @@ Example #3: The GM creates a custom dire rat that is size "Tiny", but has 2 HD. 
 Example #4: The GM adds a standard "Giant Rat" from the Monster Manual to the combat tracker. It is size Tiny, but it is also 0 HD, which means it gets no kicker and is generated with it's standard 1d4 hp.
 
 Note: This is only implemented for NPCs. If you want the PCs to get a kicker, you'll have to edit their hit point total manually.
+
+A planned future improvement is additional options to make the kicker sized-based.
 
 ### Penetration Dice
 
