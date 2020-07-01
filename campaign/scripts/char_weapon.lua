@@ -71,13 +71,14 @@ function onAttackAction(draginfo)
     end
 
     -- NOTE: this is the only modified line in this method. the rest is the 2e implementation
-    addDamageTypesToAction(nodeWeapon, rActor); 
+    addWeaponInfoToAction(nodeWeapon, rActor); 
 
     ActionAttack.performRoll(draginfo, rActor, rAction);
 
     return true;
 end
 
-function addDamageTypesToAction(nodeWeapon, rActor)
+function addWeaponInfoToAction(nodeWeapon, rActor)
+    rActor.weaponPath = nodeWeapon.getPath();
     rActor.aDamageTypes = WeaponManagerPO.getDamageTypes(nodeWeapon);
 end

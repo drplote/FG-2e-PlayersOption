@@ -8,9 +8,31 @@ function onInit()
 	
 	fCheckReductionType = ActionDamage.checkReductionType;
 	ActionDamage.checkReductionType = checkReductionTypeOverride;
+
+	fModDamage = ActionDamage.modDamage;
+	ActionDamage.modDamage = modDamageOverride;
+	ActionsManager.registerModHandler("damage", modDamageOverride);
+
+end
+
+function modDamageOverride(rSource, rTarget, rRoll)
+	if PlayerOptionManager.isPOCritEnabled() then
+		local bIsCrit, nCritMultiplier = CritManagerPO.hasCritState(rSource, rTarget);
+		if bIsCrit and nCritMultiplier > 0 then
+			rRoll.nCritMultiplier = nCritMultiplier;
+		end
+	end
+	fModDamage(rSource, rTarget, rRoll);
 end
 
 function onDamageRollOverride(rSource, rRoll)
+	if PlayerOptionManager.isPOCritEnabled() then
+		if rRoll.nCritMultiplier then
+			rRoll.sDesc = string.format("%s [CRITICAL HIT (x%s)]", rRoll.sDesc, rRoll.nCritMultiplier);
+			DiceManagerPO.multiplyDice(rRoll, rRoll.nCritMultiplier);
+		end
+	end
+
     if PlayerOptionManager.isPenetrationDiceEnabled() then
         DiceManagerPO.handlePenetration(rRoll, false);
     end
@@ -67,3 +89,4 @@ function hasBaseDamageTypes(aDmgTypes)
 	
 	return bBludgeoning, bPiercing, bSlashing;
 end
+

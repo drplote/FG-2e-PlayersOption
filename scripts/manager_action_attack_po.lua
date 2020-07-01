@@ -9,6 +9,12 @@ function onInit()
 	fOnAttack = ActionAttack.onAttack;
 	ActionAttack.onAttack = onAttackOverride;
 	ActionsManager.registerResultHandler("attack", onAttackOverride);
+
+  fIsCrit = ActionAttack.isCrit;
+  ActionAttack.isCrit = isCritOverride;
+
+  fClearCritState = ActionAttack.clearCritState;
+  ActionAttack.clearCritState = clearCritStateOverride
 end
 
 function onAttackOverride(rSource, rTarget, rRoll)
@@ -212,7 +218,7 @@ function onAttackOverride(rSource, rTarget, rRoll)
   end
   
   -- TRACK CRITICAL STATE
-  if rAction.sResult == "crit" then
+  if rAction.sResult == "crit" and not PlayerOptionManager.isPOCritEnabled() then
     ActionAttack.setCritState(rSource, rTarget);
   end
   
@@ -316,3 +322,18 @@ function addWeaponTypeVsArmorModToRoll(rRoll, sDamageType, sArmor, nMod)
     rRoll.nMod = nMod;
 end
 
+function clearCritStateOverride(rSource)
+  if PlayerOptionManager.isPOCritEnabled() then
+    CritManagerPO.clearCritState(rSource)
+  else
+    fClearCritState(rSource);
+  end
+end
+
+function isCritOverride(rSource, rTarget)
+  if PlayerOptionManager.isPOCritEnabled() then
+    CritManagerPO.hasCritState(rSource, rTarget);
+  else
+    fIsCrit(rSource, rTarget);
+  end
+end

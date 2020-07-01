@@ -1,3 +1,5 @@
+aCritState = {};
+
 function onInit()
 end
 
@@ -29,16 +31,23 @@ function isCriticalHit2e(rRoll, rAction)
 	return rAction.nFirstDie >= nCritThreshold
 end
 
+
 function getWeaponInfo(rSource)
 	local rWeaponInfo = {};
-	if rSource.itemPath then
-		rWeaponInfo.nodeWeapon = DB.findNode(rSource.itemPath);
-		if rWeaponInfo.nodeWeapon then
-			rWeaponInfo.size = WeaponManagerPO.getSizeCategory(rWeaponInfo.nodeWeapon);
-		else
-			local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
-			rWeaponInfo.size = ActorManagerPO.getSizeCategory(nodeAttacker) - 2;
-		end
+	local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
+	if rSource.weaponPath then
+		-- First try to determine size from the weapon action, if it exists
+		local nodeWeapon = DB.findNode(rSource.weaponPath);
+		rWeaponInfo.size = WeaponManagerPO.getSizeCategory(nodeWeapon, nodeAttacker);
+	end
+	if not rWeaponInfo.size and rSource.itemPath then
+		-- If we don't have a size yet, try to get it from the item, if it exists
+		local nodeWeapon = DB.findNode(rSource.itemPath);
+		rWeaponInfo.size = WeaponManagerPO.getSizeCategory(nodeWeapon, nodeAttacker);
+	end
+	if not rWeaponInfo.size then
+		-- If we don't have a size yet, just make it the same as attacker size it on attacker size)
+		rWeaponInfo.size = ActorManagerPO.getSizeCategory(nodeAttacker);
 	end
 
 	rWeaponInfo.aDamageTypes = rSource.aDamageTypes;
@@ -54,11 +63,12 @@ function handleCrit(rSource, rTarget)
 		local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender, rWeaponInfo);
 		local nSeverity = getSeverityDieRoll(nSizeDifference);
 		local rCrit = getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity);
+		setCritState(rSource, rTarget, rCrit.dmgMultiplier);
 		return rCrit;
 	end
 end
 
-function buildCritMessage(rCrit)
+function addCritMessage(rCrit)
 	-- TODO: remove save message once it's automated
 	local sCritMsg = string.format("In the %s, %s vs %s (severity %s). %s", 
 		rCrit.sHitLocation,
@@ -72,15 +82,7 @@ function buildCritMessage(rCrit)
       sDmgMult = "3x";
     end
 
-	sCritMsg = string.format("%s Save vs death to avoid effects. %s damage dice regardless of save result.", sCritMsg, sDmgMult);
-	return sCritMsg;
-end
-
-
-function isDefenderAffectedByCrit(nodeDefender)
-	-- TODO: make a saving throw
-	-- certain creatures immune to certain effects
-	return true;
+	rCrit.message = string.format("%s Save vs death to avoid effects. %s damage dice regardless of save result.", sCritMsg, sDmgMult);
 end
 
 function selectRandomCritDamageType(aDamageTypes)
@@ -114,7 +116,7 @@ function getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity)
 		rCrit.dmgMultiplier = 2;
 	end
 
-	rCrit.message = buildCritMessage(rCrit);
+	addCritMessage(rCrit);
 	return rCrit;
 end
 
@@ -139,4 +141,51 @@ function getSeverityDieRoll(nSizeDifference)
 		nRollResult = 13;
 	end
 	return nRollResult;
+end
+
+function setCritState(rSource, rTarget, nDmgMult)
+  local sSourceCT = ActorManager.getCreatureNodeName(rSource);
+  if sSourceCT == "" then
+    return;
+  end
+  local sTargetCT = "";
+  if rTarget then
+    sTargetCT = ActorManager.getCTNodeName(rTarget);
+  end
+  
+  if not aCritState[sSourceCT] then
+    aCritState[sSourceCT] = {};
+  end
+  table.insert(aCritState[sSourceCT], {["sTargetCT"]=sTargetCT, ["nDmgMult"]=nDmgMult});
+end
+
+function clearCritState(rSource)
+  local sSourceCT = ActorManager.getCreatureNodeName(rSource);
+  if sSourceCT ~= "" then
+    aCritState[sSourceCT] = nil;
+  end
+end
+
+function hasCritState(rSource, rTarget)
+  local sSourceCT = ActorManager.getCreatureNodeName(rSource);
+  if sSourceCT == "" then
+    return;
+  end
+  local sTargetCT = "";
+  if rTarget then
+    sTargetCT = ActorManager.getCTNodeName(rTarget);
+  end
+
+  if not aCritState[sSourceCT] then
+    return false, 1;
+  end
+  
+  for k,v in ipairs(aCritState[sSourceCT]) do
+    if v.sTargetCT == sTargetCT then
+      table.remove(aCritState[sSourceCT], k);
+      return true, v.nDmgMult;
+    end
+  end
+  
+  return false, 1;
 end

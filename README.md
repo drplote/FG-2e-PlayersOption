@@ -1,15 +1,50 @@
 # Player's Option rules for AD&D 2E
-Hackmaster 4e ruleset for Fantasy Grounds
 
 Extends the Fantasy Grounds 2e ruleset to support some of the rules from the "Player's Option" 2E books. Also includes some toggleable house rules that are similar to rules seen in Hackmaster 4th edition.
 
-All rules are toggleable via Preferences, so you can pick and choose which of these you want.
+All rules are toggleable via Preferences, so you can pick and choose which of these you want. They are split up in preferences under different headers. Note that in some cases (such as with critical hits), enabling these options might ignore other options you have selected from base 2E ruleset preferences.
+
+## A note on customization
+
+If you know your way around unpacking and repacking extensions, take a look at scripts/"data_common_po.lua". I tried to pull all hardcoded data (such as default race sizes, weapon types, crit tables, etc) there. 
 
 ## Player's Option Rules
 
-The rules in this category either add automation for basic 2E rules, or adds rules for the 2E set of "Player's Option" books.
+The rules in this add rules for the 2E set of "Player's Option" books.
 
-These are in progress.
+This area is still in heavy development and more options are planned, including a the C&T initiative system, spell crits, and fatigue.
+
+### Combat & Tactics Critical Hits
+
+Enabling this option will use the crit tables from Player's Option: Combat & Tactics. This will override whatever crit settings you specified in the core ruleset's preferences for critical hits. The toggle options include:
+
+* Off - This option won't be used, and whatever you had set up in the base ruleset for crits will be used as normal.
+* 18+, hit by 5 - This is how C&T crits are determined by rules as written. If a natural 18 or better is rolled, and the target is hit by at least 5, a crit occurs.
+* Nat 20, hit by 5 - Same as above, except now you need a nat 20 instead of an 18 or better.
+* Any nat 20 - Crits occur on a natural 20, regardless of if that would have hit, or by how much.
+
+Right now, when a crit is detected, a crit result is generated per the C&T tables and reported as text. Eventually I plan to add more automation to the crit effects, but right now other than displaying the crit effect message as part of the attack roll output, the only part that's automated is that when you roll damage, it will be either x2 or x3 damage dice, as per the C&T rules. Note that the following pieces of information are needed to generate a crit result, and in some cases I had to make assumptions:
+
+#### Creature Type:
+This is needed to determine which crit table to roll on for the target. Currently, this pulls from the monster's "type" entry looking for the words "humanoid", "animal", or "monster". Note that nothing in the Monster Manual actually has the type of "monster"... I end up using this as the default if "humanoid" or "animal" isn't found. It isn't perfect though... say you critically hit a skeleton. It's not type "humanoid" in the Monster Manual, as it's undead... however, it definitely seems like it should roll on the "humanoid" table and not the "monster" table (where things like having a tail are assumed). I've create a table, "aDefaultCreatureTypes", in "data_common_po.lua", which you could edit to add monster names and the creature type you'd like them to be treated as for crits. I do plan to go through and add many monsters from the MM that might need correction (skeleton is already done!), but right now you might get some creatures treated as "monster" when you think they'd better fit into another category. Sorry!
+
+#### Creature Size:
+Target creature size is needed to determine critical hit severity. This is parsed from the "size" entry in the pc or npc's record. If no valid value is found (because it's empty, or gibberish), it will default to medium for NPCs, or default to a size based on the selected race of a PC (or, if that still fails becasue it's a race that isn't recognized from the PHB, medium for a PC).
+
+#### Weapon Type:
+The damage type of the weapon is needed to determine which crit table to roll on. I try to determine the damage type of the weapon by looking at all of the possible damage types on the action that was used to roll the attack. If, for example, you attack with a morningstar from the PHB, this will look at the damage entries and see that it has bludgeoning and piercing damage. If multiple damage types (of the bludgeoning, piercing, and slashing types) are found, it will randomly select one to roll the critical hit against. If none of those damage types are found (because they weren't set, or maybe the weapon only does fire damage) no critical hit will be rolled. 
+
+A planned future improvement is to allow this to be specified in the "properties" section of a weapon item, and it will look there first before digging into the damage entries.
+
+#### Weapon Size:
+Weapon size is needed to determine critical hit severity. Since this isn't currently recorded in the base 2E ruleset, it will first try to look at the "properties" field on the attack action for text in the format "Size: s", where "s" could be "Tiny, Small, Medium, Large, Huge, Gargantuan" (or just the first letter of those). If it sees nothing recognizable there, it will look for an item in the creature's inventory that the attack action may have come from, and if it finds one, looks at the properties of that weapon in the same manner.
+
+Failing all that (which will fail, if you haven't specifically entered values yourself for those actions or items), I need to make a best guess. Here's how I do it:
+
+I've created a table, "aDefaultWeaponSizes", in data_common_po.lua for this that matches weapon name to size. It covers all the PHB weapons and does a loose text match, such that an entry of "long sword" would match "long sword +1", "+2 long sword", "bob's fancy silver long sword", etc. If you created some brand weapon item, though, I have no idea what size it is, so as a guess I just treat it as the same size as the attacking character. I figure chances are good a halfling with an unknown weapon has a small weapon, a human with an unknown weapon has a medium weapon, an ogre with an unknown weapon has a large weapon, etc. This also goes for the attacks of a lot of stock NPCs from the Monster Manual. For example, an orc has an attack called "Attack". Since that doesn't match any PHB weapon, I just assume the weapon size is the same as the orc... Medium.
+
+One exception is if an attack is named "claw", "bite", "kick", "punch", "slam", or "tail". In that case, I assume it's a natural attack of the creature and treat it as two size categories smaller than the creature. So a medium creature's claw attack would be a tiny weapon. A large creature's claw attack would be small (claw the size of daggers!). The Combat & Tactics rules didn't give any guidance on what size natural attacks should be, but this felt about right to me. If you have other ideas on how to size these or other keywords that should be included for natural attacks, please let me know!
+
 
 ## Automation Improvements
 
@@ -26,7 +61,7 @@ Example #1: Joe the 1st level Fighter swings his Longsword at an orc. The GM pul
 
 Example #2: This time, the GM decides that the orc probably has an AC of 6 because it's wearing chain mail. He copies the NPC record "orc" from the Monster Manual, drags some chain mail to its inventory, and equips it. This doesn't actually have an effect on the orc's AC, because the 2E ruleset currently doesn't support that. However, now when Joe the 1st level Fighter attacks the orc with his longsword, he gets a -2 to his attack roll because chain mail is more effective against slashing weapons.
 
-### Stricter Resistances
+### Stricter Resistance Rules
 In the current implementation of the 2E ruleset, if a creature (such as a skeleton) resists slashing and piercing damage, they'll take half damage from any slashing or piercing attack... even if other damage types are involved. So, for instance, if a cleric bashes the skeleton with a morningstar, which is a bludgeoning/piercing weapon, the skeleton will only take half damage. I believe the intent in AD&D was that the most favorable damage type to the attacker was used when multiple damage types are involved. Enabling this option would require the target to resist all damage types of the attack to take half damage, not just one of them. A side effect of this that you may or may not like is that if you made a magical flaming longsword that does "slashing, fire" damage, the skeleton wouldn't resist any because while it resists slashing, it doesn't resist fire. You might disagree with me that it should work this way, and that's cool! That's why all these options are toggleable!
 
 ### Generate Hit Locations

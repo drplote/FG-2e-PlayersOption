@@ -4,6 +4,7 @@ aDefaultRaceSizes = {};
 aCritCharts = {};
 aDefaultWeaponSizes = {};
 aDefaultCreatureTypes = {};
+aNaturalWeaponNames = {};
 
 function onInit()
     initializeDefaultArmorVsDamageTypeModifiers();
@@ -12,6 +13,7 @@ function onInit()
 	initializelocationCategorys();
 	initializeDefaultWeaponSizes();
 	initializeDefaultCreatureTypes();
+	initializeNaturalWeaponNames();
 end
 
 function initializeDefaultArmorVsDamageTypeModifiers()
@@ -874,4 +876,8 @@ function initializeDefaultCreatureTypes()
 	aDefaultCreatureTypes = {
 		["skeleton"] = "humanoid"
 	}
+end
+
+function initializeNaturalWeaponNames()
+	aNaturalWeaponNames = {"claw", "bite", "kick", "punch", "slam", "tail"};
 end

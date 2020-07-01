@@ -7,6 +7,19 @@ function onInit()
 	Comm.registerSlashHandler("penplus", onPenetratingDicePlusSlashCommand)
 end
 
+function multiplyDice(rRoll, nMultiplier)
+	local aExtraDice = {};
+	for i = 1, nMultiplier - 1 do
+		local aNewDice = createExtraDice(rRoll);
+		for j = 1, #aNewDice do
+			table.insert(aExtraDice, aNewDice[j]);
+		end
+	end
+	for i = 1, #aExtraDice do
+		table.insert(rRoll.aDice, aExtraDice[i]);
+	end
+end
+
 function handlePenetration(rRoll, penPlus)
   checkForPenetration(rRoll, penPlus);  
   createPenetrationDice(rRoll);
@@ -20,6 +33,19 @@ function rollPenetrateInBothDirection(nNumSides)
 		nValue = nValue - (rollPenetrateInBothDirection(nNumSides) - 1);
 	end
 	return nValue;
+end
+
+function createExtraDice(rRoll)
+	local aNewDice = {};
+	for _, vDie in ipairs(rRoll.aDice) do
+		local sSign, sColor, sDieSides = vDie.type:match("^([%-%+]?)([dDrRgGbBpP])([%dF]+)");
+		local newDie = {};
+		newDie.type = sColor .. sDieSides;
+		local nSides = tonumber(sDieSides) or 0;
+		newDie.result = math.random(1, nSides);
+		table.insert(aNewDice, newDie);
+	end
+	return aNewDice;
 end
 
 function createPenetrationDice(rRoll)

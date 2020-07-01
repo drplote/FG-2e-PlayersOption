@@ -13,6 +13,8 @@ function registerOptions()
 	OptionsManager.registerOption2("AdditionalAutomation_StricterResistance", false, "option_header_automation", "option_label_stricter_resistance", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 	
 	OptionsManager.registerOption2("AdditionalAutomation_GenerateHitLocations", false, "option_header_automation", "option_label_generate_hit_locations", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+
+	--OptionsManager.registerOption2("AdditionalAutomation_DefaultPCInitTo99", false, "option_header_automation", "option_label_default_pc_init_to_99", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" })
     
     
     -- House rules
@@ -24,6 +26,10 @@ function registerOptions()
     
     --OptionsManager.registerOption2("SternoHouseRule_ShieldDamage", false, "option_header_sterno_house_rule", "option_label_shield_damage", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
+end
+
+function shouldDefaultPcInitTo99()
+	return OptionsManager.isOption("AdditionalAutomation_DefaultPCInitTo99", "on");
 end
 
 function getRequiredCritRoll()

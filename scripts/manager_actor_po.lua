@@ -30,26 +30,27 @@ end
 
 function getSizeCategory(nodeActor)
 	-- Size Categories: 1 = T, 2 = S, 3 = M, 4 = L, 5 = H, 6 = G
+	local nSizeCategory;
 	if ActorManager.isPC(nodeActor) then
-		local sSizeRaw = DB.getValue(nodeActor, "size");
-		if sSizeRaw then
-			return DataManagerPO.parseSizeString(sSizeRaw);
-		else
-			return getDefaultSizeFromRace(nodeActor);
+		local sSizeRaw = DB.getValue(nodeActor, "size", "");
+		nSizeCategory = DataManagerPO.parseSizeString(sSizeRaw);
+		if not nSizeCategory then
+			nSizeCategory = getDefaultSizeFromRace(nodeActor);
 		end
 	else
 		local sSizeRaw = DB.getValue(nodeActor, "size", "");
-		return DataManagerPO.parseSizeString(sSizeRaw);
+		nSizeCategory = DataManagerPO.parseSizeString(sSizeRaw);
 	end
+	
+	if not nSizeCategory then
+		nSizeCategory = 3; -- If we couldn't figure it out, default to medium
+	end
+	return nSizeCategory;
 end
 
 function getDefaultSizeFromRace(nodeActor)
 	local sRace = DB.getValue(nodeActor, "race", "");
 	local nSize = DataCommonPO.aDefaultRaceSizes[sRace];
-	if nSize then	
-		return nSize;
-	else
-		return 3; -- Default to medium if we didn't find it.
-	end
+	return nSize;
 end
 
