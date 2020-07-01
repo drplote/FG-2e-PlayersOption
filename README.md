@@ -26,7 +26,7 @@ Enabling this option will use the crit tables from Player's Option: Combat & Tac
 Right now, when a crit is detected, a crit result is generated per the C&T tables and reported as text. Eventually I plan to add more automation to the crit effects, but right now other than displaying the crit effect message as part of the attack roll output, the only part that's automated is that when you roll damage, it will be either x2 or x3 damage dice, as per the C&T rules. Note that the following pieces of information are needed to generate a crit result, and in some cases I had to make assumptions:
 
 #### Creature Type:
-This is needed to determine which crit table to roll on for the target. Currently, this pulls from the monster's "type" entry looking for the words "humanoid", "animal", or "monster". Note that nothing in the Monster Manual actually has the type of "monster"... I end up using this as the default if "humanoid" or "animal" isn't found. It isn't perfect though... say you critically hit a skeleton. It's not type "humanoid" in the Monster Manual, as it's undead... however, it definitely seems like it should roll on the "humanoid" table and not the "monster" table (where things like having a tail are assumed). I've create a table, "aDefaultCreatureTypes", in "data_common_po.lua", which you could edit to add monster names and the creature type you'd like them to be treated as for crits. I do plan to go through and add many monsters from the MM that might need correction (skeleton is already done!), but right now you might get some creatures treated as "monster" when you think they'd better fit into another category. Sorry!
+This is needed to determine which crit table to roll on for the target. Currently, this pulls from the monster's "type" entry looking for the words "humanoid", "animal", or "monster". Note that nothing in the Monster Manual actually has the type of "monster"... I end up using this as the default if "humanoid" or "animal" isn't found. It isn't perfect though... say you critically hit a skeleton. It's not type "humanoid" in the Monster Manual, as it's undead... however, it definitely seems like it should roll on the "humanoid" table and not the "monster" table (where things like having a tail are assumed). I've create a table, "aDefaultCreatureTypes", in "data_common_po.lua", which you could edit to add monster names and the creature type you'd like them to be treated as for crits. I do plan to go through and add many monsters from the MM that might need correction (skeleton is already done!), but right now you might get some creatures treated as "monster" when you think they'd better fit into another category. Sorry! If you'd like to volunteer some time and provide some mappings for me, I'll be sure to add them to the extension!
 
 #### Creature Size:
 Target creature size is needed to determine critical hit severity. This is parsed from the "size" entry in the pc or npc's record. If no valid value is found (because it's empty, or gibberish), it will default to medium for NPCs, or default to a size based on the selected race of a PC (or, if that still fails becasue it's a race that isn't recognized from the PHB, medium for a PC).
@@ -34,7 +34,7 @@ Target creature size is needed to determine critical hit severity. This is parse
 #### Weapon Type:
 The damage type of the weapon is needed to determine which crit table to roll on. I try to determine the damage type of the weapon by looking at all of the possible damage types on the action that was used to roll the attack. If, for example, you attack with a morningstar from the PHB, this will look at the damage entries and see that it has bludgeoning and piercing damage. If multiple damage types (of the bludgeoning, piercing, and slashing types) are found, it will randomly select one to roll the critical hit against. If none of those damage types are found (because they weren't set, or maybe the weapon only does fire damage) no critical hit will be rolled. 
 
-A planned future improvement is to allow this to be specified in the "properties" section of a weapon item, and it will look there first before digging into the damage entries.
+**A planned near-future improvement is to allow this to be specified in the "properties" section of a weapon item, and it will look there first before digging into the damage entries.**
 
 #### Weapon Size:
 Weapon size is needed to determine critical hit severity. Since this isn't currently recorded in the base 2E ruleset, it will first try to look at the "properties" field on the attack action for text in the format "Size: s", where "s" could be "Tiny, Small, Medium, Large, Huge, Gargantuan" (or just the first letter of those). If it sees nothing recognizable there, it will look for an item in the creature's inventory that the attack action may have come from, and if it finds one, looks at the properties of that weapon in the same manner.
@@ -57,7 +57,7 @@ If an attacker's weapon does more than one damage type (such as a morningstar), 
 
 I try to determine the damage type of the weapon by looking at all of the possible damage types on the action that was used to roll the attack. If, for example, you attack with a morningstar from the PHB, this will look at the damage entries and see that it has bludgeoning and piercing damage. It is looking for the keywords "slashing", "bludgeoning", and "piercing". With edits to data_common_po.lua, however, you could easily add modifiers against more damage types if you wished, such as fire or acid.
 
-A planned future improvement is to allow this to be specified in the "properties" section of a weapon item, and it will look there first before digging into the damage entries.
+**A planned near-future improvement is to allow this to be specified in the "properties" section of a weapon item, and it will look there first before digging into the damage entries.**
 
 #### Armor Type Determination
 
@@ -67,7 +67,7 @@ Example #1: Joe the 1st level Fighter swings his Longsword at an orc. The GM pul
 
 Example #2: This time, the GM decides that the orc probably has an AC of 6 because it's wearing chain mail. He copies the NPC record "orc" from the Monster Manual, drags some chain mail to its inventory, and equips it. This doesn't actually have an effect on the orc's AC, because the 2E ruleset currently doesn't support that. However, now when Joe the 1st level Fighter attacks the orc with his longsword, he gets a -2 to his attack roll because chain mail is more effective against slashing weapons.
 
-A planned future improvement is to allow you to specify these modifiers in the "properties" section of the armor item.
+**A planned near-future improvement is to allow you to specify these modifiers in the "properties" section of the armor item.**
 
 ### Stricter Resistance Rules
 In the current implementation of the 2E ruleset, if a creature (such as a skeleton) resists slashing and piercing damage, they'll take half damage from any slashing or piercing attack... even if other damage types are involved. So, for instance, if a cleric bashes the skeleton with a morningstar, which is a bludgeoning/piercing weapon, the skeleton will only take half damage. I believe the intent in AD&D was that the most favorable damage type to the attacker was used when multiple damage types are involved. Enabling this option would require the target to resist all damage types of the attack to take half damage, not just one of them. A side effect of this that you may or may not like is that if you made a magical flaming longsword that does "slashing, fire" damage, the skeleton wouldn't resist any because while it resists slashing, it doesn't resist fire. You might disagree with me that it should work this way, and that's cool! That's why all these options are toggleable!
@@ -94,7 +94,7 @@ Example #4: The GM adds a standard "Giant Rat" from the Monster Manual to the co
 
 Note: This is only implemented for NPCs. If you want the PCs to get a kicker, you'll have to edit their hit point total manually.
 
-A planned future improvement is additional options to make the kicker sized-based.
+**A planned near-future improvement is additional options to make the kicker sized-based.**
 
 ### Penetration Dice
 
