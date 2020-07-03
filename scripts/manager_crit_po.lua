@@ -12,11 +12,13 @@ function isCriticalHit(rRoll, rAction, nDefenseVal)
 end
 
 function isCriticalHitCombatAndTactics(rRoll, rAction, nDefenseVal)
+	Debug.console("rRoll, rAction, nDefenseVal", rRoll, rAction, nDefenseVal);
 	if nDefenseVal and nDefenseVal ~= 0 then
 		local nRequiredCritRoll = PlayerOptionManager.getRequiredCritRoll();
 		local bMustHitBy5 = PlayerOptionManager.mustCritHitBy5();
-
-		return rAction.nFirstDie >= PlayerOptionManager.getRequiredCritRoll() and (not bMustHitBy5 or nHitDifference >= 5);
+		local nHitDifference = CombatCalcManagerPO.getAttackVsDefenseDifference(rRoll, rAction, nDefenseVal);
+		Debug.console("first die, must hit by 5, hit difference", rAction.nFirstDie, bMustHitBy5, nHitDifference);
+		return rAction.nFirstDie >= nRequiredCritRoll and (not bMustHitBy5 or nHitDifference >= 5);
 	end
 	return false;
 end
