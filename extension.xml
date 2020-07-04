@@ -4,7 +4,7 @@
 
   <properties>
     <name>2E Player's Option and more</name>
-    <version>0.1</version>
+    <version>0.2</version>
     <loadorder>99</loadorder>
     <description>
       <text>Player's Option rules, house rules, and automation enhancements for 2E -- by Sterno</text>
@@ -38,12 +38,12 @@
     <script name="ArmorManagerPO" file="scripts/manager_armor_po.lua" />
     <script name="DataCommonPO" file="scripts/data_common_po.lua" />
     <script name="UtilityPO" file="scripts/utility_po.lua" />
-	<script name="HitLocationManagerPO" file="scripts/manager_hit_location_po.lua" />
-	<script name="CritManagerPO" file="scripts/manager_crit_po.lua" />
-	<script name="CombatCalcManagerPO" file="scripts/manager_combat_calc_po.lua" />
-	<script name="ItemManagerPO" file="scripts/manager_item_po.lua" />
-	<script name="DataManagerPO" file="scripts/manager_data_po.lua" />
-	<script name="ActorManagerPO" file="scripts/manager_actor_po.lua" />
+  	<script name="HitLocationManagerPO" file="scripts/manager_hit_location_po.lua" />
+  	<script name="CritManagerPO" file="scripts/manager_crit_po.lua" />
+  	<script name="CombatCalcManagerPO" file="scripts/manager_combat_calc_po.lua" />
+  	<script name="ItemManagerPO" file="scripts/manager_item_po.lua" />
+  	<script name="DataManagerPO" file="scripts/manager_data_po.lua" />
+  	<script name="ActorManagerPO" file="scripts/manager_actor_po.lua" />
   </base>
     
 </root>

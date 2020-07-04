@@ -1,5 +1,10 @@
 local fModAttack;
 local fOnAttack;
+local fIsCrit;
+local fClearCritState;
+local fGetRoll;
+
+
 
 function onInit()
   fModAttack = ActionAttack.modAttack;
@@ -15,9 +20,25 @@ function onInit()
 
   fClearCritState = ActionAttack.clearCritState;
   ActionAttack.clearCritState = clearCritStateOverride
+
+  fGetRoll = ActionAttack.getRoll;
+  ActionAttack.getRoll = getRollOverride;
+end
+
+function getRollOverride(rActor, rAction)
+  local rRoll = fGetRoll(rActor, rAction);
+  rRoll.weaponPath = rAction.weaponPath;
+  rRoll.aDamageTypes = rAction.aDamageTypes;
+  return rRoll;
 end
 
 function onAttackOverride(rSource, rTarget, rRoll)
+  if not rSource.weaponPath then
+    rSource.weaponPath = rRoll.weaponPath;
+  end
+  if not rSource.aDamageTypes then
+    rSource.aDamageTypes = WeaponManagerPO.decodeDamageTypes(rRoll.aDamageTypes);
+  end
   local bOptAscendingAC = (OptionsManager.getOption("HouseRule_ASCENDING_AC"):match("on") ~= nil);
   local bOptSHRR = (OptionsManager.getOption("SHRR") ~= "off");
   local bOptREVL = (OptionsManager.getOption("REVL") == "on");
@@ -131,6 +152,7 @@ function onAttackOverride(rSource, rTarget, rRoll)
     bHitTarget = true;
     rAction.sResult = "crit";
   	if PlayerOptionManager.isPOCritEnabled() then
+      Debug.console("rSource", rSource);
   		  local rCrit = CritManagerPO.handleCrit(rSource, rTarget);
         if PlayerOptionManager.isGenerateHitLocationsEnabled() then
           addHitLocationToAction(rAction, rCrit.sHitLocation);

@@ -94,3 +94,18 @@ function isDamageType(sDamageType, aDamageTypeNames)
     end
     return false;
 end 
+
+function encodeDamageTypes(aDamageTypes)
+    if not aDamageTypes then
+        return "";
+    end
+
+    return UtilityPO.toCSV(aDamageTypes);
+end
+
+function decodeDamageTypes(sDamageTypes)
+    if UtilityPO.isEmpty(sDamageTypes) then
+        return {};
+    end
+    return UtilityPO.fromCSV(sDamageTypes);
+end
