@@ -19,13 +19,35 @@ function getTypeForHitLocation(nodeActor)
 end
 
 function getDefaultActorTypeForCrit(nodeActor)
-	local sName = DB.getValue(nodeActor, "name", ""):lower();
-	for sCreatureName, sCreatureType in pairs(DataCommonPO.aDefaultCreatureTypes) do
-		if sName:find(sCreatureName) then
-			return sCreatureType;
+	local sType = getDefaultActorTypeForCritByType(nodeActor);
+	if UtilityPO.isEmpty(sType) then
+		sType = getDefaultActorTypeForCritByName(nodeActor);
+	end
+	if UtilityPO.isEmpty(sType) then
+		-- If we can't find anything, default to monster
+		sType = "monster";
+	end
+	return sType;
+end
+
+function getDefaultActorTypeForCritByType(nodeActor)
+	local sType = DB.getValue(nodeActor, "type", ""):lower();
+	for sKeyedType, sMappedType in pairs(DataCommonPO.aDefaultCreatureTypesByType) do
+		if sType:find(sKeyedType) then
+			return sMappedType;
 		end
 	end
-	return "monster"; -- Default to monster if we can't find anything else.
+	return nil;
+end
+
+function getDefaultActorTypeForCritByName(nodeActor)
+	local sName = DB.getValue(nodeActor, "name", ""):lower();
+	for sKeyedName, sMappedType in pairs(DataCommonPO.aDefaultCreatureTypesByName) do
+		if sName:find(sKeyedName) then
+			return sMappedType;
+		end
+	end
+	return nil;
 end
 
 function getSizeCategory(nodeActor)

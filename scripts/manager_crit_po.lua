@@ -36,17 +36,27 @@ function getWeaponInfo(rSource)
 	local rWeaponInfo = {};
 	local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
 	if not UtilityPO.isEmpty(rSource.weaponPath) then
-		-- First try to determine size from the weapon action, if it exists
+		-- First try to determine size from the weapon action, if it exists. Don't allow default values
 		local nodeWeapon = DB.findNode(rSource.weaponPath);
-		rWeaponInfo.size = WeaponManagerPO.getSizeCategory(nodeWeapon, nodeAttacker);
+		rWeaponInfo.size = WeaponManagerPO.getSizeCategory(nodeWeapon, nodeAttacker, false);
 	end
 	if not rWeaponInfo.size and not UtilityPO.isEmpty(rSource.itemPath) then
-		-- If we don't have a size yet, try to get it from the item, if it exists
+		-- If we don't have a size yet, try to get it from the item, if it exists. Don't allow default avlues
 		local nodeWeapon = DB.findNode(rSource.itemPath);
-		rWeaponInfo.size = WeaponManagerPO.getSizeCategory(nodeWeapon, nodeAttacker);
+		rWeaponInfo.size = WeaponManagerPO.getSizeCategory(nodeWeapon, nodeAttacker, false);
+	end
+	if not rWeaponInfo.size and not UtilityPO.isEmpty(rSource.weaponPath) then
+		-- If we don't find it, try weapon path info again, but allow defaults
+		local nodeWeapon = DB.findNode(rSource.weaponPath);
+		rWeaponInfo.size = WeaponManagerPO.getSizeCategory(nodeWeapon, nodeAttacker, true);
+	end
+	if not rWeaponInfo.size and not UtilityPO.isEmpty(rSource.itemPath) then
+		-- If we don't find it, try item path info again, but allow defaults
+		local nodeWeapon = DB.findNode(rSource.itemPath);
+		rWeaponInfo.size = WeaponManagerPO.getSizeCategory(nodeWeapon, nodeAttacker, true);
 	end
 	if not rWeaponInfo.size then
-		-- If we don't have a size yet, just make it the same as attacker size it on attacker size)
+		-- If we don't have a size yet, just make it the same as attacker size)
 		rWeaponInfo.size = ActorManagerPO.getSizeCategory(nodeAttacker);
 	end
 
@@ -62,27 +72,49 @@ function handleCrit(rSource, rTarget)
 		local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender);
 		local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender, rWeaponInfo);
 		local nSeverity = getSeverityDieRoll(nSizeDifference);
+		Debug.console("handleCrit", "rWeaponInfo", rWeaponInfo, "nSizeDifference", nSizeDifference);
 		local rCrit = getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity);
 		setCritState(rSource, rTarget, rCrit.dmgMultiplier);
 		return rCrit;
 	end
+	return nil;
 end
 
 function addCritMessage(rCrit)
-	-- TODO: remove save message once it's automated
-	local sCritMsg = string.format("In the %s, %s vs %s (severity %s). %s", 
-		rCrit.sHitLocation,
-		rCrit.sDamageType,
-		rCrit.sDefenderType,
-		rCrit.nSeverity, 
-		rCrit.desc);
+    local sLocationMsg = string.format("In the %s", rCrit.sHitLocation or "");
+    local sSeverityMsg = string.format(" (severity %s)", rCrit.nSeverity or "");
+    local sTypeMsg = string.format("%s vs %s", rCrit.sDamageType or "", rCrit.sDefenderType or "");
 
-    local sDmgMult = "2x";
+	local sDmgMult = "2x";
     if rCrit.dmgMultiplier == 3 then
       sDmgMult = "3x";
     end
+    local sDmgMultMsg = string.format("%s damage dice",  sDmgMult);
 
-	rCrit.message = string.format("%s Save vs death to avoid effects. %s damage dice regardless of save result.", sCritMsg, sDmgMult);
+    rCrit.message = "";
+    if not UtilityPO.isEmpty(rCrit.sHitLocation) then
+    	rCrit.message = rCrit.message .. sLocationMsg;
+    end
+    if not UtilityPO.isEmpty(rCrit.sDamageType) and not UtilityPO.isEmpty(rCrit.sDefenderType) then
+    	if not UtilityPO.isEmpty(rCrit.message) then
+    		sTypeMsg = ", " .. sTypeMsg;
+    	end
+    	rCrit.message = rCrit.message .. sTypeMsg;
+    end
+    if rCrit.nSeverity then
+    	rCrit.message = rCrit.message .. sSeverityMsg;
+    end
+
+    if not rCrit.error then
+    	local sDesc = string.format(". %s Save vs death to avoid effects. %s regardless of save result.", rCrit.desc, sDmgMultMsg);
+    	rCrit.message = rCrit.message .. sDesc;
+    else
+    	if not UtilityPO.isEmpty(rCrit.message) then
+    		rCrit.message = rCrit.message .. string.format(". %s", sDmgMultMsg)
+    	else
+    		rCrit.message = sDmgMultMsg;
+    	end
+    end
 end
 
 function selectRandomCritDamageType(aDamageTypes)
@@ -101,13 +133,21 @@ end
 function getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity)
 	local sDamageType = selectRandomCritDamageType(rWeaponInfo.aDamageTypes);
 	local sDefenderType = ActorManagerPO.getTypeForHitLocation(nodeDefender);
+	local rCrit = nil;
 	if not sDamageType or not sDefenderType or not rHitLocation or not rHitLocation.locationCategory or not nSeverity then
+		-- Build up what we can of a crit in an error case (usually just hit location and damage multiplier)
 		Debug.console("couldn't generate crit", "sDefenderType", sDefenderType, "sDamageType", sDamageType, "rHitLocation", rHitLocation, "nSeverity", nSeverity);
+		rCrit = {};
+		rCrit.error = true;
+	else
+		Debug.console("getCritResult", "sDefenderType", sDefenderType, "sDamageType", sDamageType);
+		rCrit = DataCommonPO.aCritCharts[sDefenderType][sDamageType][rHitLocation.locationCategory][nSeverity];		
 	end
 	
-	local rCrit = DataCommonPO.aCritCharts[sDefenderType][sDamageType][rHitLocation.locationCategory][nSeverity];
 	rCrit.sDefenderType = sDefenderType;
-	rCrit.sHitLocation = rHitLocation.desc;
+	if rHitLocation then
+		rCrit.sHitLocation = rHitLocation.desc;
+	end
 	rCrit.nSeverity = nSeverity;
 	rCrit.sDamageType = sDamageType;
 	if nSeverity >= 13 then

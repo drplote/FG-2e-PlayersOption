@@ -1,26 +1,26 @@
 function onInit()
 end
 
-function getSizeCategory(nodeWeapon, nodeAttacker)
+function getSizeCategory(nodeWeapon, nodeAttacker, canReturnDefault)
     local nSizeCategory = nil;
     if not nSizeCategory then
         -- First try to parse size from the weapon node
-        nSizeCategory = getSizeCategoryFromNode(nodeWeapon);
+        nSizeCategory = getSizeCategoryFromNode(nodeWeapon, canReturnDefault);
     end
 
-    if not nSizeCategory then
+    if not nSizeCategory and canReturnDefault then
         -- Couldn't figure it out from the weapon node, so see if it's named after a natural weapon and base it on attacker size
         nSizeCategory = tryGetNaturalWeaponSizeCategory(nodeWeapon, nodeAttacker);
     end
     return nSizeCategory;
 end
 
-function getSizeCategoryFromNode(nodeWeapon)
+function getSizeCategoryFromNode(nodeWeapon, canReturnDefault)
     local nSizeCategory = nil;
     if nodeWeapon then
         local sProperties = DB.getValue(nodeWeapon, "properties", "");
             nSizeCategory = DataManagerPO.parseSizeFromProperties(sProperties);
-        if not nSizeCategory then
+        if not nSizeCategory and canReturnDefault then
             nSizeCategory = getDefaultWeaponSizeCategory(nodeWeapon);
         end
     end
@@ -29,7 +29,7 @@ end
 
 function tryGetNaturalWeaponSizeCategory(nodeWeapon, nodeAttacker)
     if nodeWeapon and nodeAttacker then
-        local sWeaponName = DB.getValue(nodeWeapon, "name", "");
+        local sWeaponName = DB.getValue(nodeWeapon, "name", ""):lower();
         for _, sNatWeaponName in pairs(DataCommonPO.aNaturalWeaponNames) do
             if sWeaponName:find(sNatWeaponName) then
                 return ActorManagerPO.getSizeCategory(nodeAttacker) - 2;

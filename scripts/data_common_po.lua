@@ -3,7 +3,8 @@ aHitLocations = {};
 aDefaultRaceSizes = {};
 aCritCharts = {};
 aDefaultWeaponSizes = {};
-aDefaultCreatureTypes = {};
+aDefaultCreatureTypesByName = {};
+aDefaultCreatureTypesByType = {};
 aNaturalWeaponNames = {};
 
 function onInit()
@@ -873,9 +874,13 @@ function initializeDefaultWeaponSizes()
 end
 
 function initializeDefaultCreatureTypes()
-	aDefaultCreatureTypes = {
+	aDefaultCreatureTypesByName = {
 		["skeleton"] = "humanoid"
-	}
+	};
+
+	aDefaultCreatureTypesByType = {
+		["giant"] = "humanoid"
+	};
 end
 
 function initializeNaturalWeaponNames()
