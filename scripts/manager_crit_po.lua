@@ -12,12 +12,10 @@ function isCriticalHit(rRoll, rAction, nDefenseVal)
 end
 
 function isCriticalHitCombatAndTactics(rRoll, rAction, nDefenseVal)
-	Debug.console("rRoll, rAction, nDefenseVal", rRoll, rAction, nDefenseVal);
 	if nDefenseVal and nDefenseVal ~= 0 then
 		local nRequiredCritRoll = PlayerOptionManager.getRequiredCritRoll();
 		local bMustHitBy5 = PlayerOptionManager.mustCritHitBy5();
 		local nHitDifference = CombatCalcManagerPO.getAttackVsDefenseDifference(rRoll, rAction, nDefenseVal);
-		Debug.console("first die, must hit by 5, hit difference", rAction.nFirstDie, bMustHitBy5, nHitDifference);
 		return rAction.nFirstDie >= nRequiredCritRoll and (not bMustHitBy5 or nHitDifference >= 5);
 	end
 	return false;
@@ -37,12 +35,12 @@ end
 function getWeaponInfo(rSource)
 	local rWeaponInfo = {};
 	local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
-	if rSource.weaponPath then
+	if not UtilityPO.isEmpty(rSource.weaponPath) then
 		-- First try to determine size from the weapon action, if it exists
 		local nodeWeapon = DB.findNode(rSource.weaponPath);
 		rWeaponInfo.size = WeaponManagerPO.getSizeCategory(nodeWeapon, nodeAttacker);
 	end
-	if not rWeaponInfo.size and rSource.itemPath then
+	if not rWeaponInfo.size and not UtilityPO.isEmpty(rSource.itemPath) then
 		-- If we don't have a size yet, try to get it from the item, if it exists
 		local nodeWeapon = DB.findNode(rSource.itemPath);
 		rWeaponInfo.size = WeaponManagerPO.getSizeCategory(nodeWeapon, nodeAttacker);

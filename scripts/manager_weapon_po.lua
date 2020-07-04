@@ -30,8 +30,8 @@ end
 function tryGetNaturalWeaponSizeCategory(nodeWeapon, nodeAttacker)
     if nodeWeapon and nodeAttacker then
         local sWeaponName = DB.getValue(nodeWeapon, "name", "");
-        for _, sNatWeaponName in pairs(DataManagerPO.aNaturalWeaponNames) do
-            if sName:find(sNatWeaponName) then
+        for _, sNatWeaponName in pairs(DataCommonPO.aNaturalWeaponNames) do
+            if sWeaponName:find(sNatWeaponName) then
                 return ActorManagerPO.getSizeCategory(nodeAttacker) - 2;
             end
         end

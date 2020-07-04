@@ -1,6 +1,11 @@
 function onInit()
 end
 
+function isEmpty(s)
+  return s == nil or s == '';
+end
+
+
 function contains(set, item)
 	for i = 1, #set do
 		if set[i] == item then
