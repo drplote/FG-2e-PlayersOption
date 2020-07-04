@@ -28,15 +28,12 @@ function registerOptions()
     
 end
 
-function shouldDefaultPcInitTo99()
-	return OptionsManager.isOption("AdditionalAutomation_DefaultPCInitTo99", "on");
+function isUsingCombatAndTacticsCritsRAW()
+	return OptionsManager.isOption("PlayersOption_CriticalHits", "nat18OrBetterAndHitBy5");
 end
 
-function getRequiredCritRoll()
-	if OptionsManager.isOption("PlayersOption_CriticalHits", "nat18OrBetterAndHitBy5") then
-		return 18;
-	end
-	return 20;
+function shouldDefaultPcInitTo99()
+	return OptionsManager.isOption("AdditionalAutomation_DefaultPCInitTo99", "on");
 end
 
 function mustCritHitBy5()

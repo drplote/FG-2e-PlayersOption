@@ -13,7 +13,7 @@ end
 
 function isCriticalHitCombatAndTactics(rRoll, rAction, nDefenseVal)
 	if nDefenseVal and nDefenseVal ~= 0 then
-		local nRequiredCritRoll = PlayerOptionManager.getRequiredCritRoll();
+		local nRequiredCritRoll = getCritThreshold(rRoll);
 		local bMustHitBy5 = PlayerOptionManager.mustCritHitBy5();
 		local nHitDifference = CombatCalcManagerPO.getAttackVsDefenseDifference(rRoll, rAction, nDefenseVal);
 		return rAction.nFirstDie >= nRequiredCritRoll and (not bMustHitBy5 or nHitDifference >= 5);
@@ -21,13 +21,23 @@ function isCriticalHitCombatAndTactics(rRoll, rAction, nDefenseVal)
 	return false;
 end
 
-function isCriticalHit2e(rRoll, rAction)
-	local sCritThreshold = string.match(rRoll.sDesc, "%[CRIT (%d+)%]");
-	local nCritThreshold = tonumber(sCritThreshold) or 20;
-	if nCritThreshold < 2 or nCritThreshold > 20 then
-		nCritThreshold = 20;
+function getCritThreshold(rRoll)
+	Debug.console("getCritThreshold", "rRoll", rRoll);
+	if PlayerOptionManager.isUsingCombatAndTacticsCritsRAW() then
+		return 18;
+	else
+		local sCritThreshold = string.match(rRoll.sDesc, "%[CRIT (%d+)%]");
+		local nCritThreshold = tonumber(sCritThreshold) or 20;
+		if nCritThreshold < 2 or nCritThreshold > 20 then
+			nCritThreshold = 20;
+		end
+		return nCritThreshold;
 	end
+end
 
+
+function isCriticalHit2e(rRoll, rAction)
+	local nCritThreshold = getCritThreshold(rRoll);
 	return rAction.nFirstDie >= nCritThreshold
 end
 

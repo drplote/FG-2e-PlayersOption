@@ -20,8 +20,8 @@ Enabling this option will use the crit tables from Player's Option: Combat & Tac
 
 * Off - This option won't be used, and whatever you had set up in the base ruleset for crits will be used as normal.
 * 18+, hit by 5 - This is how C&T crits are determined by rules as written. If a natural 18 or better is rolled, and the target is hit by at least 5, a crit occurs.
-* Nat 20, hit by 5 - Same as above, except now you need a nat 20 instead of an 18 or better.
-* Any nat 20 - Crits occur on a natural 20, regardless of if that would have hit, or by how much.
+* As base, hit by 5 - Same as above, except now you need a nat 20 instead of an 18 or better (or less than a nat 20 if the weapon has a crit threshold defined as in the base ruleset).
+* As base ruleset - Crits occur on a natural 20 (or less, if a crit threshold is defined on the weapon, as per the base ruleset), regardless of if that would have hit, or by how much.
 
 Right now, when a crit is detected, a crit result is generated per the C&T tables and reported as text. Eventually I plan to add more automation to the crit effects, but right now other than displaying the crit effect message as part of the attack roll output, the only part that's automated is that when you roll damage, it will be either x2 or x3 damage dice, as per the C&T rules. Note that the following pieces of information are needed to generate a crit result, and in some cases I had to make assumptions:
 

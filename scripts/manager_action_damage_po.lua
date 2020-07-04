@@ -17,6 +17,7 @@ end
 
 function modDamageOverride(rSource, rTarget, rRoll)
 	if PlayerOptionManager.isPOCritEnabled() then
+		-- TODO: make this visually roll dice
 		local bIsCrit, nCritMultiplier = CritManagerPO.hasCritState(rSource, rTarget);
 		if bIsCrit and nCritMultiplier > 0 then
 			rRoll.nCritMultiplier = nCritMultiplier;

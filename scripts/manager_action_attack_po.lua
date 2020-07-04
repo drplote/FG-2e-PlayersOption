@@ -354,8 +354,8 @@ end
 
 function isCritOverride(rSource, rTarget)
   if PlayerOptionManager.isPOCritEnabled() then
-    CritManagerPO.hasCritState(rSource, rTarget);
+    return CritManagerPO.hasCritState(rSource, rTarget);
   else
-    fIsCrit(rSource, rTarget);
+    return fIsCrit(rSource, rTarget);
   end
 end
