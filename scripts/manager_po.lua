@@ -1,3 +1,13 @@
+sCritOptionKey = "PlayersOption_CriticalHits";
+sWeaponTypeVsArmorOptionKey = "AdditionalAutomation_WeaponTypeVsArmorMods";
+sStricterResistanceOptionKey = "AdditionalAutomation_StricterResistance";
+sGenerateHitLocationsOptionKey = "AdditionalAutomation_GenerateHitLocations";
+sKickerOptionKey = "SternoHouseRule_HpKicker";
+sPenetrationOptionKey = "SternoHouseRule_PenetrationDice";
+sArmorDamageOptionKey = "SternoHouseRule_ArmorDamage";
+
+
+
 function onInit()
     registerOptions();
 end 
@@ -5,63 +15,64 @@ end
 function registerOptions()
     
     -- Player's Option Rules
-	OptionsManager.registerOption2("PlayersOption_CriticalHits", false, "option_header_po", "option_label_critical_hits", "option_entry_cycler",{ labels = "option_val_nat18AndHitBy5|option_val_nat20AndHitBy5|option_val_anyNat20", values = "nat18OrBetterAndHitBy5|nat20andHitBy5|anyNat20", baselabel = "option_val_off", baseval = "off", default = "off" });
+	OptionsManager.registerOption2(sCritOptionKey, false, "option_header_po", "option_label_critical_hits", "option_entry_cycler",{ labels = "option_val_nat18AndHitBy5|option_val_nat20AndHitBy5|option_val_anyNat20", values = "nat18OrBetterAndHitBy5|nat20andHitBy5|anyNat20", baselabel = "option_val_off", baseval = "off", default = "off" });
 
 	-- Additional Automation
-    OptionsManager.registerOption2("AdditionalAutomation_WeaponTypeVsArmorMods", false, "option_header_automation", "option_label_weapontype_vs_armor_mods", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+    OptionsManager.registerOption2(sWeaponTypeVsArmorOptionKey, false, "option_header_automation", "option_label_weapontype_vs_armor_mods", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 	
-	OptionsManager.registerOption2("AdditionalAutomation_StricterResistance", false, "option_header_automation", "option_label_stricter_resistance", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+	OptionsManager.registerOption2(sStricterResistanceOptionKey, false, "option_header_automation", "option_label_stricter_resistance", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 	
-	OptionsManager.registerOption2("AdditionalAutomation_GenerateHitLocations", false, "option_header_automation", "option_label_generate_hit_locations", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+	OptionsManager.registerOption2(sGenerateHitLocationsOptionKey, false, "option_header_automation", "option_label_generate_hit_locations", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 
 	--OptionsManager.registerOption2("AdditionalAutomation_DefaultPCInitTo99", false, "option_header_automation", "option_label_default_pc_init_to_99", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" })
     
     
     -- House rules
-    OptionsManager.registerOption2("SternoHouseRule_HpKicker", false, "option_header_sterno_house_rule", "option_label_hp_kicker", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+    OptionsManager.registerOption2(sKickerOptionKey, false, "option_header_sterno_house_rule", "option_label_hp_kicker", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
-    OptionsManager.registerOption2("SternoHouseRule_PenetrationDice", false, "option_header_sterno_house_rule", "option_label_penetration_dice", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+    OptionsManager.registerOption2(sPenetrationOptionKey, false, "option_header_sterno_house_rule", "option_label_penetration_dice", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
-    --OptionsManager.registerOption2("SternoHouseRule_ArmorDamage", false, "option_header_sterno_house_rule", "option_label_armor_damage", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+    OptionsManager.registerOption2(sArmorDamageOptionKey, false, "option_header_sterno_house_rule", "option_label_armor_damage", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
     --OptionsManager.registerOption2("SternoHouseRule_ShieldDamage", false, "option_header_sterno_house_rule", "option_label_shield_damage", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
 end
 
-function isUsingCombatAndTacticsCritsRAW()
-	return OptionsManager.isOption("PlayersOption_CriticalHits", "nat18OrBetterAndHitBy5");
+function isUsingArmorDamage()
+	return OptionsManager.isOption(sArmorDamageOptionKey, "on");
 end
 
-function shouldDefaultPcInitTo99()
-	return OptionsManager.isOption("AdditionalAutomation_DefaultPCInitTo99", "on");
+function isUsingCombatAndTacticsCritsRAW()
+	return OptionsManager.isOption(sCritOptionKey, "nat18OrBetterAndHitBy5");
 end
 
 function mustCritHitBy5()
-	return OptionsManager.isOption("PlayersOption_CriticalHits", "nat18OrBetterAndHitBy5") 
-		or OptionsManager.isOption("PlayersOption_CriticalHits", "nat20andHitBy5");
+	return OptionsManager.isOption(sCritOptionKey, "nat18OrBetterAndHitBy5") 
+		or OptionsManager.isOption(sCritOptionKey, "nat20andHitBy5");
 end
 
 
 function isPOCritEnabled()
-	return DataCommonADND.coreVersion == "2e" and not OptionsManager.isOption("PlayersOption_CriticalHits", "off")
+	return DataCommonADND.coreVersion == "2e" and not OptionsManager.isOption(sCritOptionKey, "off")
 end
 
 function isWeaponTypeVsArmorModsEnabled()
-	return OptionsManager.isOption("AdditionalAutomation_WeaponTypeVsArmorMods", "on")
+	return OptionsManager.isOption(sWeaponTypeVsArmorOptionKey, "on")
 end
 
 function isStricterResistancesEnabled()
-	return OptionsManager.isOption("AdditionalAutomation_StricterResistance", "on");
+	return OptionsManager.isOption(sStricterResistanceOptionKey, "on");
 end
 
 function isGenerateHitLocationsEnabled()
-	return OptionsManager.isOption("AdditionalAutomation_GenerateHitLocations", "on");
+	return OptionsManager.isOption(sGenerateHitLocationsOptionKey, "on");
 end
 
 function isHpKickerEnabled()
-	return OptionsManager.isOption("SternoHouseRule_HpKicker", "on");
+	return OptionsManager.isOption(sKickerOptionKey, "on");
 end
 
 function isPenetrationDiceEnabled()
-	return OptionsManager.isOption("SternoHouseRule_HpKicker", "on");
+	return OptionsManager.isOption(sPenetrationOptionKey, "on");
 end
+

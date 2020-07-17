@@ -1,6 +1,12 @@
 function onInit()
 end
 
+function parseDamageReductionFromProperties(sProperties)
+	local sDR = sProperties:match("DR: *(%d*)");
+	if not sDR then return 0; end
+	return tonumber(sDR);
+end
+
 function parseArmorHpFromProperties(sProperties)
 	local aHpArray = {};
 	if not sProperties then

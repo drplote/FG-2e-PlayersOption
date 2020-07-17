@@ -21,9 +21,13 @@
     
     <!-- House Rule Options -->
     <string name="option_header_sterno_house_rule">Sterno's House Rules (GM)</string>
-    <string name="option_label_hp_kicker">HP Kickers</string>
+    <string name="option_label_hp_kicker">Hit Point Kickers</string>
     <string name="option_label_penetration_dice">Penetration Dice</string>
-    <string name="option_label_armor_damage">Armor Damage</string>
-    <string name="option_label_shield_damage">Shield Damage</string>
+    <string name="option_label_armor_damage">Hackmaster Armor Damage</string>
+    <string name="option_label_shield_damage">Hackmaster Shield Damage</string>
+
+    <!-- New Properties -->
+    <string name="item_label_hp_lost">HP Lost</string>
+    <string name="item_label_hp_lost_tooltip">The amount of damage this armor has taken</string>
 
 </root>

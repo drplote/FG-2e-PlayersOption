@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<root>
+  <windowclass name="charsheet_main" merge="join">
+    <script file="campaign/scripts/char_main.lua" />
+   </windowclass>
+</root>

@@ -48,6 +48,7 @@ function escapeCSV (s)
 end
 
 function fromCSV (s)
+  if not s then return {}; end;
   s = s .. ','        -- ending comma
   local t = {}        -- table to collect fields
   local fieldstart = 1
@@ -74,10 +75,31 @@ function fromCSV (s)
 end
 
 function toCSV (tt)
-    if not (tt) then return ""; end
+  if not (tt) then return ""; end
     local s = ""
     for _,p in ipairs(tt) do  
-    s = s .. "," .. escapeCSV(p)
+      s = s .. "," .. escapeCSV(p)
     end
-    return string.sub(s, 2)      -- remove first comma
+  return string.sub(s, 2)      -- remove first comma
+end
+
+function reduce(tt, reduceFn)
+  local acc;
+  for k, v in ipairs(tt) do
+    if 1 == k then
+      acc = v;
+    else
+      acc = reduceFn(acc, v);
+    end
+  end
+  return acc;
+
+end
+
+function sum(tt)
+  if not tt or #tt == 0 then
+    return 0;
+  end
+  local nSum = reduce(tt, function(a, b) return a + b; end);
+  return nSum;
 end

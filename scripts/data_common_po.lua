@@ -6,6 +6,8 @@ aDefaultWeaponSizes = {};
 aDefaultCreatureTypesByName = {};
 aDefaultCreatureTypesByType = {};
 aNaturalWeaponNames = {};
+aDefaultArmorDamageReduction = {};
+aDefaultArmorHp = {};
 
 function onInit()
     initializeDefaultArmorVsDamageTypeModifiers();
@@ -15,22 +17,30 @@ function onInit()
 	initializeDefaultWeaponSizes();
 	initializeDefaultCreatureTypes();
 	initializeNaturalWeaponNames();
+	initializeDefaultArmorDamageReduction();
+	initializeDefaultArmorHp();
 end
 
 function initializeDefaultArmorVsDamageTypeModifiers()
     aDefaultArmorVsDamageTypeModifiers["banded mail"]      = {["slashing"] = -2, ["piercing"] = 0,  ["bludgeoning"] = -1};
+    aDefaultArmorVsDamageTypeModifiers["bandedmail"]       = {["slashing"] = -2, ["piercing"] = 0,  ["bludgeoning"] = -1};
     aDefaultArmorVsDamageTypeModifiers["brigandine"]       = {["slashing"] = -1, ["piercing"] = -1, ["bludgeoning"] = 0};
     aDefaultArmorVsDamageTypeModifiers["chain mail"]       = {["slashing"] = -2, ["piercing"] = 0,  ["bludgeoning"] = 2};
+    aDefaultArmorVsDamageTypeModifiers["chainmail"]        = {["slashing"] = -2, ["piercing"] = 0,  ["bludgeoning"] = 2};
     aDefaultArmorVsDamageTypeModifiers["field plate"]      = {["slashing"] = -3, ["piercing"] = -1, ["bludgeoning"] = 0};
     aDefaultArmorVsDamageTypeModifiers["full plate"]       = {["slashing"] = -4, ["piercing"] = -3, ["bludgeoning"] = 0}; 
+    aDefaultArmorVsDamageTypeModifiers["studded leather"]  = {["slashing"] = -2, ["piercing"] = -1, ["bludgeoning"] = 0};
     aDefaultArmorVsDamageTypeModifiers["leather armor"]    = {["slashing"] = 0,  ["piercing"] = 2,  ["bludgeoning"] = 0};
     aDefaultArmorVsDamageTypeModifiers["padded armor"]     = {["slashing"] = 0,  ["piercing"] = 2,  ["bludgeoning"] = 0};
     aDefaultArmorVsDamageTypeModifiers["hide armor"]       = {["slashing"] = 0,  ["piercing"] = 2,  ["bludgeoning"] = 0};
-    aDefaultArmorVsDamageTypeModifiers["plate mail"]       = {["slashing"] = -3, ["piercing"] = 0,  ["bludgeoning"] = 0};
     aDefaultArmorVsDamageTypeModifiers["ring mail"]        = {["slashing"] = -1, ["piercing"] = -1, ["bludgeoning"] = 0};
+    aDefaultArmorVsDamageTypeModifiers["ringmail"]         = {["slashing"] = -1, ["piercing"] = -1, ["bludgeoning"] = 0};
     aDefaultArmorVsDamageTypeModifiers["scale mail"]       = {["slashing"] = 0,  ["piercing"] = -1, ["bludgeoning"] = 0};
-    aDefaultArmorVsDamageTypeModifiers["splint mail"]      = {["slashing"] = 0,  ["piercing"] = -1, ["bludgeoning"] = -2};
-    aDefaultArmorVsDamageTypeModifiers["studded leather"]  = {["slashing"] = -2, ["piercing"] = -1, ["bludgeoning"] = 0};
+    aDefaultArmorVsDamageTypeModifiers["scalemail"]        = {["slashing"] = 0,  ["piercing"] = -1, ["bludgeoning"] = 0};
+    aDefaultArmorVsDamageTypeModifiers["splint mail"]      = {["slashing"] = 0,  ["piercing"] = -1, ["bludgeoning"] = -2};    
+    aDefaultArmorVsDamageTypeModifiers["splintmail"]       = {["slashing"] = 0,  ["piercing"] = -1, ["bludgeoning"] = -2};    
+    aDefaultArmorVsDamageTypeModifiers["plate mail"]       = {["slashing"] = -3, ["piercing"] = 0,  ["bludgeoning"] = 0};
+    aDefaultArmorVsDamageTypeModifiers["platemail"]        = {["slashing"] = -3, ["piercing"] = 0,  ["bludgeoning"] = 0};
 end
 
 function initializeHitLocations()
@@ -885,4 +895,45 @@ end
 
 function initializeNaturalWeaponNames()
 	aNaturalWeaponNames = {"claw", "bite", "kick", "punch", "slam", "tail"};
+end
+
+function initializeDefaultArmorDamageReduction()
+	aDefaultArmorDamageReduction["field plate"] = 2;
+	aDefaultArmorDamageReduction["full plate"] = 2;
+end
+
+function initializeDefaultArmorHp()
+	aDefaultArmorHp["robes"]             = {1};
+	aDefaultArmorHp["garments"]          = {1};
+    aDefaultArmorHp["studded leather"]   = {4,2,1};
+    aDefaultArmorHp["leather armor"]     = {2,1};
+    aDefaultArmorHp["padded armor"]      = {2,1};
+    aDefaultArmorHp["ring mail"]         = {6,2,1};
+    aDefaultArmorHp["ringmail"]          = {6,2,1};
+    aDefaultArmorHp["scale mail"]        = {7,4,2,1};
+    aDefaultArmorHp["scalemail"]         = {7,4,2,1};
+    aDefaultArmorHp["hide armor"]        = {5,4,2,1};
+    aDefaultArmorHp["brigandine"]        = {6,4,2,1};
+    aDefaultArmorHp["chain mail"]        = {8,6,4,2,1};
+    aDefaultArmorHp["chainmail"]         = {8,6,4,2,1};
+    aDefaultArmorHp["bronze plate mail"] = {12,8,6,4,2,1};
+    aDefaultArmorHp["banded mail"]       = {9,8,6,4,2,1};
+    aDefaultArmorHp["bandedmail"]        = {9,8,6,4,2,1};
+    aDefaultArmorHp["splint mail"]       = {8,8,6,4,2,1};
+    aDefaultArmorHp["splintmail"]        = {8,8,6,4,2,1};
+    aDefaultArmorHp["field plate"]       = {24,12,10,8,6,4,2,1};
+    aDefaultArmorHp["full plate"]        = {36,24,12,10,8,6,4,2,1}; 
+    aDefaultArmorHp["plate mail"]        = {12,10,8,6,4,2,1};
+    aDefaultArmorHp["platemail"]         = {12,10,8,6,4,2,1};
+    aDefaultArmorHp["buckler"]           = {3};
+    aDefaultArmorHp["small shield"]      = {7};
+    aDefaultArmorHp["shield, small"]     = {7};
+    aDefaultArmorHp["medium shield"]     = {12};
+    aDefaultArmorHp["shield, medium"]    = {12};
+    aDefaultArmorHp["body shield"]       = {18};
+    aDefaultArmorHp["shield, body"]      = {18};
+    aDefaultArmorHp["tower shield"]      = {18};
+    aDefaultArmorHp["shield, tower"]     = {18};
+    aDefaultArmorHp["shield"]     		 = {12};
+    
 end

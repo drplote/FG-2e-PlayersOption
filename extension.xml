@@ -26,6 +26,8 @@
     
     <includefile source="campaign/record_char_weapon.xml"/>
     <includefile source="cta/cta_host.xml"/>
+    <includefile source="campaign/record_item.xml" />
+    <includefile source="campaign/record_char_main.xml" />
     
     <includefile source="strings/strings_player_option.xml"/>
     <script name="PlayerOptionManager" file="scripts/manager_po.lua"/>
@@ -44,6 +46,10 @@
   	<script name="ItemManagerPO" file="scripts/manager_item_po.lua" />
   	<script name="DataManagerPO" file="scripts/manager_data_po.lua" />
   	<script name="ActorManagerPO" file="scripts/manager_actor_po.lua" />
+    <script name="CharManagerPO" file="scripts/manager_char_po.lua" />
+    <script name="ChatManagerPO" file="scripts/manager_chat_po.lua" />
+
+    
   </base>
     
 </root>

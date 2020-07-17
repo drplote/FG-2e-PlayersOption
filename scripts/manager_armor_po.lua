@@ -1,36 +1,161 @@
 function onInit()
 end
 
+function isSuitOfArmor(nodeArmor)
+    return ItemManager2.isArmor(nodeArmor) and not ItemManager2.isShield(nodeArmor);
+end
+
+function isBroken(nodeArmor)
+    return getHpLost(nodeArmor) >= getMaxHp(nodeArmor);
+end
+
 function getArmorHpChart(nodeArmor)
-    local sProperties = DB.getValue(nodeArmor, "properties", "");
+    local sProperties = getProperties(nodeArmor);
+    Debug.console("nodeArmor", nodeArmor);
+    Debug.console("sProperties", sProperties);
     local aHpChart = DataManagerPO.parseArmorHpFromProperties(sProperties);
-    local nBonus = getArmorBonus(nodeArmor);
-    if nBonus > 0 then
-        local nBonusLevelHp = aHpChart[1];
-        for i = 1, nBonus, 1 do
-            table.insert(aHpChart, 1, nBonusLevelHp);
+    
+    if not aHpChart or #aHpChart == 0 then 
+        aHpChart = getDefaultArmorHpChart(nodeArmor);
+    end
+
+    if #aHpChart >= 0 then
+        local nBonus = getMagicAcBonus(nodeArmor);
+        if nBonus > 0 then
+            -- Armor gets a bonus level of HP for each + of it's magic bonus
+            local nBonusLevelHp = aHpChart[1];
+            for i = 1, nBonus, 1 do
+                table.insert(aHpChart, 1, nBonusLevelHp);
+            end
         end
     end
     return aHpChart;
 end
 
-function getArmorDamage(nodeArmor)
-    return DB.getValue(nodeArmor, "armorDamage", 0); -- TODO: check for correct property name
+function getDefaultArmorHpChart(nodeArmor)
+    local sNameLower = getName(nodeArmor):lower();
+        for sArmorType, aArmorChart in pairs(DataCommonPO.aDefaultArmorHp) do
+        if sNameLower:find(sArmorType) then 
+            return aArmorChart;
+        end
+    end
+    return {};
 end
 
-function getArmorBonus(nodeArmor)
+function getDamageReduction(nodeArmor)
+    local sProperties = getProperties(nodeArmor);
+    local nDr = DataManagerPO.parseDamageReductionFromProperties(sProperties);
+    if not nDr or nDr == 0 then
+        nDr = getDefaultDamageReduction(nodeArmor);
+    end
+    return nDr;
+end
+
+function getDefaultDamageReduction(nodeArmor)
+    local sNameLower = getName(nodeArmor):lower();
+        for sArmorType, nArmorDr in pairs(DataCommonPO.aDefaultArmorDamageReduction) do
+        if sNameLower:find(sArmorType) then 
+            return nDr;
+        end
+    end
+    return 1;
+end
+
+function damageArmor(nodeArmor, nDamage)
+    local nHpRemaining = getHpRemaining(nodeArmor);
+    local nDamageDone = math.min(nDamage, nHpRemaining);
+    local nHpLost = getHpLost(nodeArmor) + nDamageDone;
+    setHpLost(nodeArmor, nHpLost);
+end
+
+function canDamageTypeHurtArmor(aDmgTypes, nodeArmor)
+    local nBonus = getMagicAcBonus(nodeArmor);
+    if nBonus <= 0 then
+        return true;
+    elseif not aDmgTypes or #aDmgTypes == 0 then
+        return false;
+    else
+       
+        local aDamagingTypes = {"acid","cold","fire","force","lightning","necrotic","poison","psychic","radiant","thunder"};
+        if nBonus <= 6 then table.insert(aDamagingTypes, "magic +6"); end
+        if nBonus <= 5 then table.insert(aDamagingTypes, "magic +5"); end
+        if nBonus <= 4 then table.insert(aDamagingTypes, "magic +4"); end
+        if nBonus <= 3 then table.insert(aDamagingTypes, "magic +3"); end
+        if nBonus <= 2 then table.insert(aDamagingTypes, "magic +2"); end
+        if nBonus <= 1 then table.insert(aDamagingTypes, "magic +1"); table.insert(aDamagingTypes, "magic"); end
+        
+        return UtilityPO.intersects(aDamagingTypes, aDmgTypes);
+    end
+end
+
+function getAcBase(nodeArmor)
+    local nBaseAc;
+
+    local bIsSuitOfArmor = isSuitOfArmor(nodeArmor);
+    Debug.console("nodeArmor", nodeArmor);
+    Debug.console("bIsSuitOfArmor", bIsSuitOfArmor);
+    if bIsSuitOfArmor then
+        nBaseAc = DB.getValue(nodeArmor, "ac", 10);
+    else
+        nBaseAc = DB.getValue(nodeArmor, "ac", 0);
+    end
+    Debug.console("nBaseAc", nBaseAc);
+
+    if PlayerOptionManager.isUsingArmorDamage() then
+        -- Cap how bad it can get (in case someone had more damage levels than AC levels).
+        -- Cursed items are handled via their "bonus" so cap won't affect them.
+        -- Shields and magic items can't be worse than base 0, armor can't be worse than base 10.
+        local nAcLostFromDamage = getAcLostFromDamage(nodeArmor);
+        Debug.console("nAcLostFromDamage", nAcLostFromDamage);
+        if bIsSuitOfArmor then
+            nBaseAc = math.min(10 + getMagicAcBonus(nodeArmor), nBaseAc + nAcLostFromDamage);
+        else
+            nBaseAc = math.max(0 - getMagicAcBonus(nodeArmor), nBaseAc - nAcLostFromDamage);
+        end
+    end;
+    Debug.console("nBaseAc final", nBaseAc);
+
+    return nBaseAc;
+end
+
+function getProperties(nodeArmor)
+    return DB.getValue(nodeArmor, "properties", "");
+end
+
+function setHpLost(nodeArmor, nHpLost)
+    DB.setValue(nodeArmor, "hpLost", "number", nHpLost);
+end
+
+function getHpLost(nodeArmor)
+    return DB.getValue(nodeArmor, "hpLost", 0);
+end
+
+function getName(nodeArmor)
+    return DB.getValue(nodeArmor, "name", "");
+end
+
+function getHpRemaining(nodeArmor)
+    return math.max(getMaxHp(nodeArmor) - getHpLost(nodeArmor), 0);
+end
+
+function getMaxHp(nodeArmor)
+    local aHpChart = getArmorHpChart(nodeArmor);
+    return UtilityPO.sum(aHpChart);
+end
+
+function getMagicAcBonus(nodeArmor)
     return DB.getValue(nodeArmor, "bonus", 0);
 end
 
 function getAcLostFromDamage(nodeArmor)
     local aHpChart = getArmorHpChart(nodeArmor);
-    local nDamage = getArmorDamage(nodeArmor)
+    local nHpLost = getHpLost(nodeArmor)
     local nAcLost = 0;
 
-    if nDamage > 0 and #aHpChart > 0 then
-        for _, nHpAtLevel in ipairs(aHpChart) do 
-            nDamage = nDamage - nHpAtlevel;
-            if nDamage >= 0 then
+    if nHpLost > 0 and #aHpChart > 0 then
+        for _, nHpAtLevel in pairs(aHpChart) do 
+            nHpLost = nHpLost - nHpAtLevel;
+            if nHpLost >= 0 then
                 nAcLost = nAcLost + 1;
             end
         end
@@ -67,7 +192,7 @@ end
 
 function getHitModifierForDamageTypesVsArmor(nodeArmor, aDamageTypes)
     -- For a given piece of armor and damage types coming at it, we use the modifier of the damage type it's worst defending against
-    local sArmorName = DB.getValue(nodeArmor, "name", ""):lower();
+    local sArmorName = getName(nodeArmor):lower();
     local nHighestMod = nil;
     local sHighestDamageType = nil;
 	local aModifiers = getDamageTypeVsArmorModifiers(nodeArmor);
@@ -90,7 +215,7 @@ function getDamageTypeVsArmorModifiers(nodeArmor)
 end
 
 function getDefaultDamageTypeVsArmorModifiers(nodeArmor)
-	local sArmorName = DB.getValue(nodeArmor, "name", ""):lower();
+	local sArmorName = getName(nodeArmor):lower();
 	for sArmorType, aModifiers in pairs(DataCommonPO.aDefaultArmorVsDamageTypeModifiers) do
         if sArmorName:find(sArmorType) then 
 			return aModifiers;
@@ -104,4 +229,30 @@ function getCharArmor(rChar)
     local _, nodeChar = ActorManager.getTypeAndNode(rChar);
     local _, aArmorWorn = ItemManager2.getArmorWorn(nodeChar);
     return aArmorWorn;
+end
+
+function getDamageableShieldWorn(nodeChar)
+    -- Possible problem: If the character has more than one shield worn, this is only going to return the first it finds
+    for _,vNode in pairs(CharManagerPO.getEquippedItems(nodeChar)) do
+        if ItemManager2.isShield(vNode) then
+            local aArmorHpChart = getArmorHpChart(vNode);
+            if #aArmorHpChart > 0 then
+                return vNode;
+            end
+        end
+    end
+    return nil;
+end
+
+function getDamageableArmorWorn(nodeChar)
+    -- Possible problem: If the character has more than one armor worn, this is only going to return the first it finds
+    for _,vNode in pairs(CharManagerPO.getEquippedItems(nodeChar)) do
+        if isSuitOfArmor(vNode) then
+            local aArmorHpChart = getArmorHpChart(vNode);
+            if #aArmorHpChart > 0 then
+                return vNode;
+            end
+        end
+    end
+    return nil;
 end
