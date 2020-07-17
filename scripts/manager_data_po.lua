@@ -1,6 +1,20 @@
 function onInit()
 end
 
+function parseArmorHpFromProperties(sProperties)
+	local aHpArray = {};
+	if not sProperties then
+		return aHpArray;
+	end
+	local sHp = sProperties:match("HP: *%[(.*)%]");
+	
+	local aHpLevels = UtilityPO.fromCSV(sHp);
+	for _, sHpLevel in ipairs(aHpLevels) do
+		table.insert(aHpArray, tonumber(sHpLevel));
+	end
+	return aHpArray;
+end
+
 function parseSizeFromProperties(sProperties)
 	if not sProperties then
 		return nil;

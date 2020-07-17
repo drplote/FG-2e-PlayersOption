@@ -1,6 +1,44 @@
 function onInit()
 end
 
+function getArmorHpChart(nodeArmor)
+    local sProperties = DB.getValue(nodeArmor, "properties", "");
+    local aHpChart = DataManagerPO.parseArmorHpFromProperties(sProperties);
+    local nBonus = getArmorBonus(nodeArmor);
+    if nBonus > 0 then
+        local nBonusLevelHp = aHpChart[1];
+        for i = 1, nBonus, 1 do
+            table.insert(aHpChart, 1, nBonusLevelHp);
+        end
+    end
+    return aHpChart;
+end
+
+function getArmorDamage(nodeArmor)
+    return DB.getValue(nodeArmor, "armorDamage", 0); -- TODO: check for correct property name
+end
+
+function getArmorBonus(nodeArmor)
+    return DB.getValue(nodeArmor, "bonus", 0);
+end
+
+function getAcLostFromDamage(nodeArmor)
+    local aHpChart = getArmorHpChart(nodeArmor);
+    local nDamage = getArmorDamage(nodeArmor)
+    local nAcLost = 0;
+
+    if nDamage > 0 and #aHpChart > 0 then
+        for _, nHpAtLevel in ipairs(aHpChart) do 
+            nDamage = nDamage - nHpAtlevel;
+            if nDamage >= 0 then
+                nAcLost = nAcLost + 1;
+            end
+        end
+    end
+
+    return nAcLost;
+end
+
 function getHitModifiersForSourceVsCharacter(rSource, rChar)
     return getHitModifierForDamageTypesVsCharacter(rChar, rSource.aDamageTypes);
 end
