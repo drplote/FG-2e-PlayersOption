@@ -1,5 +1,3 @@
-aCritState = {};
-
 function onInit()
 end
 
@@ -22,7 +20,6 @@ function isCriticalHitCombatAndTactics(rRoll, rAction, nDefenseVal)
 end
 
 function getCritThreshold(rRoll)
-	Debug.console("getCritThreshold", "rRoll", rRoll);
 	if PlayerOptionManager.isUsingCombatAndTacticsCritsRAW() then
 		return 18;
 	else
@@ -82,9 +79,8 @@ function handleCrit(rSource, rTarget)
 		local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender);
 		local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender, rWeaponInfo);
 		local nSeverity = getSeverityDieRoll(nSizeDifference);
-		Debug.console("handleCrit", "rWeaponInfo", rWeaponInfo, "nSizeDifference", nSizeDifference);
 		local rCrit = getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity);
-		setCritState(rSource, rTarget, rCrit.dmgMultiplier);
+		StateManagerPO.setCritState(rSource, rTarget, rCrit.dmgMultiplier);
 		return rCrit;
 	end
 	return nil;
@@ -150,7 +146,6 @@ function getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity)
 		rCrit = {};
 		rCrit.error = true;
 	else
-		Debug.console("getCritResult", "sDefenderType", sDefenderType, "sDamageType", sDamageType);
 		rCrit = DataCommonPO.aCritCharts[sDefenderType][sDamageType][rHitLocation.locationCategory][nSeverity];		
 	end
 	
@@ -191,51 +186,4 @@ function getSeverityDieRoll(nSizeDifference)
 		nRollResult = 13;
 	end
 	return nRollResult;
-end
-
-function setCritState(rSource, rTarget, nDmgMult)
-  local sSourceCT = ActorManager.getCreatureNodeName(rSource);
-  if sSourceCT == "" then
-    return;
-  end
-  local sTargetCT = "";
-  if rTarget then
-    sTargetCT = ActorManager.getCTNodeName(rTarget);
-  end
-  
-  if not aCritState[sSourceCT] then
-    aCritState[sSourceCT] = {};
-  end
-  table.insert(aCritState[sSourceCT], {["sTargetCT"]=sTargetCT, ["nDmgMult"]=nDmgMult});
-end
-
-function clearCritState(rSource)
-  local sSourceCT = ActorManager.getCreatureNodeName(rSource);
-  if sSourceCT ~= "" then
-    aCritState[sSourceCT] = nil;
-  end
-end
-
-function hasCritState(rSource, rTarget)
-  local sSourceCT = ActorManager.getCreatureNodeName(rSource);
-  if sSourceCT == "" then
-    return;
-  end
-  local sTargetCT = "";
-  if rTarget then
-    sTargetCT = ActorManager.getCTNodeName(rTarget);
-  end
-
-  if not aCritState[sSourceCT] then
-    return false, 1;
-  end
-  
-  for k,v in ipairs(aCritState[sSourceCT]) do
-    if v.sTargetCT == sTargetCT then
-      table.remove(aCritState[sSourceCT], k);
-      return true, v.nDmgMult;
-    end
-  end
-  
-  return false, 1;
 end

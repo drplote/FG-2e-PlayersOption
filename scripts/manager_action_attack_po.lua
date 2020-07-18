@@ -3,8 +3,7 @@ local fOnAttack;
 local fIsCrit;
 local fClearCritState;
 local fGetRoll;
-
-
+local fApplyAttack;
 
 function onInit()
   fModAttack = ActionAttack.modAttack;
@@ -23,6 +22,84 @@ function onInit()
 
   fGetRoll = ActionAttack.getRoll;
   ActionAttack.getRoll = getRollOverride;
+
+  fApplyAttack = ActionAttack.applyAttack;
+  ActionAttack.applyAttack = applyAttackOverride;
+end
+
+function applyAttackOverride(rSource, rTarget, msgOOB)
+  local bSecret = (tonumber(msgOOB.nSecret) == 1);
+  local sAttackType = msgOOB.sAttackType; -- 'attack'
+  local sDesc = msgOOB.sDesc;
+  local nTotal = tonumber(msgOOB.nTotal) or 0;
+  local sDMResults = msgOOB.sDMResults;
+  local sWeaponName = msgOOB.sWeaponName; -- longsword
+  local sWeaponType = msgOOB.sWeaponType; -- 'R' or 'M' or 'P'
+  local sPCExtendedText = msgOOB.sPCExtendedText; -- includes AC hit
+  
+  local msgShort = {font = "msgfont"};
+  local msgLong = {font = "msgfont"};
+
+  msgShort.text = "Attack ->";
+  msgLong.text = "Attack [" .. nTotal .. "] ->";
+
+  local sAttackTypeFull = string.match(sDesc, "(%[ATTACK %(%a%)%])");
+  if not sAttackTypeFull or sAttackTypeFull == "" then
+    sAttackTypeFull = "[ATTACK (?)]";
+  end
+  msgLong.text = msgLong.text .. sAttackTypeFull;
+  
+  -- add in weapon used for attack for sound trigger search
+  if (sWeaponType and sWeaponType ~= "") then
+    msgShort.text = msgShort.text .. "(" .. sWeaponType .. ")";
+  end
+
+  if rTarget then
+    msgShort.text = msgShort.text .. " [at " .. ActorManager.getDisplayName(rTarget) .. "]";
+    msgLong.text = msgLong.text .. " [at " .. ActorManager.getDisplayName(rTarget) .. "]";
+  end
+  
+  if sDMResults ~= "" then
+    msgLong.text = msgLong.text .. " " .. sDMResults;
+  end
+  
+  if sPCExtendedText ~= "" then
+    msgShort.text = msgShort.text .. sPCExtendedText;
+  end
+  
+  local bPsionicPower = false;
+  local sType = string.match(sDesc, "%[ATTACK %((%w+)%)%]");
+  if sType and sType == "P" then
+    bPsionicPower = true;
+  end
+  
+  msgShort.icon = "roll_attack";
+  if string.match(sDMResults, "%[CRITICAL HIT%]") then
+        msgLong.font = "hitfont";
+    msgLong.icon = "roll_attack_crit";
+  elseif string.match(sDMResults, "HIT%]") then
+    msgLong.font = "hitfont";
+    if bPsionicPower then
+      msgLong.icon = "roll_psionic_hit";
+    else
+      msgLong.icon = "roll_attack_hit";
+    end
+  elseif string.match(sDMResults, "MISS%]") then
+    if string.match(sDMResults, "%[SHIELD%]") then
+      msgLong.font = "shieldhitfont";
+    else
+      msgLong.font = "missfont";
+    end
+    if bPsionicPower then
+      msgLong.icon = "roll_psionic_miss";
+    else
+      msgLong.icon = "roll_attack_miss";
+    end
+  else
+    msgLong.icon = "roll_attack";
+  end
+  
+  ActionsManager.outputResult(bSecret, rSource, rTarget, msgLong, msgShort);
 end
 
 function getRollOverride(rActor, rAction)
@@ -65,7 +142,7 @@ function onAttackOverride(rSource, rTarget, rRoll)
     
   rAction.aMessages = {};
   
-  local nDefenseVal, nAtkEffectsBonus, nDefEffectsBonus = ActorManager2.getDefenseValue(rSource, rTarget, rRoll);
+  local nDefenseVal, nAtkEffectsBonus, nDefEffectsBonus, nACShield = ActorManagerPO.getDefenseValue(rSource, rTarget, rRoll);
   
   --table.insert(rAction.aMessages, string.format(sFormat, nAtkEffectsBonus));
   
@@ -83,12 +160,10 @@ function onAttackOverride(rSource, rTarget, rRoll)
   end
   --  local bCanCrit = true;
   -- insert AC hit
---Debug.console("manager_action_attack.lua","onAttack","nDefenseVal",nDefenseVal);
   local nACHit = (20 - (rAction.nTotal + rRoll.nBaseAttack));
   if DataCommonADND.coreVersion == "1e" or DataCommonADND.coreVersion == "becmi" then
     local nodeForMatrix = DB.findNode(rSource.sCreatureNode);
     nACHit = CombatManagerADND.getACHitFromMatrix(nodeForMatrix,nAttackMatrixRoll);
---Debug.console("manager_action_attack.lua","onAttack","Matrix ACHit--------->",nACHit);  
   elseif bOptAscendingAC then   -- you can't have AscendingAC and 1e Matrix (right now)
     nACHit = (rAction.nTotal + rRoll.nBaseAttack);
   end
@@ -152,7 +227,6 @@ function onAttackOverride(rSource, rTarget, rRoll)
     bHitTarget = true;
     rAction.sResult = "crit";
   	if PlayerOptionManager.isPOCritEnabled() then
-      Debug.console("rSource", rSource);
   		  local rCrit = CritManagerPO.handleCrit(rSource, rTarget);
         if PlayerOptionManager.isGenerateHitLocationsEnabled() then
           addHitLocationToAction(rAction, rCrit.sHitLocation);
@@ -180,7 +254,6 @@ function onAttackOverride(rSource, rTarget, rRoll)
     if (rTarget == nil and rRoll.Psionic_DisciplineType:match("attack")) then
       -- psionic attacks only work with a target, powers however have target MACs so... this lovely confusing mess.
     else if (is2e and bHit) or (not is2e and not bOptAscendingAC and bMatrixHit) then
-    --Debug.console("manager_action_attack.lua","onAttack","nDefenseVal",nDefenseVal);
     -- nFirstDie = natural roll, nat 20 == auto-hit, if you can't crit you can still hit on a 20
     -- if rAction.nTotal >= nDefenseVal or rAction.nFirstDie == 20 then
 -------------------------------------
@@ -215,6 +288,16 @@ function onAttackOverride(rSource, rTarget, rRoll)
         rMessage.icon = "roll_psionic_miss";
         rMessage.text = rMessage.text .. sAdjustPSPText;
       end
+
+      if PlayerOptionManager.isUsingArmorDamage() then
+        if nACShield < 0 and (nTargetDecendingAC - nACShield) >= nACHit then
+          StateManagerPO.setShieldHitState(rSource, rTarget);
+          rMessage.font = "shieldhitfont";
+          sExtendedText = sExtendedText .. "[SHIELD]";
+          table.insert(rAction.aMessages, "[SHIELD]");
+        end
+      end
+
       sExtendedText = sExtendedText .. "[MISS]";
       table.insert(rAction.aMessages, "[MISS]");
     end
@@ -298,6 +381,7 @@ function onAttackOverride(rSource, rTarget, rRoll)
 end
 
 function modAttackOverride(rSource, rTarget, rRoll)
+    StateManagerPO.clearShieldHitState(rSource);
     fModAttack(rSource, rTarget, rRoll);
 	
     if PlayerOptionManager.isWeaponTypeVsArmorModsEnabled() then
@@ -345,16 +429,13 @@ function addWeaponTypeVsArmorModToRoll(rRoll, sDamageType, sArmor, nMod)
 end
 
 function clearCritStateOverride(rSource)
-  if PlayerOptionManager.isPOCritEnabled() then
-    CritManagerPO.clearCritState(rSource)
-  else
+    StateManagerPO.clearCritState(rSource)
     fClearCritState(rSource);
-  end
 end
 
 function isCritOverride(rSource, rTarget)
   if PlayerOptionManager.isPOCritEnabled() then
-    return CritManagerPO.hasCritState(rSource, rTarget);
+    return StateManagerPO.hasCritState(rSource, rTarget);
   else
     return fIsCrit(rSource, rTarget);
   end

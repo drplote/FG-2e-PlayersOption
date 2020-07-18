@@ -6,8 +6,6 @@ sKickerOptionKey = "SternoHouseRule_HpKicker";
 sPenetrationOptionKey = "SternoHouseRule_PenetrationDice";
 sArmorDamageOptionKey = "SternoHouseRule_ArmorDamage";
 
-
-
 function onInit()
     registerOptions();
 end 
@@ -32,10 +30,7 @@ function registerOptions()
     
     OptionsManager.registerOption2(sPenetrationOptionKey, false, "option_header_sterno_house_rule", "option_label_penetration_dice", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
-    OptionsManager.registerOption2(sArmorDamageOptionKey, false, "option_header_sterno_house_rule", "option_label_armor_damage", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
-    
-    --OptionsManager.registerOption2("SternoHouseRule_ShieldDamage", false, "option_header_sterno_house_rule", "option_label_shield_damage", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
-    
+    OptionsManager.registerOption2(sArmorDamageOptionKey, false, "option_header_sterno_house_rule", "option_label_armor_damage", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 end
 
 function isUsingArmorDamage()

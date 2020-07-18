@@ -1,6 +1,276 @@
 function onInit()
 end
 
+function getDefenseValue(rAttacker, rDefender, rRoll)
+  local nDefense = 10;
+  local bPsionic = false;
+  local nACShield = 0;
+  
+  if (rRoll) then -- need to get defense value from psionic power
+    bPsionic = rRoll.bPsionic == "true";
+    if (bPsionic) then
+      nDefense = tonumber(rRoll.Psionic_MAC) or 10;
+      nDefense = ActorManager2.convertToAscendingAC(nDefense);
+    end
+  end
+
+  if not rDefender and rRoll and bPsionic then -- no defender but psionic power target
+    return nDefense, 0, 0, nACShield;
+  elseif not rDefender or not rRoll then
+    return nil, 0, 0, nACShield;
+  end
+  
+  -- Base calculations
+  local sAttack = rRoll.sDesc;
+  
+  local sAttackType = string.match(sAttack, "%[ATTACK.*%((%w+)%)%]");
+  local bOpportunity = string.match(sAttack, "%[OPPORTUNITY%]");
+  local nCover = tonumber(string.match(sAttack, "%[COVER %-(%d)%]")) or 0;
+  local bRearAtk = string.match(sAttack, "%[REAR%]");
+  
+  local bNoDex = ModifierStack.getModifierKey("ATK_NODEXTERITY");
+  local bNoShield = ModifierStack.getModifierKey("ATK_SHIELDLESS");
+  local bIgnoreArmor = ModifierStack.getModifierKey("ATK_IGNORE_ARMOR");
+  
+  -- Effects
+  local nAttackEffectMod = 0;
+  local nDefenseEffectMod = 0;
+  local bADV = false;
+  local bDIS = false;
+  
+  local sDefenseStat = "dexterity";
+
+  local sDefenderType, nodeDefender = ActorManager.getTypeAndNode(rDefender);
+  if not nodeDefender then
+    return nil, 0, 0, nACShield;
+  end
+
+  if bPsionic then -- calculate defenses for psionics
+    if rRoll.Psionic_DisciplineType:match("attack") then -- mental attack
+      nDefense = DB.getValue(nodeDefender,"combat.mac.score",10);
+      -- need to get effects/adjustments for MAC/BMAC/etc.
+      -- grab BAC value if exists in effects
+      local nBonusMACBase, nBonusMACBaseEffects = EffectManager5E.getEffectsBonus(rDefender, "BMAC",true);
+      if (nBonusMACBaseEffects > 0 and nBonusMACBase < nDefense) then
+        nDefense = nBonusMACBase;
+      end
+      local nBonusMAC, nBonusMACEffects = EffectManager5E.getEffectsBonus(rDefender, "MAC",true);
+      if (nBonusMACEffects > 0) then
+        -- we minus the mod because +1 is good, -1 is bad, but lower MAC is better.
+        nDefense = nDefense - nBonusMAC;
+      end
+    else -- using a power with a MAC
+      nDefense = tonumber(rRoll.Psionic_MAC) or 10;
+    end
+    nDefense = ActorManager2.convertToAscendingAC(nDefense);
+
+    -- if psionic attack, check psionic defenses
+    if rRoll.Psionic_DisciplineType == "attack" then
+      local nodeSpell = DB.findNode(rRoll.sSpellSource);
+      if (nodeSpell) then
+        local sSpellName = DB.getValue(nodeSpell,"name",""):lower();
+        if sSpellName ~= "" then 
+          nAttackEffectMod = ActorManager2.getPsionicAttackVersusDefenseMode(rDefender,rAttacker,sSpellName,nAttackEffectMod);
+        end
+      end
+    end
+
+  else -- calculate defenses for melee/range attacks
+    local nACTemp = 0;
+    local nACBase = 10;
+    local nACArmor = 0;
+    local nACMisc = 0;
+    
+    local bAttackRanged = (rRoll.range and rRoll.range == "R");
+    local bAttackMelee = (rRoll.range and rRoll.range == "M");
+
+    local nBaseRangeAC = 10;
+    local nRangeACEffect = 0;
+    local nRangeACMod = 0;
+    local nRangeACModEffect = 0;
+
+    local nBaseMeleeAC = 10;
+    local nMeleeACEffect = 0;
+    local nMeleeACMod = 0;
+    local nMeleeACModEffect = 0;
+    
+    -- grab BAC value if exists in effects
+    local nBonusACBase, nBonusACEffects = EffectManager5E.getEffectsBonus(rDefender, "BAC",true);
+
+    if (bAttackMelee) then
+      nBaseMeleeAC, nMeleeACEffect = EffectManager5E.getEffectsBonus(rDefender, "BMELEEAC",true);
+      nMeleeACMod, nMeleeACModEffect = EffectManager5E.getEffectsBonus(rDefender, "MELEEAC",true);
+    end
+    
+    if (bAttackRanged) then
+      nBaseRangeAC, nRangeACEffect = EffectManager5E.getEffectsBonus(rDefender, "BRANGEAC",true);
+      nRangeACMod, nRangeACModEffect = EffectManager5E.getEffectsBonus(rDefender, "RANGEAC",true);
+    end
+    
+    local bProne = false;
+    local bParalyzed = false;
+    local bRestrainedStunned = false;
+    if EffectManager5E.hasEffect(rDefender, "Paralyzed", rAttacker) then
+      bParalyzed = true;
+    end
+    if EffectManager5E.hasEffect(rDefender, "Prone", rAttacker) then
+      bProne = true;
+    end
+    if EffectManager5E.hasEffect(rDefender, "Restrained", rAttacker) then
+      bRestrainedStunned = true;
+    end
+    if EffectManager5E.hasEffect(rDefender, "Stunned", rAttacker) then
+      bRestrainedStunned = true;
+    end
+    if EffectManager5E.hasEffect(rDefender, "Unconscious", rAttacker) then
+      bProne = true;
+    end
+    
+    -- if PC
+    if sDefenderType == "pc" then
+      local nodeDefender = DB.findNode(rDefender.sCreatureNode);
+      nACTemp = DB.getValue(nodeDefender, "defenses.ac.temporary",0);
+      nACBase = DB.getValue(nodeDefender, "defenses.ac.base",10);
+      nACArmor = DB.getValue(nodeDefender, "defenses.ac.armor",0);
+      nACShield = DB.getValue(nodeDefender, "defenses.ac.shield",0);
+      nACMisc = DB.getValue(nodeDefender, "defenses.ac.misc",0);
+
+    if bIgnoreArmor then
+      nDefense = 10;
+    else
+      nDefense = nACBase;
+    end
+    
+    else
+      -- ELSE NPC
+      nDefense = DB.getValue(nodeDefender, "ac", 10);
+    end
+
+    -- use BAC style effects if exist
+    if nBonusACEffects > 0 then
+      if nBonusACBase < nDefense then
+        nDefense = nBonusACBase;
+      end
+    end
+    if (bAttackMelee and nMeleeACEffect > 0) then
+      if (nBaseMeleeAC < nDefense) then
+        nDefense = nBaseMeleeAC;
+      end
+    end
+    if (bAttackRanged and nRangeACEffect > 0) then
+      if (nBaseRangeAC < nDefense) then
+        nDefense = nBaseRangeAC;
+      end
+    end
+    if (bAttackMelee and nMeleeACModEffect > 0) then
+      nACTemp = nACTemp + (nACTemp - nMeleeACMod); -- (minus the mod, +3 is good, so we reduce AC by 3, -3 would be worse)
+    end
+    if (bAttackRanged and nRangeACModEffect > 0) then
+      nACTemp = nACTemp + (nACTemp - nRangeACMod); -- (minus the mod, +3 is good, so we reduce AC by 3, -3 would be worse)
+    end
+    -- 
+    
+    if sDefenderType == "pc" then
+      -- dont get shield bonus if you attacked from rear
+      -- or if you are prone
+	    if bNoShield or bRearAtk or bProne or bParalyzed or bRestrainedStunned or 
+	        EffectManager5E.hasEffect(rDefender, "NOSHIELD", nil) or 
+	        EffectManager5E.hasEffect(rDefender, "SHIELDLESS", nil) or 
+	        EffectManager5E.hasEffect(rDefender, "Charged", nil) then
+	    		nACShield = 0;
+		end
+        nDefense = nDefense + nACTemp + nACArmor + nACShield + nACMisc;
+    else -- npc
+      nDefense = nDefense + nACTemp; -- nACTemp are "modifiders"
+    end
+       
+    -- disable NPC's ability to adjust AC from DEX. Set their AC in the NPC AC field
+    -- if "NODEX" effect set we ignore dex in AC calculation
+    if sDefenderType == "pc" then
+      -- check to see if casting or if has NODEX effect, if so dont apply dex AC
+      -- if attacking from rear no dex! if prone, they get no dex.
+      -- also, make sure modifier
+      if bNoDex or bRearAtk or bProne or bParalyzed or bRestrainedStunned or 
+          ActionSave.hasConcentrationEffects(rDefender) or 
+          EffectManager5E.hasEffect(rDefender, "BLINDED", nil) or 
+          EffectManager5E.hasEffect(rDefender, "Charged", nil) or 
+          EffectManager5E.hasEffect(rDefender, "NODEX", nil) or 
+          EffectManager5E.hasEffect(rDefender, "NO-DEXTERITY", nil) then
+      -- dont apply dex in these cases
+      else
+      -- apply dex
+        local nDefenseStatMod = ActorManager2.getAbilityBonus(rDefender, sDefenseStat, "defenseadj");
+        nDefense = nDefense + nDefenseStatMod;
+      end
+    end
+      
+    -- flip ac to ascending since rest of the code uses ascending AC (but we show decending).
+    -- this is just to make things easier sharing code with 5E. 
+    -- Mathmatically it's the same and display shows what AD&Ders expect.
+    nDefense = ActorManager2.convertToAscendingAC(nDefense);
+    --
+    
+    if ActorManager.hasCT(rDefender) then
+      local nBonusStat = 0;
+      local nBonusSituational = 0;
+      local nBonusAC = 0;
+      
+      local aAttackFilter = {};
+      if sAttackType == "M" then
+        table.insert(aAttackFilter, "melee");
+      elseif sAttackType == "R" then
+        table.insert(aAttackFilter, "ranged");
+      end
+      if bOpportunity then
+        table.insert(aAttackFilter, "opportunity");
+      end
+
+      local aBonusTargetedAttackDice, nBonusTargetedAttack = EffectManager5E.getEffectsBonus(rAttacker, "ATK", false, aAttackFilter, rDefender, true);
+      nAttackEffectMod = nAttackEffectMod + StringManager.evalDice(aBonusTargetedAttackDice, nBonusTargetedAttack);
+            
+      local aACEffects, nACEffectCount = EffectManager5E.getEffectsBonusByType(rDefender, {"AC"}, true, aAttackFilter, rAttacker);
+      for _,v in pairs(aACEffects) do
+        nBonusAC = nBonusAC + v.mod;
+      end
+      
+      -- minus 1 ac because the charged.
+      if EffectManager5E.hasEffect(rDefender, "Charged", nil) then
+        nBonusAC = nBonusAC -1;
+      end
+      if EffectManager5E.hasEffect(rDefender, "Invisible", rAttacker) then
+        nBonusAC = nBonusAC + 4;
+      end
+      
+      -- this makes DEX: -3 worsen AC by 3, wtf... 5e code?
+      --
+      -- nBonusStat = getAbilityEffectsBonus(rDefender, sDefenseStat);
+      --
+      -- if we ever remove the persistant stat for ability scores 
+      -- and go to "effect check" only then we'll need to revisit this.
+      
+      -- AC is 4 worse when blinded
+      if EffectManager5E.hasEffect(rDefender, "BLINDED", nil) then
+        nBonusAC = nBonusAC - 4;
+      end
+ 
+      -- encumbrance penalties
+      --local sRank = CharManager.getEncumbranceRank2e(nodeDefender);
+      local sRank = DB.getValue(nodeDefender,"speed.encumbrancerank","");
+      if sRank == "Heavy" then
+        nBonusAC = nBonusAC -1;
+      elseif sRank == "Severe" or sRank == "MAX" then
+        nBonusAC = nBonusAC -3;
+      end
+      
+      nDefenseEffectMod = nBonusAC + nBonusStat + nBonusSituational;
+    end
+    
+  end -- end if bPsionic
+
+  -- Results
+  return nDefense, nAttackEffectMod, nDefenseEffectMod, nACShield;
+end
+
 function getTypeForHitLocation(nodeActor)
 	if ActorManager.isPC(nodeActor) then
 		return "humanoid";
@@ -74,5 +344,9 @@ function getDefaultSizeFromRace(nodeActor)
 	local sRace = DB.getValue(nodeActor, "race", "");
 	local nSize = DataCommonPO.aDefaultRaceSizes[sRace];
 	return nSize;
+end
+
+function getName(nodeActor)
+	return DB.getValue(nodeActor, "name");
 end
 

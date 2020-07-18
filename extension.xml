@@ -18,11 +18,8 @@
 
   <announcement text="Player's Option rules, house rules, and automation enhancements for 2E -- by Sterno" font="emotefont" icon="rulesetlogo_DungeonClassic" />
   <base>    
-    <!-- High-level scripts -->
-	<!--<includefile source="campaign/record_item.xml" />
-	<includefile source="campaign/record_char_main.xml" />
-	<includefile source="strings/strings_armor_damage.xml" />
-    <script name="ArmorDamageManager" file="scripts/manager_armor_damage.lua" />-->
+    
+    <includefile source="graphics/graphics_fonts_po.xml" />
     
     <includefile source="campaign/record_char_weapon.xml"/>
     <includefile source="cta/cta_host.xml"/>
@@ -48,6 +45,7 @@
   	<script name="ActorManagerPO" file="scripts/manager_actor_po.lua" />
     <script name="CharManagerPO" file="scripts/manager_char_po.lua" />
     <script name="ChatManagerPO" file="scripts/manager_chat_po.lua" />
+    <script name="StateManagerPO" file="scripts/manager_state_po.lua" />
 
     
   </base>

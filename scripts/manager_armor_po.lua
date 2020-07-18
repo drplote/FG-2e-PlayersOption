@@ -11,8 +11,6 @@ end
 
 function getArmorHpChart(nodeArmor)
     local sProperties = getProperties(nodeArmor);
-    Debug.console("nodeArmor", nodeArmor);
-    Debug.console("sProperties", sProperties);
     local aHpChart = DataManagerPO.parseArmorHpFromProperties(sProperties);
     
     if not aHpChart or #aHpChart == 0 then 
@@ -92,28 +90,23 @@ function getAcBase(nodeArmor)
     local nBaseAc;
 
     local bIsSuitOfArmor = isSuitOfArmor(nodeArmor);
-    Debug.console("nodeArmor", nodeArmor);
-    Debug.console("bIsSuitOfArmor", bIsSuitOfArmor);
     if bIsSuitOfArmor then
         nBaseAc = DB.getValue(nodeArmor, "ac", 10);
     else
         nBaseAc = DB.getValue(nodeArmor, "ac", 0);
     end
-    Debug.console("nBaseAc", nBaseAc);
 
     if PlayerOptionManager.isUsingArmorDamage() then
         -- Cap how bad it can get (in case someone had more damage levels than AC levels).
         -- Cursed items are handled via their "bonus" so cap won't affect them.
         -- Shields and magic items can't be worse than base 0, armor can't be worse than base 10.
         local nAcLostFromDamage = getAcLostFromDamage(nodeArmor);
-        Debug.console("nAcLostFromDamage", nAcLostFromDamage);
         if bIsSuitOfArmor then
             nBaseAc = math.min(10 + getMagicAcBonus(nodeArmor), nBaseAc + nAcLostFromDamage);
         else
             nBaseAc = math.max(0 - getMagicAcBonus(nodeArmor), nBaseAc - nAcLostFromDamage);
         end
     end;
-    Debug.console("nBaseAc final", nBaseAc);
 
     return nBaseAc;
 end

@@ -24,7 +24,7 @@
     <string name="option_label_hp_kicker">Hit Point Kickers</string>
     <string name="option_label_penetration_dice">Penetration Dice</string>
     <string name="option_label_armor_damage">Hackmaster Armor Damage</string>
-    <string name="option_label_shield_damage">Hackmaster Shield Damage</string>
+    <string name="option_label_shield_damage">Hackmaster Shield Hits</string>
 
     <!-- New Properties -->
     <string name="item_label_hp_lost">HP Lost</string>
