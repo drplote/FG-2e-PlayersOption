@@ -53,7 +53,7 @@ function getDefaultDamageReduction(nodeArmor)
     local sNameLower = getName(nodeArmor):lower();
         for sArmorType, nArmorDr in pairs(DataCommonPO.aDefaultArmorDamageReduction) do
         if sNameLower:find(sArmorType) then 
-            return nDr;
+            return nArmorDr;
         end
     end
     return 1;

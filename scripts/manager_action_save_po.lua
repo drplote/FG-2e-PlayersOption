@@ -1,9 +1,28 @@
 local fModSave;
+local fApplySave;
+
 
 function onInit()
 	fModSave = ActionSave.modSave;
 	ActionSave.modSave = modSaveOverride;
 	ActionsManager.registerModHandler("save", modSaveOverride);
+
+	fApplySave = ActionSave.applySave;
+	ActionSave.applySave = applySaveOverride;
+end
+
+function applySaveOverride(rSource, rOrigin, rAction, sUser)
+	fApplySave(rSource, rOrigin, rAction, sUser);
+	if rAction and rAction.sSaveDesc == "TOP" then
+		if rAction.nTotal < rAction.nTarget then
+			local nodeChar = ActorManager.getCTNode(rSource);
+			if nodeChar then 
+				EffectManager.addEffect("", "", ActorManager.getCTNode(rSource), 
+					{ sName = "Unconscious", sLabel = "Unconscious", nDuration = rAction.nTarget - rAction.nTotal }, true);
+			end
+			
+		end
+	end
 end
 
 

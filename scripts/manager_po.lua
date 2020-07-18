@@ -7,6 +7,7 @@ sPenetrationOptionKey = "HouseRule_PenetrationDice";
 sArmorDamageOptionKey = "HouseRule_ArmorDamage";
 sThresholdOfPainOptionKey = "HouseRule_ThresholdOfPain";
 sHackmasterStatScaling = "HouseRule_HackmasterStatScaling";
+sReactionAdjAffectsInit = "HouseRule_ReactionAdjustmentAffectsInit"
 
 function onInit()
     registerOptions();
@@ -38,7 +39,13 @@ function registerOptions()
 
     OptionsManager.registerOption2(sThresholdOfPainOptionKey, false, "option_header_house_rule", "option_label_threshold_of_pain", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
+    OptionsManager.registerOption2(sReactionAdjAffectsInit, false, "option_header_house_rule", "option_label_reaction_adj_affects_init", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
+
+end
+
+function isUsingReactionAdjustmentForInitiative()
+	return OptionsManager.isOption(sReactionAdjAffectsInit, "on");
 end
 
 function isUsingHackmasterStats()

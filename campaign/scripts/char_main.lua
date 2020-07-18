@@ -7,6 +7,7 @@ function onInit()
 	DB.addHandler(DB.getPath(node, "inventorylist.*.properties"), "onUpdate", updateArmor);
     OptionsManager.registerCallback(PlayerOptionManager.sArmorDamageOptionKey, updateArmor);
     OptionsManager.registerCallback(PlayerOptionManager.sHackmasterStatScaling, updateStatScaling);
+    OptionsManager.registerCallback(PlayerOptionManager.sReactionAdjAffectsInit, updateInitiativeScores);
 	
 end
 
@@ -22,8 +23,19 @@ end
 
 function updateStatScaling()
 	super.updateAbilityScores(getDatabaseNode());
+	updateInitiativeScores();
 end
 
 function updateArmor()
 	CharManager.calcItemArmorClass(getDatabaseNode());
+end
+
+function updateInitiativeScores()
+	super.updateInitiativeScores();
+	if PlayerOptionManager.isUsingReactionAdjustmentForInitiative() then
+		local nodeChar = getDatabaseNode();
+	  	local nInitTotal = DB.getValue(nodeChar, "initiative.total", 0);
+	  	local nReactionAdj = 0 - DB.getValue(nodeChar, "abilities.dexterity.reactionadj", 0);
+	  	DB.setValue(nodeChar, "initiative.total", "number", nInitTotal + nReactionAdj);
+	end
 end
