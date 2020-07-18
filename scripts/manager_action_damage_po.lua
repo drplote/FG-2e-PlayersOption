@@ -456,7 +456,7 @@ function checkThresholdOfPain(rTarget, nAdjustedDamage, nTotalHP, aNotifications
     if PlayerOptionManager.isUsingThresholdOfPain() then
         if nAdjustedDamage >= (nTotalHP / 2) then
             table.insert(aNotifications, "[THRESHOLD OF PAIN]");
-            -- ActionSavePO.rollThresholdOfPain(rTarget); TODO: get automated save working
+            ActionSavePO.rollThresholdOfPain(rTarget); 
         end
     end
 end
