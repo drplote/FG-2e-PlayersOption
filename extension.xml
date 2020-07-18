@@ -4,10 +4,10 @@
 
   <properties>
     <name>2E Player's Option and more</name>
-    <version>0.3</version>
+    <version>0.4</version>
     <loadorder>99</loadorder>
     <description>
-      <text>Player's Option rules, house rules, and automation enhancements for 2E -- by Sterno</text>
+      <text>Player's Option rules, Hackmaster/house rules, and automation enhancements for 2E -- by Sterno</text>
       <website></website>
       <author>Sterno</author>
     </description>
@@ -22,11 +22,13 @@
     <includefile source="graphics/graphics_fonts_po.xml" />
     
     <includefile source="campaign/record_char_weapon.xml"/>
-    <includefile source="cta/cta_host.xml"/>
     <includefile source="campaign/record_item.xml" />
     <includefile source="campaign/record_char_main.xml" />
+
+    <includefile source="cta/cta_host.xml"/>
     
     <includefile source="strings/strings_player_option.xml"/>
+
     <script name="PlayerOptionManager" file="scripts/manager_po.lua"/>
     <script name="DiceManagerPO" file="scripts/manager_dice_po.lua"/>
     <script name="ActionHealPO" file="scripts/manager_action_heal_po.lua" />
