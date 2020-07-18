@@ -2,9 +2,10 @@ sCritOptionKey = "PlayersOption_CriticalHits";
 sWeaponTypeVsArmorOptionKey = "AdditionalAutomation_WeaponTypeVsArmorMods";
 sStricterResistanceOptionKey = "AdditionalAutomation_StricterResistance";
 sGenerateHitLocationsOptionKey = "AdditionalAutomation_GenerateHitLocations";
-sKickerOptionKey = "SternoHouseRule_HpKicker";
-sPenetrationOptionKey = "SternoHouseRule_PenetrationDice";
-sArmorDamageOptionKey = "SternoHouseRule_ArmorDamage";
+sKickerOptionKey = "HouseRule_HpKicker";
+sPenetrationOptionKey = "HouseRule_PenetrationDice";
+sArmorDamageOptionKey = "HouseRule_ArmorDamage";
+sThresholdOfPainOptionKey = "HouseRule_ThresholdOfPain";
 
 function onInit()
     registerOptions();
@@ -26,11 +27,17 @@ function registerOptions()
     
     
     -- House rules
-    OptionsManager.registerOption2(sKickerOptionKey, false, "option_header_sterno_house_rule", "option_label_hp_kicker", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+    OptionsManager.registerOption2(sKickerOptionKey, false, "option_header_house_rule", "option_label_hp_kicker", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
-    OptionsManager.registerOption2(sPenetrationOptionKey, false, "option_header_sterno_house_rule", "option_label_penetration_dice", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+    OptionsManager.registerOption2(sPenetrationOptionKey, false, "option_header_house_rule", "option_label_penetration_dice", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
-    OptionsManager.registerOption2(sArmorDamageOptionKey, false, "option_header_sterno_house_rule", "option_label_armor_damage", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
+    OptionsManager.registerOption2(sArmorDamageOptionKey, false, "option_header_house_rule", "option_label_armor_damage", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
+
+    OptionsManager.registerOption2(sThresholdOfPainOptionKey, false, "option_header_house_rule", "option_label_threshold_of_pain", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
+end
+
+function isUsingThresholdOfPain()
+	return OptionsManager.isOption(sThresholdOfPainOptionKey, "on");
 end
 
 function isUsingArmorDamage()

@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
-<!-- 
-  Please see the license.html file included with this distribution for 
-  attribution and copyright information.
--->
-
 <root>
     <!-- Player's Option Rules -->
     <string name="option_header_po">Player's Option Rules (GM)</string>
@@ -14,17 +9,18 @@
     <string name="option_val_anyNat20">As base ruleset</string>
 	
 	<string name="option_header_automation">Additional Automation (GM)</string>
-    <string name="option_label_weapontype_vs_armor_mods">Automate Weapon vs Armor mods</string>
+    <string name="option_label_weapontype_vs_armor_mods">Weapon vs Armor to-hit modifiers</string>
 	<string name="option_label_stricter_resistance">Stricter Resistance Rules</string>
 	<string name="option_label_generate_hit_locations">Generate Hit Locations</string>
     <string name="option_label_default_pc_init_to_99">Default PC init to 99</string>
     
     <!-- House Rule Options -->
-    <string name="option_header_sterno_house_rule">Sterno's House Rules (GM)</string>
-    <string name="option_label_hp_kicker">Hit Point Kickers</string>
+    <string name="option_header_house_rule">Hackmaster House Rules (GM)</string>
     <string name="option_label_penetration_dice">Penetration Dice</string>
-    <string name="option_label_armor_damage">Hackmaster Armor Damage</string>
-    <string name="option_label_shield_damage">Hackmaster Shield Hits</string>
+    <string name="option_label_hp_kicker">Hit Point Kickers</string>
+    <string name="option_label_armor_damage">Armor Damage</string>
+    <string name="option_label_shield_damage">Shield Hits</string>
+    <string name="option_label_threshold_of_pain">Threshold of Pain</string>
 
     <!-- New Properties -->
     <string name="item_label_hp_lost">HP Lost</string>

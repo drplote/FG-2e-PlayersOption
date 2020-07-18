@@ -277,6 +277,8 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
       
       -- Apply wounds
       nWounds = math.max(nWounds + nAdjustedDamage, 0);
+
+      checkThresholdOfPain(nAdjustedDamage, nTotalHP, aNotifications);
       
       -- Calculate wounds above HP
       if nWounds > nTotalHP then
@@ -410,19 +412,6 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
     DB.setValue(nodeTarget, "wounds", "number", nWounds);
   end
   
-  --  
-  -- if sTargetType == "pc" then
-    -- DB.setValue(nodeTarget, "hp.deathsavesuccess", "number", math.min(nDeathSaveSuccess, 3));
-    -- DB.setValue(nodeTarget, "hp.deathsavefail", "number", math.min(nDeathSaveFail, 3));
-    -- DB.setValue(nodeTarget, "hp.temporary", "number", nTempHP);
-    -- DB.setValue(nodeTarget, "hp.wounds", "number", (nWounds+nRemainder));
-  -- else
-    -- DB.setValue(nodeTarget, "deathsavesuccess", "number", math.min(nDeathSaveSuccess, 3));
-    -- DB.setValue(nodeTarget, "deathsavefail", "number", math.min(nDeathSaveFail, 3));
-    -- DB.setValue(nodeTarget, "hptemp", "number", nTempHP);
-    -- DB.setValue(nodeTarget, "wounds", "number", nWounds);
-  -- end
-
   -- Check for status change
   local bShowStatus = false;
   if ActorManager.getFaction(rTarget) == "friend" then
@@ -450,9 +439,6 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
     -- the casting is interrupted and spell lost. --celestian
   if nConcentrationDamage > 0 and ActionSave.hasConcentrationEffects(rTarget) then
     if nWounds < nTotalHP then
-      -- local nTargetDC = math.max(math.floor(nConcentrationDamage / 2), 10);
-      -- ActionSave.performConcentrationRoll(nil, rTarget, nTargetDC);
-    -- else
       ActionSave.expireConcentrationEffects(rTarget);
       local sLmsg = {font = "msgfont"};
       sLmsg.icon = "roll_cast";
@@ -461,10 +447,18 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
       local sSmsg = {font = "msgfont"};
       sSmsg.text = string.format("%s's spell casting interrupted.", rTarget.sName);
       
-      --ActionsManager.messageResult(bSecret, nil, rTarget, sLmsg, sSmsg);
       ActionsManager.outputResult(bSecret, nil, rTarget, sLmsg, sSmsg);
     end
   end
+end
+
+function checkThresholdOfPain(nAdjustedDamage, nTotalHP, aNotifications)
+    if PlayerOptionManager.isUsingThresholdOfPain() then
+        if nAdjustedDamage > (nTotalHP / 2) then
+            table.insert(aNotifications, "[THRESHOLD OF PAIN]");
+            -- todo: automate save vs death with wisdom bonus and apply unconscious effect
+        end
+    end
 end
 
 function handleShieldAbsorb(rSource, rTarget, rDamageOutput, nTotal)
