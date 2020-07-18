@@ -5,7 +5,7 @@ aCritCharts = {};
 aDefaultWeaponSizes = {};
 aDefaultCreatureTypesByName = {};
 aDefaultCreatureTypesByType = {};
-aNaturalWeaponNames = {};
+aNaturalWeapons = {};
 aDefaultArmorDamageReduction = {};
 aDefaultArmorHp = {};
 
@@ -16,7 +16,7 @@ function onInit()
 	initializelocationCategorys();
 	initializeDefaultWeaponSizes();
 	initializeDefaultCreatureTypes();
-	initializeNaturalWeaponNames();
+	initializeNaturalWeapons();
 	initializeDefaultArmorDamageReduction();
 	initializeDefaultArmorHp();
 end
@@ -893,8 +893,20 @@ function initializeDefaultCreatureTypes()
 	};
 end
 
-function initializeNaturalWeaponNames()
-	aNaturalWeaponNames = {"claw", "bite", "kick", "punch", "slam", "tail"};
+function initializeNaturalWeapons()
+	-- [sName] = nSizeCategoryDifference
+	aNaturalWeaponNames["bite"]  = 0; 
+	aNaturalWeaponNames["butt"]  = 0;
+	aNaturalWeaponNames["claw"]  = -1;
+	aNaturalWeaponNames["fist"]  = =1;
+	aNaturalWeaponNames["horn"]  = 0;
+	aNaturalWeaponNames["hoof"]  = -1;
+	aNaturalWeaponNames["tail"]  = 0;
+	aNaturalWeaponNames["sting"] = -1;
+	aNaturalWeaponNames["wing"]  = 0;
+	aNaturalWeaponNames["punch"] = -1;
+	aNaturalWeaponNames["slam"]  = -1;
+	aNaturalWeaponNames["kick"]  = -1;
 end
 
 function initializeDefaultArmorDamageReduction()
