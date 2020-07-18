@@ -48,6 +48,7 @@
     <script name="CharManagerPO" file="scripts/manager_char_po.lua" />
     <script name="ChatManagerPO" file="scripts/manager_chat_po.lua" />
     <script name="StateManagerPO" file="scripts/manager_state_po.lua" />
+    <script name="ActionSavePO" file="scripts/manager_action_save_po.lua" />
 
     
   </base>

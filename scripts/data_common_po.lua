@@ -895,18 +895,18 @@ end
 
 function initializeNaturalWeapons()
 	-- [sName] = nSizeCategoryDifference
-	aNaturalWeaponNames["bite"]  = 0; 
-	aNaturalWeaponNames["butt"]  = 0;
-	aNaturalWeaponNames["claw"]  = -1;
-	aNaturalWeaponNames["fist"]  = =1;
-	aNaturalWeaponNames["horn"]  = 0;
-	aNaturalWeaponNames["hoof"]  = -1;
-	aNaturalWeaponNames["tail"]  = 0;
-	aNaturalWeaponNames["sting"] = -1;
-	aNaturalWeaponNames["wing"]  = 0;
-	aNaturalWeaponNames["punch"] = -1;
-	aNaturalWeaponNames["slam"]  = -1;
-	aNaturalWeaponNames["kick"]  = -1;
+	aNaturalWeapons["bite"]  = 0; 
+	aNaturalWeapons["butt"]  = 0;
+	aNaturalWeapons["claw"]  = -1;
+	aNaturalWeapons["fist"]  = -1;
+	aNaturalWeapons["horn"]  = 0;
+	aNaturalWeapons["hoof"]  = -1;
+	aNaturalWeapons["tail"]  = 0;
+	aNaturalWeapons["sting"] = -1;
+	aNaturalWeapons["wing"]  = 0;
+	aNaturalWeapons["punch"] = -1;
+	aNaturalWeapons["slam"]  = -1;
+	aNaturalWeapons["kick"]  = -1;
 end
 
 function initializeDefaultArmorDamageReduction()

@@ -1,6 +1,14 @@
 function onInit()
 end
 
+function getSaveScore(nodeActor, sSave)
+	return DB.getValue(nodeActor, "saves." .. sSave .. ".score", 20);
+end
+
+function getMagicalDefenseAdjustment(nodeActor)
+	return DB.getValue(nodeActor, "abilities.wisdom.magicdefenseadj", 0);
+end
+
 function getDefenseValue(rAttacker, rDefender, rRoll)
   local nDefense = 10;
   local bPsionic = false;

@@ -278,7 +278,7 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
       -- Apply wounds
       nWounds = math.max(nWounds + nAdjustedDamage, 0);
 
-      checkThresholdOfPain(nAdjustedDamage, nTotalHP, aNotifications);
+      checkThresholdOfPain(rTarget, nAdjustedDamage, nTotalHP, aNotifications);
       
       -- Calculate wounds above HP
       if nWounds > nTotalHP then
@@ -288,7 +288,7 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
       
       -- Prepare for calcs
       local nodeTargetCT = ActorManager.getCTNode(rTarget);
-
+      
       -- Deal with remainder damage
       if nRemainder >= (nTotalHP+10) then
         table.insert(aNotifications, "[INSTANT DEATH]");
@@ -452,11 +452,11 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
   end
 end
 
-function checkThresholdOfPain(nAdjustedDamage, nTotalHP, aNotifications)
+function checkThresholdOfPain(rTarget, nAdjustedDamage, nTotalHP, aNotifications)
     if PlayerOptionManager.isUsingThresholdOfPain() then
-        if nAdjustedDamage > (nTotalHP / 2) then
+        if nAdjustedDamage >= (nTotalHP / 2) then
             table.insert(aNotifications, "[THRESHOLD OF PAIN]");
-            -- todo: automate save vs death with wisdom bonus and apply unconscious effect
+            -- ActionSavePO.rollThresholdOfPain(rTarget); TODO: get automated save working
         end
     end
 end
