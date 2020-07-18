@@ -172,14 +172,15 @@ function getHitModifierForDamageTypesVsArmorList(aArmor, aDamageTypes)
     local sUsedDamageType = nil;
     
     -- If for some reason multiple suits of armor are worn, we figure out what which one has the best defense and use that.
-    for _, nodeArmor in pairs(aArmor) do
+    for _, nodeArmor in pairs(aArmor) do        
         local sArmorType, sDamageType, nMod = getHitModifierForDamageTypesVsArmor(nodeArmor, aDamageTypes);
-        if nUsedMod == nil or nUsedMod > nMod then
+        if nMod ~= nil and (nUsedMod == nil or nUsedMod > nMod) then
             sUsedArmorType = sArmorType;
             sUsedDamageType = sDamageType;
             nUsedMod = nMod;
         end 
     end
+    
     return sUsedArmorType, sUsedDamageType, nUsedMod;
 end
 

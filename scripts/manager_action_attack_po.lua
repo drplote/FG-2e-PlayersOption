@@ -382,6 +382,9 @@ end
 
 function modAttackOverride(rSource, rTarget, rRoll)
     StateManagerPO.clearShieldHitState(rSource);
+    if not rSource.aDamageTypes then
+      rSource.aDamageTypes = WeaponManagerPO.decodeDamageTypes(rRoll.aDamageTypes);
+    end
     fModAttack(rSource, rTarget, rRoll);
 	
     if PlayerOptionManager.isWeaponTypeVsArmorModsEnabled() then
