@@ -250,3 +250,26 @@ function getDamageableArmorWorn(nodeChar)
     end
     return nil;
 end
+
+function getBulkOfWornArmor(nodeChar)
+    local nHighestBulk = 0;
+
+    for _,vNode in pairs(CharManagerPO.getEquippedItems(nodeChar)) do
+        if isSuitOfArmor(vNode) then
+            local sProperties = getProperties(vNode):lower();
+            -- TODO: this parsing could be better
+            local nThisArmorBulk = 0;
+            if string.find(sProperties, "bulky") then
+                nThisArmorBulk = 2;
+            elseif string.find(sProperties, "fairly") then
+                nThisArmorBulk = 1;
+            end
+            if getMagicAcBonus(vNode) ~= 0 then
+                nThisArmorBulk = nThisArmorBulk - 1;
+            end
+            
+            nHighestBulk = math.max(nHighestBulk, nThisArmorBulk);
+        end
+    end
+    return nHighestBulk; -- 0 = non, 1 = fairly, 2 = bulky
+end

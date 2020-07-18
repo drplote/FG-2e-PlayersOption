@@ -6,6 +6,7 @@ sKickerOptionKey = "HouseRule_HpKicker";
 sPenetrationOptionKey = "HouseRule_PenetrationDice";
 sArmorDamageOptionKey = "HouseRule_ArmorDamage";
 sThresholdOfPainOptionKey = "HouseRule_ThresholdOfPain";
+sHackmasterStatScaling = "HouseRule_HackmasterStatScaling";
 
 function onInit()
     registerOptions();
@@ -27,6 +28,8 @@ function registerOptions()
     
     
     -- House rules
+    OptionsManager.registerOption2(sHackmasterStatScaling, false, "option_header_house_rule", "option_label_hackmaster_stat_scaling", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
+
     OptionsManager.registerOption2(sKickerOptionKey, false, "option_header_house_rule", "option_label_hp_kicker", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
     OptionsManager.registerOption2(sPenetrationOptionKey, false, "option_header_house_rule", "option_label_penetration_dice", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
@@ -34,6 +37,12 @@ function registerOptions()
     OptionsManager.registerOption2(sArmorDamageOptionKey, false, "option_header_house_rule", "option_label_armor_damage", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
     OptionsManager.registerOption2(sThresholdOfPainOptionKey, false, "option_header_house_rule", "option_label_threshold_of_pain", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
+
+
+end
+
+function isUsingHackmasterStats()
+	return OptionsManager.isOption(sHackmasterStatScaling, "on");
 end
 
 function isUsingThresholdOfPain()

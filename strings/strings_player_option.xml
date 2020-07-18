@@ -21,6 +21,7 @@
     <string name="option_label_armor_damage">Armor Damage</string>
     <string name="option_label_shield_damage">Shield Hits</string>
     <string name="option_label_threshold_of_pain">Threshold of Pain</string>
+    <string name="option_label_hackmaster_stat_scaling">Hackmaster Stat Scaling</string>
 
     <!-- New Properties -->
     <string name="item_label_hp_lost">HP Lost</string>
