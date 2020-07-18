@@ -22,11 +22,15 @@ function rollSave(rTarget, sSave, sDesc, bSecretRoll)
 	if not bSecretRoll then bSecretRoll = false; end
 	local sActorType, nodeActor = ActorManager.getTypeAndNode(rTarget);
 	local nSaveScore = ActorManagerPO.getSaveScore(nodeActor, sSave);
-	ActionSave.performRoll(nil, rTarget, sSave, nSaveScore, bSecretRoll, rTarget, false, sDesc);
+	ActionSave.performRoll(nil, rTarget, sSave, nSaveScore, bSecretRoll, nil, false, sDesc);
 end
 
 function rollThresholdOfPain(rTarget)
 	rollSave(rTarget, "death", "TOP");
+end
+
+function rollCritSave(rTarget)
+	rollSave(rTarget, "death", "CRIT");
 end
 
 function getMagicalDefenseAdjustment(rSource, sSaveDesc)

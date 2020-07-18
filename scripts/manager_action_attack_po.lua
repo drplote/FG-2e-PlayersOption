@@ -232,6 +232,7 @@ function onAttackOverride(rSource, rTarget, rRoll)
           addHitLocationToAction(rAction, rCrit.sHitLocation);
         end
         addCritInfoToAction(rAction, rCrit);
+        ActionSavePO.rollCritSave(rTarget);
   	else
         if PlayerOptionManager.isGenerateHitLocationsEnabled() then
           addHitLocation(rSource, rTarget, rAction);
