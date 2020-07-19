@@ -51,6 +51,8 @@
     <script name="ActionSavePO" file="scripts/manager_action_save_po.lua" />
     <script name="AbilityScoresPO" file="scripts/manager_ability_scores_po.lua" />
     <script name="ActionInitPO" file="scripts/manager_action_init_po.lua" />
+    <script name="FumbleManagerPO" file="scripts/manager_fumble_po.lua" />
+    <script name="CharBackgroundManagerPO" file="scripts/manager_char_background_po.lua" />
 
     
   </base>

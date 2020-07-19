@@ -1,8 +1,11 @@
 function onInit()
 end
 
-function deliverChatMessage(sText)
+function deliverChatMessage(sText, sType)
 	local rMessage = ChatManager.createBaseMessage();
+	if sType then
+		rMessage.type = sType;
+	end
 	rMessage.text = sText;
 	Comm.deliverChatMessage(rMessage);
 end

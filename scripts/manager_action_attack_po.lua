@@ -339,8 +339,12 @@ function onAttackOverride(rSource, rTarget, rRoll)
   
   -- HANDLE FUMBLE/CRIT HOUSE RULES
   local sOptionHRFC = OptionsManager.getOption("HRFC");
-  if rAction.sResult == "fumble" and ((sOptionHRFC == "both") or (sOptionHRFC == "fumble")) then
-    ActionAttack.notifyApplyHRFC("Fumble");
+  if rAction.sResult == "fumble" then
+    if PlayerOptionManager.isUsingFumbleTables() then
+      FumbleManagerPO.handleFumble();
+    elseif sOptionHRFC == "both" or sOptionHRFC == "fumble" then
+      ActionAttack.notifyApplyHRFC("Fumble");
+    end
   end
   if rAction.sResult == "crit" and ((sOptionHRFC == "both") or (sOptionHRFC == "criticalhit")) then
     ActionAttack.notifyApplyHRFC("Critical Hit");

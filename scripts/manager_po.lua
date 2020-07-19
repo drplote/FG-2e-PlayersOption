@@ -9,6 +9,7 @@ sThresholdOfPainOptionKey = "HouseRule_ThresholdOfPain";
 sHackmasterStatScaling = "HouseRule_HackmasterStatScaling";
 sReactionAdjAffectsInit = "HouseRule_ReactionAdjustmentAffectsInit"
 sDefaultPcInitTo99OptionKey = "AdditionalAutomation_DefaultPCInitTo99";
+sFumbleOptionKey = "HouseRule_FumbleTable";
 
 function onInit()
     registerOptions();
@@ -42,7 +43,20 @@ function registerOptions()
 
     OptionsManager.registerOption2(sReactionAdjAffectsInit, false, "option_header_house_rule", "option_label_reaction_adj_affects_init", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
+	OptionsManager.registerOption2(sFumbleOptionKey, false, "option_header_house_rule", "option_label_fumble_table", "option_entry_cycler",{ labels = "option_val_hm_fumbles|option_val_ct_fumbles", values = "hmFumbles|ctFumbles", baselabel = "option_val_off", baseval = "off", default = "off" });
 
+end
+
+function isUsingFumbleTables()
+	return not OptionsManager.isOption(sFumbleOptionKey, "off");
+end
+
+function isUsingSternoFumbles()
+	return OptionsManager.isOption(sFumbleOptionKey, "ctFumbles");
+end
+
+function isUsingHackmasterFumbles()
+	return OptionsManager.isOption(sFumbleOptionKey, "hmFumbles");
 end
 
 function isDefaultingPcInitTo99()
