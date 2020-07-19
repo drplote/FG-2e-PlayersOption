@@ -23,7 +23,7 @@ Enabling this option will use the crit tables from Player's Option: Combat & Tac
 * As base, hit by 5 - Same as above, except now you need a nat 20 instead of an 18 or better (or less than a nat 20 if the weapon has a crit threshold defined as in the base ruleset).
 * As base ruleset - Crits occur on a natural 20 (or less, if a crit threshold is defined on the weapon, as per the base ruleset), regardless of if that would have hit, or by how much.
 
-Right now, when a crit is detected, a crit result is generated per the C&T tables and reported as text. Eventually I plan to add more automation to the crit effects, but right now other than displaying the crit effect message as part of the attack roll output, the only part that's automated is that when you roll damage, it will be either x2 or x3 damage dice, as per the C&T rules. Note that the following pieces of information are needed to generate a crit result, and in some cases I had to make assumptions:
+Right now, when a crit is detected, a crit result is generated per the C&T tables and reported as text. Eventually I plan to add more automation to the crit effects, but right now other than displaying the crit effect message as part of the attack roll output, the only part that's automated is that when you roll damage, it will be either x2 or x3 damage dice, as per the C&T rules, and will roll a death save for you (which has no actual automation effect... it just saves you from doing it manually). Note that the following pieces of information are needed to generate a crit result, and in some cases I had to make assumptions:
 
 #### Creature Type:
 This is needed to determine which crit table to roll on for the target. Currently, this pulls from the monster's "type" entry looking for the words "humanoid", "animal", or "monster". Note that nothing in the Monster Manual actually has the type of "monster"... I end up using this as the default if "humanoid" or "animal" isn't found. It isn't perfect though... say you critically hit a skeleton. It's not type "humanoid" in the Monster Manual, as it's undead... however, it definitely seems like it should roll on the "humanoid" table and not the "monster" table (where things like having a tail are assumed). I've create two tables, "aDefaultCreatureTypesByName" and "aDefaultCreatureTypesByType, in "data_common_po.lua", which you could edit to add monster names and the creature type you'd like them to be treated as for crits. I do plan to go through and add many monsters from the MM that might need correction (skeleton is already done!), but right now you might get some creatures treated as "monster" when you think they'd better fit into another category. Sorry! If you'd like to volunteer some time and provide some mappings for me, I'll be sure to add them to the extension! Currently the only mappings are the name "skeleton" to type humanoid, and the type "giant" to type "humanoid".
@@ -76,7 +76,11 @@ In the current implementation of the 2E ruleset, if a creature (such as a skelet
 
 Toggling this option on simply adds some text in the chat window during a hit to indicate where the attacker hit. It has no real effect other than adding some additional flavor to combat. It determines the hit location using the same rules as critical hit location from the Player's Option: Combat & Tactics book. Note that this option being off doesn't effect critical hits; those are required for the Player's Option critical hits to work and generate a hit location even if this option is diabled.
 
-## Sterno's House Rules
+### Set Unrolled PC Init to 99
+
+Normally when a new round starts, players get a random initiative roll, which they then almost always just reroll anyway. I prefer to have it set them to a 99 initiative so that it's clearer they haven't rolled for their specific action yet. NPCs still use the default behavior of the 2e ruleset.
+
+## Hackmaster-style House Rules
 
 Originally, I set out to write a ruleset for Hackmaster 4e. After doing a lot of work on it, I decided I didnt really want to play Hackmaster 4e. I wanted to play AD&D 2e with just a few of the HM4 rules cherry-picked from it. Here they are!
 
@@ -108,7 +112,7 @@ Example #1: Joe the fighter swings at an ogre with his longsword and hits. He ro
 
 Example #2: Joe the fighter swings at the ogre again, hoping to finish it off. He rolls 1d8 for damage, rolls an 8 again, and starts thinking how nice it would be to have another hit like in example #1. Rolling again, however, he rolls a 1, and his celebration is cut short. His total damage is 8 + 0. His celebration is cut short as he doesn't actually get any bonus damage.
 
-### Armor Damage (disabled: completed in my HM ruleset, not fully working in this extension yet)
+### Armor Damage 
 
 Hackmaster 4th edition had system of armor damage that was more complicated than the one from the 2E Fighter's Handbook that's currently coded into the 2E ruleset. In the Hackmaster ruleset, armor damage is "staged" and after armor receives a certain amount of damage, it drops one AC level of effectiveness. It continues dropping in levels as it takes damage until it is eventually destroyed. Armor takes 1 (or possibly more, for some armors) point of damage for every die of damage rolled against it. It also soaks that much of the hit, preventing some of the damage from reaching the player.
 
@@ -116,7 +120,11 @@ This system works for PCs or for NPCs who have armor in their inventory an equip
 
 There are some special rules around how and when armor takes damage. If armor is magical, it will only take damage from weapon's or equal or higher magical bonus, or from magical damage. For instance, a +1 weapon cannot hurt +2 armor, but a fireball can.
 
-Note: Using this optional rule requires setting up the armor records with information about how the armor should degrade.
+Note: Using this optional rule requires setting up the armor records with information about how the armor should degrade, though I did include default values for all of the armor whose names match those in the AD&D 2E PHB.
+
+You can specify how much damage the armor should soak per damage die by entering "DR: n" in the armor's "Properties" text area, where n is the amount to soak per die. If not provided, it defaults to 1. 
+
+You can specify how many hit points the armor has at each level of protection by entering "HP: `[n1, n2, n3, n4, etc]`" in the "Properties" text area, where n1 is the amount of damage the armor takes before it drops its first point of AC, n2 is the amount it takes before dropping the 2nd point of AC, etc.
 
 Example #1: Joe the fighter is wearing some Chain Mail that has (8,6,4,2,1) for its Armor Regression. This means a brand new suit starts at AC 5, but once it taakes 8 points of damage it drops to AC 6. After 6 more points it drops to AC 7, 4 more to AC 8, 2 more to AC 9, and 1 more destroys it and drops it to AC 10. During a previous battle, he took 6 points of damage, which means it's a little beat up but is still giving him AC 5. And orc swings a morningstar at him and hits, rolling 2d4 for damage and getting a total of 5. Since two dice were rolled for damage, 2 points of that go to Joe's armor, while the remaining 3 points are deduced from Joe's hit points. Additionally, since that just brought his chain mail's total damage up to 8, matching it's first regression threshold, it drops one level of AC to AC 6.
 
@@ -124,7 +132,21 @@ Example #2: Joe the fighter has adventured more and found a +3 suit of Leather A
 
 Example #3: The 10th level magic-user in Joe's party lets loose with a fireball a little too close to Joe in his undamaged +3 Leather Armor, and Joe is caught in the blast. The magic user's fireball does 10d6 damage, totally 31 points. Despite being magical, Joe's armor takes damage from this! It's hp regression is 2,2,2,2,1. Despite 10 damage dice being rolled, the armor can only soak 9 points of the damage before it is destroyed. Joe's leather armor is destroyed, Joe takes 22 damage to his hit points, and is now very pissed at the mage.
 
-### Shield Damage (disabled: completed in my HM ruleset, not fully working in this extension yet)
+### Shield Hits & Damage 
 Hackmaster 4th edition had the concept of shield hits and shield damage. The damage portion worked somewhat similar to the armor damage house rule, except that instead of soaking 1 point of damage per die, shields soak full damage. However, this only comes into play when a shield hit occurs. A shield hit occurs whenever a player is only missed because of their AC bonus from a shield. If so, the attacker rolls damage normally, but all the damage is first applied to the shield directly. If the shield is destroyed, any remaining damage is applied to the player.
 
 For this rule to be worth the trouble, it is recommended you give shield a higher AC bonus. For example, in Hackmaster 4th edition, a Medium shield gave +3 AC, compared to just a +1 in 2E. A medium shield had a regression of 5,4,3, meaning it would drop by 1 AC after the first 5 points of damage, drop another AC with 4 more points of damage, and finally be destroyed after 3 more. Like magic armor, a magical shield only takes damage if the attack hitting it is an equal or higher magical equivalent (or if it's used to block magical damage, such as hiding behind a body shield to get protection from a dragon's breath).
+
+You can specify a shield's hit points the same way as for armor above. If you haven't specified it yourself, it assumes you're using AD&D 2e PHB shields, which only provide 1 AC, and gives them the same number of hit points for that 1 AC that would have been spread out amongst all the levels for a Hackmaster shield. For instance, in Hackmaster a Medium Shield gives +3 AC and has HP of `[5,4,3]`. In 2e, it gives +1 AC, so I defaulted it to act like it has HP: `[12]`.
+
+### Hackmaster Stat Scaling
+
+This options toggles between using the 2E attribute bonuses and the Hackmaster attribute bonuses (to-hit modifiers, damage modifiers, reaction adjustments, etc). It also has the side effect of enabling the Hackmaster/1e style rules for armor bulk affecting movement, though this only comes up if you actually put a "Bulk: b" entry in the armor's "Properties" text field, where valid values of b are "non", "fairly", and "bulky". Should default to non if no bulk is provided, effectively ignoring this rule.
+
+### Reaction Adjustment Affects Init
+
+This option applies the Dexterity Reaction Adjustment value to any rolled initiative. I've noticed that you might have to toggle this with the character sheet open for it to update properly when you enable or disable the option. Be aware of it though I hope to fix that issue in the future.
+
+### Threshold of Pain
+
+Automates the Hackmaster threshold of pain check, which occurs when someone has taken half of their maximum hit points of damage in a single hit. Automatically rolls a saving throw vs death (with Magical Defense Adjustment from Wisdom) and applies unconsciousness for a duration in rounds equal to the amount you fail the roll by. Currently kind of annoying since you could be knocking skeletons and other things out that TOP shouldn't apply to, so a future plan is to add in another option which does the roll but doesn't apply unconsciousness (you can do it manually), and also create a way to specify that a character or NPC should be immune to TOP checks.
