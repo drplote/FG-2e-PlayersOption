@@ -8,6 +8,7 @@ sArmorDamageOptionKey = "HouseRule_ArmorDamage";
 sThresholdOfPainOptionKey = "HouseRule_ThresholdOfPain";
 sHackmasterStatScaling = "HouseRule_HackmasterStatScaling";
 sReactionAdjAffectsInit = "HouseRule_ReactionAdjustmentAffectsInit"
+sDefaultPcInitTo99OptionKey = "AdditionalAutomation_DefaultPCInitTo99";
 
 function onInit()
     registerOptions();
@@ -25,7 +26,7 @@ function registerOptions()
 	
 	OptionsManager.registerOption2(sGenerateHitLocationsOptionKey, false, "option_header_automation", "option_label_generate_hit_locations", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 
-	--OptionsManager.registerOption2("AdditionalAutomation_DefaultPCInitTo99", false, "option_header_automation", "option_label_default_pc_init_to_99", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" })
+	OptionsManager.registerOption2(sDefaultPcInitTo99OptionKey, false, "option_header_automation", "option_label_default_pc_init_to_99", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" })
     
     
     -- House rules
@@ -42,6 +43,10 @@ function registerOptions()
     OptionsManager.registerOption2(sReactionAdjAffectsInit, false, "option_header_house_rule", "option_label_reaction_adj_affects_init", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
 
+end
+
+function isDefaultingPcInitTo99()
+	return OptionsManager.isOption(sDefaultPcInitTo99OptionKey, "on");
 end
 
 function isUsingReactionAdjustmentForInitiative()

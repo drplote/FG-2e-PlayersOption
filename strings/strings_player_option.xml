@@ -12,7 +12,7 @@
     <string name="option_label_weapontype_vs_armor_mods">Weapon vs Armor to-hit modifiers</string>
 	<string name="option_label_stricter_resistance">Stricter Resistance Rules</string>
 	<string name="option_label_generate_hit_locations">Generate Hit Locations</string>
-    <string name="option_label_default_pc_init_to_99">Default PC init to 99</string>
+    <string name="option_label_default_pc_init_to_99">Set Unrolled PC Init to 99</string>
     
     <!-- House Rule Options -->
     <string name="option_header_house_rule">Hackmaster House Rules (GM)</string>
