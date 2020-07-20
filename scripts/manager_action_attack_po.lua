@@ -221,18 +221,18 @@ function onAttackOverride(rSource, rTarget, rRoll)
   if #(rRoll.aDice) > 0 then
 	rAction.nFirstDie = rRoll.aDice[1].result or 0;
   end
+
+  local rCrit = nil;
   
   if CritManagerPO.isCriticalHit(rRoll, rAction, nDefenseVal) then
     rAction.bSpecial = true;
     bHitTarget = true;
     rAction.sResult = "crit";
   	if PlayerOptionManager.isPOCritEnabled() then
-  		  local rCrit = CritManagerPO.handleCrit(rSource, rTarget);
+  		  rCrit = CritManagerPO.handleCrit(rSource, rTarget);
         if PlayerOptionManager.isGenerateHitLocationsEnabled() then
           addHitLocationToAction(rAction, rCrit.sHitLocation);
         end
-        addCritInfoToAction(rAction, rCrit);
-        ActionSavePO.rollCritSave(rTarget);
   	else
         if PlayerOptionManager.isGenerateHitLocationsEnabled() then
           addHitLocation(rSource, rTarget, rAction);
@@ -324,8 +324,17 @@ function onAttackOverride(rSource, rTarget, rRoll)
   end
   
   -- TRACK CRITICAL STATE
-  if rAction.sResult == "crit" and not PlayerOptionManager.isPOCritEnabled() then
-    ActionAttack.setCritState(rSource, rTarget);
+  if rAction.sResult == "crit" then
+    if PlayerOptionManager.isPOCritEnabled() and rCrit then
+      ChatManagerPO.deliverCriticalHitMessage(rCrit.message);
+      local bIsTargetPc = (rTarget and rTarget.sType == "pc");
+      if not bIsTargetPc then
+        -- Automate the save for npcs
+        ActionSavePO.rollCritSave(rTarget);
+      end
+    else
+      ActionAttack.setCritState(rSource, rTarget);
+    end
   end
   
   -- REMOVE TARGET ON MISS OPTION
@@ -400,11 +409,6 @@ end
 function addHitLocationToAction(rAction, sHitLocation)
     table.insert(rAction.aMessages, string.format("[Location: %s]", sHitLocation));
 end
-
-function addCritInfoToAction(rAction, rCrit)
-    table.insert(rAction.aMessages, string.format("[CRITICAL HIT: %s]", rCrit.message));
-end
-
 
 function addHitLocation(rSource, rTarget, rAction)
 	if rSource and rTarget then

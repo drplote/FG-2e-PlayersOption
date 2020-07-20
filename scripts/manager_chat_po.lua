@@ -18,3 +18,7 @@ end
 function deliverArmorBrokenMessage(sCharName, sItemName)
 	deliverChatMessage(sCharName .. "'s " .. sItemName .. " breaks!");
 end
+
+function deliverCriticalHitMessage(sMessage)
+	deliverChatMessage("[CRITICAL HIT] " .. sMessage);
+end
