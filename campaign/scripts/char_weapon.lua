@@ -18,7 +18,14 @@ function onAttackAction(draginfo)
 
     local aWeaponProps = StringManager.split(DB.getValue(nodeWeapon, "properties", ""):lower(), ",", true);
 
-    rAction.label = super.name.getValue();
+    local bItemIdentified = (DB.getValue(nodeWeapon, "isidentified",1) == 1); 
+    if bItemIdentified and ActorManager.isPC(rActor) then
+        rAction.label = DB.getValue(nodeWeapon, "name","");
+    else    
+        rAction.label = DB.getValue(nodeWeapon, "nonid_name",DB.getValue(nodeWeapon, "name",""));
+    end
+
+
     rAction.stat = DB.getValue(nodeWeapon, "attackstat", "");
     if type.getValue() == 2 then
     rAction.range = "R";
