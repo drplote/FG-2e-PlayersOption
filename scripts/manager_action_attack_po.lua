@@ -4,6 +4,7 @@ local fIsCrit;
 local fClearCritState;
 local fGetRoll;
 local fApplyAttack;
+local fGetTHACO;
 
 function onInit()
   fModAttack = ActionAttack.modAttack;
@@ -25,6 +26,39 @@ function onInit()
 
   fApplyAttack = ActionAttack.applyAttack;
   ActionAttack.applyAttack = applyAttackOverride;
+
+  fGetTHACO = ActionAttack.getTHACO;
+  ActionAttack.getTHACO = getTHACOOverride;
+end
+
+function getTHACOOverride(rActor)
+  if not PlayerOptionManager.isUsingHackmasterThac0() then
+    return fGetTHACO(rActor);
+  end
+
+  local bOptAscendingAC = (OptionsManager.getOption("HouseRule_ASCENDING_AC"):match("on") ~= nil);
+
+  local nTHACO = 20;
+  local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+  if not nodeActor then
+    return 0;
+  end
+  -- get pc thaco value
+  if ActorManager.isPC(nodeActor) then
+    nTHACO = DB.getValue(nodeActor, "combat.thaco.score", 20);
+  else
+  -- npc thaco calcs
+    local sHitDice = CombatManagerADND.getNPCHitDice(node);
+    if UtilityPO.isEmpty(sHitDice) then
+      nTHACO = DB.getValue(nodeActor, "thaco", 20);
+    else        
+      nTHACO = DataCommonPO.aThac0ByHd[sHitDice];
+      if not nTHACO then
+        nTHACO = DB.getValue(nodeActor, "thaco", 20);
+      end
+    end
+  end
+  return nTHACO;
 end
 
 function applyAttackOverride(rSource, rTarget, msgOOB)

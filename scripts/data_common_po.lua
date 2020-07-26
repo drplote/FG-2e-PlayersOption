@@ -8,7 +8,7 @@ aDefaultCreatureTypesByType = {};
 aNaturalWeapons = {};
 aDefaultArmorDamageReduction = {};
 aDefaultArmorHp = {};
-
+aThac0ByHd = {};
 aStrength = {};
 aDexterity = {};
 aWisdom = {};
@@ -18,7 +18,7 @@ aIntelligence = {};
 aComeliness = {};
 
 function onInit()
-    initializeDefaultArmorVsDamageTypeModifiers();
+  initializeDefaultArmorVsDamageTypeModifiers();
 	initializeHitLocations();
 	initializeDefaultRaceSizes();
 	initializelocationCategorys();
@@ -28,6 +28,7 @@ function onInit()
 	initializeDefaultArmorDamageReduction();
 	initializeDefaultArmorHp();
 	initializeStats();
+  initializeThac0ByHd();
 end
 
 function initializeStats()
@@ -1233,35 +1234,62 @@ end
 function initializeDefaultArmorHp()
 	aDefaultArmorHp["robes"]             = {1};
 	aDefaultArmorHp["garments"]          = {1};
-    aDefaultArmorHp["studded leather"]   = {4,2,1};
-    aDefaultArmorHp["leather armor"]     = {2,1};
-    aDefaultArmorHp["padded armor"]      = {2,1};
-    aDefaultArmorHp["ring mail"]         = {6,2,1};
-    aDefaultArmorHp["ringmail"]          = {6,2,1};
-    aDefaultArmorHp["scale mail"]        = {7,4,2,1};
-    aDefaultArmorHp["scalemail"]         = {7,4,2,1};
-    aDefaultArmorHp["hide armor"]        = {5,4,2,1};
-    aDefaultArmorHp["brigandine"]        = {6,4,2,1};
-    aDefaultArmorHp["chain mail"]        = {8,6,4,2,1};
-    aDefaultArmorHp["chainmail"]         = {8,6,4,2,1};
-    aDefaultArmorHp["bronze plate mail"] = {12,8,6,4,2,1};
-    aDefaultArmorHp["banded mail"]       = {9,8,6,4,2,1};
-    aDefaultArmorHp["bandedmail"]        = {9,8,6,4,2,1};
-    aDefaultArmorHp["splint mail"]       = {8,8,6,4,2,1};
-    aDefaultArmorHp["splintmail"]        = {8,8,6,4,2,1};
-    aDefaultArmorHp["field plate"]       = {24,12,10,8,6,4,2,1};
-    aDefaultArmorHp["full plate"]        = {36,24,12,10,8,6,4,2,1}; 
-    aDefaultArmorHp["plate mail"]        = {12,10,8,6,4,2,1};
-    aDefaultArmorHp["platemail"]         = {12,10,8,6,4,2,1};
-    aDefaultArmorHp["buckler"]           = {3};
-    aDefaultArmorHp["small shield"]      = {7};
-    aDefaultArmorHp["shield, small"]     = {7};
-    aDefaultArmorHp["medium shield"]     = {12};
-    aDefaultArmorHp["shield, medium"]    = {12};
-    aDefaultArmorHp["body shield"]       = {18};
-    aDefaultArmorHp["shield, body"]      = {18};
-    aDefaultArmorHp["tower shield"]      = {18};
-    aDefaultArmorHp["shield, tower"]     = {18};
-    aDefaultArmorHp["shield"]     		 = {12};
+  aDefaultArmorHp["studded leather"]   = {4,2,1};
+  aDefaultArmorHp["leather armor"]     = {2,1};
+  aDefaultArmorHp["padded armor"]      = {2,1};
+  aDefaultArmorHp["ring mail"]         = {6,2,1};
+  aDefaultArmorHp["ringmail"]          = {6,2,1};
+  aDefaultArmorHp["scale mail"]        = {7,4,2,1};
+  aDefaultArmorHp["scalemail"]         = {7,4,2,1};
+  aDefaultArmorHp["hide armor"]        = {5,4,2,1};
+  aDefaultArmorHp["brigandine"]        = {6,4,2,1};
+  aDefaultArmorHp["chain mail"]        = {8,6,4,2,1};
+  aDefaultArmorHp["chainmail"]         = {8,6,4,2,1};
+  aDefaultArmorHp["bronze plate mail"] = {12,8,6,4,2,1};
+  aDefaultArmorHp["banded mail"]       = {9,8,6,4,2,1};
+  aDefaultArmorHp["bandedmail"]        = {9,8,6,4,2,1};
+  aDefaultArmorHp["splint mail"]       = {8,8,6,4,2,1};
+  aDefaultArmorHp["splintmail"]        = {8,8,6,4,2,1};
+  aDefaultArmorHp["field plate"]       = {24,12,10,8,6,4,2,1};
+  aDefaultArmorHp["full plate"]        = {36,24,12,10,8,6,4,2,1}; 
+  aDefaultArmorHp["plate mail"]        = {12,10,8,6,4,2,1};
+  aDefaultArmorHp["platemail"]         = {12,10,8,6,4,2,1};
+  aDefaultArmorHp["buckler"]           = {3};
+  aDefaultArmorHp["small shield"]      = {7};
+  aDefaultArmorHp["shield, small"]     = {7};
+  aDefaultArmorHp["medium shield"]     = {12};
+  aDefaultArmorHp["shield, medium"]    = {12};
+  aDefaultArmorHp["body shield"]       = {18};
+  aDefaultArmorHp["shield, body"]      = {18};
+  aDefaultArmorHp["tower shield"]      = {18};
+  aDefaultArmorHp["shield, tower"]     = {18};
+  aDefaultArmorHp["shield"]     		   = {12};
     
+end
+
+function initializeThac0ByHd()
+  aThac0ByHd['0']   = 20;
+  aThac0ByHd['-1']  = 19;
+  aThac0ByHd['1-1'] = 18;
+  aThac0ByHd['1']   = 17;
+  aThac0ByHd['1+']  = 16;
+  aThac0ByHd['2']   = 15;
+  aThac0ByHd['3']   = 14;
+  aThac0ByHd['4']   = 13;
+  aThac0ByHd['5']   = 12;
+  aThac0ByHd['6']   = 11;
+  aThac0ByHd['7']   = 10;
+  aThac0ByHd['8']   = 9;
+  aThac0ByHd['9']   = 8;
+  aThac0ByHd['10']  = 7;
+  aThac0ByHd['11']  = 6;
+  aThac0ByHd['12']  = 5;
+  aThac0ByHd['13']  = 4;
+  aThac0ByHd['14']  = 3;
+  aThac0ByHd['15']  = 2;
+  aThac0ByHd['16']  = 1;
+  aThac0ByHd['17']  = 0;
+  aThac0ByHd['18']  = -1;
+  aThac0ByHd['19']  = -2;
+  aThac0ByHd['20']  = -3;
 end
