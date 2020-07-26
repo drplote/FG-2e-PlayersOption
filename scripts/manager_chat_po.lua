@@ -2,12 +2,13 @@ function onInit()
 end
 
 function deliverChatMessage(sText, sType)
-	local rMessage = ChatManager.createBaseMessage();
-	if sType then
-		rMessage.type = sType;
-	end
-	rMessage.text = sText;
-	Comm.deliverChatMessage(rMessage);
+	-- local rMessage = ChatManager.createBaseMessage();
+	-- if sType then
+	-- 	rMessage.type = sType;
+	-- end
+	-- rMessage.text = sText;
+	-- Comm.deliverChatMessage(rMessage);
+	ChatManager.SystemMessage(sText);
 end
 
 function deliverArmorSoakMessage(sCharName, sItemName, nDamageSoaked, nArmorDamageTaken)

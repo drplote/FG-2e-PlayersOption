@@ -54,6 +54,7 @@
     <script name="FumbleManagerPO" file="scripts/manager_fumble_po.lua" />
     <script name="CharBackgroundManagerPO" file="scripts/manager_char_background_po.lua" />
     <script name="FatigueManagerPO" file="scripts/manager_fatigue_po.lua" />
+    <script name="ActionPowerPO" file="scripts/manager_action_power_po.lua" />
 
     
   </base>

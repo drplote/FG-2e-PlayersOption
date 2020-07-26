@@ -9,7 +9,7 @@ function onInit()
     OptionsManager.registerCallback(PlayerOptionManager.sHackmasterStatScaling, updateStatScaling);
     OptionsManager.registerCallback(PlayerOptionManager.sReactionAdjAffectsInit, updateInitiativeScores);	
     OptionsManager.registerCallback(PlayerOptionManager.sFatigueOptionKey, onFatigueOptionChanged);
-    DB.addHandler(DB.getPath(nodeChar, "fatigue.multiplier"), "onUpdate", updateFatigueFactor);
+    DB.addHandler(DB.getPath(node, "fatigue.multiplier"), "onUpdate", updateFatigueFactor);
     updateFatigueFactor();
 end
 
@@ -21,7 +21,7 @@ function update()
 	DB.removeHandler(DB.getPath(nodeRecord, "inventorylist.*.properties"), "onUpdate", updateArmor);
 	OptionsManager.unregisterCallback(PlayerOptionManager.sArmorDamageOptionKey, updateArmor);
 	OptionsManager.unregisterCallback(PlayerOptionManager.sHackmasterStatScaling, updateStatScaling);
-  	DB.removeHandler(DB.getPath(nodeChar, "fatigue.multiplier"), "onUpdate", updateFatigueFactor);
+  	DB.removeHandler(DB.getPath(nodeRecord, "fatigue.multiplier"), "onUpdate", updateFatigueFactor);
   	OptionsManager.unregisterCallback(PlayerOptionManager.sFatigueOptionKey, onFatigueOptionChanged);
 end
 
@@ -35,6 +35,7 @@ function onFatigueOptionChanged()
 end
 
 function updateFatigueFactor()
+	Debug.console("updatte fatigue factor called");
 	if PlayerOptionManager.isUsingHackmasterFatigue() then
 		local nodeChar = getDatabaseNode();
 		FatigueManagerPO.updateFatigueFactor(nodeChar);

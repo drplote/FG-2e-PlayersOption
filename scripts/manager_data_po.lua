@@ -1,6 +1,24 @@
 function onInit()
 end
 
+function parseMoraleFromString(sString)
+	if UtilityPO.isEmpty(sString) then
+		return nil;
+	end
+	local aNumbersInString = {};
+	for sMatch in sString:gmatch("%d+") do
+    	table.insert(aNumbersInString, tonumber(sMatch));
+	end
+
+	if #aNumbersInString == 0 then
+		return nil;
+	elseif #aNumbersInString == 1 then
+		return aNumbersInString[1];
+	else
+		return math.floor(UtilityPO.average(aNumbersInString));
+	end
+end
+
 function parseFatigueFactorFromString(sString)
 	local sFF = sString:match("FF: *(%d*)");
 	return sFF;

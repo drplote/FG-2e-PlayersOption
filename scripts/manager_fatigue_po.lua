@@ -8,6 +8,10 @@ function onInit()
 	sFatigueEffectNPC = sFatigueEffectPrefix .. "AC:-1;ATK:-1";
 end
 
+function recordCast(rChar)
+	StateManagerPO.setFatigueState(rChar, 1);
+end
+
 function recordAttack(rChar, sRange)
 	if sRange == "M" then
 		StateManagerPO.setFatigueState(rChar, 2);
@@ -24,30 +28,29 @@ function resetFatigue(nodeChar)
 	setCurrentFatigue(nodeChar, 0);
 end
 
-function getDefaultFatigueFactor(nodeChar)
-	if ActorManager.isPC(nodeChar) then
-		return 5; -- Assumes 10 con and 10 wis
-	end
-
+function getNpcFatigueFactor(nodeChar)
 	local sSpecialDefense = DB.getValue(nodeChar, "specialDefense", "");
 	local sFatigueFactor = DataManagerPO.parseFatigueFactorFromString(sSpecialDefense);
-	Debug.console("sFatigueFactor", sFatigueFactor);
 	if not UtilityPO.isEmpty(sFatigueFactor) then
 		return tonumber(sFatigueFactor);
 	else
 		-- Absent any specification, we'll default monsters to slightly higher fatigue factor
 		-- because their penalties for failing are going to stack up quicker 
-		return 6;
+		return 5;
 	end
-
 end
 
 function getFatigueFactor(nodeChar)
-	return DB.getValue(nodeChar, "fatigue.factor", getDefaultFatigueFactor(nodeChar));
+	if ActorManager.isPC(nodeChar) then
+		return DB.getValue(nodeChar, "fatigue.factor", 5);
+	else
+		return getNpcFatigueFactor(nodeChar);
+	end
 end
 
 function setCurrentFatigue(nodeChar, nFatigue)
 	DB.setValue(nodeChar, "fatigue.score", "number", nFatigue);
+	ChatManager.SystemMessage(ActorManager.getDisplayName(nodeChar) .. "'s fatigue is now " .. nFatigue .. ".");
 	if nFatigue == 0 then
 		removeAllFatigueEffects(nodeChar);
 	end
@@ -89,6 +92,7 @@ function updateFatigueFactor(nodeChar)
 	local nMultiplier = DB.getValue(nodeChar, "fatigue.multiplier", 1);
 	nFatigueFactor = nFatigueFactor * nMultiplier;
 
+	Debug.console(ActorManager.getDisplayName(nodeChar) .. " now has a fatigue factor of " .. nFatigueFactor);
 	DB.setValue(nodeChar, "fatigue.factor", "number", nFatigueFactor);
 end
 
@@ -152,8 +156,14 @@ function getFatigueCheckTarget(nodeChar)
 end
 
 function getFatigueCheckTargetForNPC(nodeChar)
-	-- TODO: parse this from morale, but for now we're using isPC
-	return getFatigueCheckTargetForPC(nodeChar);
+	-- NPCs use morale for their fatigue check
+	local sMorale = DB.getValue(nodeChar, "morale", "");
+	local nMorale = DataManagerPO.parseMoraleFromString(sMorale);
+	if nMorale then
+		return nMorale;
+	else
+		return getFatigueCheckTargetForPC(nodeChar);
+	end
 end
 
 function getFatigueCheckTargetForPC(nodeChar)

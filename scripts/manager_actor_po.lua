@@ -360,6 +360,6 @@ function getDefaultSizeFromRace(nodeActor)
 end
 
 function getName(nodeActor)
-	return DB.getValue(nodeActor, "name");
+  return ActorManager.getDisplayName(nodeActor);
 end
 

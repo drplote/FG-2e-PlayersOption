@@ -103,3 +103,11 @@ function sum(tt)
   local nSum = reduce(tt, function(a, b) return a + b; end);
   return nSum;
 end
+
+function average(tt)
+  if not tt or #tt == 0 then
+    return 0;
+  end
+
+  return sum(tt) / #tt;
+end
