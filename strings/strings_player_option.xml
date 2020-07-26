@@ -26,10 +26,19 @@
     <string name="option_label_reaction_adj_affects_init">Reaction Adjustment Affects Init</string>
     <string name="option_label_fumble_table">Use Fumble Tables</string>
     <string name="option_val_hm_fumbles">HM Fumbles</string>
-    <string name="option_val_ct_fumbles">Sterno Fumbles</string>string>
+    <string name="option_val_ct_fumbles">Sterno Fumbles</string>
+    <string name="option_label_hackmaster_fatigue">Hackmaster Fatigue Rules</string>
 
     <!-- New Properties -->
     <string name="item_label_hp_lost">HP Lost</string>
     <string name="item_label_hp_lost_tooltip">The amount of damage this armor has taken</string>
+
+    <!-- UI strings -->
+    <string name="char_label_current_shield_damage">SHD</string>
+    <string name="char_label_current_shield_loss">-AC</string>
+    <string name="char_tooltip_current_armor_damage">Current Armor Damage</string>
+    <string name="char_tooltip_current_shield_damage">Current Shield Damage</string>
+    <string name="char_label_fatiguemultiplier">Fatigue Factor Multiplier</string>
+    <string name="char_label_fatiguemultiplier_tooltip">A multiplier to apply to fatigue factor (such as from the Endurance talent)</string>
 
 </root>

@@ -1,6 +1,7 @@
 local fCalcItemArmorClass;
 local fGetEncumbranceRank2e;
 local fUpdateMoveFromEncumbrance1e;
+local fUpdateEncumbrance;
 
 function onInit()
 	fCalcItemArmorClass = CharManager.calcItemArmorClass;
@@ -11,6 +12,14 @@ function onInit()
 
   fUpdateMoveFromEncumbrance1e = CharManager.updateMoveFromEncumbrance1e;
   CharManager.updateMoveFromEncumbrance1e = updateMoveFromEncumbrance1eOverride;
+
+  fUpdateEncumbrance = CharManager.updateEncumbrance;
+  CharManager.updateEncumbrance = updateEncumbranceOverride;
+end
+
+function updateEncumbranceOverride(nodeChar)
+    fUpdateEncumbrance(nodeChar);
+    FatigueManagerPO.updateFatigueFactor(nodeChar);
 end
 
 function getEncumbranceRank2eOverride(nodeChar)
@@ -86,7 +95,7 @@ function getEncumbranceRank2eHackmaster(nodeChar)
 end
 
 -- update speed.basemodenc due to weight adjustments for AD&D 1e
-function updateMoveFromEncumbrance1e(nodeChar)
+function updateMoveFromEncumbrance1eHackmaster(nodeChar)
     if ActorManager.isPC(nodeChar) then -- only need this is the node is a PC
         local nEncLight = 0.33;   -- 1/3
         local nEncModerate = 0.5; -- 1/2

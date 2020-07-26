@@ -7,8 +7,11 @@ function onInit()
 	DB.addHandler(DB.getPath(node, "inventorylist.*.properties"), "onUpdate", updateArmor);
     OptionsManager.registerCallback(PlayerOptionManager.sArmorDamageOptionKey, updateArmor);
     OptionsManager.registerCallback(PlayerOptionManager.sHackmasterStatScaling, updateStatScaling);
-    OptionsManager.registerCallback(PlayerOptionManager.sReactionAdjAffectsInit, updateInitiativeScores);
-	
+    OptionsManager.registerCallback(PlayerOptionManager.sReactionAdjAffectsInit, updateInitiativeScores);	
+    OptionsManager.registerCallback(PlayerOptionManager.sFatigueOptionKey, onFatigueOptionChanged);
+    DB.addHandler(DB.getPath(nodeChar, "abilities.*.fatiguemod"), "onUpdate", super.updateAbilityScores);
+    DB.addHandler(DB.getPath(nodeChar, "fatigue.multiplier"), "onUpdate", updateFatigueFactor);
+    updateFatigueFactor();
 end
 
 function update()
@@ -19,6 +22,33 @@ function update()
 	DB.removeHandler(DB.getPath(nodeRecord, "inventorylist.*.properties"), "onUpdate", updateArmor);
 	OptionsManager.unregisterCallback(PlayerOptionManager.sArmorDamageOptionKey, updateArmor);
 	OptionsManager.unregisterCallback(PlayerOptionManager.sHackmasterStatScaling, updateStatScaling);
+	DB.removeHandler(DB.getPath(nodeChar, "abilities.*.fatiguemod"), "onUpdate", super.updateAbilityScores);
+  	DB.removeHandler(DB.getPath(nodeChar, "fatigue.multiplier"), "onUpdate", updateFatigueFactor);
+  	OptionsManager.unregisterCallback(PlayerOptionManager.sFatigueOptionKey, onFatigueOptionChanged);
+end
+
+function onFatigueOptionChanged()
+	AbilityScoreADND.detailsUpdate(getDatabaseNode());
+end
+
+function onFatigueChanged()
+	local node = getDatabaseNode();
+	updateFatigueScore(node);
+end
+
+function updateFatigueFactor()
+	if PlayerOptionManager.isUsingHackmasterFatigue() then
+		local nodeChar = getDatabaseNode();
+		FatigueManagerPO.updateFatigueFactor(nodeChar);
+	end
+end
+
+function updateFatigueScore(node)
+  local nodeChar = node.getChild("....");
+  if (nodeChar == nil and node.getPath():match("^charsheet%.id%-%d+$")) then
+    nodeChar = node;
+  end
+  FatigueManagerPO.updateFatigue(nodeChar);
 end
 
 function updateStatScaling()

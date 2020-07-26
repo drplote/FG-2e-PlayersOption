@@ -11,6 +11,7 @@ sReactionAdjAffectsInit = "HouseRule_ReactionAdjustmentAffectsInit"
 sDefaultPcInitTo99OptionKey = "AdditionalAutomation_DefaultPCInitTo99";
 sFumbleOptionKey = "HouseRule_FumbleTable";
 sHackmasterAttackMatrixOptionKey = "HouseRule_HackmasterAttackMatrix";
+sFatigueOptionKey = "HouseRule_HackmasterFatigueOption";
 
 function onInit()
     registerOptions();
@@ -48,6 +49,12 @@ function registerOptions()
 
 	OptionsManager.registerOption2(sFumbleOptionKey, false, "option_header_house_rule", "option_label_fumble_table", "option_entry_cycler",{ labels = "option_val_hm_fumbles|option_val_ct_fumbles", values = "hmFumbles|ctFumbles", baselabel = "option_val_off", baseval = "off", default = "off" });
 
+    OptionsManager.registerOption2(sFatigueOptionKey, false, "option_header_house_rule", "option_label_hackmaster_fatigue", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
+
+end
+
+function isUsingHackmasterFatigue()
+	return OptionsManager.isOption(sFatigueOptionKey, "on");
 end
 
 function isUsingHackmasterThac0()

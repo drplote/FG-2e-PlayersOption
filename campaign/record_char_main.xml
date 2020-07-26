@@ -1,7 +1,34 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <root>
-  <windowclass name="charsheet_main" merge="join">
-    <script file="campaign/scripts/char_main.lua" />
-   </windowclass>
+	<windowclass name="charsheet_main" merge="join">
+		<script file="campaign/scripts/char_main.lua" />
+	</windowclass>
+
+	<windowclass name="window_fatigue_section">
+		<sheetdata>
+			<anchor_left />
+			<anchor_right />
+			<combat_section_label name="label_fatiguemultiplier">
+				<static textres="char_label_fatiguemultiplier" />
+				<tooltip textres="char_label_fatiguemultiplier_tooltip" />
+			</combat_section_label>
+			<basicnumber name="fatigue_multiplier" source="fatigue.multiplier">
+				<anchored height="18" width="30" >
+					<top parent="leftanchor" />
+					<right parent="rightanchor" anchor="left" offset="-8" />
+				</anchored>
+				<tooltip textres="char_label_fatiguemultiplier_tooltip" />
+				<default>1</default>
+			</basicnumber>
+		</sheetdata>
+	</windowclass>
+
+	<windowclass name="charsheet_combatcalc" merge="join">
+		<sheetdata>
+			<combat_section_subwindow name="subwindow_fatigue_section" insertafter="subwindow_turnundead_section">
+				<class>window_fatigue_section</class>
+			</combat_section_subwindow>
+		</sheetdata>
+	</windowclass>
 </root>
