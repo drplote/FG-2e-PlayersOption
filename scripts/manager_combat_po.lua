@@ -7,6 +7,15 @@ function onInit()
     fRollEntryInit = CombatManagerADND.rollEntryInit;
     CombatManagerADND.rollEntryInit = rollEntryInitOverride;
     CombatManager2.rollEntryInit = rollEntryInitOverride; -- We have to override this because CombatManagerADND overrode this
+
+    CombatManager.setCustomRoundStart(onRoundStart);
+end
+
+function onRoundStart()
+    if PlayerOptionManager.isUsingHackmasterFatigue() then
+        FatigueManagerPO.handleFatigueForCombatants();
+        FatigueManagerPO.clearFatigueState();
+    end
 end
 
 function rollEntryInitOverride(nodeEntry)

@@ -32,6 +32,7 @@ function onInit()
 end
 
 function getTHACOOverride(rActor)
+
   if not PlayerOptionManager.isUsingHackmasterThac0() then
     return fGetTHACO(rActor);
   end
@@ -144,6 +145,10 @@ function getRollOverride(rActor, rAction)
 end
 
 function onAttackOverride(rSource, rTarget, rRoll)
+  if PlayerOptionManager.isUsingHackmasterFatigue() then
+      FatigueManagerPO.recordAttack(rSource, rRoll.range);
+  end
+
   if not rSource.weaponPath then
     rSource.weaponPath = rRoll.weaponPath;
   end

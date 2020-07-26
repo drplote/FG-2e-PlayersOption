@@ -1,7 +1,44 @@
 aCritState = {};
 aShieldHitState = {};
+aFatigueState = {};
 
 function onInit()
+end
+
+function getFatigueState(sCreatureNodeName)
+    if not sCreatureNodeName then
+        return 0;
+    end
+
+    local nFatigueState = aFatigueState[sCreatureNodeName];
+    if not nFatigueState then 
+        nFatigueState = 0; 
+    end
+    return nFatigueState;
+end
+
+function setFatigueState(rSource, nFatigue)
+  -- nFatigue = 0 (decrease fatigue at end of turn), = 1 (no recovery, no increase), = 2 (increase)
+  local sSourceCT = ActorManager.getCreatureNodeName(rSource);
+  if sSourceCT == "" then
+    return;
+  end
+
+  if not aFatigueState[sSourceCT] or aFatigueState[sSourceCT] < nFatigue then
+    aFatigueState[sSourceCT] = nFatigue;
+  end
+end
+
+function clearFatigueState()
+    aFatigueState = {};
+end
+
+function hasFatigueState(rSource)
+    local sSourceCT = ActorManager.getCreatureNodeName(rSource);
+    if sSourceCT == "" then
+        return 0;
+    end
+    return aFatigueState[sSourceCT];
 end
 
 function setShieldHitState(rSource, rTarget)

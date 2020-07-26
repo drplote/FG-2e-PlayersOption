@@ -1,12 +1,73 @@
+local sFatigueEffectPrefix;
+local sFatigueEffectPC;
+local sFatigueEffectNPC;
+
 function onInit()
+	sFatigueEffectPrefix = "Combat Fatigue;";
+	sFatigueEffectPC = sFatigueEffectPrefix .. "DEX:-1;STR:-1";
+	sFatigueEffectNPC = sFatigueEffectPrefix .. "AC:-1;ATK:-1";
 end
 
-function updateFatigueSave(nodeChar)
-	local nCon = DB.getValue(nodeChar, "abilities.constitution.total", DB.getValue(nodeChar, "abilities.constitution.score", 0));
-	local nWis = DB.getValue(nodeChar, "abilities.wisdom.total", DB.getValue(nodeChar, "abilities.wisdom.score", 0));
-	local nFatigueSave = 20 - math.floor((nCon + nWis) / 2);
-	
-	DB.setValue(nodeChar, "saves.fatigue.base", "number", nFatigueSave);
+function recordAttack(rChar, sRange)
+	if sRange == "M" then
+		StateManagerPO.setFatigueState(rChar, 2);
+	else
+		StateManagerPO.setFatigueState(rChar, 1);
+	end
+end
+
+function clearFatigueState()
+	StateManagerPO.clearFatigueState();
+end
+
+function resetFatigue(nodeChar)
+	setCurrentFatigue(nodeChar, 0);
+end
+
+function getDefaultFatigueFactor(nodeChar)
+	if ActorManager.isPC(nodeChar) then
+		return 5; -- Assumes 10 con and 10 wis
+	end
+
+	local sSpecialDefense = DB.getValue(nodeChar, "specialDefense", "");
+	local sFatigueFactor = DataManagerPO.parseFatigueFactorFromString(sSpecialDefense);
+	Debug.console("sFatigueFactor", sFatigueFactor);
+	if not UtilityPO.isEmpty(sFatigueFactor) then
+		return tonumber(sFatigueFactor);
+	else
+		-- Absent any specification, we'll default monsters to slightly higher fatigue factor
+		-- because their penalties for failing are going to stack up quicker 
+		return 6;
+	end
+
+end
+
+function getFatigueFactor(nodeChar)
+	return DB.getValue(nodeChar, "fatigue.factor", getDefaultFatigueFactor(nodeChar));
+end
+
+function setCurrentFatigue(nodeChar, nFatigue)
+	DB.setValue(nodeChar, "fatigue.score", "number", nFatigue);
+	if nFatigue == 0 then
+		removeAllFatigueEffects(nodeChar);
+	end
+end
+
+function getCurrentFatigue(nodeChar)
+	return DB.getValue(nodeChar, "fatigue.score", 0);
+end
+
+function handleFatigueForCombatants()
+	local aCombatants = CombatManager.getCombatantNodes();
+	for _, nodeChar in pairs(aCombatants) do
+		local sCreatureNodeName = ActorManager.getCreatureNodeName(nodeChar);
+		local nFatigue = StateManagerPO.getFatigueState(sCreatureNodeName);
+		if nFatigue == 2 then
+			increaseFatigue(sCreatureNodeName);
+		elseif nFatigue == 0 then
+			decreaseFatigue(sCreatureNodeName);
+		end
+	end
 end
 
 function updateFatigueFactor(nodeChar)
@@ -31,83 +92,107 @@ function updateFatigueFactor(nodeChar)
 	DB.setValue(nodeChar, "fatigue.factor", "number", nFatigueFactor);
 end
 
-function removeFatigue(nodeChar, nAmount)
-	local nCurrentFatigue = DB.getValue(nodeChar, "fatigue.score", 0);
-	if nCurrentFatigue > 0 then
-		local nNewFatigue = 0;
-		if nAmount then
-			nNewFatigue = math.max(nCurrentFatigue - nAmount, 0);
-		end
-		DB.setValue(nodeChar, "fatigue.score", nNewFatigue);
+function increaseFatigue(rChar)
+	local nodeChar = ActorManagerPO.getNode(rChar);
+	local nCurrentFatigue = getCurrentFatigue(nodeChar);
+	local nNewFatigue = nCurrentFatigue + 1;
+	setCurrentFatigue(nodeChar, nNewFatigue);
+	if nNewFatigue > getFatigueFactor(nodeChar) then
+		checkForFatiguePenalty(nodeChar);	
 	end
 end
 
-function tryToRemoveFatiguePenalty(nodeChar, sAttribute)
-	local nConScore = DB.getValue(nodeChar, "abilities.constitution.total", DB.getValue(nodeChar, "abilities.constitution.score", 0));
-	local nAttrMod = DB.getValue(nodeChar, "abilities." .. sAttribute .. ".fatiguemod", 0);
-	if nAttrMod > 0 then
-		local sName = DB.getValue(nodeChar, "name", "");
+function decreaseFatigue(rChar)
+	local nodeChar = ActorManagerPO.getNode(rChar);
+	local nCurrentFatigue = getCurrentFatigue(nodeChar);
+	if nCurrentFatigue > 0 then
+		local nNewFatigue = nCurrentFatigue - 1;
+		setCurrentFatigue(nodeChar, nNewFatigue);
+		if nNewFatigue > 0 and nNewFatigue <= getFatigueFactor(nodeChar) then
+			checkToRemoveFatiguePenalty(nodeChar);
+		end
+	end
+
+end
+
+function getFatigueEffectsForChar(nodeChar)
+	local aFatigueEffects = {};
+	local nodeCT = CharManager.getCTNodeByNodeChar(nodeChar);
+	for _, nodeEffect in pairs(DB.getChildren(nodeCT, "effects")) do
+		local sEffectLabel = DB.getValue(nodeEffect, "label");
+		if sEffectLabel:match(sFatigueEffectPrefix) then
+			table.insert(aFatigueEffects, nodeEffect);
+		end
+	end
+	return aFatigueEffects;
+end
+
+function addFatigueEffect(nodeChar)
+	local sFatigueEffect = sFatigueEffectPC;
+	if not ActorManager.isPC(nodeChar) then
+		sFatigueEffect = sFatigueEffectNPC;
+	end
+
+	local nodeCT = CharManager.getCTNodeByNodeChar(nodeChar);
+	EffectManager.addEffect("", "", nodeCT, { sName = sFatigueEffect, sLabel = sFatigueEffect, nDuration = 0 }, true);
+end
+
+function removeAllFatigueEffects(nodeChar)
+	for _, nodeEffect in pairs(getFatigueEffectsForChar(nodeChar)) do
+		nodeEffect.delete();
+	end
+end
+
+function getFatigueCheckTarget(nodeChar)
+	if ActorManager.isPC(nodeChar) then
+		return getFatigueCheckTargetForPC(nodeChar);
+	else
+		return getFatigueCheckTargetForNPC(nodeChar);
+	end
+end
+
+function getFatigueCheckTargetForNPC(nodeChar)
+	-- TODO: parse this from morale, but for now we're using isPC
+	return getFatigueCheckTargetForPC(nodeChar);
+end
+
+function getFatigueCheckTargetForPC(nodeChar)
+	local nCon = DB.getValue(nodeChar, "abilities.constitution.total", 10);
+	local nConPercent = DB.getValue(nodeChar, "abilities.constitution.percenttotal", 0) / 100;
+	local nWis = DB.getValue(nodeChar, "abilities.wisdom.total", 10);
+	local nWisPercent = DB.getValue(nodeChar, "abilities.wisdom.percenttotal", 0) / 100;
+	local nAverage = (nCon + nWis + nWisPercent + nConPercent ) / 2
+	return math.floor(nAverage);
+end
+
+
+function checkToRemoveFatiguePenalty(nodeChar)
+	local aFatigueEffects = getFatigueEffectsForChar(nodeChar);
+	if #aFatigueEffects > 0 then
+		local nConScore = DB.getValue(nodeChar, "abilities.constitution.total", DB.getValue(nodeChar, "abilities.constitution.score", 0));
+		local sName = ActorManagerPO.getName(nodeChar);
 		local nConRoll = math.random(1, 20);
-		if  nConRoll <= nConScore then
-			nAttrMod = nAttrMod - 1;
-			DB.setValue(nodeChar, "abilities." .. sAttribute .. ".fatiguemod", "number", nAttrMod);
-			
-			local sMessage = sName .. " succeeds at a Constitution check to remove fatigue[" .. nConRoll .. " <= " .. nConScore .. "]. " .. sAttribute .. " penalty drops to " .. nAttrMod .. ".";
+		if  nConRoll <= nConScore then		
+			local sMessage = sName .. " succeeds at a Constitution check to remove a level of fatigue [" .. nConRoll .. " <= " .. nConScore .. "]!";
 			ChatManager.SystemMessage(sMessage);
+			aFatigueEffects[1].delete();
 		else
-			local sMessage = sName .. " fails a Constitution check to remove fatigue[" .. nConRoll .. " > " .. nConScore .. "]. " .. sAttribute .. " penalty remains at " .. nAttrMod .. ".";
+			local sMessage = sName .. " fails a Constitution check to remove a level of fatigue [" .. nConRoll .. " > " .. nConScore .. "]!";
 			ChatManager.SystemMessage(sMessage);
 		end
 	end
 end
 
 function checkForFatiguePenalty(nodeChar)
-	local sName = DB.getValue(nodeChar, "name", "");
-	local nFatigueSave = DB.getValue(nodeChar, "saves.fatigue.score", 20);
-	local nFatigueSaveRoll = math.random(1, 20);
-	if nFatigueSaveRoll >= nFatigueSave then
-		local sMessage = sName .. " makes a fatigue save[" .. nFatigueSaveRoll .. " >= " .. nFatigueSave .. "]. No fatigue penalty gained." ;
+	local sName = ActorManagerPO.getName(nodeChar);
+	local nFatigueCheckTarget = getFatigueCheckTarget(nodeChar);
+	local nFatigueCheckRoll = math.random(1, 20);
+	if nFatigueCheckRoll <= nFatigueCheckTarget  then
+		local sMessage = sName .. " makes a fatigue save[" .. nFatigueCheckRoll .. " <= " .. nFatigueCheckTarget .. "]. No fatigue penalty gained.";
 		ChatManager.SystemMessage(sMessage);
 	else	
-		local nStrengthMod = DB.getValue(nodeChar, "abilities.strength.fatiguemod", 0) + 1;
-		local nDexMod = DB.getValue(nodeChar, "abilities.dexterity.fatiguemod", 0) + 1;
-		local sMessage = sName .. " fails a fatigue save[" .. nFatigueSaveRoll .. " < " .. nFatigueSave .. "]. Fatigue penalty rises to " .. nDexMod .. " dexterity and " .. nStrengthMod .. " strength.";
+		local sMessage = sName .. " fails a fatigue save[" .. nFatigueCheckRoll .. " > " .. nFatigueCheckTarget .. "] and gains a fatigue penalty."; 
 		ChatManager.SystemMessage(sMessage);
-
-		DB.setValue(nodeChar, "abilities.strength.fatiguemod", "number", nStrengthMod);
-		DB.setValue(nodeChar, "abilities.dexterity.fatiguemod", "number", nDexMod);
-		-- report fatigue added
+		addFatigueEffect(nodeChar);
 	end
-end
-
-function updateFatigue(nodeChar)
-	-- get current fatigue
-		-- If increasing, get fatigue factor
-			-- if past fatigue factor, make fatigue check
-			-- if failed, add fatiguemod penalty to str and dexterity
-	-- display some messages
-	-- set new fatigue
-	local nPreviousFatigue = DB.getValue(nodeChar, "fatigue.previous", 0);
-	local nCurrentFatigue = DB.getValue(nodeChar, "fatigue.score", 0);
-	local nFatigueFactor = DB.getValue(nodeChar, "fatigue.factor", 0);
-
-	if nCurrentFatigue == 0 then
-		local sName = DB.getValue(nodeChar, "name", "");
-		local nStrMod = DB.getValue(nodeChar, "abilities.strength.fatiguemod", 0);
-		local nDexMod = DB.getValue(nodeChar, "abilities.dexterity.fatiguemod", 0);
-		DB.setValue(nodeChar, "abilities.strength.fatiguemod", "number", 0);
-		DB.setValue(nodeChar, "abilities.dexterity.fatiguemod", "number", 0);
-		if nStrMod > 0 or nDexMod > 0 then
-			ChatManager.SystemMessage(sName .. "'s fatigue drops to 0. All fatigue penalties cleared.");
-		end
-	elseif nCurrentFatigue <= nFatigueFactor and nCurrentFatigue < nPreviousFatigue then
-		-- House rule: Fatigue is dropping, and is under fatigue factor. Roll checks to lose fatigue penalty
-		tryToRemoveFatiguePenalty(nodeChar, "strength");
-		tryToRemoveFatiguePenalty(nodeChar, "dexterity");
-	elseif nCurrentFatigue > nFatigueFactor and nCurrentFatigue > nPreviousFatigue then
-		-- Fatigue is rising and is over fatigue factor. Roll a fatigue save or gain fatigue penalty.
-		checkForFatiguePenalty(nodeChar);
-	end
-	
-	DB.setValue(nodeChar, "fatigue.previous", "number", nCurrentFatigue);
 end

@@ -1,6 +1,11 @@
 function onInit()
 end
 
+function getNode(rChar)
+    local _, nodeChar = ActorManager.getTypeAndNode(rChar);
+    return nodeChar;
+end
+
 function getSaveScore(nodeActor, sSave)
 	return DB.getValue(nodeActor, "saves." .. sSave .. ".score", 20);
 end

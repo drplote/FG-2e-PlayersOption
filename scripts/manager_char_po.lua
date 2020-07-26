@@ -2,6 +2,7 @@ local fCalcItemArmorClass;
 local fGetEncumbranceRank2e;
 local fUpdateMoveFromEncumbrance1e;
 local fUpdateEncumbrance;
+local fRest;
 
 function onInit()
 	fCalcItemArmorClass = CharManager.calcItemArmorClass;
@@ -15,6 +16,16 @@ function onInit()
 
   fUpdateEncumbrance = CharManager.updateEncumbrance;
   CharManager.updateEncumbrance = updateEncumbranceOverride;
+
+  fRest = CharManager.rest;
+  CharManager.rest = restOverride;
+end
+
+function restOverride(nodeChar, bLong)
+  fRest(nodeChar, bLong);
+  if PlayerOptionManager.isUsingHackmasterFatigue() then
+      FatigueManagerPO.resetFatigue(nodeChar);
+  end
 end
 
 function updateEncumbranceOverride(nodeChar)

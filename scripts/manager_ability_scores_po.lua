@@ -4,7 +4,6 @@ local fGetWisdomProperties;
 local fGetConstitutionProperties;
 local fGetCharismaProperties;
 local fGetIntelligenceProperties;
-local fDetailsUpdate;
 local fUpdateConstitution;
 
 function onInit()
@@ -26,9 +25,6 @@ function onInit()
 	fGetCharismaProperties = AbilityScoreADND.getCharismaProperties;
 	AbilityScoreADND.getCharismaProperties = getCharismaPropertiesOverride;
 
-    fDetailsUpdate = AbilityScoreADND.detailsUpdate;
-    AbilityScoreADND.detailsUpdate = detailsUpdateOverride;
-
     fUpdateConstitution = AbilityScoreADND.updateConstitution;
     AbilityScoreADND.updateConstitution = updateConstitutionOverride;
 end
@@ -36,44 +32,6 @@ end
 function updateConstitutionOverride(nodeChar)
     fUpdateConstitution();
     FatigueManagerPO.updateFatigueFactor(nodeChar);
-end
-
-function detailsUpdateOverride(nodeChar)
-
-  for i = 1,6,1 do
-    local sTarget = DataCommon.abilities[i];
-
-    local nBase =       DB.getValue(nodeChar, "abilities." .. sTarget .. ".base",9);
-    local nBaseMod =    DB.getValue(nodeChar, "abilities." .. sTarget .. ".basemod",0);
-    local nAdjustment = DB.getValue(nodeChar, "abilities." .. sTarget .. ".adjustment",0);
-    local nTempMod =    DB.getValue(nodeChar, "abilities." .. sTarget .. ".tempmod",0);
-    local nFatigueMod = 0;
-    if PlayerOptionManager.isUsingHackmasterFatigue() then
-        nFatigueMod = DB.getValue(nodeChar, "abilities." .. sTarget .. ".fatiguemod", 0);
-    end
-    local nFinalBase = nBase;
-
-    -- if Base Modifier isn't 0 then lets use that instead
-    if (nBaseMod ~= 0) then
-      nFinalBase = nBaseMod;
-    end
-    
-
-
-    local nTotal = (nFinalBase + nAdjustment + nTempMod - nFatigueMod);
-    if (nTotal < 1) then
-      nTotal = 1;
-    end
-    if (nTotal > 25) then
-      nTotal = 25;
-    end
-    local nScoreCurrent = DB.getValue(nodeChar, "abilities." .. sTarget .. ".score",0);
-    
-    local nTotalCurrent = DB.getValue(nodeChar, "abilities." .. sTarget .. ".total",0);
-
-    -- .score is set in updateStrength/updateWisdom/etc
-    DB.setValue(nodeChar, "abilities." .. sTarget .. ".total","number", nTotal);
-  end
 end
 
 function getStrengthPropertiesOverride(nodeChar)

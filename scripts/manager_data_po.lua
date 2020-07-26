@@ -1,6 +1,11 @@
 function onInit()
 end
 
+function parseFatigueFactorFromString(sString)
+	local sFF = sString:match("FF: *(%d*)");
+	return sFF;
+end
+
 function parseDamageReductionFromProperties(sProperties)
 	local sDR = sProperties:match("DR: *(%d*)");
 	if not sDR then return 0; end
