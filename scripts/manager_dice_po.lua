@@ -103,7 +103,7 @@ function getDieResult(nNumSides, nPenetration) -- nPenetration 0 = normal roll, 
 end
 
 function needsPenetrationRoll(rSides, rResult, penPlus)
-	if rSides <= 3 then
+	if rSides < 3 then
 		return false
 	elseif rResult == rSides  then
 		return true

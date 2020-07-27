@@ -16,6 +16,9 @@ function onRoundStart()
         FatigueManagerPO.handleFatigueForCombatants();
         FatigueManagerPO.clearFatigueState();
     end
+    if PlayerOptionManager.shouldRingBellOnRoundStart() then
+        User.ringBell();
+    end
 end
 
 function rollEntryInitOverride(nodeEntry)

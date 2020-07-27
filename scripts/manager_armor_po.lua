@@ -74,7 +74,7 @@ function canDamageTypeHurtArmor(aDmgTypes, nodeArmor)
         return false;
     else
        
-        local aDamagingTypes = {"acid","cold","fire","force","lightning","necrotic","poison","psychic","radiant","thunder"};
+        local aDamagingTypes = {"acid","cold","fire","force","lightning","necrotic","radiant","thunder"};
         if nBonus <= 6 then table.insert(aDamagingTypes, "magic +6"); end
         if nBonus <= 5 then table.insert(aDamagingTypes, "magic +5"); end
         if nBonus <= 4 then table.insert(aDamagingTypes, "magic +4"); end

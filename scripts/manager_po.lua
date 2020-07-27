@@ -12,6 +12,7 @@ sDefaultPcInitTo99OptionKey = "AdditionalAutomation_DefaultPCInitTo99";
 sFumbleOptionKey = "HouseRule_FumbleTable";
 sHackmasterAttackMatrixOptionKey = "HouseRule_HackmasterAttackMatrix";
 sFatigueOptionKey = "HouseRule_HackmasterFatigueOption";
+sRingBellOnRoundStartOptionKey = "AdditionalAutomation_RingBellOnRoundStart";
 
 function onInit()
     registerOptions();
@@ -30,6 +31,8 @@ function registerOptions()
 	OptionsManager.registerOption2(sGenerateHitLocationsOptionKey, false, "option_header_automation", "option_label_generate_hit_locations", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 
 	OptionsManager.registerOption2(sDefaultPcInitTo99OptionKey, false, "option_header_automation", "option_label_default_pc_init_to_99", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" })
+
+	OptionsManager.registerOption2(sRingBellOnRoundStartOptionKey, false, "option_header_automation", "option_label_ring_bell_on_round_start", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
     
     -- House rules
@@ -51,6 +54,10 @@ function registerOptions()
 
     OptionsManager.registerOption2(sFatigueOptionKey, false, "option_header_house_rule", "option_label_hackmaster_fatigue", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
+end
+
+function shouldRingBellOnRoundStart()
+	return OptionsManager.isOption(sRingBellOnRoundStartOptionKey, "on");
 end
 
 function isUsingHackmasterFatigue()

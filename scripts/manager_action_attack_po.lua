@@ -34,6 +34,7 @@ end
 function getTHACOOverride(rActor)
 
   if not PlayerOptionManager.isUsingHackmasterThac0() then
+    Debug.console("Using Thaco override");
     return fGetTHACO(rActor);
   end
 
@@ -49,11 +50,14 @@ function getTHACOOverride(rActor)
     nTHACO = DB.getValue(nodeActor, "combat.thaco.score", 20);
   else
   -- npc thaco calcs
+    
     local sHitDice = CombatManagerADND.getNPCHitDice(node);
+    Debug.console("NPC Thac0 hit dice", sHitDice);
     if UtilityPO.isEmpty(sHitDice) then
       nTHACO = DB.getValue(nodeActor, "thaco", 20);
     else        
       nTHACO = DataCommonPO.aThac0ByHd[sHitDice];
+      Debug.console("NPC Thac0 result", nTHACO);
       if not nTHACO then
         nTHACO = DB.getValue(nodeActor, "thaco", 20);
       end
