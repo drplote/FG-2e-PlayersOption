@@ -50,7 +50,7 @@ end
 
 function setCurrentFatigue(nodeChar, nFatigue)
 	DB.setValue(nodeChar, "fatigue.score", "number", nFatigue);
-	ChatManager.SystemMessage(ActorManager.getDisplayName(nodeChar) .. "'s fatigue is now " .. nFatigue .. ".");
+	ChatManagerPO.deliverChatMessage(ActorManager.getDisplayName(nodeChar) .. "'s fatigue is now " .. nFatigue .. ".");
 	if nFatigue == 0 then
 		removeAllFatigueEffects(nodeChar);
 	end
@@ -184,11 +184,11 @@ function checkToRemoveFatiguePenalty(nodeChar)
 		local nConRoll = math.random(1, 20);
 		if  nConRoll <= nConScore then		
 			local sMessage = sName .. " succeeds at a Constitution check to remove a level of fatigue [" .. nConRoll .. " <= " .. nConScore .. "]!";
-			ChatManager.SystemMessage(sMessage);
+			ChatManagerPO.deliverChatMessage(sMessage);
 			aFatigueEffects[1].delete();
 		else
 			local sMessage = sName .. " fails a Constitution check to remove a level of fatigue [" .. nConRoll .. " > " .. nConScore .. "]!";
-			ChatManager.SystemMessage(sMessage);
+			ChatManagerPO.deliverChatMessage(sMessage);
 		end
 	end
 end
@@ -199,10 +199,10 @@ function checkForFatiguePenalty(nodeChar)
 	local nFatigueCheckRoll = math.random(1, 20);
 	if nFatigueCheckRoll <= nFatigueCheckTarget  then
 		local sMessage = sName .. " makes a fatigue save[" .. nFatigueCheckRoll .. " <= " .. nFatigueCheckTarget .. "]. No fatigue penalty gained.";
-		ChatManager.SystemMessage(sMessage);
+		ChatManagerPO.deliverChatMessage(sMessage);
 	else	
 		local sMessage = sName .. " fails a fatigue save[" .. nFatigueCheckRoll .. " > " .. nFatigueCheckTarget .. "] and gains a fatigue penalty."; 
-		ChatManager.SystemMessage(sMessage);
+		ChatManagerPO.deliverChatMessage(sMessage);
 		addFatigueEffect(nodeChar);
 	end
 end
