@@ -665,7 +665,7 @@ function handleArmorDamageAbsorb(rTarget, aDice, aSrcDmgClauseTypes, nDamageToAb
 	local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
 	local nodeArmor = ArmorManagerPO.getDamageableArmorWorn(nodeTarget);
 	local nArmorHpRemaining = ArmorManagerPO.getHpRemaining(nodeArmor);
-	local nSoakPerDie = ArmorManagerPO.getDamageReduction(nodeArmor);
+	local nSoakPerDie = ArmorManagerPO.getDamageReduction(nodeArmor, aSrcDmgClauseTypes);
 	local nPointsThatCanBeSoaked = math.min(DiceManagerPO.getNumOriginalDice(aDice) * nSoakPerDie, nDamageToAbsorb);
 	local nDamageSoaked = math.min(nPointsThatCanBeSoaked, nArmorHpRemaining);
 	nAbsorbed = nDamageSoaked;
