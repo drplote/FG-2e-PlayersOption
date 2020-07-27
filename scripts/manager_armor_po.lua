@@ -40,7 +40,19 @@ function getDefaultArmorHpChart(nodeArmor)
     return {};
 end
 
-function getDamageReduction(nodeArmor)
+function canArmorSoakDamageDamageType(nodeArmor, aDmgTypes)
+    if not aDmgTypes or #aDmgTypes == 0 then
+        return true;
+    else
+        local aUnsoakableDamageTypes = {"psychic", "poison"};        
+        return not UtilityPO.intersects(aUnsoakableDamageTypes, aDmgTypes);
+    end
+end
+
+function getDamageReduction(nodeArmor, aDmgTypes)
+    if not canArmorSoakDamageDamageType(aDmgTypes) then
+        return 0;
+    end
     local sProperties = getProperties(nodeArmor);
     local nDr = DataManagerPO.parseDamageReductionFromProperties(sProperties);
     if not nDr or nDr == 0 then
