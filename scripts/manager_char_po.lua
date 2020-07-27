@@ -67,8 +67,11 @@ function getEncumbranceRank2eHackmaster(nodeChar)
    -- HM4 mod: different strength spread
   nStrength = (nStrength * 2) - 1; 
   if(nPercent > 50) then
-  nStrength = nStrength +1
+    nStrength = nStrength +1
   end
+
+  Debug.console("nStrength", nStrength);
+  Debug.console("DataCommonPO", DataCommonPO.aStrength[nStrength]);
   
   -- determine if wt carried is greater than a encumbrance rank for strength value
   if (nWeightCarried >= DataCommonPO.aStrength[nStrength][11]) then

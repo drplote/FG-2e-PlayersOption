@@ -51,7 +51,7 @@ function getTHACOOverride(rActor)
   else
   -- npc thaco calcs
     
-    local sHitDice = CombatManagerADND.getNPCHitDice(node);
+    local sHitDice = CombatManagerADND.getNPCHitDice(nodeActor);
     Debug.console("NPC Thac0 hit dice", sHitDice);
     if UtilityPO.isEmpty(sHitDice) then
       nTHACO = DB.getValue(nodeActor, "thaco", 20);
