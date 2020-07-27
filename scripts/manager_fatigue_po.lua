@@ -21,7 +21,10 @@ function recordAttack(rChar, sRange)
 end
 
 function clearFatigueState()
-	StateManagerPO.clearFatigueState();
+	local aCombatants = CombatManager.getCombatantNodes();
+	for _, nodeChar in pairs(aCombatants) do
+		StateManagerPO.clearFatigueState(nodeChar);	
+	end
 end
 
 function resetFatigue(nodeChar)
@@ -64,7 +67,7 @@ function handleFatigueForCombatants()
 	local aCombatants = CombatManager.getCombatantNodes();
 	for _, nodeChar in pairs(aCombatants) do
 		local sCreatureNodeName = ActorManager.getCreatureNodeName(nodeChar);
-		local nFatigue = StateManagerPO.getFatigueState(sCreatureNodeName);
+		local nFatigue = StateManagerPO.getFatigueState(nodeChar);
 		if nFatigue == 2 then
 			increaseFatigue(sCreatureNodeName);
 		elseif nFatigue == 0 then
