@@ -507,12 +507,12 @@ function handleShieldAbsorb(rSource, rTarget, rDamageOutput, nTotal)
 	return nTotal;
 end
 
-function displayArmorDamageMessages(nodeTarget, nodeShield, nDamageSoaked, nDamageTaken)
+function displayArmorDamageMessages(nodeTarget, nodeArmor, nDamageSoaked, nDamageTaken)
 	local sCharName = ActorManagerPO.getName(nodeTarget);
-	local sItemName = ItemManagerPO.getItemNameForPlayer(nodeShield);
+	local sItemName = ItemManagerPO.getItemNameForPlayer(nodeArmor);
 
 	ChatManagerPO.deliverArmorSoakMessage(sCharName, sItemName, nDamageSoaked, nDamageTaken);
-	if ArmorManagerPO.isBroken(nodeShield) then
+	if ArmorManagerPO.isBroken(nodeArmor) then
 		ChatManagerPO.deliverArmorBrokenMessage(sCharName, sItemName);
 	end
 end
