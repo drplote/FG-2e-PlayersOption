@@ -41,7 +41,7 @@ function rollSave(rTarget, sSave, sDesc, bSecretRoll)
 	if not bSecretRoll then bSecretRoll = false; end
 	local sActorType, nodeActor = ActorManager.getTypeAndNode(rTarget);
 	local nSaveScore = ActorManagerPO.getSaveScore(nodeActor, sSave);
-	ActionSave.performRoll(nil, rTarget, sSave, nSaveScore, bSecretRoll, nil, false, sDesc);
+	ActionSave.performRoll(nil, rTarget, sSave, nSaveScore, bSecretRoll, rTarget, false, sDesc);
 end
 
 function rollThresholdOfPain(rTarget)

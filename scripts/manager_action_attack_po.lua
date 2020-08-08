@@ -477,7 +477,7 @@ function addWeaponTypeVsArmorModToRoll(rRoll, sDamageType, sArmor, nMod)
     end
     
     rRoll.sDesc = rRoll.sDesc .. string.format(" [WvA: %s v %s (%s)]", sDamageType, sArmor, sMod);
-    rRoll.nMod = nMod;
+    rRoll.nMod = rRoll.nMod + nMod;
 end
 
 function clearCritStateOverride(rSource)
