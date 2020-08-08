@@ -17,7 +17,6 @@ function onRoundStart()
         FatigueManagerPO.clearFatigueState();
     end
     if PlayerOptionManager.shouldRingBellOnRoundStart() then
-        Debug.console("Active users", User.getActiveUsers());
         for _, sUserName in pairs(User.getActiveUsers()) do
             User.ringBell(sUserName);
         end       

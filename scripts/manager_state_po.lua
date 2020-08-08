@@ -5,29 +5,29 @@ aFatigueState = {};
 function onInit()
 end
 
-function getFatigueState(nodeChar)
-    return DB.getValue(nodeChar, "fatigue.state", 0);
+function getFatigueState(ctNode)
+    return DB.getValue(ctNode, "fatigue.state", 0);
 end
 
 function setFatigueState(rChar, nFatigue)
   -- nFatigue = 0 (decrease fatigue at end of turn), = 1 (no recovery, no increase), = 2 (increase)
-  local nodeChar = ActorManagerPO.getNode(rChar);
-  if not nodeChar then
+  local ctNode = ActorManager.getCTNode(rChar);
+  if not ctNode then
     return;
   end
 
-  local nCurrentFatigueState = DB.getValue(nodeChar, "fatigue.state");
+  local nCurrentFatigueState = DB.getValue(ctNode, "fatigue.state");
   if not nCurrentFatigueState or nCurrentFatigueState < nFatigue then
-    DB.setValue(nodeChar, "fatigue.state", "number", nFatigue);
+    DB.setValue(ctNode, "fatigue.state", "number", nFatigue);
   end
 end
 
 function clearFatigueState(rChar)
-    local nodeChar = ActorManagerPO.getNode(rChar);
-    if not nodeChar then
+    local ctNode = ActorManager.getCTNode(rChar);
+    if not ctNode then
       return;
     end
-    DB.setValue(nodeChar, "fatigue.state", "number", 0);
+    DB.setValue(ctNode, "fatigue.state", "number", 0);
 end
 
 function hasFatigueState(rSource)

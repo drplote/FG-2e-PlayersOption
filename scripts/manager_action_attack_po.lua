@@ -371,10 +371,7 @@ function onAttackOverride(rSource, rTarget, rRoll)
     if PlayerOptionManager.isPOCritEnabled() and rCrit then
       ChatManagerPO.deliverCriticalHitMessage(rCrit.message);
       local bIsTargetPc = (rTarget and rTarget.sType == "pc");
-      if not bIsTargetPc then
-        -- Automate the save for npcs
-        ActionSavePO.rollCritSave(rTarget);
-      end
+      ActionSavePO.rollCritSave(rTarget);
     else
       ActionAttack.setCritState(rSource, rTarget);
     end

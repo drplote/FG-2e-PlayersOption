@@ -2,12 +2,12 @@ function onInit()
 end
 
 function deliverChatMessage(sText, sType)
-	local rMessage = ChatManager.createBaseMessage();
-	if sType then
-		rMessage.type = sType;
-	end
-	rMessage.text = sText;
-	Comm.deliverChatMessage(rMessage);
+	--local rMessage = ChatManager.createBaseMessage();
+	--if sType then
+	--	rMessage.type = sType;
+	--end
+	--rMessage.text = sText;
+	ChatManager.Message(sText, true);
 	--ChatManager.SystemMessage(sText);
 end
 
