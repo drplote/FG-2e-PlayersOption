@@ -35,7 +35,7 @@ function onFatigueOptionChanged()
 end
 
 function updateFatigueFactor()
-	Debug.console("updatte fatigue factor called");
+	Debug.console("update fatigue factor called");
 	if PlayerOptionManager.isUsingHackmasterFatigue() then
 		local nodeChar = getDatabaseNode();
 		FatigueManagerPO.updateFatigueFactor(nodeChar);

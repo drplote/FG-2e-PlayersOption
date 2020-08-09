@@ -30,8 +30,9 @@ function onInit()
 end
 
 function updateConstitutionOverride(nodeChar)
-    fUpdateConstitution();
+    local dbAbility = fUpdateConstitution(nodeChar);
     FatigueManagerPO.updateFatigueFactor(nodeChar);
+    return dbAbility;
 end
 
 function getStrengthPropertiesOverride(nodeChar)
