@@ -63,11 +63,13 @@ function fromCSV (s)
       until c ~= '"'    -- quote not followed by quote?
       if not i then error('unmatched "') end
       local f = string.sub(s, fieldstart+1, i-1)
-      table.insert(t, (string.gsub(f, '""', '"')))
+      local sTrimmed = StringManager.trim((string.gsub(f, '""', '"')))
+      table.insert(t, sTrimmed)
       fieldstart = string.find(s, ',', i) + 1
     else                -- unquoted; find next comma
       local nexti = string.find(s, ',', fieldstart)
-      table.insert(t, string.sub(s, fieldstart, nexti-1))
+      local sTrimmed = StringManager.trim(string.sub(s, fieldstart, nexti-1))
+      table.insert(t, sTrimmed)
       fieldstart = nexti + 1
     end
   until fieldstart > string.len(s)

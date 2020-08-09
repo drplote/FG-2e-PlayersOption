@@ -702,10 +702,23 @@ function onDamageRollOverride(rSource, rRoll)
 	end
 
     if PlayerOptionManager.isPenetrationDiceEnabled() then
-        DiceManagerPO.handlePenetration(rRoll, false);
+        local aDmgTypes = parseDamageTypes(rRoll);
+        local bExtraPenetration = UtilityPO.contains(aDmgTypes, "penetrating");
+        DiceManagerPO.handlePenetration(rRoll, bExtraPenetration);
     end
     
     fOnDamageRoll(rSource, rRoll);
+end
+
+function parseDamageTypes(rRoll)
+  local aDmgTypes = {};
+  for sDamageType, sDamageDice, sDamageAbility, sDamageAbilityMult, sDamageReroll in string.gmatch(rRoll.sDesc, "%[TYPE: ([^(]*) %(([^)]*)%)%((%w*)%)%(([^)]*)%)%(([%w,]*)%)%]") do
+      local aTypes = UtilityPO.fromCSV(sDamageType);
+      for _, sType in pairs(aTypes) do
+        table.insert(aDmgTypes, sType:lower());
+      end
+  end
+  return aDmgTypes;
 end
 
 function checkReductionTypeOverride(aReduction, aDmgType)
