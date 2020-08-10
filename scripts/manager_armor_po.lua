@@ -40,7 +40,7 @@ function getDefaultArmorHpChart(nodeArmor)
     return {};
 end
 
-function canArmorSoakDamageDamageType(nodeArmor, aDmgTypes)
+function canArmorSoakDamageDamageType(aDmgTypes)
     if not aDmgTypes or #aDmgTypes == 0 then
         return true;
     else
@@ -81,7 +81,7 @@ end
 function canDamageTypeHurtArmor(aDmgTypes, nodeArmor)
     local nBonus = getMagicAcBonus(nodeArmor);
     if nBonus <= 0 then
-        return true;
+        return not UtilityPO.intersects({"poison", "psychic"}, aDmgTypes);
     elseif not aDmgTypes or #aDmgTypes == 0 then
         return false;
     else
