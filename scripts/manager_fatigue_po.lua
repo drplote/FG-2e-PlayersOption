@@ -22,7 +22,8 @@ end
 
 function clearFatigueState()
 	local aCombatants = CombatManager.getCombatantNodes();
-	for _, nodeChar in pairs(aCombatants) do
+	for _, nodeCT in pairs(aCombatants) do
+		local nodeChar = CombatManagerADND.getNodeFromCT(nodeCT);
 		StateManagerPO.clearFatigueState(nodeChar);	
 	end
 end
@@ -66,11 +67,12 @@ end
 function handleFatigueForCombatants()
 	local aCombatants = CombatManager.getCombatantNodes();
 	for _, ctNode in pairs(aCombatants) do
-		local nFatigue = StateManagerPO.getFatigueState(ctNode);
+		local nodeChar = CombatManagerADND.getNodeFromCT(ctNode);
+		local nFatigue = StateManagerPO.getFatigueState(nodeChar);
 		if nFatigue == 2 then
-			increaseFatigue(ctNode);
+			increaseFatigue(nodeChar);
 		elseif nFatigue == 0 then
-			decreaseFatigue(ctNode);
+			decreaseFatigue(nodeChar);
 		end
 	end
 end
@@ -98,9 +100,7 @@ function updateFatigueFactor(nodeChar)
 	DB.setValue(nodeChar, "fatigue.factor", "number", nFatigueFactor);
 end
 
-function increaseFatigue(ctNode)
-	local sCreatureNodeName = ActorManager.getCreatureNodeName(ctNode);
-	local nodeChar = ActorManagerPO.getNode(sCreatureNodeName);
+function increaseFatigue(nodeChar)
 	local nCurrentFatigue = getCurrentFatigue(nodeChar);
 	local nNewFatigue = nCurrentFatigue + 1;
 	setCurrentFatigue(nodeChar, nNewFatigue);
@@ -109,9 +109,7 @@ function increaseFatigue(ctNode)
 	end
 end
 
-function decreaseFatigue(ctNode)
-	local sCreatureNodeName = ActorManager.getCreatureNodeName(ctNode);
-	local nodeChar = ActorManagerPO.getNode(sCreatureNodeName);
+function decreaseFatigue(nodeChar)
 	local nCurrentFatigue = getCurrentFatigue(nodeChar);
 	if nCurrentFatigue > 0 then
 		local nNewFatigue = nCurrentFatigue - 1;
