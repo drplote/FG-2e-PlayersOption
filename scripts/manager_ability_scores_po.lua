@@ -31,7 +31,9 @@ end
 
 function updateConstitutionOverride(nodeChar)
     local dbAbility = fUpdateConstitution(nodeChar);
-    FatigueManagerPO.updateFatigueFactor(nodeChar);
+    if PlayerOptionManager.isUsingHackmasterFatigue() and ActorManager.isPC(nodeChar) then
+        FatigueManagerPO.updateFatigueFactor(nodeChar);
+    end
     return dbAbility;
 end
 

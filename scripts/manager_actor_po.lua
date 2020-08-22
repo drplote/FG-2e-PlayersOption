@@ -140,23 +140,34 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
     end
     
     -- if PC
-    if sDefenderType == "pc" then
+    if sDefenderType == "pc" or PlayerOptionManager.isUsingArmorDamage() then
       local nodeDefender = DB.findNode(rDefender.sCreatureNode);
+      Debug.console("nodeDefender", nodeDefender);
       nACTemp = DB.getValue(nodeDefender, "defenses.ac.temporary",0);
       nACBase = DB.getValue(nodeDefender, "defenses.ac.base",10);
       nACArmor = DB.getValue(nodeDefender, "defenses.ac.armor",0);
       nACShield = DB.getValue(nodeDefender, "defenses.ac.shield",0);
       nACMisc = DB.getValue(nodeDefender, "defenses.ac.misc",0);
+      
+      if sDefenderType == "pc" then        
+        if bIgnoreArmor then
+          nDefense = 10;
+        else
+          nDefense = nACBase;
+        end
+      else
+        local nStatBlockAc = DB.getValue(nodeDefender, "ac", 10);
+        nACBase = math.min(nStatBlockAc, nACBase);
+        if bIgnoreArmor then
+          nDefense = nStatBlockAc;
+        else
+          nDefense = nACBase;
+        end
+      end
 
-    if bIgnoreArmor then
-      nDefense = 10;
-    else
-      nDefense = nACBase;
-    end
-    
     else
       -- ELSE NPC
-      nDefense = DB.getValue(nodeDefender, "ac", 10);
+        nDefense = DB.getValue(nodeDefender, "ac", 10);
     end
 
     -- use BAC style effects if exist
@@ -183,23 +194,21 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
     end
     -- 
     
-    if sDefenderType == "pc" then
+    if sDefenderType == "pc" or PlayerOptionManager.isUsingArmorDamage() then
       -- dont get shield bonus if you attacked from rear
       -- or if you are prone
 	    if bNoShield or bRearAtk or bProne or bParalyzed or bRestrainedStunned or 
 	        EffectManager5E.hasEffect(rDefender, "NOSHIELD", nil) or 
 	        EffectManager5E.hasEffect(rDefender, "SHIELDLESS", nil) or 
 	        EffectManager5E.hasEffect(rDefender, "Charged", nil) then
-	    		nACShield = 0;
-		end
+	    		 nACShield = 0;
+		  end
         nDefense = nDefense + nACTemp + nACArmor + nACShield + nACMisc;
     else -- npc
-      nDefense = nDefense + nACTemp; -- nACTemp are "modifiders"
+        nDefense = nDefense + nACTemp; -- nACTemp are "modifiders"
     end
        
-    -- disable NPC's ability to adjust AC from DEX. Set their AC in the NPC AC field
-    -- if "NODEX" effect set we ignore dex in AC calculation
-    if sDefenderType == "pc" then
+    if sDefenderType == "pc" or PlayerOptionManager.isUsingArmorDamage() then  
       -- check to see if casting or if has NODEX effect, if so dont apply dex AC
       -- if attacking from rear no dex! if prone, they get no dex.
       -- also, make sure modifier

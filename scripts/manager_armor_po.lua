@@ -109,14 +109,11 @@ function getAcBase(nodeArmor)
     end
 
     if PlayerOptionManager.isUsingArmorDamage() then
-        -- Cap how bad it can get (in case someone had more damage levels than AC levels).
-        -- Cursed items are handled via their "bonus" so cap won't affect them.
-        -- Shields and magic items can't be worse than base 0, armor can't be worse than base 10.
         local nAcLostFromDamage = getAcLostFromDamage(nodeArmor);
         if bIsSuitOfArmor then
-            nBaseAc = math.min(10 + getMagicAcBonus(nodeArmor), nBaseAc + nAcLostFromDamage);
+            nBaseAc = nBaseAc + nAcLostFromDamage;
         else
-            nBaseAc = math.max(0 - getMagicAcBonus(nodeArmor), nBaseAc - nAcLostFromDamage);
+            nBaseAc = nBaseAc - nAcLostFromDamage;
         end
     end;
 
