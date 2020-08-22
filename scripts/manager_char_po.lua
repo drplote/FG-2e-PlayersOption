@@ -225,6 +225,11 @@ function calcItemArmorClassOverride(nodeChar)
   
   -- flip value for decending ac in nMainShieldTotal -celestian
   nMainShieldTotal = -(nMainShieldTotal);
+
+  Debug.console("defense calc", nodeChar);
+  Debug.console("defense calc", nMainArmorBase);
+  Debug.console("defense calc", nMainArmorTotal);
+  Debug.console("defense calc", nMainShieldTotal);
     
   DB.setValue(nodeChar, "defenses.ac.base", "number", nMainArmorBase);
   DB.setValue(nodeChar, "defenses.ac.armor", "number", nMainArmorTotal);

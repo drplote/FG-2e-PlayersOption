@@ -1,4 +1,6 @@
 local fRollNpcHitPoints;
+local fCopySourceToNodeCT;
+local fAddCTANPC;
 
 function onInit()
     fRollNpcHitPoints = CombatManagerADND.rollNPCHitPoints;
@@ -8,7 +10,28 @@ function onInit()
     CombatManagerADND.rollEntryInit = rollEntryInitOverride;
     CombatManager2.rollEntryInit = rollEntryInitOverride; -- We have to override this because CombatManagerADND overrode this
 
+    fCopySourceToNodeCT = CombatManagerADND.copySourceToNodeCT;
+    CombatManagerADND.copySourceToNodeCT = copySourceToNodeCTOverride;
+
     CombatManager.setCustomRoundStart(onRoundStart);
+
+    fAddCTANPC = CombatManagerADND.addCTANPC;
+    CombatManagerADND.addCTANPC = addCTANPCOverride;
+end
+
+function addCTANPCOverride(sClass, nodeNPC, sNamedInBattle)
+    local nodeEntry = fAddCTANPC(sClass, nodeNPC, sNamedInBattle);
+    CombatManagerADND.copySourceToNodeCT(nodeNPC, nodeEntry);
+    return nodeEntry;
+end 
+
+function copySourceToNodeCTOverride(nodeSource, nodeCT)
+    fCopySourceToNodeCT(nodeSource, nodeCT);
+    if PlayerOptionManager.isUsingArmorDamage() then
+        -- Need to recalc item AC after they've loaded items from source or their
+        -- AC from armor doesn't work correctly.
+        CharManager.calcItemArmorClass(nodeCT);
+    end
 end
 
 function onRoundStart()
