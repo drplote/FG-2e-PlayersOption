@@ -142,9 +142,12 @@ function applyAttackOverride(rSource, rTarget, msgOOB)
 end
 
 function getRollOverride(rActor, rAction)
+  Debug.printstack();
   local rRoll = fGetRoll(rActor, rAction);
-  rRoll.weaponPath = rAction.weaponPath;
-  rRoll.aDamageTypes = rAction.aDamageTypes;
+  if rAction then
+    rRoll.weaponPath = rAction.weaponPath;
+    rRoll.aDamageTypes = rAction.aDamageTypes;
+  end
   return rRoll;
 end
 
