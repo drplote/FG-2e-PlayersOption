@@ -100,6 +100,7 @@ end
 
 function getAcBase(nodeArmor)
     local nBaseAc;
+    local nAcGiven = 0;
 
     local bIsSuitOfArmor = isSuitOfArmor(nodeArmor);
     if bIsSuitOfArmor then
@@ -117,7 +118,13 @@ function getAcBase(nodeArmor)
         end
     end;
 
-    return nBaseAc;
+    local nAcBonusGranted = 0;
+    if bIsSuitOfArmor then
+        nAcBonusGranted = 10 - nBaseAc;
+    else
+        nAcBonusGranted = nBaseAc;
+    end
+    return nBaseAc, nAcBonusGranted;
 end
 
 function getProperties(nodeArmor)
@@ -202,6 +209,9 @@ function getHitModifierForDamageTypesVsArmor(nodeArmor, aDamageTypes)
 	if aModifiers then
 		for _, sDamageType in pairs(aDamageTypes) do
 			local nMod = aModifiers[sDamageType] or 0;
+            local nBaseAc, nAcBonusGranted = getAcBase(nodeArmor);
+            -- Bonus to hit can't be higher than the AC the armor provides
+            nMod = math.min(nAcBonusGranted, nMod); 
 			if nHighestMod == nil or nHighestMod < nMod then
 				nHighestMod = nMod;
 				sHighestDamageType = sDamageType;

@@ -53,7 +53,7 @@ function getTHACOOverride(rActor)
     
     local sHitDice = CombatManagerADND.getNPCHitDice(nodeActor);
     Debug.console("NPC Thac0 hit dice", sHitDice);
-    if UtilityPO.isEmpty(sHitDice) then
+    if UtilityPO.isEmpty(sHitDice) or sHitDice == "0" then
       nTHACO = DB.getValue(nodeActor, "thaco", 20);
     else        
       nTHACO = DataCommonPO.aThac0ByHd[sHitDice];
@@ -142,7 +142,6 @@ function applyAttackOverride(rSource, rTarget, msgOOB)
 end
 
 function getRollOverride(rActor, rAction)
-  Debug.printstack();
   local rRoll = fGetRoll(rActor, rAction);
   if rAction then
     rRoll.weaponPath = rAction.weaponPath;

@@ -464,7 +464,7 @@ end
 function handleShieldAbsorb(rSource, rTarget, rDamageOutput, nTotal)
 	if not PlayerOptionManager.isUsingArmorDamage() then return nTotal; end;
 
-	if StateManagerPO.hasShieldHitState(rSource, rTarget) then
+	if StateManagerPO.hasShieldHitState(rSource, rTarget) or Input.isAltPressed() then
 		local nShieldAbsorb = 0;	
 		-- if shield equipped then reduce damage by up to shield hp
 		local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);

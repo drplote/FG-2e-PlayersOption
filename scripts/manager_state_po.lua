@@ -1,8 +1,36 @@
 aCritState = {};
-aShieldHitState = {};
 aFatigueState = {};
 
 function onInit()
+end
+
+function hasShieldHitState(rSource, rTarget)
+  local nodeChar = ActorManagerPO.getNode(rSource);
+  if not nodeChar then
+    return;
+  end
+
+  local sTargetCT = "";
+  if rTarget then
+    sTargetCT = ActorManager.getCTNodeName(rTarget);
+  end
+
+  local sShieldHitTarget = DB.getValue(nodeChar, "shieldhit.state", "");
+  return sShieldHitTarget == ActorManager.getCTNodeName(rTarget);
+end
+
+function clearShieldHitState(rSource)
+  local nodeChar = ActorManagerPO.getNode(rSource);
+  DB.setValue(nodeChar, "shieldhit.state", "string", "");
+end
+
+function setShieldHitState(rSource, rTarget)
+    local nodeChar = ActorManagerPO.getNode(rSource);
+    if not nodeChar then
+      return;
+    end
+
+    DB.setValue(nodeChar, "shieldhit.state", "string", ActorManager.getCTNodeName(rTarget));
 end
 
 function getFatigueState(nodeChar)
@@ -25,56 +53,6 @@ end
 function clearFatigueState(nodeChar)
     DB.setValue(nodeChar, "fatigue.state", "number", 0);
 end
-
-function setShieldHitState(rSource, rTarget)
-	local sSourceCT = ActorManager.getCreatureNodeName(rSource);
-	if sSourceCT == "" then
-		return;
-	end
-
-	local sTargetCT = "";
-	if rTarget then
-		sTargetCT = ActorManager.getCTNodeName(rTarget);
-	end
-
-	if not aShieldHitState[sSourceCT] then
-		aShieldHitState[sSourceCT] = {};
-	end
-	table.insert(aShieldHitState[sSourceCT], sTargetCT);
-end
-
-function clearShieldHitState(rSource)
-  local sSourceCT = ActorManager.getCreatureNodeName(rSource);
-  if sSourceCT ~= "" then
-    aShieldHitState[sSourceCT] = nil;
-  end
-end
-
-function hasShieldHitState(rSource, rTarget)
-  local sSourceCT = ActorManager.getCreatureNodeName(rSource);
-  if sSourceCT == "" then
-    return;
-  end
-
-  local sTargetCT = "";
-  if rTarget then
-    sTargetCT = ActorManager.getCTNodeName(rTarget);
-  end
-
-  if not aShieldHitState[sSourceCT] then
-    return false;
-  end
-  
-  for k,v in ipairs(aShieldHitState[sSourceCT]) do
-    if v == sTargetCT then
-      table.remove(aShieldHitState[sSourceCT], k);
-      return true;
-    end
-  end
-  
-  return false;
-end
-
 
 function setCritState(rSource, rTarget, nDmgMult)
   local sSourceCT = ActorManager.getCreatureNodeName(rSource);
