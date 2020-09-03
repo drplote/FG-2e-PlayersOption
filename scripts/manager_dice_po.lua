@@ -7,6 +7,67 @@ function onInit()
 	Comm.registerSlashHandler("penplus", onPenetratingDicePlusSlashCommand)
 end
 
+function processDefaultResults(draginfo)
+	local rCustomData = draginfo.getCustomData() or {}
+	local aDieResults = decodeDiceResults(rCustomData.rollresults)
+
+	local rMessage = ChatManager.createBaseMessage()
+    rMessage.dicedisplay = 1; --  display total
+	rMessage.font = "systemfont"
+	rMessage.text = draginfo.getDescription()
+	rMessage.dice = aDieResults
+	rMessage.diemodifier = draginfo.getNumberData()
+	Comm.deliverChatMessage(rMessage)
+
+	return true
+end
+
+function decodeDiceResults(sSource)
+	if not sSource then
+		return {}
+	end
+	local aDieResults = {}
+	local nIndex = 0
+	while nIndex do
+		local nStartIndex, nNextIndex = sSource:find("^d%d+:%d+:%d;", nIndex)
+		if nNextIndex then
+			local sDieSource = sSource:sub(nStartIndex, nNextIndex-1)
+			local sType, sResult, sExploded = sDieSource:match("^(d%d+):(%d+):(%d)")
+			table.insert(aDieResults, { type = sType, result = tonumber(sResult), exploded = tonumber(sExploded) })
+			nIndex = nNextIndex + 1
+		else
+			nIndex = nil 
+		end
+	end
+	return aDieResults
+end
+
+function onDiceLanded(draginfo)
+	local sDragType = draginfo.getType()
+	local bProcessed = false
+	local bPreventProcess = false
+
+	local rCustomData = draginfo.getCustomData() or {}
+
+	-- dice handling
+	for sType, fCallback in pairs(aDiceMechanicHandlers) do
+		if sType == sDragType then
+			bProcessed, bPreventProcess = fCallback(draginfo)
+		end
+	end
+
+	-- results
+	if not bPreventProcess then
+		for sType, fCallback in pairs(aDiceMechanicResultHandlers) do
+			if sType == sDragType then
+				fCallback(draginfo)
+			end
+		end
+	end
+
+	return bProcessed
+end
+
 function multiplyDice(rRoll, nMultiplier)
 	local aExtraDice = {};
 	for i = 1, nMultiplier - 1 do

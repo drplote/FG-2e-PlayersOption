@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <windowclass name="chat" merge="join">
+    <sheetdata>
+      <chatwindow name="chat">
+        <script>
+          function onDiceLanded(draginfo)
+            local bRes = DiceManagerPO.onDiceLanded(draginfo)
+            if not bRes then
+              bRes = super.onDiceLanded(draginfo)
+            end
+            return bRes
+          end
+        </script>
+      </chatwindow>
+    </sheetdata>
+  </windowclass>
+</root>
+
