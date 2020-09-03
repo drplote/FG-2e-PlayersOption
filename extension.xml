@@ -4,7 +4,7 @@
 
   <properties>
     <name>2E Player's Option and more</name>
-    <version>0.5</version>
+    <version>0.6</version>
     <loadorder>99</loadorder>
     <description>
       <text>Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno</text>
