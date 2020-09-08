@@ -311,8 +311,15 @@ function getNumOriginalDice(aDice)
 	if not aDice then
 		return 0;
 	end
-	local nNumDice = #aDice;
-	for _, vDie in ipairs(aDice) do
+	local nNumDice = 0;
+	Debug.console("aDice", aDice);
+	for _, vDie in pairs(aDice) do
+		Debug.console("vDie", vDie);
+		if vDie.result then
+			nNumDice = nNumDice + 1;
+		end
+	end
+	for _, vDie in pairs(aDice) do
 		if vDie.penetrationRolls then
 			nNumDice = nNumDice - #vDie.penetrationRolls;
 		end
