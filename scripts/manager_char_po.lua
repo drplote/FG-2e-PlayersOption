@@ -181,6 +181,7 @@ function calcItemArmorClassOverride(nodeChar)
       local sTypeLower = StringManager.trim(DB.getValue(vNode, "type", "")):lower();
       local sSubtypeLower = StringManager.trim(DB.getValue(vNode, "subtype", "")):lower();
       local bIsArmor, _, _ = ItemManager2.isArmor(vNode);
+      local bIsWarding ,_,_ = ItemManager2.isWarding(vNode);
       local bIsShield = (StringManager.contains(DataCommonADND.itemShieldArmorTypes, sSubtypeLower));
       if (not bIsShield) then
         bIsShield = ItemManager2.isShield(vNode);
@@ -208,13 +209,25 @@ function calcItemArmorClassOverride(nodeChar)
         bIsShield = false;
       end      
  
-      if bIsArmor or bIsShield or bIsRingOrCloak then
+      if bIsArmor or bIsWarding or bIsShield or bIsRingOrCloak then
         if bIsShield then
             nMainShieldTotal = nMainShieldTotal + ArmorManagerPO.getAcBase(vNode) + ArmorManagerPO.getMagicAcBonus(vNode);
         elseif bIsRingOrCloak then          
 	        -- we only want the "bonus" value for ring/cloaks/robes
             nMainShieldTotal = nMainShieldTotal + ArmorManagerPO.getMagicAcBonus(vNode);
-        else
+        elseif bIsWarding then
+          if bID then
+            nMainArmorBase = DB.getValue(vNode, "ac", 0);
+          else
+            nMainArmorBase = DB.getValue(vNode, "ac", 0);
+          end
+
+          if bID then
+            nMainArmorTotal = nMainArmorTotal -(DB.getValue(vNode, "bonus", 0));
+          else
+            nMainArmorTotal = nMainArmorTotal -(DB.getValue(vNode, "bonus", 0));
+          end
+        elseif bIsArmor then
             nMainArmorBase = ArmorManagerPO.getAcBase(vNode);
           -- convert bonus from +bonus to -bonus to adjust AC down for decending AC
             nMainArmorTotal = nMainArmorTotal - ArmorManagerPO.getMagicAcBonus(vNode);  
