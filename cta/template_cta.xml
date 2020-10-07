@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<root>
+	<template name="button_cta_nextactor">
+		<buttoncontrol>
+			<anchored width="30" height="30">
+				<bottom offset="4" />
+				<left offset="10" />
+			</anchored>
+			<icon normal="button_ctnextactor" pressed="button_ctnextactor_down" />
+			<tooltip textres="ct_tooltip_nextactor" />
+			<script>
+				function onButtonPress()
+					CombatManagerPO.nextActor();
+				end
+				
+				function onDragStart(button, x, y, draginfo)
+					draginfo.setType("combattrackernextactor");
+					draginfo.setIcon("button_ctnextactor");
+					
+					return true;
+				end
+			</script>
+		</buttoncontrol>
+	</template>
+</root>

@@ -7,7 +7,7 @@
     <version>0.7</version>
     <loadorder>99</loadorder>
     <description>
-      <text>Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.6)</text>
+      <text>Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.7)</text>
       <website></website>
       <author>Sterno</author>
     </description>
@@ -16,7 +16,7 @@
     </ruleset>
   </properties>
 
-  <announcement text="Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.6)" font="emotefont" icon="rulesetlogo_DungeonClassic" />
+  <announcement text="Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.7)" font="emotefont" icon="rulesetlogo_DungeonClassic" />
   <base>    
     
     <includefile source="graphics/graphics_fonts_po.xml" />
@@ -27,6 +27,7 @@
     <includefile source="desktop/desktop_classes.xml" />
 
     <includefile source="cta/cta_host.xml"/>
+    <includefile source="cta/template_cta.xml"/>
     
     <includefile source="strings/strings_player_option.xml"/>
 
