@@ -266,19 +266,40 @@ function getHpKicker(nodeChar)
     if not PlayerOptionManager.isHpKickerEnabled() then
         return 0;
     end;
-    
-    local sHitDice = DB.getValue(nodeChar, "hitDice", "0");
-    if not sHitDice or sHitDice == "0" then 
-        return 0; -- If it has 0 HD, don't give it a kicker.
-    end
 
-    local sSizeRaw = StringManager.trim(DB.getValue(nodeChar, "size", "M"));
-    local sSize = sSizeRaw:lower();
+    return getKickerFromSize(nodeChar);
+end
 
-    if sSize == "tiny" or string.find(sSizeRaw, "T") then
-        return 10;
+function getKickerFromSize(nodeNpc)
+  if DB.getValue(nodeNpc, "hd", 0) == 0 then 
+    return 0; -- If it has 0 HD, don't give it a kicker.
+  end
+  
+  local nSizeCategory = ActorManagerPO.getSizeCategory(nodeNpc);  
+  local nKicker = 20;
+  
+  local bUseSizeBasedKicker = PlayerOptionManager.isKickerSizeBased();
+  
+  if bUseSizeBasedKicker then
+    if nSizeCategory == 1 then -- tiny
+      nKicker = 0;
+    elseif nSizeCategory == 2 then -- small
+      nKicker = 10;
+    elseif nSizeCategory == 3 then -- medium
+      nKicker = 20;
+    elseif nSizeCategory == 4 then -- large
+      nKicker = 30;
+    elseif nSizeCategory == 5 then -- huge
+      nKicker = 40;
+    elseif nSizeCategory == 6 then -- gargantuan
+      nKicker = 50;
     end
-    return 20;
+  elseif nSizeCategory == 1 then
+    nKicker = 10;
+  end
+  
+  return nKicker;
+  
 end
 
 function nextActor()

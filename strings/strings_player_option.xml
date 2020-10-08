@@ -21,6 +21,7 @@
     <string name="option_label_hackmaster_attack_matrix">Monster Thac0 Based on HM Attack Matrix</string>
     <string name="option_label_penetration_dice">Penetration Dice</string>
     <string name="option_label_hp_kicker">Hit Point Kickers</string>
+    <string name="option_val_size_based">Size-based</string>
     <string name="option_label_armor_damage">Armor Damage</string>
     <string name="option_label_shield_damage">Shield Hits</string>
     <string name="option_label_threshold_of_pain">Threshold of Pain</string>

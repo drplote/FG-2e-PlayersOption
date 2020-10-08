@@ -42,7 +42,7 @@ function registerOptions()
 
     OptionsManager.registerOption2(sHackmasterAttackMatrixOptionKey, false, "option_header_house_rule", "option_label_hackmaster_attack_matrix", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
-    OptionsManager.registerOption2(sKickerOptionKey, false, "option_header_house_rule", "option_label_hp_kicker", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+	OptionsManager.registerOption2(sKickerOptionKey, false, "option_header_house_rule", "option_label_hp_kicker", "option_entry_cycler",{ labels = "option_val_off|option_val_on|option_val_size_based", values = "off|on|sizedBasedKicker", baselabel = "option_val_off", baseval = "off", default = "off" });
     
     OptionsManager.registerOption2(sPenetrationOptionKey, false, "option_header_house_rule", "option_label_penetration_dice", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
@@ -133,7 +133,11 @@ function isGenerateHitLocationsEnabled()
 end
 
 function isHpKickerEnabled()
-	return OptionsManager.isOption(sKickerOptionKey, "on");
+	return OptionsManager.isOption(sKickerOptionKey, "on") or OptionsManager.isOption(sKickerOptionKey, "sizedBasedKicker");
+end
+
+function isKickerSizeBased()
+	return OptionsManager.isOption(sKickerOptionKey, "sizedBasedKicker");
 end
 
 function isPenetrationDiceEnabled()
