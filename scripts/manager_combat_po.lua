@@ -304,7 +304,7 @@ end
 
 function nextActor()
     if PlayerOptionManager.isUsingPhasedInitiative() then
-        if Input.isShiftPressed or Input.isAltPressed or Input.isControlPressed then
+        if Input.isShiftPressed() or Input.isAltPressed() or Input.isControlPressed() then
             delayThenNextActor(2);
         else
             CombatManagerADND.nextActor();
@@ -314,12 +314,13 @@ function nextActor()
     end
 end
 
-function delayThenNextActor()
+function delayThenNextActor(nInitDelay)
     if not User.isHost() then
         return;
     end
 
     local nodeActive = CombatManager.getActiveCT();
+    local nPreviousInit = DB.getValue(nodeActive, "initresult");
     local nIndexActive = 0;
     
     -- Check the skip hidden NPC option
@@ -362,13 +363,10 @@ function delayThenNextActor()
         
     end
 
-    local nInitDelay = 10;
-
     -- If next actor available, advance effects, activate and start turn
     if nodeNext then
-        local nPreviousInit = DB.getValue(nodeActive, "initresult");
         local nNextActorInit = DB.getValue(nodeNext, "initresult");
-        if (nPreviousInit + nInitDelay < nNextActorInit) then -- TODO: This might need to be <=
+        if (nNextActorInit <= nPreviousInit + nInitDelay) then 
             -- End turn for current actor
             CombatManager.onTurnEndEvent(nodeActive);
         
@@ -384,5 +382,5 @@ function delayThenNextActor()
             CombatManager.onTurnStartEvent(nodeNext);
         end
     end
-    DB.setValue(nodeActive, "initresult", "number", nPreviousInit + nInitDelay);
+    DB.setValue(nodeActive, "initresult", "number", nPreviousInit + nInitDelay);    
 end
