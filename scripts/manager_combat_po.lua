@@ -303,14 +303,14 @@ function getKickerFromSize(nodeNpc)
 end
 
 function nextActor()
-    if Input.isShiftPressed() then
-        delayThenNextActor(5);
-    elseif Input.isAltPressed() then
-        delayThenNextActor(1);
-    elseif Input.isControlPressed() then
-        delayThenNextActor(10);
+    if PlayerOptionManager.isUsingPhasedInitiative() then
+        if Input.isShiftPressed or Input.isAltPressed or Input.isControlPressed then
+            delayThenNextActor(2);
+        else
+            CombatManagerADND.nextActor();
+        end
     else
-        CombatManager.nextActor();    
+        CombatManager.nextActor();
     end
 end
 
