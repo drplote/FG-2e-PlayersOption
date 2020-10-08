@@ -3,21 +3,32 @@ end
 
 -- Speeds: 1 = Very Fast, 2 = Fast, 3 = Average, 4 = Slow, 5 = Very Slow
 
-function getActionPhase(nodeActor)
-	-- TODO: If they're casting a spell, use spell init
-	-- TODO: else if they're using a weapon, use max of base init or weapon init
-	-- TODO: else use base init
-	local nBaseActorPhase = getBaseActorSpeedPhase(nodeActor);
-	return nBaseActorPhase;
-end
-
 function getWorstPossiblePhaseForActor(nodeActor)
 	local nPhase = getBaseActorSpeedPhase(nodeActor);
-	for _,nodeWeapon in pairs(DB.getChildren(nodeEntry, "weaponlist")) do
+	for _,nodeWeapon in pairs(DB.getChildren(nodeActor, "weaponlist")) do
 		local nWeaponPhase = getWeaponPhase(nodeWeapon, nodeActor);
 		nPhase = math.max(nPhase, nWeaponPhase);
 	end
 	return nPhase;
+end
+
+function getPhaseName(nInitPhase)
+	if nInitPhase < 1 then
+		return "very fast+";
+	elseif nInitPhase == 1 then
+		return "very fast";
+	elseif nInitPhase == 2 then
+		return "fast";
+	elseif nInitPhase == 3 then
+		return "average";
+	elseif nInitPhase == 4 then
+		return "slow";
+	elseif nInitPhase == 5 then
+		return "very slow";
+	else 
+		return "very slow-";
+	end
+
 end
 
 function getBaseActorSpeedPhase(nodeActor)
@@ -56,21 +67,11 @@ function getSpellPhase(nSpellInitMod)
 	end
 end
 
-function getWeaponPhase(nodeWeapon, nodeActor)
-	-- TODO: if magic +2 or +3, one phase less
-	-- TODO: if magic > +3, two phases less
-	-- TODO: add dex reaction adjustment into this?
-	if not nodeWeapon then
-		return 0;
-	end
-
-	local nSpeedFactor = WeaponManagerPO.getSpeedFactor(nodeWeapon);
-
+function getWeaponPhaseFromSpeed(nSpeedFactor, nodeActor)
 	if PlayerOptionManager.isUsingReactionAdjustmentForInitiative() and nodeActor then
 		local nReactionAdj = 0 - DB.getValue(nodeActor, "abilities.dexterity.reactionadj", 0);
 		nSpeedFactor = nSpeedFactor - nReactionAdj;
 	end
-
 
 	if nSpeedFactor <= 0 then
 		return 1;
@@ -83,5 +84,13 @@ function getWeaponPhase(nodeWeapon, nodeActor)
 	else
 		return 5;
 	end
+end
 
+function getWeaponPhase(nodeWeapon, nodeActor)
+	if not nodeWeapon then
+		return 0;
+	end
+
+	local nSpeedFactor = WeaponManagerPO.getSpeedFactor(nodeWeapon);
+	return getWeaponPhaseFromSpeed(nSpeedFactor, nodeActor);
 end

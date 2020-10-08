@@ -53,7 +53,51 @@ function updatePcVsNpcInit()
             CombatManagerADND.PC_LASTINIT = math.random(10);
             CombatManagerADND.NPC_LASTINIT = math.random(10);
         end
+        ChatManagerPO.deliverInitRollMessage(CombatManagerADND.PC_LASTINIT, CombatManagerADND.NPC_LASTINIT);
     end
+end
+
+function getPhaseShiftForInitMod(nodeActor)
+    local aEffectDice, nEffectBonus = EffectManager5E.getEffectsBonus(nodeActor, "INIT");
+    local nInitMod = StringManager.evalDice(aEffectDice, nEffectBonus);
+    local nStepSize = 3; -- We'll say every 3 points of init mod moves you one step
+    if nInitMod < 0 then
+        return math.ceil(nInitMod / 3);
+    else
+        return math.floor(nInitMod / 3);
+    end
+end 
+
+function getFinalInitForActor(nodeActor, nInitPhase, bAllowInitEffects)
+    local bIsPc = ActorManager.isPC(nodeActor);
+
+    local nGroupInitRoll;
+    local nOtherGroupInitRoll;
+    if ActorManager.isPC(nodeActor) then
+        nGroupInitRoll = CombatManagerADND.PC_LASTINIT;
+        nOtherGroupInitRoll = CombatManagerADND.NPC_LASTINIT;
+    else
+        nGroupInitRoll = CombatManagerADND.NPC_LASTINIT;
+        nOtherGroupInitRoll = CombatManagerADND.PC_LASTINIT;
+    end
+
+    if nGroupInitRoll == 1 then
+        nInitPhase = nInitPhase - 1;
+    elseif nGroupInitRoll == 10 then
+        nInitPhase = nInitPhase + 1;
+    end
+
+    if bAllowInitEffects then
+        nInitPhase = nInitPhase + getPhaseShiftForInitMod(nodeActor);
+    end
+
+    local nInitResult = nInitPhase * 2;
+    if nGroupInitRoll > nOtherGroupInitRoll then
+        nInitResult = nInitResult + 1;
+    end
+
+    nInitResult = math.max(math.min(nInitResult, 13), 0); -- Force it into bounds.
+    return nInitResult;
 end
 
 function rollEntryPhasedInitiative(nodeEntry)
@@ -67,7 +111,9 @@ function rollEntryPhasedInitiative(nodeEntry)
 
     -- Get any effect modifiers
     local rActor = ActorManager.getActorFromCT(nodeEntry);
-
+    local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+    local nPhaseShift = getPhaseShiftForInitMod(nodeActor);
+    
     -- For PCs, we always roll unique initiative
     local sClass, sRecord = DB.getValue(nodeEntry, "link", "", "");
     if sClass == "charsheet" then
@@ -78,20 +124,8 @@ function rollEntryPhasedInitiative(nodeEntry)
             DB.setValue(nodeEntry, "initresult", "number", 13);
         end
     else -- it's an npc
-        local nInitPhase = InitManagerPO.getWorstPossiblePhaseForActor(rActor);
-        if CombatManagerADND.NPC_LASTINIT == 1 then
-            nInitPhase = nInitPhase - 1;
-        elseif CombatManagerADND.NPC_LASTINIT == 10 then
-            nInitPhase - nInitPhase + 1;
-        end
-
-        local nInitResult = nInitPhase * 2;
-        if CombatManagerADND.NPC_LASTINIT > CombatManagerADND.PC_LASTINIT then
-            nInitResult = nInitResult + 1;
-        end
-
-        nInitResult = math.max(math.min(nInitResult, 13), 0); -- Force it into bounds.
-
+        local nInitPhase = InitManagerPO.getWorstPossiblePhaseForActor(nodeActor);
+        local nInitResult = getFinalInitForActor(nodeActor, nInitPhase, true);
         DB.setValue(nodeEntry, "initresult", "number", nInitResult);
     end 
 end

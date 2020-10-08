@@ -23,3 +23,27 @@ end
 function deliverCriticalHitMessage(sMessage)
 	deliverChatMessage("[CRITICAL HIT] " .. sMessage);
 end
+
+function deliverInitRollMessage(nPcInit, nNpcInit)
+	local sMsg = "";
+	if nPcInit < nNpcInit then
+		sMsg = "PCs win initiative! (" .. nPcInit .. " vs " .. nNpcInit .. ").";
+	else
+		sMsg = "NPCs win intiative! (" .. nNpcInit .. " vs " .. nPcInit .. ").";
+	end
+
+	if nPcInit == 1 then
+		sMsg = sMsg .. " PCs go one phase faster!";
+	elseif nPcInit == 10 then
+		sMsg = sMsg .. " PCs go one phase slower!";
+	end
+
+	if nNpcInit == 1 then
+		sMsg = sMsg .. " NPCs go one phase faster!";
+	elseif nPcInit == 10 then
+		sMsg = sMsg .. " NPCs go one phase slower!";
+	end
+
+	deliverChatMessage(sMsg);
+
+end
