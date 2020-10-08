@@ -13,6 +13,7 @@ sFumbleOptionKey = "HouseRule_FumbleTable";
 sHackmasterAttackMatrixOptionKey = "HouseRule_HackmasterAttackMatrix";
 sFatigueOptionKey = "HouseRule_HackmasterFatigueOption";
 sRingBellOnRoundStartOptionKey = "AdditionalAutomation_RingBellOnRoundStart";
+sPhasedInitiativeOptionKey = "PlayersOption_PhasedInitiative";
 
 function onInit()
     registerOptions();
@@ -22,6 +23,7 @@ function registerOptions()
     
     -- Player's Option Rules
 	OptionsManager.registerOption2(sCritOptionKey, false, "option_header_po", "option_label_critical_hits", "option_entry_cycler",{ labels = "option_val_nat18AndHitBy5|option_val_nat20AndHitBy5|option_val_anyNat20", values = "nat18OrBetterAndHitBy5|nat20andHitBy5|anyNat20", baselabel = "option_val_off", baseval = "off", default = "off" });
+	OptionsManager.registerOption2(sPhasedInitiativeOptionKey, false, "option_header_po", "option_label_phased_initiative", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 
 	-- Additional Automation
     OptionsManager.registerOption2(sWeaponTypeVsArmorOptionKey, false, "option_header_automation", "option_label_weapontype_vs_armor_mods", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
@@ -54,6 +56,10 @@ function registerOptions()
 
     OptionsManager.registerOption2(sFatigueOptionKey, false, "option_header_house_rule", "option_label_hackmaster_fatigue", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
+end
+
+function isUsingPhasedInitiative()
+	return OptionsManager.isOption(sPhasedInitiativeOptionKey, "on");
 end
 
 function shouldRingBellOnRoundStart()

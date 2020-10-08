@@ -109,3 +109,11 @@ function decodeDamageTypes(sDamageTypes)
     end
     return UtilityPO.fromCSV(sDamageTypes);
 end
+
+function getSpeedFactor(nodeWeapon)
+    if not nodeWeapon then
+        return 0;
+    end
+
+    return DB.getValue(nodeWeapon, "speedfactor", 0);
+end

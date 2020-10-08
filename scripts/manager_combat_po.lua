@@ -47,7 +47,61 @@ function onRoundStart()
     end
 end
 
+function updatePcVsNpcInit()
+    if CombatManagerADND.NPC_LASTINIT == 0 or CombatManagerADND.PC_LASTINIT == 0 then
+        while CombatManagerADND.PC_LASTINIT == CombatManagerADND.NPC_LASTINIT do
+            CombatManagerADND.PC_LASTINIT = math.random(10);
+            CombatManagerADND.NPC_LASTINIT = math.random(10);
+        end
+    end
+end
+
+function rollEntryPhasedInitiative(nodeEntry)
+    if not nodeEntry then
+        return;
+    end
+
+    updatePcVsNpcInit();
+
+    -- Inits: 0-1 top, 2-3 very fast, 4-5 fast, 6-7 average, 8-9 slow, 10-11 very slow, 12-13 bottom
+
+    -- Get any effect modifiers
+    local rActor = ActorManager.getActorFromCT(nodeEntry);
+
+    -- For PCs, we always roll unique initiative
+    local sClass, sRecord = DB.getValue(nodeEntry, "link", "", "");
+    if sClass == "charsheet" then
+        -- Default PCs to the slowest init for their side. They should roll.
+        if CombatManagerADND.PC_LASTINIT < CombatManagerADND.NPC_LASTINIT then
+            DB.setValue(nodeEntry, "initresult", "number", 12);
+        else
+            DB.setValue(nodeEntry, "initresult", "number", 13);
+        end
+    else -- it's an npc
+        local nInitPhase = InitManagerPO.getWorstPossiblePhaseForActor(rActor);
+        if CombatManagerADND.NPC_LASTINIT == 1 then
+            nInitPhase = nInitPhase - 1;
+        elseif CombatManagerADND.NPC_LASTINIT == 10 then
+            nInitPhase - nInitPhase + 1;
+        end
+
+        local nInitResult = nInitPhase * 2;
+        if CombatManagerADND.NPC_LASTINIT > CombatManagerADND.PC_LASTINIT then
+            nInitResult = nInitResult + 1;
+        end
+
+        nInitResult = math.max(math.min(nInitResult, 13), 0); -- Force it into bounds.
+
+        DB.setValue(nodeEntry, "initresult", "number", nInitResult);
+    end 
+end
+
 function rollEntryInitOverride(nodeEntry)
+    if PlayerOptionManager.isUsingPhasedInitiative() then
+        rollEntryPhasedInitiative(nodeEntry);
+        return; 
+    end
+
     if not nodeEntry then
         return;
     end
@@ -70,11 +124,11 @@ function rollEntryInitOverride(nodeEntry)
         local nInitPC = DB.getValue(nodeChar,"initiative.total",0);
         local nInitResult = 0;
         if sOptPCVNPCINIT == "on" then
-            if PC_LASTINIT == 0 then
+            if CombatManagerADND.PC_LASTINIT == 0 then
                 nInitResult = CombatManagerADND.rollRandomInit(0, bADV);
-                PC_LASTINIT = nInitResult;
+                CombatManagerADND.PC_LASTINIT = nInitResult;
             else
-                nInitResult = PC_LASTINIT;
+                nInitResult = CombatManagerADND.PC_LASTINIT;
             end
         else
             if PlayerOptionManager.isDefaultingPcInitTo99() then
@@ -90,11 +144,11 @@ function rollEntryInitOverride(nodeEntry)
         --[[ We're using PC versus NPC initiative. So both sides roll once w/o modifiers ]]
         if sOptPCVNPCINIT == "on" then
             local nInitResult = 0;
-            if NPC_LASTINIT == 0 then
+            if CombatManagerADND.NPC_LASTINIT == 0 then
             nInitResult = CombatManagerADND.rollRandomInit(0, bADV);
-            NPC_LASTINIT = nInitResult;
+            CombatManagerADND.NPC_LASTINIT = nInitResult;
             else
-            nInitResult = NPC_LASTINIT;
+            nInitResult = CombatManagerADND.NPC_LASTINIT;
             end
             DB.setValue(nodeEntry, "initresult", "number", nInitResult);
             return;
