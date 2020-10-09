@@ -58,6 +58,7 @@
     <script name="FatigueManagerPO" file="scripts/manager_fatigue_po.lua" />
     <script name="ActionPowerPO" file="scripts/manager_action_power_po.lua" />
     <script name="InitManagerPO" file="scripts/manager_init_po.lua" />
+    <script name="EffectManagerPO" file="scripts/manager_effect_po.lua" />
 
     
   </base>

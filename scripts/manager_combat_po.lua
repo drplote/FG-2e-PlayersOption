@@ -53,6 +53,7 @@ function updatePcVsNpcInit()
             CombatManagerADND.PC_LASTINIT = math.random(10);
             CombatManagerADND.NPC_LASTINIT = math.random(10);
         end
+        StateManagerPO.clearTurnEffectsState();
         ChatManagerPO.deliverInitRollMessage(CombatManagerADND.PC_LASTINIT, CombatManagerADND.NPC_LASTINIT);
     end
 end

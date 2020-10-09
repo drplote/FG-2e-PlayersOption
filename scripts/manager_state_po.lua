@@ -1,8 +1,51 @@
 aCritState = {};
 aFatigueState = {};
+aRanStartEffects = {};
 
 function onInit()
 end
+
+function setRanStartEffect(nodeActor, nodeEffect)
+  if not nodeActor or not nodeEffect then return; end
+  
+  local sSourceCT = ActorManager.getCTNodeName(nodeActor);
+  if sSourceCT == "" then
+    return;
+  end
+  
+  if not aRanStartEffects[sSourceCT] then
+    aRanStartEffects[sSourceCT] = {};
+  end
+  table.insert(aRanStartEffects[sSourceCT], {["effectId"]=nodeEffect});
+end
+
+
+function clearTurnEffectsState()
+  aRanStartEffects = {};
+end
+
+function hasRunStartEffect(nodeActor, nodeEffect)
+  if not nodeActor or not nodeEffect then return false; end
+
+  local sSourceCT = ActorManager.getCTNodeName(nodeActor);
+  if sSourceCT == "" then
+    return false;
+  end
+
+  if not aRanStartEffects[sSourceCT] then
+    return false;
+  end
+  
+  for k,v in ipairs(aRanStartEffects[sSourceCT]) do
+    if v.effectId == nodeEffect then
+      return true;
+    end
+  end
+  
+  return false;
+end
+
+
 
 function hasShieldHitState(rSource, rTarget)
   local nodeChar = ActorManagerPO.getNode(rSource);
