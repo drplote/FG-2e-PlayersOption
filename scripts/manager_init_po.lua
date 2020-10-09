@@ -36,21 +36,49 @@ function getBaseActorSpeedPhase(nodeActor)
 		return 3;
 	end
 
+	local nBaseSpeed;
 	local nSizeCategory = ActorManagerPO.getSizeCategory(nodeActor);
 	if nSizeCategory == 1 or nSizeCategory == 2 then
-		return 1;
+		nBaseSpeed = 1;
 	elseif nSizeCategory == 3 then
-		return 2;
+		nBaseSpeed = 2;
 	elseif nSizeCategory == 4 then
-		return 3;
+		nBaseSpeed = 3;
 	elseif nSizeCategory == 5 then
-		return 4;
+		nBaseSpeed = 4;
 	else 
-		return 5;
+		nBaseSpeed = 5;
 	end
 
-	-- TODO: speed >= 18, -1   If speed <= 6, +1
-	-- TODO: enumbrance: moderate +1, heavy +2, severe +3
+	nBaseSpeed = nBaseSpeed + getMovementRateModifierToPhase(nodeActor);
+	nBaseSpeed = nBaseSpeed + getEncumbranceModifierToPhase(nodeActor);
+
+	nBaseSpeed = math.max(1, math.min(5, nBaseSpeed)); -- bounds check
+	return nBaseSpeed;
+end
+
+function getMovementRateModifierToPhase(nodeActor)
+	local nMovementRate = DB.getValue(nodeActor, "speed.total", 12);
+	if nMovementRate >= 18 then
+		return -1;
+	elseif nMovementRate <= 6 then
+		return 1;
+	else
+		return 0;
+	end
+end
+
+function getEncumbranceModifierToPhase(nodeActor)
+	local sEncumbranceRank = DB.getValue(nodeActor, "speed.encumbrancerank", "");
+	if sEncumbranceRank == "Moderate" then
+		return 1;
+	elseif sEncumranceRank == "Heavy" then
+		return 2;
+	elseif sEncumbranceRank == "Severe" or sEncumbranceRank == "MAX" then
+		return 3;
+	else
+		return 0;
+	end
 end
 
 function getSpellPhase(nSpellInitMod)
