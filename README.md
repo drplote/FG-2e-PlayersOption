@@ -87,9 +87,7 @@ Initiative 14+: Basically bonus "very slow-" phases
 
 Right now, when a character "rolls" their initiative for a weapon or spell like they normally would in Fantasy Grounds 2E ruleset, they will see a die roll and a message will appear in that chat box, but this is really always producing a fixed result... you'll note that the message is about a d0 being rolled with certain modifiers added. This is simply to make sure the result comes out to the correct number (as shown above) that puts them in the right initiative phase and side. A lot of rework would be needed for me to clean this up and make it prettier, and it's also a very risky area of the code to change, so this is probably as good as it's going to get. You can basically ignore the roll though and just look at where you land in the combat tracker.
 
-
-
-     
+Player Characters who have not yet rolled initiative (such as when a new round starts) default to their "very slow-" phase. If your bothers can't be bothered to roll, they can just go last!
 
 
 ## Automation Improvements
@@ -126,6 +124,10 @@ Toggling this option on simply adds some text in the chat window during a hit to
 
 Normally when a new round starts, players get a random initiative roll, which they then almost always just reroll anyway. I prefer to have it set them to a 99 initiative so that it's clearer they haven't rolled for their specific action yet. NPCs still use the default behavior of the 2e ruleset.
 
+### Ring Bell on Round Start
+
+Fantasy Grounds already has an option to ping a character when it is his or her turn, but enabling this option pings everyone as soon as a new round begins. This gives them an audible indicator that a new round has started and that they should roll for initiative.
+
 ## Hackmaster-style House Rules
 
 Originally, I set out to write a ruleset for Hackmaster 4e. After doing a lot of work on it, I decided I didnt really want to play Hackmaster 4e. I wanted to play AD&D 2e with just a few of the HM4 rules cherry-picked from it. Here they are!
@@ -144,7 +146,16 @@ Example #4: The GM adds a standard "Giant Rat" from the Monster Manual to the co
 
 Note: This is only implemented for NPCs. If you want the PCs to get a kicker, you'll have to edit their hit point total manually.
 
-**A planned near-future improvement is additional options to make the kicker sized-based.**
+#### Size-based kickers
+
+Another option when using HP Kickers is to use size-based kickers. They work like above, except that instead of a flat 20 point kicker added to everyone, the bonus added is based on size.
+
+Tiny: +0
+Small: +10
+Medium: +20
+Large: +30
+Huge: +40
+Gargantuan: +50
 
 ### Penetration Dice
 
@@ -185,6 +196,8 @@ For this rule to be worth the trouble, it is recommended you give shield a highe
 
 You can specify a shield's hit points the same way as for armor above. If you haven't specified it yourself, it assumes you're using AD&D 2e PHB shields, which only provide 1 AC, and gives them the same number of hit points for that 1 AC that would have been spread out amongst all the levels for a Hackmaster shield. For instance, in Hackmaster a Medium Shield gives +3 AC and has HP of `[5,4,3]`. In 2e, it gives +1 AC, so I defaulted it to act like it has HP: `[12]`.
 
+You can hold "ALT" while rolling damage against a combatant to force the damage to apply to it's shield.
+
 ### Hackmaster Stat Scaling
 
 This options toggles between using the 2E attribute bonuses and the Hackmaster attribute bonuses (to-hit modifiers, damage modifiers, reaction adjustments, etc). It also has the side effect of enabling the Hackmaster/1e style rules for armor bulk affecting movement, though this only comes up if you actually put a "Bulk: b" entry in the armor's "Properties" text field, where valid values of b are "non", "fairly", and "bulky". Should default to non if no bulk is provided, effectively ignoring this rule.
@@ -196,3 +209,29 @@ This option applies the Dexterity Reaction Adjustment value to any rolled initia
 ### Threshold of Pain
 
 Automates the Hackmaster threshold of pain check, which occurs when someone has taken half of their maximum hit points of damage in a single hit. Automatically rolls a saving throw vs death (with Magical Defense Adjustment from Wisdom) and applies unconsciousness for a duration in rounds equal to the amount you fail the roll by. Currently kind of annoying since you could be knocking skeletons and other things out that TOP shouldn't apply to, so a future plan is to add in another option which does the roll but doesn't apply unconsciousness (you can do it manually), and also create a way to specify that a character or NPC should be immune to TOP checks.
+
+### Use Fumble Tables
+
+You probably don't want to use these. They're a work in progress and I'm not real happy with them. They're fumbles based loosely off the possible "Battlefield Events" that can happen during combat in the Player's Option: Combat & Tactics book. But the way they'll work is that if a combatant rolls a natural 1, a result on the fumble table will be generated. None of the results produce automated effects... it is left to the DM to interpret them.
+
+### Monster Thac0 based on HM Attack Matrix
+
+Instead of using the Thac0 entry on the NPC record, it cross-references the monster's Hit Dice with the attack matrix from the Hackmaster book and generates a Thac0 from that instead. In general, this means monsters will end up with anywhere from +1 to +5 to hit compared to their 2E counterparts. For instance, a 2 HD monster's Thac0 in HM is 15.
+
+### Fatigue
+
+This is pretty much the Hackmaster fatigue system except I changed how you gain/lose fatigue to make it a little more automation friendly.
+
+First off, every character has a Fatigue Factor. It's typically half their Constitution score. Then, a multiplier is applied based on their encumbrance level. Normal = 1.0, Light = .75, Moderate = .5, Heavy = .25, and Severe = 0. Hackmaster also has a few skills and talents that can modify someone's Fatigue Factor. On the character sheet "Main" tab, if you go to the Combat section and hit the gear icon, you can enter a Fatigue Factor multiplier which further modifies that Fatigue Factor. Most characters are just going to stay at 1 though.
+
+Okay, so you got your fatigue factor, and for most unencumbered characters, it's equal to half their Constitution. This is how many points of fatigue you can gain before you start having penalties. So how do you gain fatigue? This is how it differs from Hackmaster a little (and to be fair, Hackmaster is a little vague on it). If you make any melee attack during the round, you gain a point of fatigue. If you make a ranged attack or cast a spell, you neither gain nor lose a point of fatigue. If you do none of the above, you lose a point of fatigue (down to 0).
+
+If gaining a point of fatigue raises your current fatigue above your Fatigue Factor, the character makes a Fatigue Check to see if they gain a -1 STR/-1 DEX fatigue penalty. This check is a d20 roll that you want to have under the average of your Constitution + Wisdom. Fail the check, gain the penalty. Make the check, no penalty. Gain another point of fatigue next round, make another check! Keep failing checks, and the penalties keep stacking up! Note that the Strength loss can affect your encumbrance score, which in turn can lower your fatigue factor!
+
+If you lose a point of fatigue and your current fatigue is less than or equal to your Fatigue Factor, and you have at least one fatigue penalty effect on your character, you make a Constitution check to try to remove the penalty. Success means you drop one fatigue effect (i.e., one -1 STR/-1 DEX effect). Failure means it stays there. However, if you ever get down to 0 fatigue, it clears all remaining fatigue effects without needing to make a check. Note also that a "Short Rest" or "Long Rest" also clears fatigue from all characters.
+
+It should go without saying this is all automated, by the way, because who the hell would take the time to do this all manually?
+
+Monsters are a little different. Because stats aren't as relevant for monsters are most just have 10 across the board in the Monstrous Manual records, the fatigue effect for monsters is -1 ATK and -1 AC instead of -1 STR and -1 DEX. This is different than Hackmaster, which says every time a monster would need a fatigue check, do a morale check instead to have them run away. I say, do both! Also note that monsters make their fatigue checks a little differently, as per HM rules. Instead of trying to roll under the average of Con + Wis, they try to roll under their morale score. If there is no morale score (or it's some gibberish I can't parse), it defaults to average of Con + Wis just like players, which is usually going to mean 9 or 10, since that's what most monsters have in their stats by default.
+
+Also note that Fatigue Factor for a monsters is a little different. Player's used half their Con, modified by encumbrance. This wouldn't work for most monsters. Hackmaster had a supplemental book, the Hacklopedia Monster Matrix, which had fatigue factors for every single monster. I might eventually input all those, but for now, they just use 6. That's a tiny bit better than the average player, and eyeballing the values in the Monster Matrix, not bad as an overall average value. Obviously, though, a dragon might have more fatigue than a goblin. I'd like to eventually get something in there for this, but for now, if you really want a monster to be big and tough and not worry about fatigue, just give it a high morale and it'll never fail it's fatigue checks.
