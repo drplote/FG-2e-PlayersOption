@@ -45,6 +45,52 @@ I've created a table, "aDefaultWeaponSizes", in data_common_po.lua for this that
 
 One exception is if an attack is named "claw", "bite", "kick", "punch", "slam", or "tail". In that case, I assume it's a natural attack of the creature and treat it as two size categories smaller than the creature. So a medium creature's claw attack would be a tiny weapon. A large creature's claw attack would be small (claw the size of daggers!). The Combat & Tactics rules didn't give any guidance on what size natural attacks should be, but this felt about right to me. If you have other ideas on how to size these or other keywords that should be included for natural attacks, please let me know!
 
+### Combat & Tactics Initiative
+
+Enabling this option switches from standard 2E initiative to the intiative system presented in the Player's Option: Combat & Tactics book (starting on page 17). Overall, this makes initiative for certain actions happen more consistently at the same time every round, rewarding quick characters and weapons and penalizing slow ones. To summarize it a bit, each round is broken into 5 phases: very fast, fast, average, slow, and very slow. Each round, each side rolls a d10 for initiative. The lowest roll wins. Ties are rerolled. Rolling a 1 means all combatants on that side will act one phase quicker that round, and rolling a 10 means all combatants on that side will act one phase slower.
+
+The phase a given character or creature acts on is determined by a number of factors. First off, each character has a base initiative that's based on their size, speed, and encumbrance. Tiny and Small creatures are very fast, man-sized creatures are fast, large creatures are average, huge creatures are slow, and gargantuan creatures are very slow. This is adjusted one phase quicker for creatures with a movement rate of 18" or greater, and slower by one phase for creatures with a movement rate of 6" or less. Being moderately enumbered make initiative one phase slower, while being heavily encumbered is two phases slower and severely encumbered is three phases slower. For most unecumbered PCs, they'll usually end up with a base initiative phase of "fast".
+
+If a character is just moving or acting in a way that doesn't involve a spell or weapon, they use their base initiative. If they're casting a spell, their initiative is based on the casting speed of the spell. Spells with a casting time of 3 or less are fast, 4-6 are average, 7-9 are slow, and full round cast times are "very slow". 
+
+If instead the character is using a weapon, they'll end up taking whichever initiative phase is worse... their base initiative phase or their weapon's initiative phase. The Player's Option book has a list of all weapons and what their speed phases are, but in lieu of coding that all in and making users of this mod maintain a new property on all the weapons, I instead based it on the weapon's "weapon speed" that already existed in 2E, and based it off what's in the Player's Option book. It led me to these ranges for weapno speed: Weapon speed <= 0 is very fast, 1-4 is fast, 5-7 is average, 8-13 is slow, and 14+ is very slow. If you are using the "Reaction Adjustment Affects Init" option of this mod, the way it works it to add or subtract your reaction adjustment to the weapon speed before determing the phase. It has no affect on spells or base initiative.
+
+Some spells or other effects can give you an initiative bonus in 2e. These effects would like like "INIT: 4" and the like in Fantasy Grounds. The Player's Option book gives no guidance on how to deal with these, so I decided that every 3 full points of initiative bonus or penalty would change your initiative by one phase. Thus, a "INIT: 4" effect would amke you one phase slower, while a "INIT: -9" effect would make you 3 phases faster.
+
+Finally, remember that a given side rolling a 1 or 10 affects the final determined initiative for the characters on that side by subtracting or adding one phase. When the round becomes, combat will start with the winning side's "very fast" characters, then move on to the losing side's "very fast" characters. Then it'll drop a phase to the winning side's "fast" characters, then the losing side's "fast" characters, and so on. Do to the different ways your initiative can be bumped up or down a few phases, I did create some extra phases. "Very Fast+" is one phase faster than "very fast", and should only be able to occur if a character has a beneficial initiative effect or was already "very fast" and rolled a 1 for initiative. "Very Slow-" is any initiative phase slower than "very slow", and really has no lower limit (see "How htis works behind the scenes in Fantasy Grounds" for more info).
+
+#### Dropping one initiative phase
+
+When hitting the "Next Actor" button (the down arrow near the bottom of the combat tracker), the DM can hold down alt, shift, or control while clicking it to drop the current actor's initiative by one phase and then moving on to the next actor (or staying on the current actor, if that would still make them next). This is needed because in the Player's Option initiative system, there are a number of cases where your initiative might drop by one phase mid-round. For example, if a character is moving, they begin moving on their normal initiative, can move up to half their movement, and then can finish their movement on the following initiative phase. Likewise, if they're going to move and attack, they'd move on their normal initiative phase and attack one phase later. Multiple attacks are meant to occur on subsequent phases, so a character with three attacks might get his first attack on "fast", his second on "average", and final attack on "slow".
+
+This can also be useful if a character states they're delaying their action. Just delay them a phase, move on, and when you get to them again ask if they want to go yet.
+
+#### How this works behind the scenes in Fantasy Grounds
+
+Because I don't want to rewrite the entirety of the Fantasy Grounds initiative code, this kinds of grafts itself on top of the normal 2E initiative system by treating certain initiative numeric values as certain phases. We also technically can go faster than very fast (called very fast+) or slower than very slow (called very slow-). It works as follows:
+
+Initiative 0: Winning side's "very fast+" initiative
+Initiative 1: Losing side's "very fast+" initiative
+Initiative 2: Winning side's "very fast" initiative
+Initiative 3: Losing side's "very fast" initiative
+Initiative 4: Winning side's "fast" initiative
+Initiative 5: Losing side's "fast" initiative
+Initiative 6: Winning side's "average" initiative
+Initiative 7: Losing side's "average" initiative
+Initiative 8: Winning side's "slow" initiative
+Initiative 9: Losing side's "slow" initiative
+Initiative 10: Winning side's "very slow" initiative
+Initiative 11: Losing side's "very slow" initiative
+Initiative 12: Winning side's "very slow-" initiative
+Initiative 13: Losing side's "very slow-" initiative
+Initiative 14+: Basically bonus "very slow-" phases
+
+Right now, when a character "rolls" their initiative for a weapon or spell like they normally would in Fantasy Grounds 2E ruleset, they will see a die roll and a message will appear in that chat box, but this is really always producing a fixed result... you'll note that the message is about a d0 being rolled with certain modifiers added. This is simply to make sure the result comes out to the correct number (as shown above) that puts them in the right initiative phase and side. A lot of rework would be needed for me to clean this up and make it prettier, and it's also a very risky area of the code to change, so this is probably as good as it's going to get. You can basically ignore the roll though and just look at where you land in the combat tracker.
+
+
+
+     
+
 
 ## Automation Improvements
 
