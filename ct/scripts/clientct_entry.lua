@@ -22,7 +22,6 @@ end
 
 function updateDisplay()
   super.updateDisplay();
-  Debug.console("update display called");
   updateInitDisplay();
 end
 
@@ -45,16 +44,12 @@ function updateInitDisplay()
   if not shouldShowInit then
     initresult.setVisible(false);
     initresultpo.setVisible(false);
-    Debug.console("hiding all");
   elseif PlayerOptionManager.isUsingPhasedInitiative() then
       initresult.setVisible(false);
       initresultpo.setVisible(true);
-      Debug.console("hiding number");
       updateInitResult();
-
   else
       initresult.setVisible(true);
       initresultpo.setVisible(false);
-      Debug.console("hiding string");
   end
 end
