@@ -17,7 +17,6 @@ function updateInitResult()
         local node = getDatabaseNode();
         local nInitResult = DB.getValue(node, "initresult", 12);
         local sPhaseName = InitManagerPO.getPhaseName(math.floor(nInitResult/2));
-        DB.setValue(node, "initresultpo", "string", sPhaseName);
         initresultpo.setValue(sPhaseName);
     end
 end
