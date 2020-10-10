@@ -23,4 +23,30 @@
 			</script>
 		</buttoncontrol>
 	</template>
+
+    <template name="button_ctaentry_initresultpo">
+	    <stringcontrol name="initresultpo">
+	      <script>
+	        function action(draginfo)
+	          local node = window.getDatabaseNode();
+	          draginfo.setDescription(DB.getValue(node,"name",""));
+	          draginfo.setShortcutData("reorder_cta_initiative",node.getPath());
+	          draginfo.setIcon("reorder_arrow");
+	          draginfo.setType("reorder");
+	          return true;
+	        end
+	        function onDragStart(button, x, y, draginfo)
+	          return action(draginfo);
+	        end          
+	      </script>
+	      <readonly />
+	      <color>000000</color>
+	      <!-- <icon>d10ricon</icon> -->
+	      <anchored to="token" height="20" width="100">
+	        <top anchor="top" offset="5" />
+	        <left anchor="right" relation="relative" offset="0" />
+	      </anchored>
+	      <tooltip textres="cta_initiative_tooltip" />
+	    </stringcontrol>
+	</template>
 </root>

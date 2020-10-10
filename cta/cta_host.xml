@@ -4,4 +4,10 @@
   <windowclass name="cta_char_weapon" merge="join">
     <script file="campaign/scripts/char_weapon.lua"/>
   </windowclass>
+  <windowclass name="combatants_entry_host" merge="join">
+  	<script file="cta/scripts/cta_entry.lua" />
+  	<sheetdata>
+  		<button_ctaentry_initresultpo name="initresultpo" insertbefore="initresult" />
+  	</sheetdata>
+  </windowclass>
 </root>
