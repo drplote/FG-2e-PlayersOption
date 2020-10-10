@@ -49,4 +49,19 @@
 	      <tooltip textres="cta_initiative_tooltip" />
 	    </stringcontrol>
 	</template>
+
+	<template name="string_clientct_initresultpo">
+		<stringcontrol name="initresultpo">
+			<anchored to="rightanchor" width="60" height="20">
+				<top />
+				<right anchor="left" relation="relative" offset="-15" />
+			</anchored>
+			<script>
+				function onValueChanged()
+					window.windowlist.applySort();
+				end
+			</script>
+			<readonly />
+		</stringcontrol>
+	</template>
 </root>

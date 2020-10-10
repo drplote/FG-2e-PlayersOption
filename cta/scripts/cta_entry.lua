@@ -25,6 +25,7 @@ function update()
     if PlayerOptionManager.isUsingPhasedInitiative() then
         initresult.setVisible(false);
         initresultpo.setVisible(true);
+        updateInitResult();
     else
         initresult.setVisible(true);
         initresultpo.setVisible(false);

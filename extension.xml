@@ -28,6 +28,7 @@
 
     <includefile source="cta/cta_host.xml"/>
     <includefile source="cta/template_cta.xml"/>
+    <includefile source="ct/ct_client.xml" />
     
     <includefile source="strings/strings_player_option.xml"/>
 
