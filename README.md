@@ -45,6 +45,50 @@ I've created a table, "aDefaultWeaponSizes", in data_common_po.lua for this that
 
 One exception is if an attack is named "claw", "bite", "kick", "punch", "slam", or "tail". In that case, I assume it's a natural attack of the creature and treat it as two size categories smaller than the creature. So a medium creature's claw attack would be a tiny weapon. A large creature's claw attack would be small (claw the size of daggers!). The Combat & Tactics rules didn't give any guidance on what size natural attacks should be, but this felt about right to me. If you have other ideas on how to size these or other keywords that should be included for natural attacks, please let me know!
 
+### Combat & Tactics Initiative
+
+Enabling this option switches from standard 2E initiative to the intiative system presented in the Player's Option: Combat & Tactics book (starting on page 17). Overall, this makes initiative for certain actions happen more consistently at the same time every round, rewarding quick characters and weapons and penalizing slow ones. To summarize it a bit, each round is broken into 5 phases: very fast, fast, average, slow, and very slow. Each round, each side rolls a d10 for initiative. The lowest roll wins. Ties are rerolled. Rolling a 1 means all combatants on that side will act one phase quicker that round, and rolling a 10 means all combatants on that side will act one phase slower.
+
+The phase a given character or creature acts on is determined by a number of factors. First off, each character has a base initiative that's based on their size, speed, and encumbrance. Tiny and Small creatures are very fast, man-sized creatures are fast, large creatures are average, huge creatures are slow, and gargantuan creatures are very slow. This is adjusted one phase quicker for creatures with a movement rate of 18" or greater, and slower by one phase for creatures with a movement rate of 6" or less. Being moderately enumbered make initiative one phase slower, while being heavily encumbered is two phases slower and severely encumbered is three phases slower. For most unecumbered PCs, they'll usually end up with a base initiative phase of "fast".
+
+If a character is just moving or acting in a way that doesn't involve a spell or weapon, they use their base initiative. If they're casting a spell, their initiative is based on the casting speed of the spell. Spells with a casting time of 3 or less are fast, 4-6 are average, 7-9 are slow, and full round cast times are "very slow". 
+
+If instead the character is using a weapon, they'll end up taking whichever initiative phase is worse... their base initiative phase or their weapon's initiative phase. The Player's Option book has a list of all weapons and what their speed phases are, but in lieu of coding that all in and making users of this mod maintain a new property on all the weapons, I instead based it on the weapon's "weapon speed" that already existed in 2E, and based it off what's in the Player's Option book. It led me to these ranges for weapno speed: Weapon speed <= 0 is very fast, 1-4 is fast, 5-7 is average, 8-13 is slow, and 14+ is very slow. If you are using the "Reaction Adjustment Affects Init" option of this mod, the way it works it to add or subtract your reaction adjustment to the weapon speed before determing the phase. It has no affect on spells or base initiative.
+
+Some spells or other effects can give you an initiative bonus in 2e. These effects would like like "INIT: 4" and the like in Fantasy Grounds. The Player's Option book gives no guidance on how to deal with these, so I decided that every 3 full points of initiative bonus or penalty would change your initiative by one phase. Thus, a "INIT: 4" effect would amke you one phase slower, while a "INIT: -9" effect would make you 3 phases faster.
+
+Finally, remember that a given side rolling a 1 or 10 affects the final determined initiative for the characters on that side by subtracting or adding one phase. When the round becomes, combat will start with the winning side's "very fast" characters, then move on to the losing side's "very fast" characters. Then it'll drop a phase to the winning side's "fast" characters, then the losing side's "fast" characters, and so on. Do to the different ways your initiative can be bumped up or down a few phases, I did create some extra phases. "Very Fast+" is one phase faster than "very fast", and should only be able to occur if a character has a beneficial initiative effect or was already "very fast" and rolled a 1 for initiative. "Very Slow-" is any initiative phase slower than "very slow", and really has no lower limit (see "How htis works behind the scenes in Fantasy Grounds" for more info).
+
+#### Dropping one initiative phase
+
+When hitting the "Next Actor" button (the down arrow near the bottom of the combat tracker), the DM can hold down alt, shift, or control while clicking it to drop the current actor's initiative by one phase and then moving on to the next actor (or staying on the current actor, if that would still make them next). This is needed because in the Player's Option initiative system, there are a number of cases where your initiative might drop by one phase mid-round. For example, if a character is moving, they begin moving on their normal initiative, can move up to half their movement, and then can finish their movement on the following initiative phase. Likewise, if they're going to move and attack, they'd move on their normal initiative phase and attack one phase later. Multiple attacks are meant to occur on subsequent phases, so a character with three attacks might get his first attack on "fast", his second on "average", and final attack on "slow".
+
+This can also be useful if a character states they're delaying their action. Just delay them a phase, move on, and when you get to them again ask if they want to go yet.
+
+#### How this works behind the scenes in Fantasy Grounds
+
+Because I don't want to rewrite the entirety of the Fantasy Grounds initiative code, this kinds of grafts itself on top of the normal 2E initiative system by treating certain initiative numeric values as certain phases. We also technically can go faster than very fast (called very fast+) or slower than very slow (called very slow-). It works as follows:
+
+Initiative 0: Winning side's "very fast+" initiative
+Initiative 1: Losing side's "very fast+" initiative
+Initiative 2: Winning side's "very fast" initiative
+Initiative 3: Losing side's "very fast" initiative
+Initiative 4: Winning side's "fast" initiative
+Initiative 5: Losing side's "fast" initiative
+Initiative 6: Winning side's "average" initiative
+Initiative 7: Losing side's "average" initiative
+Initiative 8: Winning side's "slow" initiative
+Initiative 9: Losing side's "slow" initiative
+Initiative 10: Winning side's "very slow" initiative
+Initiative 11: Losing side's "very slow" initiative
+Initiative 12: Winning side's "very slow-" initiative
+Initiative 13: Losing side's "very slow-" initiative
+Initiative 14+: Basically bonus "very slow-" phases
+
+Right now, when a character "rolls" their initiative for a weapon or spell like they normally would in Fantasy Grounds 2E ruleset, they will see a die roll and a message will appear in that chat box, but this is really always producing a fixed result... you'll note that the message is about a d0 being rolled with certain modifiers added. This is simply to make sure the result comes out to the correct number (as shown above) that puts them in the right initiative phase and side. A lot of rework would be needed for me to clean this up and make it prettier, and it's also a very risky area of the code to change, so this is probably as good as it's going to get. You can basically ignore the roll though and just look at where you land in the combat tracker.
+
+Player Characters who have not yet rolled initiative (such as when a new round starts) default to their "very slow-" phase. If your bothers can't be bothered to roll, they can just go last!
+
 
 ## Automation Improvements
 
@@ -80,6 +124,10 @@ Toggling this option on simply adds some text in the chat window during a hit to
 
 Normally when a new round starts, players get a random initiative roll, which they then almost always just reroll anyway. I prefer to have it set them to a 99 initiative so that it's clearer they haven't rolled for their specific action yet. NPCs still use the default behavior of the 2e ruleset.
 
+### Ring Bell on Round Start
+
+Fantasy Grounds already has an option to ping a character when it is his or her turn, but enabling this option pings everyone as soon as a new round begins. This gives them an audible indicator that a new round has started and that they should roll for initiative.
+
 ## Hackmaster-style House Rules
 
 Originally, I set out to write a ruleset for Hackmaster 4e. After doing a lot of work on it, I decided I didnt really want to play Hackmaster 4e. I wanted to play AD&D 2e with just a few of the HM4 rules cherry-picked from it. Here they are!
@@ -98,7 +146,16 @@ Example #4: The GM adds a standard "Giant Rat" from the Monster Manual to the co
 
 Note: This is only implemented for NPCs. If you want the PCs to get a kicker, you'll have to edit their hit point total manually.
 
-**A planned near-future improvement is additional options to make the kicker sized-based.**
+#### Size-based kickers
+
+Another option when using HP Kickers is to use size-based kickers. They work like above, except that instead of a flat 20 point kicker added to everyone, the bonus added is based on size.
+
+Tiny: +0
+Small: +10
+Medium: +20
+Large: +30
+Huge: +40
+Gargantuan: +50
 
 ### Penetration Dice
 
@@ -139,6 +196,8 @@ For this rule to be worth the trouble, it is recommended you give shield a highe
 
 You can specify a shield's hit points the same way as for armor above. If you haven't specified it yourself, it assumes you're using AD&D 2e PHB shields, which only provide 1 AC, and gives them the same number of hit points for that 1 AC that would have been spread out amongst all the levels for a Hackmaster shield. For instance, in Hackmaster a Medium Shield gives +3 AC and has HP of `[5,4,3]`. In 2e, it gives +1 AC, so I defaulted it to act like it has HP: `[12]`.
 
+You can hold "ALT" while rolling damage against a combatant to force the damage to apply to it's shield.
+
 ### Hackmaster Stat Scaling
 
 This options toggles between using the 2E attribute bonuses and the Hackmaster attribute bonuses (to-hit modifiers, damage modifiers, reaction adjustments, etc). It also has the side effect of enabling the Hackmaster/1e style rules for armor bulk affecting movement, though this only comes up if you actually put a "Bulk: b" entry in the armor's "Properties" text field, where valid values of b are "non", "fairly", and "bulky". Should default to non if no bulk is provided, effectively ignoring this rule.
@@ -150,3 +209,29 @@ This option applies the Dexterity Reaction Adjustment value to any rolled initia
 ### Threshold of Pain
 
 Automates the Hackmaster threshold of pain check, which occurs when someone has taken half of their maximum hit points of damage in a single hit. Automatically rolls a saving throw vs death (with Magical Defense Adjustment from Wisdom) and applies unconsciousness for a duration in rounds equal to the amount you fail the roll by. Currently kind of annoying since you could be knocking skeletons and other things out that TOP shouldn't apply to, so a future plan is to add in another option which does the roll but doesn't apply unconsciousness (you can do it manually), and also create a way to specify that a character or NPC should be immune to TOP checks.
+
+### Use Fumble Tables
+
+You probably don't want to use these. They're a work in progress and I'm not real happy with them. They're fumbles based loosely off the possible "Battlefield Events" that can happen during combat in the Player's Option: Combat & Tactics book. But the way they'll work is that if a combatant rolls a natural 1, a result on the fumble table will be generated. None of the results produce automated effects... it is left to the DM to interpret them.
+
+### Monster Thac0 based on HM Attack Matrix
+
+Instead of using the Thac0 entry on the NPC record, it cross-references the monster's Hit Dice with the attack matrix from the Hackmaster book and generates a Thac0 from that instead. In general, this means monsters will end up with anywhere from +1 to +5 to hit compared to their 2E counterparts. For instance, a 2 HD monster's Thac0 in HM is 15.
+
+### Fatigue
+
+This is pretty much the Hackmaster fatigue system except I changed how you gain/lose fatigue to make it a little more automation friendly.
+
+First off, every character has a Fatigue Factor. It's typically half their Constitution score. Then, a multiplier is applied based on their encumbrance level. Normal = 1.0, Light = .75, Moderate = .5, Heavy = .25, and Severe = 0. Hackmaster also has a few skills and talents that can modify someone's Fatigue Factor. On the character sheet "Main" tab, if you go to the Combat section and hit the gear icon, you can enter a Fatigue Factor multiplier which further modifies that Fatigue Factor. Most characters are just going to stay at 1 though.
+
+Okay, so you got your fatigue factor, and for most unencumbered characters, it's equal to half their Constitution. This is how many points of fatigue you can gain before you start having penalties. So how do you gain fatigue? This is how it differs from Hackmaster a little (and to be fair, Hackmaster is a little vague on it). If you make any melee attack during the round, you gain a point of fatigue. If you make a ranged attack or cast a spell, you neither gain nor lose a point of fatigue. If you do none of the above, you lose a point of fatigue (down to 0).
+
+If gaining a point of fatigue raises your current fatigue above your Fatigue Factor, the character makes a Fatigue Check to see if they gain a -1 STR/-1 DEX fatigue penalty. This check is a d20 roll that you want to have under the average of your Constitution + Wisdom. Fail the check, gain the penalty. Make the check, no penalty. Gain another point of fatigue next round, make another check! Keep failing checks, and the penalties keep stacking up! Note that the Strength loss can affect your encumbrance score, which in turn can lower your fatigue factor!
+
+If you lose a point of fatigue and your current fatigue is less than or equal to your Fatigue Factor, and you have at least one fatigue penalty effect on your character, you make a Constitution check to try to remove the penalty. Success means you drop one fatigue effect (i.e., one -1 STR/-1 DEX effect). Failure means it stays there. However, if you ever get down to 0 fatigue, it clears all remaining fatigue effects without needing to make a check. Note also that a "Short Rest" or "Long Rest" also clears fatigue from all characters.
+
+It should go without saying this is all automated, by the way, because who the hell would take the time to do this all manually?
+
+Monsters are a little different. Because stats aren't as relevant for monsters are most just have 10 across the board in the Monstrous Manual records, the fatigue effect for monsters is -1 ATK and -1 AC instead of -1 STR and -1 DEX. This is different than Hackmaster, which says every time a monster would need a fatigue check, do a morale check instead to have them run away. I say, do both! Also note that monsters make their fatigue checks a little differently, as per HM rules. Instead of trying to roll under the average of Con + Wis, they try to roll under their morale score. If there is no morale score (or it's some gibberish I can't parse), it defaults to average of Con + Wis just like players, which is usually going to mean 9 or 10, since that's what most monsters have in their stats by default.
+
+Also note that Fatigue Factor for a monsters is a little different. Player's used half their Con, modified by encumbrance. This wouldn't work for most monsters. Hackmaster had a supplemental book, the Hacklopedia Monster Matrix, which had fatigue factors for every single monster. I might eventually input all those, but for now, they just use 6. That's a tiny bit better than the average player, and eyeballing the values in the Monster Matrix, not bad as an overall average value. Obviously, though, a dragon might have more fatigue than a goblin. I'd like to eventually get something in there for this, but for now, if you really want a monster to be big and tough and not worry about fatigue, just give it a high morale and it'll never fail it's fatigue checks.
