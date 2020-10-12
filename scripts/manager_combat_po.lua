@@ -1,6 +1,9 @@
 local fRollNpcHitPoints;
 local fCopySourceToNodeCT;
 local fAddCTANPC;
+local fNotifyEndTurn;
+
+OOB_MSGTYPE_DELAYTURN = "delayturn";
 
 function onInit()
     fRollNpcHitPoints = CombatManagerADND.rollNPCHitPoints;
@@ -17,6 +20,33 @@ function onInit()
 
     fAddCTANPC = CombatManagerADND.addCTANPC;
     CombatManagerADND.addCTANPC = addCTANPCOverride;
+
+    fNotifyEndTurn = CombatManager.notifyEndTurn;
+    CombatManager.notifyEndTurn = notifyEndTurnOverride;
+    OOBManager.registerOOBMsgHandler(OOB_MSGTYPE_DELAYTURN, handleDelayTurn);
+end
+
+function handleDelayTurn(msgOOB)
+    local rActor = ActorManager.getActorFromCT(CombatManager.getActiveCT());
+    local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+    if sActorType == "pc" then
+        if nodeActor.getOwner() == msgOOB.user then
+            delayThenNextActor(2);
+        end
+    end
+end
+
+function notifyEndTurnOverride()
+    local msgOOB = {};
+    msgOOB.type = CombatManager.OOB_MSGTYPE_ENDTURN;
+    msgOOB.user = User.getUsername();
+
+    if (PlayerOptionManager.isUsingPhasedInitiative() and 
+        (Input.isAltPressed() or Input.isShiftPressed() or Input.isControlPressed())) then
+        msgOOB.type = OOB_MSGTYPE_DELAYTURN;
+    end
+
+    Comm.deliverOOBMessage(msgOOB, "");
 end
 
 function addCTANPCOverride(sClass, nodeNPC, sNamedInBattle)

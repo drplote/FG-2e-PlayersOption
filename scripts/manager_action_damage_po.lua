@@ -453,7 +453,7 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
 end
 
 function checkThresholdOfPain(rTarget, nAdjustedDamage, nTotalHP, aNotifications)
-    if PlayerOptionManager.isUsingThresholdOfPain() then
+    if PlayerOptionManager.isUsingThresholdOfPain() and ActorManagerPO.canBeAffectedByThresholdOfPain(rTarget) then
         if nAdjustedDamage >= (nTotalHP / 2) then
             table.insert(aNotifications, "[THRESHOLD OF PAIN]");
             ActionSavePO.rollThresholdOfPain(rTarget); 
