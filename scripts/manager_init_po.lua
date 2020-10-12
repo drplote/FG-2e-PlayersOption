@@ -97,7 +97,7 @@ end
 
 function getWeaponPhaseFromSpeed(nSpeedFactor, nodeActor)
 	if PlayerOptionManager.isUsingReactionAdjustmentForInitiative() and nodeActor then
-		local nReactionAdj = 0 - DB.getValue(nodeActor, "abilities.dexterity.reactionadj", 0);
+		local nReactionAdj = DB.getValue(nodeActor, "abilities.dexterity.reactionadj", 0);
 		nSpeedFactor = nSpeedFactor - nReactionAdj;
 	end
 
