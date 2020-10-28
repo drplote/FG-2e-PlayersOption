@@ -394,10 +394,16 @@ function delayThenNextActor(nInitDelay)
         
     end
 
+    local nNewActiveNodeInit = nPreviousInit + nInitDelay;
     -- If next actor available, advance effects, activate and start turn
     if nodeNext then
         local nNextActorInit = DB.getValue(nodeNext, "initresult");
-        if (nNextActorInit <= nPreviousInit + nInitDelay) then 
+
+        local bShouldGoToNextActor = nNextActorInit <= nNewActiveNodeInit;
+
+
+        if bShouldGoToNextActor then 
+            Debug.console("trying to go to next actor");
             -- End turn for current actor
             CombatManager.onTurnEndEvent(nodeActive);
         
@@ -409,9 +415,13 @@ function delayThenNextActor(nInitDelay)
             end
             
             -- Start turn for next actor
-            CombatManager.requestActivation(nodeNext, bSkipBell);
-            CombatManager.onTurnStartEvent(nodeNext);
+            DB.setValue(nodeActive, "initresult", "number", nNewActiveNodeInit);    
+            local bShouldSwitchActor = CombatManagerADND.sortfuncADnD(nodeNext, nodeActive);
+            if bShouldSwitchActor then
+                CombatManager.requestActivation(nodeNext, bSkipBell);
+                CombatManager.onTurnStartEvent(nodeNext);
+            end
         end
     end
-    DB.setValue(nodeActive, "initresult", "number", nPreviousInit + nInitDelay);    
+    DB.setValue(nodeActive, "initresult", "number", nNewActiveNodeInit);    
 end

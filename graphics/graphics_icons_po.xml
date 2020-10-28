@@ -8,4 +8,5 @@
 
 <root>
   <icon name="endTurnButtonIcon" file="graphics/icons/end_turn.jpg" />      
+  <icon name="sterno_icon" file="graphics/icons/sterno_icon.png" />
 </root>

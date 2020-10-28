@@ -4,10 +4,10 @@
 
   <properties>
     <name>2E Player's Option and more</name>
-    <version>0.73</version>
+    <version>0.74</version>
     <loadorder>99</loadorder>
     <description>
-      <text>Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.73)</text>
+      <text>Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.74)</text>
       <website></website>
       <author>Sterno</author>
     </description>
@@ -16,12 +16,12 @@
     </ruleset>
   </properties>
 
-  <announcement text="Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.73)" font="emotefont" icon="rulesetlogo_DungeonClassic" />
+  <announcement text="Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.74)" font="emotefont" icon="sterno_icon" />
   <base>    
     
     <includefile source="graphics/graphics_fonts_po.xml" />
     <includefile source="graphics/graphics_icons_po.xml"/>
-    
+
     <includefile source="campaign/record_char_weapon.xml"/>
     <includefile source="campaign/record_item.xml" />
     <includefile source="campaign/record_char_main.xml" />
