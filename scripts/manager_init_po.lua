@@ -50,8 +50,11 @@ function getBaseActorSpeedPhase(nodeActor)
 		nBaseSpeed = 5;
 	end
 
-	nBaseSpeed = nBaseSpeed + getMovementRateModifierToPhase(nodeActor);
-	nBaseSpeed = nBaseSpeed + getEncumbranceModifierToPhase(nodeActor);
+	
+	local nMovementRateModifierToPhase = getMovementRateModifierToPhase(nodeActor);
+	local nEncumbranceModifierToPhase = getEncumbranceModifierToPhase(nodeActor);
+	Debug.console("Base Speed Phase", nBaseSpeed, "Movement Rate Modifier", nMovementRateModifierToPhase, "Encumbrance Modifier", nEncumbranceModifierToPhase);
+	nBaseSpeed = nBaseSpeed + nMovementRateModifierToPhase + nEncumbranceModifierToPhase;
 
 	nBaseSpeed = math.max(1, math.min(5, nBaseSpeed)); -- bounds check
 	return nBaseSpeed;
@@ -82,36 +85,47 @@ function getEncumbranceModifierToPhase(nodeActor)
 end
 
 function getSpellPhase(nSpellInitMod)
+
+	local nSpellPhase = 5;
 	if nSpellInitMod <= 0 then
-		return 1;
+		nSpellPhase = 1;
 	elseif nSpellInitMod <= 3 then
-		return 2;
+		nSpellPhase = 2;
 	elseif nSpellInitMod <= 6 then
-		return 3;
+		nSpellPhase = 3;
 	elseif nSpellInitMod <= 9 then
-		return 4;
+		nSpellPhase = 4;
 	else
-		return 5;
+		nSpellPhase = 5;
 	end
+
+	Debug.console("Spell Phase", nSpellPhase, "Spell init", nSpellInitMod);
+	return nSpellPhase;
 end
 
 function getWeaponPhaseFromSpeed(nSpeedFactor, nodeActor)
+	Debug.console("Weapon Speed Factor", nSpeedFactor);
 	if PlayerOptionManager.isUsingReactionAdjustmentForInitiative() and nodeActor then
 		local nReactionAdj = DB.getValue(nodeActor, "abilities.dexterity.reactionadj", 0);
 		nSpeedFactor = nSpeedFactor - nReactionAdj;
+		Debug.console("Weapon Speed Factor after Reaction Adjustment", nSpeedFactor);
 	end
 
+	local nWeaponPhase = 5;
 	if nSpeedFactor <= 0 then
-		return 1;
+		nWeaponPhase = 1;
 	elseif nSpeedFactor <= 4 then
-		return 2;
+		nWeaponPhase = 2;
 	elseif nSpeedFactor <= 7 then
-		return 3;
+		nWeaponPhase = 3;
 	elseif nSpeedFactor <= 13 then
-		return 4;
+		nWeaponPhase = 4;
 	else
-		return 5;
+		nWeaponPhase = 5;
 	end
+
+	Debug.console("Weapon Phase", nWeaponPhase);
+	return nWeaponPhase;
 end
 
 function getWeaponPhase(nodeWeapon, nodeActor)

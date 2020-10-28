@@ -40,7 +40,7 @@ function deliverInitRollMessage(nPcInit, nNpcInit)
 
 	if nNpcInit == 1 then
 		sMsg = sMsg .. " NPCs go one phase faster!";
-	elseif nPcInit == 10 then
+	elseif nNpcInit == 10 then
 		sMsg = sMsg .. " NPCs go one phase slower!";
 	end
 

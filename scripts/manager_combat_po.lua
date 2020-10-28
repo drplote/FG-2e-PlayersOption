@@ -92,11 +92,15 @@ function getPhaseShiftForInitMod(nodeActor)
     local aEffectDice, nEffectBonus = EffectManager5E.getEffectsBonus(nodeActor, "INIT");
     local nInitMod = StringManager.evalDice(aEffectDice, nEffectBonus);
     local nStepSize = 3; -- We'll say every 3 points of init mod moves you one step
+
+    local nPhaseShift = 0;
     if nInitMod < 0 then
-        return math.ceil(nInitMod / 3);
+        nPhaseShift = math.ceil(nInitMod / 3);
     else
-        return math.floor(nInitMod / 3);
+        nPhaseShift = math.floor(nInitMod / 3);
     end
+    Debug.console("INIT effect of " .. nInitMod .. " shifted init by " .. nPhaseShift .. " phases.");
+    return nPhaseShift;
 end 
 
 function getFinalInitForActor(nodeActor, nInitPhase, bAllowInitEffects)
@@ -113,8 +117,10 @@ function getFinalInitForActor(nodeActor, nInitPhase, bAllowInitEffects)
     end
 
     if nGroupInitRoll == 1 then
+        Debug.console("Shifted init down for a group roll of 1");
         nInitPhase = nInitPhase - 1;
     elseif nGroupInitRoll == 10 then
+        Debug.console("Shifted init up for a group roll of 10");
         nInitPhase = nInitPhase + 1;
     end
 

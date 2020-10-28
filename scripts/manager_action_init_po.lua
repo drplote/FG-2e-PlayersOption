@@ -13,6 +13,8 @@ function getRollForPhasedInit(rActor, bSecretRoll, rItem)
   rRoll.sDesc = "[INIT]";
   rRoll.bSecret = bSecretRoll;
 
+  Debug.console("rActor", rActor);
+  Debug.console("rItem", rItem);
   local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
   if nodeActor then
 	local nInitPhase = InitManagerPO.getBaseActorSpeedPhase(nodeActor);
@@ -20,15 +22,18 @@ function getRollForPhasedInit(rActor, bSecretRoll, rItem)
 		if rItem.spellPath then
 			local nCastInit = DB.getValue(DB.findNode(rItem.spellPath), "castinitiative", 99);
 			nInitPhase = InitManagerPO.getSpellPhase(nCastInit);
-			rRoll.sDesc = rRoll.sDesc .. " [MOD (spell):" .. InitManagerPO.getPhaseName(nInitPhase) .. "]";
+			rRoll.sDesc = rRoll.sDesc .. " [Spell:" .. InitManagerPO.getPhaseName(nInitPhase) .. "]";
 			nInitPhase = CombatManagerPO.getFinalInitForActor(nodeActor, nInitPhase, false);
 		else
-			rRoll.sDesc = rRoll.sDesc .. " [MOD (base):" .. InitManagerPO.getPhaseName(nInitPhase) .. "]";
+			rRoll.sDesc = rRoll.sDesc .. " [Base:" .. InitManagerPO.getPhaseName(nInitPhase) .. "]";
 			local nWeaponInitPhase = InitManagerPO.getWeaponPhaseFromSpeed(rItem.nInit, nodeActor);
-			rRoll.sDesc = rRoll.sDesc .. " [MOD (weapon):" .. InitManagerPO.getPhaseName(nWeaponInitPhase) .. "]";
+			rRoll.sDesc = rRoll.sDesc .. " [Weapon:" .. InitManagerPO.getPhaseName(nWeaponInitPhase) .. "]";
 			nInitPhase = math.max(nWeaponInitPhase, nInitPhase);			
 			nInitPhase = CombatManagerPO.getFinalInitForActor(nodeActor, nInitPhase, true);
 		end
+	else
+		rRoll.sDesc = rRoll.sDesc .. " [Base: " .. InitManagerPO.getPhaseName(nInitPhase) .. "]";
+		nInitPhase = CombatManagerPO.getFinalInitForActor(nodeActor, nInitPhase, true);
 	end
 	rRoll.nMod = nInitPhase;
   end
