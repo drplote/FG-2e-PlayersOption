@@ -43,5 +43,8 @@
     <string name="char_tooltip_current_shield_damage">Current Shield Damage</string>
     <string name="char_label_fatiguemultiplier">Fatigue Factor Multiplier</string>
     <string name="char_label_fatiguemultiplier_tooltip">A multiplier to apply to fatigue factor (such as from the Endurance talent)</string>
-
+    <string name="char_label_delay_turn">Delay Turn</string>
+    <string name="char_label_delay_turn_tooltip">Delays your turn to the next combat phase</string>
+    <string name="char_label_end_turn">End Turn</string>
+    <string name="char_label_end_turn_tooltip">Ends your turn. Hold Shift, Control, or Alt while clicking to delay your turn one phase instead.</string>
 </root>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+  <windowclass name="combat_mini_section" merge="join">
+    <sheetdata>
+
+      <buttoncontrol name="endturnbutton" insertafter="turnlevel">
+        <anchored height="25" width="20" >
+           <top offset="15" />
+           <left parent="surprise_total_roll" anchor="right" relation="relative" offset="50" />
+        </anchored>
+        <icon normal="endTurnButtonIcon" pressed="endTurnButtonIcon" />
+        <script>         
+          function onButtonPress()
+            CombatManager.notifyEndTurn();
+          end
+        </script>
+        <frame name="fielddark" offset="7,5,7,5" />
+        <stateframe>
+          <hover name="rowshade" offset="7,5,7,5" />
+        </stateframe>
+        <tooltip textres="char_label_end_turn_tooltip" />
+      </buttoncontrol>
+
+      <stringcontrol  name="label_endturnbutton" insertafter="endturnbutton">
+        <anchored to="endturnbutton"  position="aboveleft" offset="-10,1" />
+        <font>regular10</font>
+        <center />
+        <static textres="char_label_end_turn" />
+        <tooltip textres="char_label_end_turn_tooltip" />
+      </stringcontrol>
+
+    </sheetdata>
+  </windowclass>  
+</root>

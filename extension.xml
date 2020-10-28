@@ -20,10 +20,12 @@
   <base>    
     
     <includefile source="graphics/graphics_fonts_po.xml" />
+    <includefile source="graphics/graphics_icons_po.xml"/>
     
     <includefile source="campaign/record_char_weapon.xml"/>
     <includefile source="campaign/record_item.xml" />
     <includefile source="campaign/record_char_main.xml" />
+    <includefile source="campaign/record_char_combat.xml" />
     <includefile source="desktop/desktop_classes.xml" />
 
     <includefile source="cta/cta_host.xml"/>
@@ -31,6 +33,8 @@
     <includefile source="ct/ct_client.xml" />
     
     <includefile source="strings/strings_player_option.xml"/>
+
+
 
     <script name="PlayerOptionManager" file="scripts/manager_po.lua"/>
     <script name="DiceManagerPO" file="scripts/manager_dice_po.lua"/>
