@@ -9,10 +9,36 @@
   <windowclass name="combat_mini_section" merge="join">
     <sheetdata>
 
-      <buttoncontrol name="endturnbutton" insertafter="turnlevel">
+      <buttoncontrol name="delayturnbutton" insertafter="turnlevel">
         <anchored height="25" width="20" >
            <top offset="15" />
-           <left parent="surprise_total_roll" anchor="right" relation="relative" offset="50" />
+           <left parent="surprise_total_roll" anchor="right" relation="relative" offset="30" />
+        </anchored>
+        <icon normal="delayTurnButtonIcon" pressed="delayTurnButtonIcon" />
+        <script>         
+          function onButtonPress()
+            CombatManagerPO.notifyDelayTurn();
+          end
+        </script>
+        <frame name="fielddark" offset="7,5,7,5" />
+        <stateframe>
+          <hover name="rowshade" offset="7,5,7,5" />
+        </stateframe>
+        <tooltip textres="char_label_end_turn_tooltip" />
+      </buttoncontrol>
+
+      <label_fieldtop name="label_delayturnbutton" insertafter="delayturnbutton">
+        <anchored to="delayturnbutton" />
+        <font>regular10</font>
+        <center />
+        <static textres="char_label_delay_turn" />
+        <tooltip textres="char_label_delay_turn_tooltip" />
+      </label_fieldtop>
+
+      <buttoncontrol name="endturnbutton" insertafter="label_delayturnbutton">
+        <anchored height="25" width="20" >
+           <top offset="15" />
+           <left parent="surprise_total_roll" anchor="right" relation="relative" offset="15" />
         </anchored>
         <icon normal="endTurnButtonIcon" pressed="endTurnButtonIcon" />
         <script>         
@@ -27,13 +53,13 @@
         <tooltip textres="char_label_end_turn_tooltip" />
       </buttoncontrol>
 
-      <stringcontrol  name="label_endturnbutton" insertafter="endturnbutton">
-        <anchored to="endturnbutton"  position="aboveleft" offset="-10,1" />
+      <label_fieldtop name="label_endturnbutton" insertafter="endturnbutton">
+        <anchored to="endturnbutton" />
         <font>regular10</font>
         <center />
         <static textres="char_label_end_turn" />
         <tooltip textres="char_label_end_turn_tooltip" />
-      </stringcontrol>
+      </label_fieldtop>
 
     </sheetdata>
   </windowclass>  

@@ -49,6 +49,14 @@ function notifyEndTurnOverride()
     Comm.deliverOOBMessage(msgOOB, "");
 end
 
+function notifyDelayTurn()
+    local msgOOB = {};
+    msgOOB.type = OOB_MSGTYPE_DELAYTURN;
+    msgOOB.user = User.getUsername();
+
+    Comm.deliverOOBMessage(msgOOB, "");
+end
+
 function addCTANPCOverride(sClass, nodeNPC, sNamedInBattle)
     local nodeEntry = fAddCTANPC(sClass, nodeNPC, sNamedInBattle);
     CombatManagerADND.copySourceToNodeCT(nodeNPC, nodeEntry);

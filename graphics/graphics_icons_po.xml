@@ -8,5 +8,7 @@
 
 <root>
   <icon name="endTurnButtonIcon" file="graphics/icons/end_turn.jpg" />      
+  <icon name="delayTurnButtonIcon" file="graphics/icons/delay_turn.png" />
   <icon name="sterno_icon" file="graphics/icons/sterno_icon.png" />
+
 </root>
