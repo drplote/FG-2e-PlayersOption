@@ -19,6 +19,17 @@
           function onButtonPress()
             CombatManagerPO.notifyDelayTurn();
           end
+
+          function onInit()
+            OptionsManager.registerCallback(PlayerOptionManager.sPhasedInitiativeOptionKey, onInitOptionChanged);
+            onInitOptionChanged();
+          end
+
+          function onInitOptionChanged()
+            local bVisible = PlayerOptionManager.isUsingPhasedInitiative()
+            setVisible(bVisible);
+            window.label_delayturnbutton.setVisible(bVisible);
+          end
         </script>
         <frame name="fielddark" offset="7,5,7,5" />
         <stateframe>
