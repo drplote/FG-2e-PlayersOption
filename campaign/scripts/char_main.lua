@@ -11,6 +11,7 @@ function onInit()
     OptionsManager.registerCallback(PlayerOptionManager.sFatigueOptionKey, onFatigueOptionChanged);
     DB.addHandler(DB.getPath(node, "fatigue.multiplier"), "onUpdate", updateFatigueFactor);
     updateFatigueFactor();
+    updateArmor();
     setPlayerOptionControlVisibility();
 end
 
@@ -20,7 +21,6 @@ function setPlayerOptionControlVisibility()
 end
 
 function setArmorDamageVisibility(bShow)
-	Debug.console("Setting armor damage visibility", bShow);
 	repair_armor_button.setVisible(bShow);
 	current_armor_damage.setVisible(bShow);
 	current_armor_damage_label.setVisible(bShow);
@@ -37,7 +37,6 @@ function setArmorDamageVisibility(bShow)
 end
 
 function setFatigueVisibility(bShow)
-	Debug.console("Setting fatigue visibility", bShow);
 	fatigue_factor.setVisible(bShow);
 	fatigue_factor_label.setVisible(bShow);
 	add_fatigue_button.setVisible(bShow);
@@ -69,7 +68,6 @@ function onFatigueOptionChanged()
 end
 
 function updateFatigueFactor()
-	Debug.console("update fatigue factor called");
 	if PlayerOptionManager.isUsingHackmasterFatigue() then
 		local nodeChar = getDatabaseNode();
 		FatigueManagerPO.updateFatigueFactor(nodeChar);
@@ -123,7 +121,7 @@ function updateShieldDamageDisplay()
 	else
 		current_shield_damage.setValue(0);
 		current_shield_loss.setValue(0);
-		shield_description.setValue("No Shield");
+		shield_description.setValue("No Shield Equipped");
 	end
 end
 
@@ -137,7 +135,7 @@ function updateArmorDamageDisplay()
 	else
 		current_armor_damage.setValue(0);
 		current_ac_loss.setValue(0);
-		armor_description.setValue("No Armor");
+		armor_description.setValue("No Armor Equipped");
 	end
 end
 

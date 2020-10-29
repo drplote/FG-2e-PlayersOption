@@ -84,8 +84,8 @@ function repairArmor(nodeArmor, nDamageToRepair)
     if not nodeArmor then return; end
 
     local nHpLost = getHpLost(nodeArmor);
-    local nDamageDone = math.min(nDamageToRepair, nHpLost);
-    local nHpLost = nHpLost - nDamageToRepair;
+    local nDamageRepaired = math.min(nDamageToRepair, nHpLost);
+    local nHpLost = nHpLost - nDamageRepaired;
     setHpLost(nodeArmor, nHpLost);
 end
 
