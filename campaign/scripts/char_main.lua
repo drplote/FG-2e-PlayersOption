@@ -16,8 +16,10 @@ function onInit()
 end
 
 function setPlayerOptionControlVisibility()
-	setArmorDamageVisibility(PlayerOptionManager.isUsingArmorDamage());
-	setFatigueVisibility(PlayerOptionManager.isUsingHackmasterFatigue());
+	local bIsUsingArmorDamage = PlayerOptionManager.isUsingArmorDamage();
+	local bIsUsingFatigue = PlayerOptionManager.isUsingHackmasterFatigue();
+	setArmorDamageVisibility(bIsUsingArmorDamage);
+	setFatigueVisibility(bIsUsingFatigue);
 end
 
 function setArmorDamageVisibility(bShow)

@@ -10,10 +10,10 @@
 	  	<script file="campaign/scripts/char_main.lua" />
 	  	<sheetdata>
 
-	      <buttoncontrol name="remove_fatigue_button">
+	      <buttoncontrol name="remove_fatigue_button" insertafter="specialdef">
 		    <anchored to="contentanchor" width="20" height="30">
-			  <top parent="combatanchor" anchor="bottom" offset="10" />
-			  <left offset="0"/>
+			  <top parent="combatanchor" anchor="bottom" relation="relative" offset="20" />
+			  <left offset="-20"/>
 		    </anchored>
 	        <icon normal="button_page_prev" />
 			<script>
@@ -25,7 +25,7 @@
 		  	  
 		  <number_fatigue_charsheet name="current_fatigue" source="fatigue.score">
 	        <anchored to="contentanchor" width="40" height="30">
-	          <top parent="combatanchor" anchor="bottom" offset="10" />
+	          <top parent="remove_fatigue_button" anchor="top" relation="relative" offset="0" />
 	          <left parent="remove_fatigue_button" anchor="right" relation="relative" />
 	        </anchored>
 	        <font>bold20</font>
@@ -40,7 +40,7 @@
 		  
 		  <buttoncontrol name="add_fatigue_button">
 		    <anchored to="contentanchor" width="20" height="30">
-			  <top parent="combatanchor" anchor="bottom" offset="10" />
+			  <top parent="remove_fatigue_button" anchor="top" relation="relative" offset="0" />
 			  <left parent="current_fatigue" anchor="right" relation="relative"/>
 			  </anchored>
 	        <icon normal="button_page_next" />
@@ -53,7 +53,7 @@
 
   	  	  <number_hptotal_charsheet name="fatigue_factor" source="fatigue.factor">
 	        <anchored to="contentanchor" width="40" height="30">
-			  <top parent="combatanchor" anchor="bottom"  offset="10" />
+			  <top parent="remove_fatigue_button" anchor="top" relation="relative" offset="0" />
 			  <left parent="add_fatigue_button" anchor="right" relation="relative" offset="10" />
 	        </anchored>
 	        <font>bold20</font>
@@ -66,10 +66,10 @@
 			<tooltip textres="char_tooltip_fatigue_factor" />
 	      </label_combatscores>
 
-   		  <buttoncontrol name="repair_armor_button" insertafter="wounds">
+   		  <buttoncontrol name="repair_armor_button" insertafter="specialdef">
 		    <anchored to="contentanchor" width="20" height="30">
-			  <top parent="combatanchor" anchor="bottom" offset="60" />
-			  <left offset="0"/>
+			  <top parent="combatanchor" anchor="bottom" relation="relative" offset="20" />
+			  <left offset="-20"/>
 		    </anchored>
 	        <icon normal="button_page_prev" />
 			<script>
@@ -81,7 +81,7 @@
 
 		  <number_armor_damage_charsheet name="current_armor_damage">
 	        <anchored to="contentanchor" width="40" height="30">
-	          <top parent="combatanchor" anchor="bottom" offset="60" />
+	          <top parent="repair_armor_button" anchor="top" relation="relative" offset="0" />
 			  <left parent="repair_armor_button" anchor="right" relation="relative" />
 	        </anchored>
 	        <font>bold20</font>
@@ -97,7 +97,7 @@
 		  	  
 		  <buttoncontrol name="damage_armor_button">
 		    <anchored to="contentanchor" width="20" height="30">
-			  <top parent="combatanchor" anchor="bottom" offset="60" />
+			  <top parent="repair_armor_button" anchor="top" relation="relative" offset="0" />
 			  <left parent="current_armor_damage" anchor="right" relation="relative"/>
 			</anchored>
 	        <icon normal="button_page_next" />
@@ -110,7 +110,7 @@
 		  	  
 		  <number_armor_damage_charsheet name="current_ac_loss">
 	        <anchored to="contentanchor" width="40" height="30">
-	          <top parent="combatanchor" anchor="bottom" offset="60" />
+	          <top parent="repair_armor_button" anchor="top" relation="relative" offset="0" />
 			  <left parent="damage_armor_button" anchor="right" relation="relative" offset="10" />
 	        </anchored>
 	        <font>bold20</font>
@@ -125,16 +125,16 @@
 		  
 		  <label name="armor_description">
 		    <anchored to="contentanchor" width="200" height="30">
-			  <top parent="combatanchor" anchor="bottom" offset="60" />
+			  <top parent="repair_armor_button" anchor="top" relation="relative" offset="0" />
 			  <left parent="current_ac_loss" anchor="right" relation="relative" offset="10"/>
 			</anchored>    
 			<font>regular20</font>
 	      </label>
 		  
-		  <buttoncontrol name="repair_shield_button">
+		  <buttoncontrol name="repair_shield_button" insertafter="specialdef">
 		    <anchored to="contentanchor" width="20" height="30">
-			  <top parent="combatanchor" anchor="bottom" offset="110" />
-			  <left offset="0"/>
+			  <top parent="combatanchor" anchor="bottom" relation="relative" offset="20" />
+			  <left offset="-20"/>
 		    </anchored>
 	        <icon normal="button_page_prev" />
 			<script>
@@ -146,7 +146,7 @@
 		  
 		  <number_armor_damage_charsheet name="current_shield_damage">
 	        <anchored to="contentanchor" width="40" height="30">
-	          <top parent="combatanchor" anchor="bottom" offset="110" />
+	          <top parent="repair_shield_button" anchor="top" relation="relative" offset="0" />
 			  <left parent="repair_shield_button" anchor="right" relation="relative" />
 	        </anchored>
 	        <font>bold20</font>
@@ -162,7 +162,7 @@
 		  	  
 		  <buttoncontrol name="damage_shield_button">
 		    <anchored to="contentanchor" width="20" height="30">
-			  <top parent="combatanchor" anchor="bottom" offset="110" />
+			  <top parent="repair_shield_button" anchor="top" relation="relative" offset="0" />
 			  <left parent="current_shield_damage" anchor="right" relation="relative"/>
 			</anchored>
 	        <icon normal="button_page_next" />
@@ -175,7 +175,7 @@
 		  	  
 		  <number_armor_damage_charsheet name="current_shield_loss">
 	        <anchored to="contentanchor" width="40" height="30">
-	          <top parent="combatanchor" anchor="bottom" offset="110" />
+	          <top parent="repair_shield_button" anchor="top" relation="relative" offset="0" />
 			  <left parent="damage_shield_button" anchor="right" relation="relative" offset="10" />
 	        </anchored>
 	        <font>bold20</font>
@@ -190,42 +190,11 @@
 		  
 		  <label name="shield_description">
 		    <anchored to="contentanchor" width="200" height="30">
-			  <top parent="combatanchor" anchor="bottom" offset="110" />
+			  <top parent="repair_shield_button" anchor="top" relation="relative" offset="0" />
 			  <left parent="current_shield_loss" anchor="right" relation="relative" offset="10"/>
 			</anchored>    
 			<font>regular20</font>
 	      </label>  
-
-	      <string_labeled name="speedspecial" source="speed.special" merge="replace">
-	        <anchored to="contentanchor">
-	          <top parent="combatanchor" anchor="bottom" relation="relative" offset="150" />
-	          <left offset="0" />
-	          <right offset="200" />
-	        </anchored>
-	        <labelres>char_label_speedspecial</labelres>
-	        <multilinespacing>20</multilinespacing>
-	      </string_labeled>
-
-	      <string_labeled name="specialdef" source="defenses.special" merge="replace">
-	        <anchored to="contentanchor">
-	          <top parent="combatanchor" anchor="bottom" relation="relative" offset="0" />
-	          <left offset="0" />
-	          <right offset="200" />
-	        </anchored>
-	        <labelres>char_label_specialdef</labelres>
-	        <multilinespacing>20</multilinespacing>
-	      </string_labeled>
-
-	      <string_labeled name="sensesspecial" source="senses" merge="replace">
-	        <anchored to="contentanchor">
-	          <top parent="combatanchor" anchor="bottom" relation="relative" offset="0" />
-	          <left offset="0" />
-	          <right offset="200" />
-	        </anchored>
-	        <labelres>char_label_senses</labelres>
-	        <multilinespacing>20</multilinespacing>
-	      </string_labeled>
-
 
 		</sheetdata>
 	</windowclass>
