@@ -81,6 +81,7 @@ function handleCrit(rSource, rTarget)
 		local nSeverity = getSeverityDieRoll(nSizeDifference);
 		local rCrit = getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity);
 		StateManagerPO.setCritState(rSource, rTarget, rCrit.dmgMultiplier);
+		Debug.console("Crit with weapon: ", rWeaponInfo, "hit location:", rHitLocation, "size difference", nSizeDifference, "severity", nSeverity);
 		return rCrit;
 	end
 	return nil;

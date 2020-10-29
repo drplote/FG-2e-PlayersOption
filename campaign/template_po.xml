@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+
+  <template name="number_armor_damage_charsheet">
+    <number_armor_damage>
+    </number_armor_damage>
+  </template>
+
+
+  <template name="number_fatigue_charsheet">
+    <number_fatigue>
+    </number_fatigue>
+  </template>
+
+  <template name="number_fatigue">
+    <basicnumber>
+      <min value="0" />
+      <script>
+        function onValueChanged()
+          if window.onFatigueChanged then
+            window.onFatigueChanged();
+          end
+        end
+      </script>
+    </basicnumber>
+  </template>
+
+  <template name="number_armor_damage">
+    <basicnumber>
+      <min value="0" />
+      <script>
+        function onValueChanged()
+        end
+      </script>
+    </basicnumber>
+  </template>
+  
+</root>

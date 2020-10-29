@@ -72,9 +72,20 @@ function getDefaultDamageReduction(nodeArmor)
 end
 
 function damageArmor(nodeArmor, nDamage)
+    if not nodeArmor then return; end
+
     local nHpRemaining = getHpRemaining(nodeArmor);
     local nDamageDone = math.min(nDamage, nHpRemaining);
     local nHpLost = getHpLost(nodeArmor) + nDamageDone;
+    setHpLost(nodeArmor, nHpLost);
+end
+
+function repairArmor(nodeArmor, nDamageToRepair)
+    if not nodeArmor then return; end
+
+    local nHpLost = getHpLost(nodeArmor);
+    local nDamageDone = math.min(nDamageToRepair, nHpLost);
+    local nHpLost = nHpLost - nDamageToRepair;
     setHpLost(nodeArmor, nHpLost);
 end
 
