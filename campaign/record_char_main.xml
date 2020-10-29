@@ -128,6 +128,7 @@
 			  <top parent="combatanchor" anchor="bottom" offset="60" />
 			  <left parent="current_ac_loss" anchor="right" relation="relative" offset="10"/>
 			</anchored>    
+			<font>regular20</font>
 	      </label>
 		  
 		  <buttoncontrol name="repair_shield_button">
@@ -192,6 +193,7 @@
 			  <top parent="combatanchor" anchor="bottom" offset="110" />
 			  <left parent="current_shield_loss" anchor="right" relation="relative" offset="10"/>
 			</anchored>    
+			<font>regular20</font>
 	      </label>  
 
 	      <string_labeled name="speedspecial" source="speed.special" merge="replace">

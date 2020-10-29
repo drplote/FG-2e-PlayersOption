@@ -71,6 +71,7 @@ function updateFatigueFactor()
 	if PlayerOptionManager.isUsingHackmasterFatigue() then
 		local nodeChar = getDatabaseNode();
 		FatigueManagerPO.updateFatigueFactor(nodeChar);
+		onFatigueChanged();
 	end
 end
 
@@ -109,33 +110,63 @@ function increaseFatigue()
 end
 
 function onFatigueChanged()
+	local nodeChar = getDatabaseNode();
+	local nFatigueFactor = FatigueManagerPO.getFatigueFactor(nodeChar);
+	local nCurrentFatigue = FatigueManagerPO.getCurrentFatigue(nodeChar);
+
+	local sColor = ColorManager.COLOR_FULL;
+	if nCurrentFatigue > nFatigueFactor then
+		sColor = ColorManager.COLOR_TOKEN_HEALTH_HVY_WOUNDS;
+	elseif nCurrentFatigue > 0 then
+		sColor = ColorManager.COLOR_HEALTH_LT_WOUNDS;
+	end
+
+	current_fatigue.setColor(sColor);
 end
 
 function updateShieldDamageDisplay()
-	local nodeItem = getWornShield();
-	if nodeItem then
-		local nHpLost = ArmorManagerPO.getHpLost(nodeItem);
-		current_shield_damage.setValue(nHpLost);
-		current_shield_loss.setValue(ArmorManagerPO.getAcLostFromDamage(nodeItem));
-		shield_description.setValue(ItemManagerPO.getItemNameForPlayer(nodeItem));
-	else
-		current_shield_damage.setValue(0);
-		current_shield_loss.setValue(0);
-		shield_description.setValue("No Shield Equipped");
+	if PlayerOptionManager.isUsingArmorDamage() then 
+		local nodeItem = getWornShield();
+		local sColor = ColorManager.COLOR_FULL;
+		if nodeItem then
+			local nHpLost = ArmorManagerPO.getHpLost(nodeItem);
+			current_shield_damage.setValue(nHpLost);
+			current_shield_loss.setValue(ArmorManagerPO.getAcLostFromDamage(nodeItem));
+			shield_description.setValue(ItemManagerPO.getItemNameForPlayer(nodeItem));
+			if ArmorManagerPO.isBroken(nodeItem) then
+				sColor = ColorManager.COLOR_HEALTH_CRIT_WOUNDS;
+			elseif nHpLost > 0 then
+				sColor = ColorManager.COLOR_HEALTH_LT_WOUNDS;
+			end
+		else
+			current_shield_damage.setValue(0);
+			current_shield_loss.setValue(0);
+			shield_description.setValue("No Shield Equipped");
+		end
+		current_shield_damage.setColor(sColor);
 	end
 end
 
 function updateArmorDamageDisplay()
-	local nodeItem = getWornArmor();
-	if nodeItem then
-		local nHpLost = ArmorManagerPO.getHpLost(nodeItem);
-		current_armor_damage.setValue(nHpLost);
-		current_ac_loss.setValue(ArmorManagerPO.getAcLostFromDamage(nodeItem));
-		armor_description.setValue(ItemManagerPO.getItemNameForPlayer(nodeItem));
-	else
-		current_armor_damage.setValue(0);
-		current_ac_loss.setValue(0);
-		armor_description.setValue("No Armor Equipped");
+	if PlayerOptionManager.isUsingArmorDamage() then
+		local nodeItem = getWornArmor();
+		local sColor = ColorManager.COLOR_FULL;
+		if nodeItem then
+			local nHpLost = ArmorManagerPO.getHpLost(nodeItem);
+			current_armor_damage.setValue(nHpLost);
+			current_ac_loss.setValue(ArmorManagerPO.getAcLostFromDamage(nodeItem));
+			armor_description.setValue(ItemManagerPO.getItemNameForPlayer(nodeItem));
+			if ArmorManagerPO.isBroken(nodeItem) then
+				sColor = ColorManager.COLOR_HEALTH_CRIT_WOUNDS;
+			elseif nHpLost > 0 then
+				sColor = ColorManager.COLOR_HEALTH_LT_WOUNDS;
+			end
+		else
+			current_armor_damage.setValue(0);
+			current_ac_loss.setValue(0);
+			armor_description.setValue("No Armor Equipped");
+		end
+		current_armor_damage.setColor(sColor);
 	end
 end
 
