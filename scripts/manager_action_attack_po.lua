@@ -155,10 +155,10 @@ function onAttackOverride(rSource, rTarget, rRoll)
       FatigueManagerPO.recordAttack(rSource, rRoll.range);
   end
 
-  if not rSource.weaponPath then
+  if rSource and not rSource.weaponPath then
     rSource.weaponPath = rRoll.weaponPath;
   end
-  if not rSource.aDamageTypes then
+  if rSource and not rSource.aDamageTypes then
     rSource.aDamageTypes = WeaponManagerPO.decodeDamageTypes(rRoll.aDamageTypes);
   end
   local bOptAscendingAC = (OptionsManager.getOption("HouseRule_ASCENDING_AC"):match("on") ~= nil);
@@ -438,12 +438,12 @@ end
 
 function modAttackOverride(rSource, rTarget, rRoll)
     StateManagerPO.clearShieldHitState(rSource);
-    if not rSource.aDamageTypes then
+    if rSource and not rSource.aDamageTypes then
       rSource.aDamageTypes = WeaponManagerPO.decodeDamageTypes(rRoll.aDamageTypes);
     end
     fModAttack(rSource, rTarget, rRoll);
 	
-    if PlayerOptionManager.isWeaponTypeVsArmorModsEnabled() then
+    if rSource and PlayerOptionManager.isWeaponTypeVsArmorModsEnabled() then
         addWeaponTypeVsArmorMods(rSource, rTarget, rRoll);
     end
 end
