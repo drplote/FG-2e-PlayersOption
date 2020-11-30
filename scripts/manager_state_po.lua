@@ -5,6 +5,30 @@ aRanStartEffects = {};
 function onInit()
 end
 
+function getStateNode()
+  local nodeState = DB.findNode("poState");
+  if not nodeState then
+    nodeState = DB.createNode("poState");
+  end
+  return nodeState;
+end
+
+function getPcInit()
+  return DB.getValue(getStateNode(), "pc_init", 0);
+end
+
+function setPcInit(nInit)
+    return DB.setValue(getStateNode(), "pc_init", "number", nInit);
+end
+
+function getNpcInit()
+  return DB.getValue(getStateNode(), "npc_init", 0);
+end
+
+function setNpcInit(nInit)
+    return DB.setValue(getStateNode(), "npc_init", "number", nInit);
+end
+
 function setRanStartEffect(nodeActor, nodeEffect)
   if not nodeActor or not nodeEffect then return; end
   

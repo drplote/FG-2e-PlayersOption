@@ -108,7 +108,12 @@ function decreaseFatigue()
 end
 
 function increaseFatigue()
-	FatigueManagerPO.increaseFatigue(getDatabaseNode());
+	local nodeChar = getDatabaseNode();
+	FatigueManagerPO.increaseFatigue(nodeChar);
+	local nFatigue = StateManagerPO.getFatigueState(nodeChar);
+	if nFatigue == 0 then
+		StateManagerPO.setFatigueState(nodeChar, 1);
+	end
 end
 
 function onFatigueChanged()

@@ -35,15 +35,15 @@ end
 function getSternoFumbleResult()
 	local nRollValue = DiceManagerPO.getDieResult(20);
 	local sResult = "";
-	if nRollValue < 3 then sResult = getArmorTroubleResult();
-	elseif nRollValue < 4 then sResult = "Exposed: Targeted enemy may make a free attack on character (if in range)."
+	if nRollValue < 2 then sResult = getArmorTroubleResult();
+	elseif nRollValue < 5 then sResult = "Exposed: Nearby enemy may make a free attack on character (if in range)."
 	elseif nRollValue < 7 then sResult = "Battlefield Damaged: Something near the character is damaged."
 	elseif nRollValue < 8 then sResult = "Item Damaged: Choose anything on the character except a weapon and roll an item saving throw to see if to broke."
 	elseif nRollValue < 9 then sResult = "Item Dropped: Choose anything on the character except a weapon. The item is spilled, dropped, or cut free from the character."
-	elseif nRollValue < 13 then sResult = "Collision: The character is knocked to the ground by a collision with someone near him (friend or foe). The nearest figure must save vs paralyzation or be knocked down as well."
-	elseif nRollValue < 14 then sResult = "Shaken: The character is thrown off balance and receives a -4 to his next attack (if it is within one round)."
-	elseif nRollValue < 15 then sResult = "Off-balance: The character is thrown off balance and the next attacker to target him gains +2 to their attack (if it is within one round)."
-	elseif nRollValue < 16 then sResult = "Slowed: The character is thrown off balance and receives a +5 penalty to initiative next round as they recover."
+	elseif nRollValue < 11 then sResult = "Collision: The character is knocked to the ground by a collision with someone near him (friend or foe). The nearest figure must save vs paralyzation or be knocked down as well."
+	elseif nRollValue < 12 then sResult = "Shaken: The character is thrown off balance and receives a -4 to his attack(s) next round."
+	elseif nRollValue < 13 then sResult = "Off-balance: The character is thrown off balance and recieves a +2 penalty to his AC next round."
+	elseif nRollValue < 14 then sResult = "Slowed: The character is thrown off balance and receives a +5 penalty to initiative next round as they recover."
 	elseif nRollValue < 18 then sResult = "Retreat: The character is forced back away from his opponent. Opponent chooses which direction the character moves 5'. If there is no valid spot to move, the character falls prone."
 	elseif nRollValue < 19 then sResult = "Slip: The character slips and falls prone."
 	else sResult = getWeaponTroubleResult()

@@ -27,22 +27,36 @@ function onInit()
 end
 
 function handleDelayTurn(msgOOB)
-    local rActor = ActorManager.getActorFromCT(CombatManager.getActiveCT());
+    local nodeCT = CombatManager.getActiveCT()
+    local rActor = ActorManager.getActorFromCT(nodeCT);
     local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
     if sActorType == "pc" then
         if nodeActor.getOwner() == msgOOB.user then
-            delayThenNextActor(2);
+            if PlayerOptionManager.isUsingPhasedInitiative() then
+                delayThenNextActor(2);
+            elseif nodeCT then
+                moveActorToEndOfInit(nodeCT);
+            end
+
         end
     end
+end
+
+function moveActorToEndOfInit(nodeCT)
+    CombatManager.nextActor();
+
+    CombatManagerADND.showCTMessageADND(nodeEntry, DB.getValue(nodeCT, "name", "") .. " " .. Interface.getString("char_initdelay_message"));
+    local nNewInit = CombatManagerADND.getLastInitiative() + 1;
+    DB.setValue(nodeCT, "initresult", "number", nNewInit);
 end
 
 function notifyEndTurnOverride()
     local msgOOB = {};
     msgOOB.type = CombatManager.OOB_MSGTYPE_ENDTURN;
     msgOOB.user = User.getUsername();
+    Debug.console("ending turn");
 
-    if (PlayerOptionManager.isUsingPhasedInitiative() and 
-        (Input.isAltPressed() or Input.isShiftPressed() or Input.isControlPressed())) then
+    if (Input.isAltPressed() or Input.isShiftPressed() or Input.isControlPressed()) then
         msgOOB.type = OOB_MSGTYPE_DELAYTURN;
     end
 
@@ -86,13 +100,13 @@ function onRoundStart()
 end
 
 function updatePcVsNpcInit()
-    if CombatManagerADND.NPC_LASTINIT == 0 or CombatManagerADND.PC_LASTINIT == 0 then
-        while CombatManagerADND.PC_LASTINIT == CombatManagerADND.NPC_LASTINIT do
-            CombatManagerADND.PC_LASTINIT = math.random(10);
-            CombatManagerADND.NPC_LASTINIT = math.random(10);
+    if StateManagerPO.getNpcInit() == 0 or StateManagerPO.getPcInit() == 0 then
+        while StateManagerPO.getPcInit() == StateManagerPO.getNpcInit() do
+            StateManagerPO.getPcInit() = math.random(10);
+            StateManagerPO.getNpcInit() = math.random(10);
         end
         StateManagerPO.clearTurnEffectsState();
-        ChatManagerPO.deliverInitRollMessage(CombatManagerADND.PC_LASTINIT, CombatManagerADND.NPC_LASTINIT);
+        ChatManagerPO.deliverInitRollMessage(StateManagerPO.getPcInit(), StateManagerPO.getNpcInit());
     end
 end
 
@@ -117,11 +131,11 @@ function getFinalInitForActor(nodeActor, nInitPhase, bAllowInitEffects)
     local nGroupInitRoll;
     local nOtherGroupInitRoll;
     if ActorManager.isPC(nodeActor) then
-        nGroupInitRoll = CombatManagerADND.PC_LASTINIT;
-        nOtherGroupInitRoll = CombatManagerADND.NPC_LASTINIT;
+        nGroupInitRoll = StateManagerPO.getPcInit();
+        nOtherGroupInitRoll = StateManagerPO.getNpcInit();
     else
-        nGroupInitRoll = CombatManagerADND.NPC_LASTINIT;
-        nOtherGroupInitRoll = CombatManagerADND.PC_LASTINIT;
+        nGroupInitRoll = StateManagerPO.getNpcInit();
+        nOtherGroupInitRoll = StateManagerPO.getPcInit();
     end
 
     if nGroupInitRoll == 1 then
@@ -163,7 +177,7 @@ function rollEntryPhasedInitiative(nodeEntry)
     local sClass, sRecord = DB.getValue(nodeEntry, "link", "", "");
     if sClass == "charsheet" then
         -- Default PCs to the slowest init for their side. They should roll.
-        if CombatManagerADND.PC_LASTINIT < CombatManagerADND.NPC_LASTINIT then
+        if StateManagerPO.getPcInit() < StateManagerPO.getNpcInit() then
             DB.setValue(nodeEntry, "initresult", "number", 12);
         else
             DB.setValue(nodeEntry, "initresult", "number", 13);
@@ -354,6 +368,8 @@ function nextActor()
         else
             CombatManagerADND.nextActor();
         end
+    elseif Input.isShiftPressed() or Input.isAltPressed() or Input.isControlPressed() then
+        moveActorToEndOfInit(CombatManager.getActiveCT());
     else
         CombatManager.nextActor();
     end
