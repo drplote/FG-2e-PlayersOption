@@ -97,6 +97,8 @@ function onRoundStart()
         end       
         User.ringBell();
     end
+    StateManagerPO.setPcInit(0);
+    StateManagerPO.setNpcInit(0);
 end
 
 function updatePcVsNpcInit()

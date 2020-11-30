@@ -30,6 +30,7 @@ end
 
 function resetFatigue(nodeChar)
 	setCurrentFatigue(nodeChar, 0);
+	StateManagerPO.clearFatigueState(nodeChar);
 end
 
 function getNpcFatigueFactor(nodeChar)
