@@ -18,7 +18,7 @@ function applySaveOverride(rSource, rOrigin, rAction, sUser)
 			local nodeChar = ActorManager.getCTNode(rSource);
 			if nodeChar then 
 				EffectManager.addEffect("", "", ActorManager.getCTNode(rSource), 
-					{ sName = "Unconscious", sLabel = "Unconscious", nDuration = rAction.nTarget - rAction.nTotal }, true);
+					{ sName = "Stunned", sLabel = "Stunned", nDuration = rAction.nTarget - rAction.nTotal }, true);
 			end
 			
 		end

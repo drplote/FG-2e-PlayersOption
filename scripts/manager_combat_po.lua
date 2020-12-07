@@ -104,8 +104,8 @@ end
 function updatePcVsNpcInit()
     if StateManagerPO.getNpcInit() == 0 or StateManagerPO.getPcInit() == 0 then
         while StateManagerPO.getPcInit() == StateManagerPO.getNpcInit() do
-            StateManagerPO.getPcInit() = math.random(10);
-            StateManagerPO.getNpcInit() = math.random(10);
+            StateManagerPO.setPcInit(math.random(10));
+            StateManagerPO.setNpcInit(math.random(10));
         end
         StateManagerPO.clearTurnEffectsState();
         ChatManagerPO.deliverInitRollMessage(StateManagerPO.getPcInit(), StateManagerPO.getNpcInit());

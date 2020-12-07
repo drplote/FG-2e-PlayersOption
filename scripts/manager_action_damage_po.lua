@@ -690,6 +690,14 @@ function modDamageOverride(rSource, rTarget, rRoll)
 			rRoll.nCritMultiplier = nCritMultiplier;
 		end
 	end
+
+  local aAddDice_Multiplier, nAddMod_Multiplier, nEffectCount_Multiplier = EffectManager5E.getEffectsBonus(rSource, {"DMGDX"}, false, aAttackFilter, rTarget);
+  if nEffectCount_Multiplier > 0 then
+    local nSubTotal = StringManager.evalDice(aAddDice_Multiplier, nAddMod_Multiplier);
+    rRoll.nDamageDiceMultiplier = nSubTotal;
+  end
+
+
 	fModDamage(rSource, rTarget, rRoll);
 end
 
@@ -701,13 +709,18 @@ function onDamageRollOverride(rSource, rRoll)
 		end
 	end
 
-    if PlayerOptionManager.isPenetrationDiceEnabled() then
-        local aDmgTypes = parseDamageTypes(rRoll);
-        local bExtraPenetration = UtilityPO.contains(aDmgTypes, "penetrating");
-        DiceManagerPO.handlePenetration(rRoll, bExtraPenetration);
-    end
-    
-    fOnDamageRoll(rSource, rRoll);
+  if rRoll.nDamageDiceMultiplier then
+    rRoll.sDesc = string.format("%s [DAMAGE DICE MULTIPLIER (x%s)]", rRoll.sDesc, rRoll.nDamageDiceMultiplier);
+    DiceManagerPO.multiplyDice(rRoll, rRoll.nDamageDiceMultiplier);
+  end
+
+  if PlayerOptionManager.isPenetrationDiceEnabled() then
+      local aDmgTypes = parseDamageTypes(rRoll);
+      local bExtraPenetration = UtilityPO.contains(aDmgTypes, "penetrating");
+      DiceManagerPO.handlePenetration(rRoll, bExtraPenetration);
+  end
+  
+  fOnDamageRoll(rSource, rRoll);
 end
 
 function parseDamageTypes(rRoll)
