@@ -40,5 +40,46 @@
       </script>
     </basicnumber>
   </template>
+
+  <template name="button_charinitdelay" merge="replace">
+    <buttoncontrol>
+      <icon normal="button_initdelay" pressed="button_initdelay_down" />
+      <script>
+        function action(draginfo)
+            local nodeChar = window.getDatabaseNode();
+            local nodeCT = CombatManager.getCTFromNode(nodeChar);
+            local nodeCTActive = CombatManager.getActiveCT();
+            if nodeCT == nodeCTActive then
+              if PlayerOptionManager.isUsingPhasedInitiative() then
+                CombatManagerPO.notifyDelayTurn();
+              else
+                local nLastInit = CombatManagerADND.getLastInitiative();
+                CombatManagerADND.showCTMessageADND(nodeEntry,DB.getValue(nodeCT,"name","") .. " " .. Interface.getString("char_initdelay_message"));
+                if User.isHost() then 
+                  CombatManager.nextActor();
+                else 
+                  CombatManager.notifyEndTurn();
+                end
+                CombatManagerADND.notifyInitiativeChange(nodeCT,nLastInit + 1);
+              end
+            end
+            return true;
+        end
+        
+        function onDragStart(button, x, y, draginfo)
+          return action(draginfo);
+        end
+        
+        function onDoubleClick(x,y)
+          return action();
+        end
+      </script>
+      <frame name="fielddark" offset="7,5,7,5" />
+      <stateframe>
+        <hover name="rowshade" offset="7,5,7,5" />
+      </stateframe>
+      <tooltip textres="char_initdelay_tooltip" />
+    </buttoncontrol>
+  </template>
   
 </root>

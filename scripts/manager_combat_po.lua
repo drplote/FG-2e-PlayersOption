@@ -3,6 +3,7 @@ local fCopySourceToNodeCT;
 local fAddCTANPC;
 local fNotifyEndTurn;
 local fRollInitOverride; 
+local fDelayTurn;
 
 OOB_MSGTYPE_DELAYTURN = "delayturn";
 
@@ -28,6 +29,19 @@ function onInit()
 
     fRollInit = CombatManager2.rollInit;
     CombatManager2.rollInit = rollInitOverride;
+
+    fDelayTurn = CombatManagerADND.delayTurn;
+    CombatManagerADND.delayTurn = delayTurnOverride;
+
+end
+
+function delayTurnOverride(nodeCT)
+    Debug.console("delaying turn");
+    if PlayerOptionManager.isUsingPhasedInitiative() then
+        delayThenNextActor(2);
+    else
+        fDelayTurn(nodeCT);
+    end
 end
 
 function rollInitOverride(sType)
@@ -42,15 +56,10 @@ function handleDelayTurn(msgOOB)
     local nodeCT = CombatManager.getActiveCT()
     local rActor = ActorManager.getActorFromCT(nodeCT);
     local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
-    if sActorType == "pc" then
-        if nodeActor.getOwner() == msgOOB.user then
-            if PlayerOptionManager.isUsingPhasedInitiative() then
-                delayThenNextActor(2);
-            elseif nodeCT then
-                moveActorToEndOfInit(nodeCT);
-            end
-
-        end
+    if PlayerOptionManager.isUsingPhasedInitiative() then
+        delayThenNextActor(2);
+    elseif nodeCT then
+        moveActorToEndOfInit(nodeCT);
     end
 end
 
