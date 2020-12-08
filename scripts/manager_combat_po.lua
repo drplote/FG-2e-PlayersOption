@@ -2,6 +2,7 @@ local fRollNpcHitPoints;
 local fCopySourceToNodeCT;
 local fAddCTANPC;
 local fNotifyEndTurn;
+local fRollInitOverride; 
 
 OOB_MSGTYPE_DELAYTURN = "delayturn";
 
@@ -24,6 +25,17 @@ function onInit()
     fNotifyEndTurn = CombatManager.notifyEndTurn;
     CombatManager.notifyEndTurn = notifyEndTurnOverride;
     OOBManager.registerOOBMsgHandler(OOB_MSGTYPE_DELAYTURN, handleDelayTurn);
+
+    fRollInit = CombatManager2.rollInit;
+    CombatManager2.rollInit = rollInitOverride;
+end
+
+function rollInitOverride(sType)
+    if PlayerOptionManager.isUsingPhasedInitiative() then
+        resetGroupInits();
+    end
+
+    fRollInit(sType);
 end
 
 function handleDelayTurn(msgOOB)
@@ -97,11 +109,16 @@ function onRoundStart()
         end       
         User.ringBell();
     end
+end
+
+function resetGroupInits()
+    Debug.console("setting inits to 0");
     StateManagerPO.setPcInit(0);
     StateManagerPO.setNpcInit(0);
 end
 
 function updatePcVsNpcInit()
+      printstack();
     if StateManagerPO.getNpcInit() == 0 or StateManagerPO.getPcInit() == 0 then
         while StateManagerPO.getPcInit() == StateManagerPO.getNpcInit() do
             StateManagerPO.setPcInit(math.random(10));
@@ -135,10 +152,13 @@ function getFinalInitForActor(nodeActor, nInitPhase, bAllowInitEffects)
     if ActorManager.isPC(nodeActor) then
         nGroupInitRoll = StateManagerPO.getPcInit();
         nOtherGroupInitRoll = StateManagerPO.getNpcInit();
+        Debug.console("ispc", "pc init", nGroupInitRoll, "npc init", nOtherGroupInitRoll);
     else
         nGroupInitRoll = StateManagerPO.getNpcInit();
         nOtherGroupInitRoll = StateManagerPO.getPcInit();
+        Debug.console("is not pc", "npc init", nGroupInitRoll, "pc init", nOtherGroupInitRoll);
     end
+
 
     if nGroupInitRoll == 1 then
         Debug.console("Shifted init down for a group roll of 1");
