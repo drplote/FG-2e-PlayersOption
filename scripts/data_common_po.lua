@@ -512,7 +512,7 @@ function initializelocationCategorys()
 				[13] = {desc="Skull crushed, immediate death, tripled damage dice."},
 			}
 		},
-		["piercing"] = {
+		["slashing"] = {
 			[1] = {
 				[1] = {desc="No unusual effect."},
 				[2] = {desc="No unusual effect."},
@@ -589,7 +589,7 @@ function initializelocationCategorys()
 				[13] = {desc="Head severed, immediate death, tripled damage dice."},
 			}
 		},
-		["slashing"] = {
+		["piercing"] = {
 			[1] = {
 				[1] = {desc="No unusual effect."},
 				[2] = {desc="No unusual effect."},
@@ -745,7 +745,7 @@ function initializelocationCategorys()
 				[13] = {desc="Skull crushed, immediate death, tripled damage dice."},
 			}
 		},
-		["piercing"] = {
+		["slashing"] = {
 			[1] = {
 				[1] = {desc="No unusual effect."},
 				[2] = {desc="No unusual effect."},
@@ -822,7 +822,7 @@ function initializelocationCategorys()
 				[13] = {desc="Head severed, immediate death, tripled damage dice."},
 			}
 		},
-		["slashing"] = {
+		["piercing"] = {
 			[1] = {
 				[1] = {desc="No unusual effect."},
 				[2] = {desc="No unusual effect."},
@@ -978,7 +978,7 @@ function initializelocationCategorys()
 				[13] = {desc="Skull crushed, immediate death, tripled damage dice."},
 			}
 		},
-		["piercing"] = {
+		["slashing"] = {
 			[1] = {
 				[1] = {desc="No unusual effect."},
 				[2] = {desc="No unusual effect."},
@@ -1055,7 +1055,7 @@ function initializelocationCategorys()
 				[13] = {desc="Head severed, immediate death, tripled damage dice."},
 			}
 		},
-		["slashing"] = {
+		["piercing"] = {
 			[1] = {
 				[1] = {desc="No unusual effect."},
 				[2] = {desc="No unusual effect."},
@@ -1245,15 +1245,18 @@ function initializeDefaultArmorHp()
   aDefaultArmorHp["brigandine"]        = {6,4,2,1};
   aDefaultArmorHp["chain mail"]        = {8,6,4,2,1};
   aDefaultArmorHp["chainmail"]         = {8,6,4,2,1};
+  aDefaultArmorHp["chain"]             = {8,6,4,2,1};
   aDefaultArmorHp["bronze plate mail"] = {12,8,6,4,2,1};
   aDefaultArmorHp["banded mail"]       = {9,8,6,4,2,1};
   aDefaultArmorHp["bandedmail"]        = {9,8,6,4,2,1};
   aDefaultArmorHp["splint mail"]       = {8,8,6,4,2,1};
   aDefaultArmorHp["splintmail"]        = {8,8,6,4,2,1};
+  aDefaultArmorHp["splint"]            = {8,8,6,4,2,1};
   aDefaultArmorHp["field plate"]       = {24,12,10,8,6,4,2,1};
   aDefaultArmorHp["full plate"]        = {36,24,12,10,8,6,4,2,1}; 
   aDefaultArmorHp["plate mail"]        = {12,10,8,6,4,2,1};
   aDefaultArmorHp["platemail"]         = {12,10,8,6,4,2,1};
+  aDefaultArmorHp["plate"]             = {12,10,8,6,4,2,1};
   aDefaultArmorHp["buckler"]           = {3};
   aDefaultArmorHp["small shield"]      = {7};
   aDefaultArmorHp["shield, small"]     = {7};
