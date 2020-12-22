@@ -11,4 +11,5 @@ function onHealPostRollOverride(rSource, rRoll)
     if PlayerOptionManager.isPenetrationDiceEnabled() then 
         DiceManagerPO.handlePenetration(rRoll, false);
     end
+    HonorManagerPO.addHealModifier(rSource, rRoll);
 end

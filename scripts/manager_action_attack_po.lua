@@ -443,6 +443,9 @@ function modAttackOverride(rSource, rTarget, rRoll)
     if rSource and PlayerOptionManager.isWeaponTypeVsArmorModsEnabled() then
         addWeaponTypeVsArmorMods(rSource, rTarget, rRoll);
     end
+
+    HonorManagerPO.addAttackModifier(rSource, rRoll);
+    
 end
 
 function addHitLocationToAction(rAction, sHitLocation)

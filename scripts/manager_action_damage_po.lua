@@ -697,7 +697,6 @@ function modDamageOverride(rSource, rTarget, rRoll)
     rRoll.nDamageDiceMultiplier = nSubTotal;
   end
 
-
 	fModDamage(rSource, rTarget, rRoll);
 end
 
@@ -719,6 +718,8 @@ function onDamageRollOverride(rSource, rRoll)
       local bExtraPenetration = UtilityPO.contains(aDmgTypes, "penetrating");
       DiceManagerPO.handlePenetration(rRoll, bExtraPenetration);
   end
+
+  HonorManagerPO.addDamageModifier(rSource, rRoll);
   
   fOnDamageRoll(rSource, rRoll);
 end

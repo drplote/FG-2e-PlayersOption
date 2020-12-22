@@ -34,6 +34,7 @@ function modSaveOverride(rSource, rTarget, rRoll)
     elseif nMagicalDefenseAdjustment < 0 then
       rRoll.sDesc = rRoll.sDesc .. " [MAGIC DEF ADJ " .. nMagicalDefenseAdjustment .. "]";
     end
+    HonorManagerPO.addSaveModifier(rSource, rRoll);
 	fModSave(rSource, rTarget, rRoll);
 end
 

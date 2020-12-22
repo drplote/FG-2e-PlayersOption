@@ -57,5 +57,6 @@ function getRollOverride(rActor, bSecretRoll, rItem)
 			end
 		end
 	end
+	HonorManagerPO.addInitiativeModifier(rActor, rRoll);
 	return rRoll;
 end

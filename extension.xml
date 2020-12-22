@@ -4,10 +4,10 @@
 
   <properties>
     <name>2E Player's Option and more</name>
-    <version>0.85</version>
+    <version>0.9</version>
     <loadorder>99</loadorder>
     <description>
-      <text>Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.85)</text>
+      <text>Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.9)</text>
       <website></website>
       <author>Sterno</author>
     </description>
@@ -16,7 +16,7 @@
     </ruleset>
   </properties>
 
-  <announcement text="Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.85)" font="emotefont" icon="sterno_icon" />
+  <announcement text="Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.9)" font="emotefont" icon="sterno_icon" />
   <base>    
     
     <includefile source="graphics/graphics_fonts_po.xml" />
@@ -65,6 +65,7 @@
     <script name="ActionPowerPO" file="scripts/manager_action_power_po.lua" />
     <script name="InitManagerPO" file="scripts/manager_init_po.lua" />
     <script name="EffectManagerPO" file="scripts/manager_effect_po.lua" />
+    <script name="HonorManagerPO" file="scripts/manager_honor_po.lua"/>
 
     
   </base>
