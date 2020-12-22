@@ -297,6 +297,7 @@
 	</windowclass>
 
 	<windowclass name="charsheet_abilities_details" merge="join">
+		<script file="campaign/scripts/char_ability_details.lua" />
 		<placement>
 	  		<size width="400" height="525" />
 		</placement>
@@ -325,7 +326,7 @@
 			</ability_number_base>
 
 			<!-- comeliness  mods -->
-			<label_plus>
+			<label_plus name="com_plus">
 			    <anchored to="comeliness_label"/>
 			</label_plus>
 			<ability_number_mod name="comeliness_mod" source="abilities.comeliness.adjustment">
@@ -334,7 +335,7 @@
 			</ability_number_mod>
 
 			<!-- comeliness  temp mods -->
-			<label_plus>
+			<label_plus name="com_plus2">
 			    <anchored to="comeliness_label"/>
 			</label_plus>
 			<ability_number_mod name="comeliness_temp" source="abilities.comeliness.tempmod">
@@ -371,7 +372,7 @@
 			</ability_percent_number_base>
 
 			<!-- comeliness percent mods -->
-			<label_plus>
+			<label_plus name="com_per_plus">
 			    <anchored to="comeliness_percent_label"/>
 			</label_plus>
 			<ability_number_mod name="comeliness_percent_mod" source="abilities.comeliness.percentadjustment">
@@ -380,7 +381,7 @@
 			</ability_number_mod>
 
 			<!-- comeliness percent temp mods -->
-			<label_plus>
+			<label_plus name="com_per_plus2">
 			    <anchored to="comeliness_percent_label"/>
 			</label_plus>
 			<ability_number_mod name="comeliness_percent_temp" source="abilities.comeliness.percenttempmod">
@@ -398,7 +399,7 @@
 			<!-- honor  base -->
 			<label_ability_details_stat name="honor_label">
 				<anchored>
-				  <top offset="355" />
+				  <top parent="charisma_label" offset="100" />
 				  <left offset="30" />
 				</anchored>
 				<static textres="honor" />
