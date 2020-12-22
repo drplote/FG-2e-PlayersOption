@@ -5,21 +5,78 @@ function onInit()
 	DB.addHandler(DB.getPath(node, "inventorylist.*.carried"), "onUpdate", updateArmor);
 	DB.addHandler(DB.getPath(node, "inventorylist.*.hpLost"), "onUpdate", updateArmor);
 	DB.addHandler(DB.getPath(node, "inventorylist.*.properties"), "onUpdate", updateArmor);
-    OptionsManager.registerCallback(PlayerOptionManager.sArmorDamageOptionKey, onArmorDamageOptionChanged);
-    OptionsManager.registerCallback(PlayerOptionManager.sHackmasterStatScaling, updateStatScaling);
-    OptionsManager.registerCallback(PlayerOptionManager.sReactionAdjAffectsInit, updateInitiativeScores);	
-    OptionsManager.registerCallback(PlayerOptionManager.sFatigueOptionKey, onFatigueOptionChanged);
-    DB.addHandler(DB.getPath(node, "fatigue.multiplier"), "onUpdate", updateFatigueFactor);
+	OptionsManager.registerCallback(PlayerOptionManager.sArmorDamageOptionKey, onArmorDamageOptionChanged);
+	OptionsManager.registerCallback(PlayerOptionManager.sHackmasterStatScaling, updateStatScaling);
+	OptionsManager.registerCallback(PlayerOptionManager.sReactionAdjAffectsInit, updateInitiativeScores);	
+	OptionsManager.registerCallback(PlayerOptionManager.sFatigueOptionKey, onFatigueOptionChanged);
+	OptionsManager.registerCallback(PlayerOptionManager.sAddComeliness, onComelinessOptionChanged);
+	OptionsManager.registerCallback(PlayerOptionManager.sEnableHonor, onHonorOptionChanged);
+	DB.addHandler(DB.getPath(node, "fatigue.multiplier"), "onUpdate", updateFatigueFactor);
+	DB.addHandler(DB.getPath(node, "abilities.comeliness.percentbase"),      "onUpdate", updateComeliness);
+	DB.addHandler(DB.getPath(node, "abilities.comeliness.percentbasemod"),   "onUpdate", updateComeliness);
+	DB.addHandler(DB.getPath(node, "abilities.comeliness.percentadjustment"),"onUpdate", updateComeliness);
+	DB.addHandler(DB.getPath(node, "abilities.comeliness.percenttempmod"),   "onUpdate", updateComeliness);
+	DB.addHandler(DB.getPath(node, "abilities.comeliness.base"),       "onUpdate", updateComeliness);
+	DB.addHandler(DB.getPath(node, "abilities.comeliness.basemod"),    "onUpdate", updateComeliness);
+	DB.addHandler(DB.getPath(node, "abilities.comeliness.adjustment"), "onUpdate", updateComeliness);
+	DB.addHandler(DB.getPath(node, "abilities.comeliness.tempmod"),    "onUpdate", updateComeliness);
+    DB.addHandler(DB.getPath(node, "abilities.honor.score"), "onUpdate", updateHonor);
+    DB.addHandler(DB.getPath(node, "classes.*.level"), "onUpdate", updateHonor);
+    updateComeliness(node);
     updateFatigueFactor();
     updateArmor();
     setPlayerOptionControlVisibility();
 end
 
+function onClose()
+	local nodeChar = getDatabaseNode();
+	DB.removeHandler(DB.getPath(nodeChar, "abilities.honor.score"), "onUpdate", updateHonor);
+    DB.removeHandler(DB.getPath(nodeChar, "classes.*.level"), "onUpdate", updateHonor);
+	DB.removeHandler(DB.getPath(nodeChar, "abilities.comeliness.percentbase"),      "onUpdate", updateComeliness);
+	DB.removeHandler(DB.getPath(nodeChar, "abilities.comeliness.percentbasemod"),   "onUpdate", updateComeliness);
+	DB.removeHandler(DB.getPath(nodeChar, "abilities.comeliness.percentadjustment"),"onUpdate", updateComeliness);
+	DB.removeHandler(DB.getPath(nodeChar, "abilities.comeliness.percenttempmod"),   "onUpdate", updateComeliness);
+	DB.removeHandler(DB.getPath(nodeChar, "abilities.comeliness.base"),       "onUpdate", updateComeliness);
+	DB.removeHandler(DB.getPath(nodeChar, "abilities.comeliness.basemod"),    "onUpdate", updateComeliness);
+	DB.removeHandler(DB.getPath(nodeChar, "abilities.comeliness.adjustment"), "onUpdate", updateComeliness);
+	DB.removeHandler(DB.getPath(nodeChar, "abilities.comeliness.tempmod"),    "onUpdate", updateComeliness);
+	DB.removeHandler(DB.getPath(nodeChar, "abilities.honor.score"), "onUpdate", updateHonor);
+	DB.removeHandler(DB.getPath(nodeChar, "fatigue.multiplier"), "onUpdate", updateFatigueFactor);
+	DB.removeHandler(DB.getPath(nodeChar, "inventorylist.*.carried"), "onUpdate", updateArmor);
+	DB.removeHandler(DB.getPath(nodeChar, "inventorylist.*.hpLost"), "onUpdate", updateArmor);
+	DB.removeHandler(DB.getPath(nodeChar, "inventorylist.*.properties"), "onUpdate", updateArmor);
+	OptionsManager.unregisterCallback(PlayerOptionManager.sArmorDamageOptionKey, onArmorDamageOptionChanged);
+	OptionsManager.unregisterCallback(PlayerOptionManager.sHackmasterStatScaling, updateStatScaling);
+  	OptionsManager.unregisterCallback(PlayerOptionManager.sFatigueOptionKey, onFatigueOptionChanged);
+  	OptionsManager.unregisterCallback(PlayerOptionManager.sAddComeliness, onComelinessOptionChanged);
+  	OptionsManager.unregisterCallback(PlayerOptionManager.sEnableHonor, onHonorOptionChanged);
+	super.onClose();  
+end
+
+function updateHonor(node)
+	Debug.console("char_main.lua", "updateHonor");
+  local nodeChar = node.getChild("....");
+  if (nodeChar == nil and node.getPath():match("^charsheet%.id%-%d+$")) then
+    nodeChar = node;
+  end
+  AbilityScorePO.updateHonor(nodeChar);
+end
+
 function setPlayerOptionControlVisibility()
 	local bIsUsingArmorDamage = PlayerOptionManager.isUsingArmorDamage();
 	local bIsUsingFatigue = PlayerOptionManager.isUsingHackmasterFatigue();
+	local bIsComelinessEnabled = PlayerOptionManager.isComelinessEnabled();
+	local bIsHonorEnabled = PlayerOptionManager.isHonorEnabled();
 	setArmorDamageVisibility(bIsUsingArmorDamage);
 	setFatigueVisibility(bIsUsingFatigue);
+	setComelinessVisibility(bIsComelinessEnabled);
+	setHonorVisibility(bIsHonorEnabled);
+
+	local nOffsetAmount = 0;
+	if bIsComelinessEnabled then nOffsetAmount = nOffsetAmount + 36; end
+	if bIsHonorEnabled then nOffsetAmount = nOffsetAmount + 45; end;
+	combattitle.setAnchor("top", "charisma", "bottom", "relative", 15 + nOffsetAmount);		
+	combatanchor.setAnchor("top", "combattitle", "bottom", "relative", 15);
 end
 
 function setArmorDamageVisibility(bShow)
@@ -47,25 +104,58 @@ function setFatigueVisibility(bShow)
 	remove_fatigue_button.setVisible(bShow);
 end
 
-function update()
-	super.update();
-	local nodeRecord = getDatabaseNode();
-	DB.removeHandler(DB.getPath(nodeRecord, "inventorylist.*.carried"), "onUpdate", updateArmor);
-	DB.removeHandler(DB.getPath(nodeRecord, "inventorylist.*.hpLost"), "onUpdate", updateArmor);
-	DB.removeHandler(DB.getPath(nodeRecord, "inventorylist.*.properties"), "onUpdate", updateArmor);
-	OptionsManager.unregisterCallback(PlayerOptionManager.sArmorDamageOptionKey, onArmorDamageOptionChanged);
-	OptionsManager.unregisterCallback(PlayerOptionManager.sHackmasterStatScaling, updateStatScaling);
-  	DB.removeHandler(DB.getPath(nodeRecord, "fatigue.multiplier"), "onUpdate", updateFatigueFactor);
-  	OptionsManager.unregisterCallback(PlayerOptionManager.sFatigueOptionKey, onFatigueOptionChanged);
+function setComelinessVisibility(bShow)
+	comeliness.setVisible(bShow);
+	com_label.setVisible(bShow);
+	com_label_actual.setVisible(bShow);
+	comdetailframe.setVisible(bShow);
+	comeliness_percent.setVisible(bShow);
+	com_percent_label.setVisible(bShow);
+	comeliness_effects.setVisible(bShow);
+	comeliness_effects_label.setVisible(bShow);
+end
+
+function setHonorVisibility(bShow)
+	honor.setVisible(bShow);
+	hon_label.setVisible(bShow);
+	honor_label_actual.setVisible(bShow);
+	hondetailframe.setVisible(bShow);
+	honor_temp.setVisible(bShow);
+	hon_temp_label.setVisible(bShow);
+	honor_dice.setVisible(bShow);
+	honor_dice_label.setVisible(bShow);
+	honor_window.setVisible(bShow);
+	honor_window_label.setVisible(bShow);
 end
 
 function updateAbilityScores(node)
 	super.updateAbilityScores(node);
+
 	FatigueManagerPO.updateFatigueFactor(node);
+end
+
+function updateComeliness(node)
+  local nodeChar = node.getChild("....");
+  -- onInit doesn't have the same path for node, so we check here so first time
+  -- load works.
+  if (nodeChar == nil and node.getPath():match("^charsheet%.id%-%d+$")) then
+    nodeChar = node;
+  end
+	local dbAbility = AbilityScorePO.updateComeliness(nodeChar);
+	-- set tooltip for this because it's just to big for the abilities pane
+	comeliness_effects.setTooltipText(dbAbility.effects_TT);
 end
 
 function onFatigueOptionChanged()
 	updateAbilityScores(getDatabaseNode());
+	setPlayerOptionControlVisibility();
+end
+
+function onComelinessOptionChanged()
+	setPlayerOptionControlVisibility();
+end
+
+function onHonorOptionChanged()
 	setPlayerOptionControlVisibility();
 end
 

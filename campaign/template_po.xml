@@ -12,6 +12,14 @@
     </number_armor_damage>
   </template>
 
+  <template name="number_input_abilityfield">
+      <number>
+        <frame name="abilityscore_box" offset="3,3,3,3" />
+        <anchored position="right" offset="0,0" width="40" height="25"/>
+           <center />
+        <font>regular11</font>
+      </number>
+  </template>
 
   <template name="number_fatigue_charsheet">
     <number_fatigue>
@@ -80,6 +88,25 @@
       </stateframe>
       <tooltip textres="char_initdelay_tooltip" />
     </buttoncontrol>
+  </template>
+
+  <template name="honor_number_base">
+    <basicnumber>
+      <anchored width="30" height="20">
+        <top  />
+        <left anchor="right" relation="relative" offset="10" />
+      </anchored>
+      <frame name="fielddark" offset="7,5,7,5" />
+      <stateframe>
+        <hover name="rowshade" offset="7,5,7,5" />
+      </stateframe>
+      <cursor hover="hand" />
+      <font>bold12</font>
+      <default>9</default>
+      <hideonvalue>0</hideonvalue>
+      <min>0</min>
+      <max>999</max>
+    </basicnumber>
   </template>
   
 </root>

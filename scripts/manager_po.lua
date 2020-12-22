@@ -14,6 +14,8 @@ sHackmasterAttackMatrixOptionKey = "HouseRule_HackmasterAttackMatrix";
 sFatigueOptionKey = "HouseRule_HackmasterFatigueOption";
 sRingBellOnRoundStartOptionKey = "AdditionalAutomation_RingBellOnRoundStart";
 sPhasedInitiativeOptionKey = "PlayersOption_PhasedInitiative";
+sAddComeliness = "HouseRule_Comeliness";
+sEnableHonor = "HouseRule_HackmasterHonor";
 
 function onInit()
     registerOptions();
@@ -56,6 +58,18 @@ function registerOptions()
 
     OptionsManager.registerOption2(sFatigueOptionKey, false, "option_header_house_rule", "option_label_hackmaster_fatigue", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
+    OptionsManager.registerOption2(sAddComeliness, false, "option_header_house_rule", "option_label_comeliness", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
+
+    OptionsManager.registerOption2(sEnableHonor, false, "option_header_house_rule", "option_label_honor", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
+
+end
+
+function isHonorEnabled()
+	return OptionsManager.isOption(sEnableHonor, "on");
+end
+
+function isComelinessEnabled()
+	return OptionsManager.isOption(sAddComeliness, "on");
 end
 
 function isUsingPhasedInitiative()

@@ -31,6 +31,8 @@
     <string name="option_val_hm_fumbles">HM Fumbles</string>
     <string name="option_val_ct_fumbles">Sterno Fumbles</string>
     <string name="option_label_hackmaster_fatigue">Hackmaster Fatigue Rules</string>
+    <string name="option_label_comeliness">Enable Comeliness</string>
+    <string name="option_label_honor">Enable Honor</string>
 
     <!-- New Properties -->
     <string name="item_label_hp_lost">HP Lost</string>
@@ -62,4 +64,22 @@
     <string name="char_tooltip_current_ac_loss">Points of AC lost due to armor damage</string>
     <string name="char_tooltip_fatigue_strength_penalty">Strength Penalty due to Fatigue</string>
     <string name="char_tooltip_fatigue_dexterity_penalty">Dexterity Penalty due to Fatigue</string>
+
+    <string name="COM">COM</string>
+    <string name="com">Com</string>
+    <string name="comeliness">Comeliness</string>
+    <string name="char_tooltip_comeliness">Comeliness of the character.</string>
+    <string name="char_label_comeliness_effects">Effects</string>
+    <string name="char_tooltip_comeliness_effects">How others view the character</string>
+
+    <string name="HON">HON</string>
+    <string name="hon">Hon</string>
+    <string name="honor">Honor</string>
+    <string name="char_label_honor_dice">Honor Dice</string>
+    <string name="char_tooltip_honor_dice">The die type you roll for your honor die</string>
+
+    <string name="char_label_honor_dice">Honor Dice</string>
+    <string name="char_tooltip_honor_dice">The die type you roll for your honor die</string>
+    <string name="char_label_honor_window">Honor Window</string>
+    <string name="char_tooltip_honor_window">Great Honor gives +1 to every die rolled, 5% bonus XP, a 10% cost reduction on training, and one mulligan per session. Dishonor gives -1 to every die rolled, a 10% XP penalty, and a 10% cost increase on training.</string>
 </root>

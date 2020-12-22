@@ -10,6 +10,103 @@
 	  	<script file="campaign/scripts/char_main.lua" />
 	  	<sheetdata>
 
+	  <!-- Ability COM -->
+      <number_charabilityscore2 name="comeliness" source="abilities.comeliness.score" insertafter="charisma_reaction">
+        <tooltip textres="char_tooltip_comeliness" />
+        <anchored to="charisma" position="below" offset="0,5" height="36"/>
+        <target>comeliness</target>
+      </number_charabilityscore2>
+       <label_abilityscore name="com_label">
+        <anchored to="comeliness" />
+        <static textres="COM" />
+      </label_abilityscore>
+      <label_abilityscore_actual name="com_label_actual">
+        <anchored to="comeliness"/>
+        <target>comeliness</target>
+      </label_abilityscore_actual>
+      
+      <ability_fields_container name="comdetailframe">
+        <anchored to="comeliness" />
+      </ability_fields_container>      
+
+      <percentile_abilityfield name="comeliness_percent" source="abilities.comeliness.percent" insertafter="comdetailframe">
+        <center />
+        <min> 0 </min>
+        <max> 100 </max>
+        <anchored to="comdetailframe" position="insidetopleft" offset="5,6"/>
+        <labelres>char_label_ability_percent</labelres>
+        <tooltip textres="char_tooltip_percentile" />
+      </percentile_abilityfield>
+       <label_ability_fields name="com_percent_label">
+        <anchored to="comeliness_percent" />
+         <tooltip textres="char_tooltip_percentile" />
+        <static textres="char_label_ability_percent" />
+      </label_ability_fields>
+	  
+	  <string_abilityfield name="comeliness_effects" source="abilities.comeliness.effects" insertafter="comeliness_percent">
+        <anchored to="comeliness_percent" width="240"/>
+        <tooltip textres="char_tooltip_comeliness_effects" />
+        <labelres>char_label_comeliness_effects</labelres>
+      </string_abilityfield>
+       <label_ability_fields name="comeliness_effects_label">
+        <anchored to="comeliness_effects" />
+           <tooltip textres="char_tooltip_comeliness_effects" />
+        <static textres="char_label_comeliness_effects" />
+      </label_ability_fields>
+
+       <!-- Honor -->
+	  <number_charabilityscore2 name="honor" source="abilities.honor.score">
+        <tooltip textres="char_tooltip_honor" />
+        <anchored to="comeliness" position="below" offset="0,5" height="36"/>
+        <target>honor</target>
+      </number_charabilityscore2>
+       <label_abilityscore name="hon_label">
+        <anchored to="honor" />
+        <static textres="HON" />
+      </label_abilityscore>
+        <label_abilityscore_actual name="honor_label_actual">
+          <anchored to="honor"/>
+          <target>honor</target>
+        </label_abilityscore_actual>
+      
+      <ability_fields_container name="hondetailframe">
+        <anchored to="honor" />
+      </ability_fields_container>      
+
+      <number_input_abilityfield name="honor_temp" source="abilities.honor.temp">
+        <center />
+        <anchored to="hondetailframe" position="insidetopleft" offset="5,6"/>
+        <labelres>char_label_ability_honor_temporary</labelres>
+        <tooltip textres="char_tooltip_honor_temporary" />
+      </number_input_abilityfield>
+       <label_ability_fields name="hon_temp_label">
+        <anchored to="honor_temp" />
+         <tooltip textres="char_tooltip_honor_temporary" />
+        <static textres="char_label_ability_honor_temporary" />
+      </label_ability_fields>
+	  
+	  <string_abilityfield name="honor_dice" source="abilities.honor.honorDice">
+        <anchored to="honor_temp" width="115"/>
+        <tooltip textres="char_tooltip_honor_dice" />
+        <labelres>char_label_honor_dice</labelres>
+      </string_abilityfield>
+       <label_ability_fields name="honor_dice_label">
+        <anchored to="honor_dice" />
+           <tooltip textres="char_tooltip_honor_dice" />
+        <static textres="char_label_honor_dice" />
+      </label_ability_fields>
+	  
+	  <string_abilityfield name="honor_window" source="abilities.honor.honorWindow">
+        <anchored to="honor_dice" width="115"/>
+        <tooltip textres="char_tooltip_honor_window" />
+        <labelres>char_label_honor_window</labelres>
+      </string_abilityfield>
+       <label_ability_fields name="honor_window_label">
+        <anchored to="honor_window" />
+           <tooltip textres="char_tooltip_honor_window" />
+        <static textres="char_label_honor_window" />
+      </label_ability_fields>
+	  
 	      <buttoncontrol name="remove_fatigue_button" insertafter="specialdef">
 		    <anchored to="contentanchor" width="20" height="30">
 			  <top parent="combatanchor" anchor="bottom" relation="relative" offset="20" />
@@ -196,6 +293,121 @@
 			<font>regular20</font>
 	      </label>  
 
+		</sheetdata>
+	</windowclass>
+
+	<windowclass name="charsheet_abilities_details" merge="join">
+		<placement>
+	  		<size width="400" height="525" />
+		</placement>
+		<sheetdata>
+			<!-- comeliness -->
+			<!-- comeliness  base -->
+			<label_ability_details_stat name="comeliness_label" insertafter="charisma_percent_total">
+				<anchored>
+				  <top offset="305" />
+				  <left offset="30" />
+				</anchored>
+				<static textres="comeliness" />
+			</label_ability_details_stat>
+
+			<ability_number_base name="comeliness_base" source="abilities.comeliness.base">
+			    <tooltip textres="charsheet_abilities_base_tooltip" />
+				<anchored to="comeliness_label" />
+			</ability_number_base>
+
+			<!-- comeliness  basemod -->
+			<ability_number_base name="comeliness_base_mod" source="abilities.comeliness.basemod">
+			    <tooltip textres="charsheet_abilities_basemod_tooltip" />
+			    <gmeditonly />
+			    <default>0</default>
+				<anchored to="comeliness_label" />
+			</ability_number_base>
+
+			<!-- comeliness  mods -->
+			<label_plus>
+			    <anchored to="comeliness_label"/>
+			</label_plus>
+			<ability_number_mod name="comeliness_mod" source="abilities.comeliness.adjustment">
+			    <tooltip textres="charsheet_abilities_adjustment_tooltip" />
+				<anchored to="comeliness_label" />
+			</ability_number_mod>
+
+			<!-- comeliness  temp mods -->
+			<label_plus>
+			    <anchored to="comeliness_label"/>
+			</label_plus>
+			<ability_number_mod name="comeliness_temp" source="abilities.comeliness.tempmod">
+			    <tooltip textres="charsheet_abilities_tempmod_tooltip" />
+				<anchored to="comeliness_label" />
+			</ability_number_mod>
+
+			<!-- comeliness  total -->
+			<ability_details_total name="comeliness_total" source="abilities.comeliness.score">
+				<target>comeliness</target>
+			    <anchored to="comeliness_label"/>
+			</ability_details_total>
+
+			<!-- comeliness percent base -->
+			<label_ability_details name="comeliness_percent_label">
+				<anchored >
+					<top  offset="330" />
+					<left offset="30" />
+				</anchored>
+			<static textres="char_label_ability_details_percent_com" />
+			</label_ability_details>
+
+			<ability_percent_number_base name="comeliness_percent_base" source="abilities.comeliness.percentbase">
+			    <tooltip textres="charsheet_abilities_base_tooltip" />
+				<anchored to="comeliness_percent_label" />
+			</ability_percent_number_base>
+
+			<!-- comeliness percent basemod -->
+			<ability_percent_number_base name="comeliness_percent_base_mod" source="abilities.comeliness.percentbasemod">
+			    <tooltip textres="charsheet_abilities_basemod_tooltip" />
+			    <gmeditonly />
+			    <default>0</default>
+				<anchored to="comeliness_percent_label" />
+			</ability_percent_number_base>
+
+			<!-- comeliness percent mods -->
+			<label_plus>
+			    <anchored to="comeliness_percent_label"/>
+			</label_plus>
+			<ability_number_mod name="comeliness_percent_mod" source="abilities.comeliness.percentadjustment">
+			    <tooltip textres="charsheet_abilities_adjustment_tooltip" />
+				<anchored to="comeliness_percent_label" />
+			</ability_number_mod>
+
+			<!-- comeliness percent temp mods -->
+			<label_plus>
+			    <anchored to="comeliness_percent_label"/>
+			</label_plus>
+			<ability_number_mod name="comeliness_percent_temp" source="abilities.comeliness.percenttempmod">
+			    <tooltip textres="charsheet_abilities_tempmod_tooltip" />
+				<anchored to="comeliness_percent_label" />
+			</ability_number_mod>
+
+			<!-- comeliness percent total -->
+			<ability_details_percent_total name="comeliness_percent_total" source="abilities.comeliness.percent">
+				<target>comeliness</target>
+			    <anchored to="comeliness_percent_label"/>
+			</ability_details_percent_total>
+
+			<!-- honor -->
+			<!-- honor  base -->
+			<label_ability_details_stat name="honor_label">
+				<anchored>
+				  <top offset="355" />
+				  <left offset="30" />
+				</anchored>
+				<static textres="honor" />
+			</label_ability_details_stat>
+
+			<honor_number_base name="honor_total" source="abilities.honor.score">
+			    <tooltip textres="charsheet_abilities_base_tooltip" />
+				<anchored to="honor_label" />
+			</honor_number_base>
 		</sheetdata>
 	</windowclass>
 
