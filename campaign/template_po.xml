@@ -7,6 +7,20 @@
 
 <root>
 
+  <template name="number_honor">
+    <basicnumber>
+      <anchored to="statstitle" position="insidetopleft"/> 
+      <rollable />
+      <readonly />
+      <min>1</min>
+      <max>25</max>
+      <default>9</default>
+      <font>bold20</font>
+      <frame name="abilityscore_box" />
+      <script file="campaign/scripts/number_honor.lua" />
+    </basicnumber>
+  </template>
+
   <template name="number_armor_damage_charsheet">
     <number_armor_damage>
     </number_armor_damage>

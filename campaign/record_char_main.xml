@@ -55,11 +55,11 @@
       </label_ability_fields>
 
        <!-- Honor -->
-	  <number_charabilityscore2 name="honor" source="abilities.honor.score">
+	  <number_honor name="honor" source="abilities.honor.score">
         <tooltip textres="char_tooltip_honor" />
         <anchored to="comeliness" position="below" offset="0,5" height="36"/>
         <target>honor</target>
-      </number_charabilityscore2>
+      </number_honor>
        <label_abilityscore name="hon_label">
         <anchored to="honor" />
         <static textres="HON" />

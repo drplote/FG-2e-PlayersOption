@@ -54,7 +54,6 @@ function onClose()
 end
 
 function updateHonor(node)
-	Debug.console("char_main.lua", "updateHonor");
   local nodeChar = node.getChild("....");
   if (nodeChar == nil and node.getPath():match("^charsheet%.id%-%d+$")) then
     nodeChar = node;
