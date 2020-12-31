@@ -61,9 +61,13 @@ Finally, remember that a given side rolling a 1 or 10 affects the final determin
 
 #### Dropping one initiative phase
 
-When hitting the "Next Actor" button (the down arrow near the bottom of the combat tracker), the DM can hold down alt, shift, or control while clicking it to drop the current actor's initiative by one phase and then moving on to the next actor (or staying on the current actor, if that would still make them next). This is needed because in the Player's Option initiative system, there are a number of cases where your initiative might drop by one phase mid-round. For example, if a character is moving, they begin moving on their normal initiative, can move up to half their movement, and then can finish their movement on the following initiative phase. Likewise, if they're going to move and attack, they'd move on their normal initiative phase and attack one phase later. Multiple attacks are meant to occur on subsequent phases, so a character with three attacks might get his first attack on "fast", his second on "average", and final attack on "slow".
+DMs can hit the "delay" button on the comgbat tracker to drop the current actor's initiative by one phase and then moving on to the next actor (or staying on the current actor, if that would still make them next). This is needed because in the Player's Option initiative system, there are a number of cases where your initiative might drop by one phase mid-round. For example, if a character is moving, they begin moving on their normal initiative, can move up to half their movement, and then can finish their movement on the following initiative phase. Likewise, if they're going to move and attack, they'd move on their normal initiative phase and attack one phase later. Multiple attacks are meant to occur on subsequent phases, so a character with three attacks might get his first attack on "fast", his second on "average", and final attack on "slow".
 
 This can also be useful if a character states they're delaying their action. Just delay them a phase, move on, and when you get to them again ask if they want to go yet.
+
+Players can accomplish this same effect by hitting the "delay" button at the top of their action tab.
+
+
 
 #### How this works behind the scenes in Fantasy Grounds
 
@@ -128,6 +132,10 @@ Normally when a new round starts, players get a random initiative roll, which th
 
 Fantasy Grounds already has an option to ping a character when it is his or her turn, but enabling this option pings everyone as soon as a new round begins. This gives them an audible indicator that a new round has started and that they should roll for initiative.
 
+### New Effects
+
+**DMGDX**: This is similar to the ruleset's "DMGX" effect, except instead of multiplying the final damage result, it multiplies the number of damage dice rolled. For example, a 1d6+2 damage attack with "DMGX:2" would effectively result in (1d6+2)*2, whereas DMGDX:2 would effectively result in 2d6+2.
+
 ## Hackmaster-style House Rules
 
 Originally, I set out to write a ruleset for Hackmaster 4e. After doing a lot of work on it, I decided I didnt really want to play Hackmaster 4e. I wanted to play AD&D 2e with just a few of the HM4 rules cherry-picked from it. Here they are!
@@ -189,6 +197,8 @@ Example #2: Joe the fighter has adventured more and found a +3 suit of Leather A
 
 Example #3: The 10th level magic-user in Joe's party lets loose with a fireball a little too close to Joe in his undamaged +3 Leather Armor, and Joe is caught in the blast. The magic user's fireball does 10d6 damage, totally 31 points. Despite being magical, Joe's armor takes damage from this! It's hp regression is 2,2,2,2,1. Despite 10 damage dice being rolled, the armor can only soak 9 points of the damage before it is destroyed. Joe's leather armor is destroyed, Joe takes 22 damage to his hit points, and is now very pissed at the mage.
 
+A new UI section appears at the bottom of a character's "Main" when this option is enabled which shows their current armor and shield, as well as how much damage those have taken and how many levels of AC they've lost due to damage.
+
 ### Shield Hits & Damage 
 Hackmaster 4th edition had the concept of shield hits and shield damage. The damage portion worked somewhat similar to the armor damage house rule, except that instead of soaking 1 point of damage per die, shields soak full damage. However, this only comes into play when a shield hit occurs. A shield hit occurs whenever a player is only missed because of their AC bonus from a shield. If so, the attacker rolls damage normally, but all the damage is first applied to the shield directly. If the shield is destroyed, any remaining damage is applied to the player.
 
@@ -208,7 +218,7 @@ This option applies the Dexterity Reaction Adjustment value to any rolled initia
 
 ### Threshold of Pain
 
-Automates the Hackmaster threshold of pain check, which occurs when someone has taken half of their maximum hit points of damage in a single hit. Automatically rolls a saving throw vs death (with Magical Defense Adjustment from Wisdom) and applies unconsciousness for a duration in rounds equal to the amount you fail the roll by. Currently kind of annoying since you could be knocking skeletons and other things out that TOP shouldn't apply to, so a future plan is to add in another option which does the roll but doesn't apply unconsciousness (you can do it manually), and also create a way to specify that a character or NPC should be immune to TOP checks.
+Automates the Hackmaster threshold of pain check, which occurs when someone has taken half of their maximum hit points of damage in a single hit. Automatically rolls a saving throw vs death (with Magical Defense Adjustment from Wisdom) and applies Stunned for a duration in rounds equal to the amount you fail the roll by. Currently kind of annoying since you could be knocking skeletons and other things out that TOP shouldn't apply to, so a future plan is to add in another option which does the roll but doesn't apply unconsciousness (you can do it manually), and also create a way to specify that a character or NPC should be immune to TOP checks.
 
 ### Use Fumble Tables
 
@@ -235,3 +245,13 @@ It should go without saying this is all automated, by the way, because who the h
 Monsters are a little different. Because stats aren't as relevant for monsters are most just have 10 across the board in the Monstrous Manual records, the fatigue effect for monsters is -1 ATK and -1 AC instead of -1 STR and -1 DEX. This is different than Hackmaster, which says every time a monster would need a fatigue check, do a morale check instead to have them run away. I say, do both! Also note that monsters make their fatigue checks a little differently, as per HM rules. Instead of trying to roll under the average of Con + Wis, they try to roll under their morale score. If there is no morale score (or it's some gibberish I can't parse), it defaults to average of Con + Wis just like players, which is usually going to mean 9 or 10, since that's what most monsters have in their stats by default.
 
 Also note that Fatigue Factor for a monsters is a little different. Player's used half their Con, modified by encumbrance. This wouldn't work for most monsters. Hackmaster had a supplemental book, the Hacklopedia Monster Matrix, which had fatigue factors for every single monster. I might eventually input all those, but for now, they just use 6. That's a tiny bit better than the average player, and eyeballing the values in the Monster Matrix, not bad as an overall average value. Obviously, though, a dragon might have more fatigue than a goblin. I'd like to eventually get something in there for this, but for now, if you really want a monster to be big and tough and not worry about fatigue, just give it a high morale and it'll never fail it's fatigue checks.
+
+When this option is enabled, a fatigue control that displays a character's current fatigue as well as allowing them to edit it appears at the bottom of the character's "Main" tab. They can also edit their "Fatigue Factor Multiplier" if they have a talent or something that would affect that by clicking on the gear icon down in that section and editing the value there.
+
+### Enable Comeliness
+
+This adds the Hackmaster attribute "Comeliness" to PC character sheets (though I didn't bother adding it to NPCs). It's basically just a place to record that stat... it has no mechanical effect on anything else.
+
+### Enable Honor
+
+Hackmaster has the concept of "Honor" where you've got an honor score, and depending on what your score is relative to your level, you're either in Dishonor, Average Honor, or Great Honor. Average Honor has no mechanical effect. Dishonor and Great Honor both automatically affect any dice rolls the player makes dealing with damage, attacks, initiative, healing, and saving throws. Great Honor gives a +1 per die rolled, while Dishonor gives a -1 per die rolled.
