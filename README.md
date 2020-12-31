@@ -4,6 +4,10 @@ Extends the Fantasy Grounds 2e ruleset to support some of the rules from the "Pl
 
 All rules are toggleable via Preferences, so you can pick and choose which of these you want. They are split up in preferences under different headers. Note that in some cases (such as with critical hits), enabling these options might ignore other options you have selected from base 2E ruleset preferences.
 
+## Installation	
+
+This is no different than any other Fantasy Grounds extension. You basically just need to download this repository, place it all in a .zip file, rename the .zip file to ".ext", and drop it in your Fantasy Grounds extensions folder.
+
 ## A note on customization
 
 If you know your way around unpacking and repacking extensions, take a look at scripts/"data_common_po.lua". I tried to pull all hardcoded data (such as default race sizes, weapon types, crit tables, etc) there. 
