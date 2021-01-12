@@ -48,7 +48,9 @@ end
 
 function getHonorProperties(nodeChar)
     local nScore = DB.getValue(nodeChar, "abilities.honor.score", 0);
-    local nSaneLevel = levelSanityCheck(CharManager.getActiveClassMaxLevel(nodeChar));
+    local nMaxActiveClassLevel = CharManager.getAbsoluteClassMaxLevel(nodeChar);
+    local nActiveClasses = CharManager.getClassCount(nodeChar);
+    local nSaneLevel = levelSanityCheck(nMaxActiveClassLevel + nActiveClasses - 1);
     local nChartIndex = math.ceil(honorSanityCheck(nScore) / 5);
     local nHonorState = 0;
     

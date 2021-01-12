@@ -1314,11 +1314,13 @@ end
 
 function initializeDefaultCreatureTypes()
 	aDefaultCreatureTypesByName = {
-		["skeleton"] = "humanoid"
 	};
 
 	aDefaultCreatureTypesByType = {
-		["giant"] = "humanoid"
+		["giant"] = "humanoid",
+    ["golem"] = "humanoid",
+    ["dinosaur"] = "animal",
+    ["undead"] = "humanoid"
 	};
 end
 

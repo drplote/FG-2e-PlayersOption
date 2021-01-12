@@ -63,7 +63,7 @@ function parseSizeString(sSizeRaw)
 		return 1;
 	elseif sSize:find("small") then
 		return 2;
-	elseif sSize:find("medium") then
+	elseif sSize:find("medium") or sSize:find("man-sized") then
 		return 3;
 	elseif sSize:find("large") then
 		return 4;
