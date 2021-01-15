@@ -47,6 +47,8 @@ function getTHACOOverride(rActor)
   -- get pc thaco value
   if ActorManager.isPC(nodeActor) then
     nTHACO = DB.getValue(nodeActor, "combat.thaco.score", 20);
+  elseif ActorManagerPO.shouldUseThaco(nodeActor) then
+    nTHACO = DB.getValue(nodeActor, "thaco", 20);
   else
   -- npc thaco calcs
     

@@ -6,6 +6,13 @@ function getNode(rChar)
     return nodeChar;
 end
 
+function shouldUseThaco(nodeActor)
+  local sSpecialAttacks = DB.getValue(nodeActor, "specialAttacks", "");
+  if sSpecialAttacks:find("USETHACO") or sSpecialAttacks:find("USETHAC0") then
+    return true;
+  end
+end
+
 function getSaveScore(nodeActor, sSave)
 	return DB.getValue(nodeActor, "saves." .. sSave .. ".score", 20);
 end
