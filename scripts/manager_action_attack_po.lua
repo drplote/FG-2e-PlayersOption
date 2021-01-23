@@ -154,6 +154,8 @@ function onAttackOverride(rSource, rTarget, rRoll)
       FatigueManagerPO.recordAttack(rSource, rRoll.range);
   end
 
+  Debug.console("onAttackOverride rSource", rSource);
+
   if rSource and not rSource.weaponPath then
     rSource.weaponPath = rRoll.weaponPath;
   end

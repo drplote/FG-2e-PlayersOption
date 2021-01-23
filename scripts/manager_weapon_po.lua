@@ -1,4 +1,18 @@
+local fBuildAttackAction;
+
 function onInit()
+    fBuildAttackAction = WeaponManagerADND.buildAttackAction;
+    WeaponManagerADND.buildAttackAction = buildAttackActionOverride;
+end
+
+function buildAttackActionOverride(rActor, nodeWeapon)
+    local rAction = fBuildAttackAction(rActor, nodeWeapon);
+
+    rAction.weaponPath = nodeWeapon.getPath();
+    local aDamageTypes = getDamageTypes(nodeWeapon);
+    rAction.aDamageTypes = encodeDamageTypes(aDamageTypes);
+
+    return rAction;
 end
 
 function getSizeCategory(nodeWeapon, nodeAttacker, canReturnDefault)
