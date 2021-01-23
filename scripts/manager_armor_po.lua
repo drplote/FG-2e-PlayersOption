@@ -213,7 +213,7 @@ end
 
 function getHitModifierForDamageTypesVsArmor(nodeArmor, aDamageTypes)
     -- For a given piece of armor and damage types coming at it, we use the modifier of the damage type it's worst defending against
-    local sArmorName = getName(nodeArmor):lower();
+    local sArmorName = ItemManagerPO.getItemNameForPlayer(nodeArmor);
     local nHighestMod = nil;
     local sHighestDamageType = nil;
 	local aModifiers = getDamageTypeVsArmorModifiers(nodeArmor);
