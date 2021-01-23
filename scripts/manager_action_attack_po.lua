@@ -154,8 +154,6 @@ function onAttackOverride(rSource, rTarget, rRoll)
       FatigueManagerPO.recordAttack(rSource, rRoll.range);
   end
 
-  Debug.console("onAttackOverride rSource", rSource);
-
   if rSource and not rSource.weaponPath then
     rSource.weaponPath = rRoll.weaponPath;
   end
@@ -276,7 +274,7 @@ function onAttackOverride(rSource, rTarget, rRoll)
     rAction.sResult = "crit";
   	if PlayerOptionManager.isPOCritEnabled() then
   		  rCrit = CritManagerPO.handleCrit(rSource, rTarget);
-        if PlayerOptionManager.isGenerateHitLocationsEnabled() then
+        if rCrit and PlayerOptionManager.isGenerateHitLocationsEnabled() then
           addHitLocationToAction(rAction, rCrit.sHitLocation);
         end
   	else

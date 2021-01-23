@@ -71,14 +71,28 @@ function getWeaponInfo(rSource)
 	return rWeaponInfo;
 end
 
+function getCritSizeBonus(rSource, rTarget)
+	local nModBonus = EffectManager5E.getEffectsBonus(rSource, {"CRITSIZE"}, true, {}, rTarget);
+	return nModBonus;
+end
+
+function getCritSeverityBonus(rSource, rTarget)
+	local nModBonus = EffectManager5E.getEffectsBonus(rSource, {"CRITSEVERITY"}, true, {}, rTarget);
+	return nModBonus;
+end
+
 function handleCrit(rSource, rTarget)
 	if rSource and rTarget then
+		if EffectManagerPO.hasImmunity(rSource, rTarget, "critical") then
+			Debug.console("Target was crit immune, so crit ignored");
+			return nil;
+		end
 		local rWeaponInfo = getWeaponInfo(rSource);
 		local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
 		local _, nodeDefender = ActorManager.getTypeAndNode(rTarget);
 		local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender);
-		local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender, rWeaponInfo);
-		local nSeverity = getSeverityDieRoll(nSizeDifference);
+		local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender, rWeaponInfo) + getCritSizeBonus(rSource, rTarget);
+		local nSeverity = getSeverityDieRoll(nSizeDifference) + getCritSeverityBonus(rSource, rTarget);
 		local rCrit = getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity);
 		StateManagerPO.setCritState(rSource, rTarget, rCrit.dmgMultiplier);
 		Debug.console("Crit with weapon: ", rWeaponInfo, "hit location:", rHitLocation, "size difference", nSizeDifference, "severity", nSeverity);
@@ -147,7 +161,9 @@ function getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity)
 		rCrit = {};
 		rCrit.error = true;
 	else
-		rCrit = DataCommonPO.aCritCharts[sDefenderType][sDamageType][rHitLocation.locationCategory][nSeverity];		
+		local nSeverityIndex = nSeverity;
+		if nSeverityIndex > 13 then nSeverityIndex = 13; end
+		rCrit = DataCommonPO.aCritCharts[sDefenderType][sDamageType][rHitLocation.locationCategory][nSeverityIndex];		
 	end
 	
 	rCrit.sDefenderType = sDefenderType;
