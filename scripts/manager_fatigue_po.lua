@@ -102,11 +102,13 @@ function updateFatigueFactor(nodeChar)
 end
 
 function increaseFatigue(nodeChar)
-	local nCurrentFatigue = getCurrentFatigue(nodeChar);
-	local nNewFatigue = nCurrentFatigue + 1;
-	setCurrentFatigue(nodeChar, nNewFatigue);
-	if nNewFatigue > getFatigueFactor(nodeChar) then
-		checkForFatiguePenalty(nodeChar);	
+	if ActorManagerPO.canBeAffectedByFatigue(nodeChar) then
+		local nCurrentFatigue = getCurrentFatigue(nodeChar);
+		local nNewFatigue = nCurrentFatigue + 1;
+		setCurrentFatigue(nodeChar, nNewFatigue);
+		if nNewFatigue > getFatigueFactor(nodeChar) then
+			checkForFatiguePenalty(nodeChar);	
+		end
 	end
 end
 

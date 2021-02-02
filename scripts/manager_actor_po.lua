@@ -379,6 +379,17 @@ function getName(nodeActor)
   return ActorManager.getDisplayName(nodeActor);
 end
 
+function canBeAffectedByFatigue(nodeActor)
+  if not nodeActor then return false; end
+
+  local sType = DB.getValue(nodeActor, "type", ""):lower();
+  if sType:find("undead") then
+    return false;
+  end
+
+  return true;
+end
+
 function canBeAffectedByThresholdOfPain(rActor)
   if not rActor then return false; end
 

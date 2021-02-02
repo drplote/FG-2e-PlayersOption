@@ -19,6 +19,7 @@ aComeliness = {};
 aHonorDice = {};
 aHonorThresholdsByLevel = {};
 
+
 function onInit()
   
   initializeDefaultArmorVsDamageTypeModifiers();
@@ -474,43 +475,44 @@ end
 
 function initializeHitLocations()
 	aHitLocations["humanoid"] = {
-		[1]  = {desc="right leg", locationCategory=1},
-		[2]  = {desc="right leg", locationCategory=1},
-		[3]  = {desc="left leg", locationCategory=1},
-		[4]  = {desc="left leg", locationCategory=1},
-		[5]  = {desc="abdomen", locationCategory=2},
-		[6]  = {desc="torso", locationCategory=3},
-		[7]  = {desc="torso", locationCategory=3},
-		[8]  = {desc="right arm", locationCategory=4},
-		[9]  = {desc="left arm", locationCategory=4},
-		[10] = {desc="head", locationCategory=5}
+		[1]  = {desc="right leg", categoryNames={"leg"}, locationCategory=1},
+		[2]  = {desc="right leg", categoryNames={"leg"}, locationCategory=1},
+		[3]  = {desc="left leg", categoryNames={"leg"}, locationCategory=1},
+		[4]  = {desc="left leg", categoryNames={"leg"}, locationCategory=1},
+		[5]  = {desc="abdomen", categoryNames={"abdomen", "groin"}, locationCategory=2},
+		[6]  = {desc="torso", categoryNames={"torso", "chest"}, locationCategory=3},
+		[7]  = {desc="torso", categoryNames={"torso", "chest"}, locationCategory=3},
+		[8]  = {desc="right arm", categoryNames={"arm", "hand"}, locationCategory=4},
+		[9]  = {desc="left arm", categoryNames={"arm", "hand"}, locationCategory=4},
+		[10] = {desc="head", categoryNames={"head", "eye", "neck"}, locationCategory=5}
 	};
 	
 	aHitLocations["animal"] = {
-		[1]  = {desc="right foreleg/wing", locationCategory=1},
-		[2]  = {desc="left foreleg/wing", locationCategory=1},
-		[3]  = {desc="right hind leg", locationCategory=1},
-		[4]  = {desc="left hind leg", locationCategory=1},
-		[5]  = {desc="tail", locationCategory=2},
-		[6]  = {desc="abdomen", locationCategory=3},
-		[7]  = {desc="abdomen", locationCategory=3},
-		[8]  = {desc="torso", locationCategory=4},
-		[9]  = {desc="torso", locationCategory=4},
-		[10] = {desc="head", locationCategory=5}
+		[1]  = {desc="right foreleg/wing", categoryNames={"leg", "arm", "hand", "wing", "claw"}, locationCategory=1},
+		[2]  = {desc="left foreleg/wing", categoryNames={"leg", "arm", "hand", "wing", "claw"}, locationCategory=1},
+		[3]  = {desc="right hind leg", categoryNames={"leg", "arm", "hand", "wing", "claw"}, locationCategory=1},
+		[4]  = {desc="left hind leg", categoryNames={"leg", "arm", "hand", "wing", "claw"}, locationCategory=1},
+		[5]  = {desc="tail", categoryNames={"tail"}, locationCategory=2},
+		[6]  = {desc="abdomen", categoryNames={"abdomen", "groin"}, locationCategory=3},
+		[7]  = {desc="abdomen", categoryNames={"abdomen","groin"}, locationCategory=3},
+		[8]  = {desc="torso", categoryNames={"torso", "chest"}, locationCategory=4},
+		[9]  = {desc="torso", categoryNames={"torso", "chest"}, locationCategory=4},
+		[10] = {desc="head", categoryNames={"head","eye", "neck"}, locationCategory=5}
 	};
 	
 	aHitLocations["monster"] = {
-		[1]  = {desc="right foreleg/claw/wing", locationCategory=1},
-		[2]  = {desc="left foreleg/claw/wing", locationCategory=1},
-		[3]  = {desc="right hind leg", locationCategory=1},
-		[4]  = {desc="left hind leg", locationCategory=1},
-		[5]  = {desc="tail", locationCategory=2},
-		[6]  = {desc="abdomen", locationCategory=3},
-		[7]  = {desc="abdomen", locationCategory=3},
-		[8]  = {desc="torso", locationCategory=4},
-		[9]  = {desc="torso", locationCategory=4},
-		[10] = {desc="head", locationCategory=5}
+		[1]  = {desc="right foreleg/claw/wing", categoryNames={"leg", "arm", "hand", "wing", "claw"}, locationCategory=1},
+		[2]  = {desc="left foreleg/claw/wing", categoryNames={"leg", "arm", "hand", "wing", "claw"}, locationCategory=1},
+		[3]  = {desc="right hind leg", categoryNames={"leg", "arm", "hand", "wing", "claw"}, locationCategory=1},
+		[4]  = {desc="left hind leg", categoryNames={"leg", "arm", "hand", "wing", "claw"}, locationCategory=1},
+		[5]  = {desc="tail", categoryNames={"tail"}, locationCategory=2},
+		[6]  = {desc="abdomen", categoryNames={"abdomen", "groin"}, locationCategory=3},
+		[7]  = {desc="abdomen", categoryNames={"abdomen", "groin"}, ocationCategory=3},
+		[8]  = {desc="torso", categoryNames={"torso", "chest"}, locationCategory=4},
+		[9]  = {desc="torso", categoryNames={"torso", "chest"}, locationCategory=4},
+		[10] = {desc="head", categoryNames={"head", "eye", "neck"}, locationCategory=5}
 	};	
+
 end
 
 function initializeDefaultRaceSizes()
@@ -545,6 +547,12 @@ function initializelocationCategorys()
 	-- Drop to 0 HP
 	-- weapon/shield/item dropped
 	-- permanent stat loss
+
+  -- 1-4 leg
+  -- 5 = abdomen (humanoid) or tail(monster/animal)
+  -- 6-7 = torso (humanoid) or abdomen(monster/animal)
+  -- 8-9 = arm (humanoid) or torso(monster/animal)
+  -- 10 = head
 	
 	aCritCharts["humanoid"] = {
 		["bludgeoning"] = { 
