@@ -33,6 +33,7 @@
     <string name="option_label_hackmaster_fatigue">Hackmaster Fatigue Rules</string>
     <string name="option_label_comeliness">Enable Comeliness</string>
     <string name="option_label_honor">Enable Honor</string>
+    <string name="option_label_hackmaster_called_shots">HM Called Shot Modifiers</string>
 
     <!-- New Properties -->
     <string name="item_label_hp_lost">HP Lost</string>
@@ -90,4 +91,8 @@
     <string name="modifier_label_calledshot_leg">Leg</string>
     <string name="modifier_label_calledshot_tail">Tail</string>
     <string name="modifier_label_calledshot_torso">Torso</string>
+    <string name="modifier_label_calledshot_neck">Neck</string>
+    <string name="modifier_label_calledshot_eye">Eye</string>
+    <string name="modifier_label_calledshot_groin">Groin</string>
+    <string name="modifier_label_calledshot_hand">Hand</string>
 </root>

@@ -18,6 +18,7 @@ aIntelligence = {};
 aComeliness = {};
 aHonorDice = {};
 aHonorThresholdsByLevel = {};
+aCalledShotModifiers = {};
 
 
 function onInit()
@@ -34,6 +35,7 @@ function onInit()
 	initializeStats();
   initializeThac0ByHd();
   initializeHonor();
+  initializeCalledShots();
 
 end
 
@@ -1417,4 +1419,17 @@ function initializeThac0ByHd()
   aThac0ByHd['18']  = -1;
   aThac0ByHd['19']  = -2;
   aThac0ByHd['20']  = -3;
+end
+
+function initializeCalledShots()
+  aCalledShotModifiers["abdomen"] = {hitModifier = -4, thresholdModifier = 1, severityModifier = 0};
+  aCalledShotModifiers["arm"] = {hitModifier = -3, thresholdModifier = 1, severityModifier = 0};
+  aCalledShotModifiers["eye"] = {hitModifier = -10, thresholdModifier = 1, severityModifier = 2};
+  aCalledShotModifiers["groin"] = {hitModifier = -4, thresholdModifier = 1, severityModifier = 0};
+  aCalledShotModifiers["hand"] = {hitModifier = -6, thresholdModifier = 1, severityModifier = 0};
+  aCalledShotModifiers["head"] = {hitModifier = -6, thresholdModifier = 1, severityModifier = 0};
+  aCalledShotModifiers["leg"] = {hitModifier = -6, thresholdModifier = 1, severityModifier = 0};
+  aCalledShotModifiers["neck"] = {hitModifier = -8, thresholdModifier = 1, severityModifier = 1};
+  aCalledShotModifiers["tail"] = {hitModifier = -6, thresholdModifier = 1, severityModifier = 0};
+  aCalledShotModifiers["torso"] = {hitModifier = -2, thresholdModifier = 1, severityModifier = 0};
 end

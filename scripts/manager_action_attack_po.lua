@@ -177,6 +177,8 @@ function onAttackOverride(rSource, rTarget, rRoll)
   local bIsSourcePC = (rSource and rSource.sType == "pc");
   local bPsionic = rRoll.bPsionic == "true";
   local rAction = {};
+  rAction.sCalledShotLocation = rRoll.sCalledShotLocation;
+  rAction.nCritSeverityMod = rRoll.nCritSeverityMod;
   rAction.nTotal = ActionsManager.total(rRoll);
 
     -- add base attack bonus here(converted THACO to BaB remember?) so it doesn't confuse players and show up as a +tohit --celestian]
@@ -268,12 +270,12 @@ function onAttackOverride(rSource, rTarget, rRoll)
 
   local rCrit = nil;
   
-  if CritManagerPO.isCriticalHit(rRoll, rAction, nDefenseVal) then
+  if CritManagerPO.isCriticalHit(rRoll, rAction, nDefenseVal, rSource, rTarget) then
     rAction.bSpecial = true;
     bHitTarget = true;
     rAction.sResult = "crit";
   	if PlayerOptionManager.isPOCritEnabled() then
-  		  rCrit = CritManagerPO.handleCrit(rSource, rTarget);
+  		  rCrit = CritManagerPO.handleCrit(rSource, rTarget, rAction);
         if rCrit and PlayerOptionManager.isGenerateHitLocationsEnabled() then
           addHitLocationToAction(rAction, rCrit.sHitLocation);
         end
@@ -461,39 +463,63 @@ function addHitLocation(rSource, rTarget, rAction)
 		local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
 		local _, nodeDefender = ActorManager.getTypeAndNode(rTarget);
 		if nodeAttacker and nodeDefender then
-			local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender);
+			local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender, rAction.sCalledShotLocation);
       addHitLocationToAction(rAction, rHitLocation.desc);
 		end
 	end
 end
 
+function getCalledShotModifiers(sCalledShotLocation)
+  local nHitMod = -4;
+  local nCritThresholdMod = 0;
+  local nCritSeverityMod = 0;
+  if PlayerOptionManager.isHackmasterCalledShotsEnabled() then
+    local rCalledShotInfo = DataCommonPO.aCalledShotModifiers[sCalledShotLocation];
+    if rCalledShotInfo then
+      nHitMod = rCalledShotInfo.hitModifier;
+      nCritThresholdMod = rCalledShotInfo.thresholdModifier;
+      nCritSeverityMod = rCalledShotInfo.severityModifier;
+    end
+  end
+
+  return nHitMod, nCritThresholdMod, nCritSeverityMod;
+end
+
 function addCalledShotMods(rSource, rTarget, rRoll)
   local sCalledShotLocation = nil;
-  local nCalledShotMod = 0;
 
   if ModifierStack.getModifierKey("CALLEDSHOT_ABDOMEN") then
     sCalledShotLocation = "abdomen";
-    nCalledShotMod = -4;  -- TODO: Player's option is -4 to all... change for HM?
   elseif ModifierStack.getModifierKey("CALLEDSHOT_ARM") then
     sCalledShotLocation = "arm";
-    nCalledShotMod = -4;  -- TODO: Player's option is -4 to all... change for HM?
   elseif ModifierStack.getModifierKey("CALLEDSHOT_HEAD") then
     sCalledShotLocation = "head";
-    nCalledShotMod = -4;  -- TODO: Player's option is -4 to all... change for HM?
   elseif ModifierStack.getModifierKey("CALLEDSHOT_LEG") then
     sCalledShotLocation = "leg";
-    nCalledShotMod = -4;  -- TODO: Player's option is -4 to all... change for HM?
   elseif ModifierStack.getModifierKey("CALLEDSHOT_TAIL") then
     sCalledShotLocation = "tail";
-    nCalledShotMod = -4;  -- TODO: Player's option is -4 to all... change for HM?
   elseif ModifierStack.getModifierKey("CALLEDSHOT_TORSO") then
     sCalledShotLocation = "torso";
-    nCalledShotMod = -4;  -- TODO: Player's option is -4 to all... change for HM?
+  elseif ModifierStack.getModifierKey("CALLEDSHOT_EYE") then
+    sCalledShotLocation = "eye";
+  elseif ModifierStack.getModifierKey("CALLEDSHOT_HAND") then
+    sCalledShotLocation = "hand";
+  elseif ModifierStack.getModifierKey("CALLEDSHOT_GROIN") then
+    sCalledShotLocation = "groin";
+  elseif ModifierStack.getModifierKey("CALLEDSHOT_NECK") then
+    sCalledShotLocation = "neck";
   end
 
 
   if sCalledShotLocation then
+    local nCalledShotMod;
+    local nCritThresholdMod;
+    local nCritSeverityMod;
+
+    nCalledShotMod, nCritThresholdMod, nCritSeverityMod = getCalledShotModifiers(sCalledShotLocation);
     rRoll.sCalledShotLocation = sCalledShotLocation;
+    rRoll.nCritThresholdMod = nCritThresholdMod;
+    rRoll.nCritSeverityMod = nCritSeverityMod;
     rRoll.sDesc = rRoll.sDesc .. string.format(" [Called Shot: %s (%s)]", sCalledShotLocation, nCalledShotMod);
     rRoll.nMod = rRoll.nMod + nCalledShotMod;
   end

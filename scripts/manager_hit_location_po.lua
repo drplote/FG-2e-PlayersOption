@@ -1,15 +1,40 @@
 function onInit()
 end
 
-function getHitLocation(nodeAttacker, nodeDefender)
+function getHitLocation(nodeAttacker, nodeDefender, sHitLocation)
 	local sDefenderType = ActorManagerPO.getTypeForHitLocation(nodeDefender);
-	local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender);
-	local nHitLocationRoll = getHitLocationDieRoll(nSizeDifference);
-	return lookupHitLocation(sDefenderType, nHitLocationRoll);
+	local nHitLocationRoll = nil;
+
+	Debug.console("getHitLocation", sHitLocation);
+
+	if sHitLocation then
+		for i,aHitLocationInfo in pairs(DataCommonPO.aHitLocations[sDefenderType]) do
+			if UtilityPO.contains(aHitLocationInfo.categoryNames, sHitLocation) then
+				nHitLocationRoll = i;
+			end
+		end
+		if not nHitLocationRoll then
+			Debug.console("We had a called shot but couldn't figure out what it mapped up to in the hit location list", sHitLocation);
+		end
+	end
+
+	if not nHitLocationRoll then
+		local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender);
+		nHitLocationRoll = getHitLocationDieRoll(nSizeDifference);
+		return lookupHitLocation(sDefenderType, nHitLocationRoll);
+	else
+		local rHitLocation = lookupHitLocation(sDefenderType, nHitLocationRoll);
+		rHitLocation.desc = sHitLocation;
+		return rHitLocation;
+	end
 end
 
 function lookupHitLocation(sDefenderType, nHitLocationRoll)
-	return DataCommonPO.aHitLocations[sDefenderType][nHitLocationRoll];
+	local rCopiedHitLocation = {};
+	local rHitLocation = DataCommonPO.aHitLocations[sDefenderType][nHitLocationRoll];
+	rCopiedHitLocation.desc = rHitLocation.desc;
+	rCopiedHitLocation.locationCategory = rHitLocation.locationCategory;
+	return rCopiedHitLocation;
 end
 
 function getHitLocationDieRoll(nSizeDifference)

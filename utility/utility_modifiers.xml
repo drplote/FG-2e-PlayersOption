@@ -54,6 +54,35 @@
         </anchored>
         <textres>modifier_label_calledshot_torso</textres>
       </button_modifierkey>
+      <button_modifierkey name="CALLEDSHOT_EYE">
+        <anchored width="70" height="25">
+          <top parent="buttonanchor" anchor="bottom" relation="relative" offset="10" />
+          <left offset="40" />
+        </anchored>
+        <textres>modifier_label_calledshot_eye</textres>
+      </button_modifierkey>
+      <button_modifierkey name="CALLEDSHOT_GROIN">
+        <anchored width="70" height="25">
+          <top parent="CALLEDSHOT_EYE" />
+          <left parent="CALLEDSHOT_EYE" anchor="right" offset="10" />
+        </anchored>
+        <textres>modifier_label_calledshot_groin</textres>
+      </button_modifierkey>
+      <button_modifierkey name="CALLEDSHOT_HAND">
+        <anchored width="70" height="25">
+          <top parent="buttonanchor" anchor="bottom" relation="relative" offset="10" />
+          <left offset="40" />
+        </anchored>
+        <textres>modifier_label_calledshot_hand</textres>
+      </button_modifierkey>
+      <button_modifierkey name="CALLEDSHOT_NECK">
+        <anchored width="70" height="25">
+          <top parent="CALLEDSHOT_HAND" />
+          <left parent="CALLEDSHOT_HAND" anchor="right" offset="10" />
+        </anchored>
+        <textres>modifier_label_calledshot_neck</textres>
+      </button_modifierkey>
+
 
     </sheetdata>
   </windowclass>

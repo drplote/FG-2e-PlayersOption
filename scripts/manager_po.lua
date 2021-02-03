@@ -16,6 +16,7 @@ sRingBellOnRoundStartOptionKey = "AdditionalAutomation_RingBellOnRoundStart";
 sPhasedInitiativeOptionKey = "PlayersOption_PhasedInitiative";
 sAddComeliness = "HouseRule_Comeliness";
 sEnableHonor = "HouseRule_HackmasterHonor";
+sHackmasterCalledShots = "HouseRule_HackmasterCalledShots";
 
 function onInit()
     registerOptions();
@@ -62,6 +63,12 @@ function registerOptions()
 
     OptionsManager.registerOption2(sEnableHonor, false, "option_header_house_rule", "option_label_honor", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
+	OptionsManager.registerOption2(sHackmasterCalledShots, false, "option_header_house_rule", "option_label_hackmaster_called_shots", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });        
+
+end
+
+function isHackmasterCalledShotsEnabled()
+	return OptionsManager.isOption(sHackmasterCalledShots, "on");
 end
 
 function isHonorEnabled()

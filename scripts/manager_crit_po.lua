@@ -1,17 +1,17 @@
 function onInit()
 end
 
-function isCriticalHit(rRoll, rAction, nDefenseVal)
+function isCriticalHit(rRoll, rAction, nDefenseVal, rSource, rTarget)
 	if PlayerOptionManager.isPOCritEnabled() then
-		return isCriticalHitCombatAndTactics(rRoll, rAction, nDefenseVal);
+		return isCriticalHitCombatAndTactics(rRoll, rAction, nDefenseVal, rSource, rTarget);
 	else
-		return isCriticalHit2e(rRoll, rAction);
+		return isCriticalHit2e(rRoll, rAction, rSource, rTarget);
 	end
 end
 
-function isCriticalHitCombatAndTactics(rRoll, rAction, nDefenseVal)
+function isCriticalHitCombatAndTactics(rRoll, rAction, nDefenseVal, rSource, rTarget)
 	if nDefenseVal and nDefenseVal ~= 0 then
-		local nRequiredCritRoll = getCritThreshold(rRoll);
+		local nRequiredCritRoll = getCritThreshold(rRoll, rSource, rTarget);
 		local bMustHitBy5 = PlayerOptionManager.mustCritHitBy5();
 		local nHitDifference = CombatCalcManagerPO.getAttackVsDefenseDifference(rRoll, rAction, nDefenseVal);
 		return rAction.nFirstDie >= nRequiredCritRoll and (not bMustHitBy5 or nHitDifference >= 5);
@@ -19,22 +19,34 @@ function isCriticalHitCombatAndTactics(rRoll, rAction, nDefenseVal)
 	return false;
 end
 
-function getCritThreshold(rRoll)
+function getCritThreshold(rRoll, rSource, rTarget)
+	local nBaseThreshold = 20;
 	if PlayerOptionManager.isUsingCombatAndTacticsCritsRAW() then
-		return 18;
+		nBaseThreshold = 18;
 	else
 		local sCritThreshold = string.match(rRoll.sDesc, "%[CRIT (%d+)%]");
 		local nCritThreshold = tonumber(sCritThreshold) or 20;
 		if nCritThreshold < 2 or nCritThreshold > 20 then
 			nCritThreshold = 20;
 		end
-		return nCritThreshold;
+		nBaseThreshold = nCritThreshold;
 	end
+
+	if rSource then
+		local nModBonus = EffectManager5E.getEffectsBonus(rSource, {"CRITCHANCE"}, true, {}, rTarget);
+		nBaseThreshold = nBaseThreshold - nModBonus;
+	end
+	
+	if rRoll.nCritThresholdMod then
+		nBaseThreshold = nBaseThreshold - rRoll.nCritThresholdMod;
+	end
+	Debug.console("crit threshold", nBaseThreshold);
+	return nBaseThreshold;
 end
 
 
-function isCriticalHit2e(rRoll, rAction)
-	local nCritThreshold = getCritThreshold(rRoll);
+function isCriticalHit2e(rRoll, rAction, rSource, rTarget)
+	local nCritThreshold = getCritThreshold(rRoll, rSource, rTarget);
 	return rAction.nFirstDie >= nCritThreshold
 end
 
@@ -76,12 +88,16 @@ function getCritSizeBonus(rSource, rTarget)
 	return nModBonus;
 end
 
-function getCritSeverityBonus(rSource, rTarget)
+function getCritSeverityBonus(rSource, rTarget, rAction)
 	local nModBonus = EffectManager5E.getEffectsBonus(rSource, {"CRITSEVERITY"}, true, {}, rTarget);
+	if rAction.nCritSeverityMod then
+		nModBonus = nModBonus + rAction.nCritSeverityMod;
+	end
+	Debug.console("Crit severity bonus:", nModBonus);
 	return nModBonus;
 end
 
-function handleCrit(rSource, rTarget)
+function handleCrit(rSource, rTarget, rAction)
 	if rSource and rTarget then
 		if EffectManagerPO.hasImmunity(rSource, rTarget, "critical") then
 			Debug.console("Target was crit immune, so crit ignored");
@@ -90,9 +106,9 @@ function handleCrit(rSource, rTarget)
 		local rWeaponInfo = getWeaponInfo(rSource);
 		local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
 		local _, nodeDefender = ActorManager.getTypeAndNode(rTarget);
-		local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender);
+		local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender, rAction.sCalledShotLocation);
 		local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender, rWeaponInfo) + getCritSizeBonus(rSource, rTarget);
-		local nSeverity = getSeverityDieRoll(nSizeDifference) + getCritSeverityBonus(rSource, rTarget);
+		local nSeverity = getSeverityDieRoll(nSizeDifference) + getCritSeverityBonus(rSource, rTarget, rAction);
 		local rCrit = getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity);
 		StateManagerPO.setCritState(rSource, rTarget, rCrit.dmgMultiplier);
 		Debug.console("Crit with weapon: ", rWeaponInfo, "hit location:", rHitLocation, "size difference", nSizeDifference, "severity", nSeverity);
