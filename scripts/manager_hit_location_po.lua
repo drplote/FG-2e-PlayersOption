@@ -48,9 +48,14 @@ function getHitLocationDieRoll(nSizeDifference)
 end
 
 function getSizeDifference(nodeAttacker, nodeDefender)
-	local nAttackerSize = ActorManagerPO.getSizeCategory(nodeAttacker);
+	local nAttackerSize = ActorManagerPO.getSizeCategory(nodeAttacker) + getHitSizeBonus(nodeAttacker, nodeDefender);
 	local nDefenderSize = ActorManagerPO.getSizeCategory(nodeDefender);
 	
 	return nAttackerSize - nDefenderSize;
+end
+
+function getHitSizeBonus(rSource, rTarget)
+	local nModBonus = EffectManager5E.getEffectsBonus(rSource, {"HITSIZE"}, true, {}, rTarget);
+	return nModBonus;
 end
 
