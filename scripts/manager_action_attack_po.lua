@@ -446,6 +446,8 @@ function modAttackOverride(rSource, rTarget, rRoll)
         addWeaponTypeVsArmorMods(rSource, rTarget, rRoll);
     end
 
+    addCalledShotMods(rSource, rTarget, rRoll);
+
     HonorManagerPO.addAttackModifier(rSource, rRoll);
     
 end
@@ -463,6 +465,38 @@ function addHitLocation(rSource, rTarget, rAction)
       addHitLocationToAction(rAction, rHitLocation.desc);
 		end
 	end
+end
+
+function addCalledShotMods(rSource, rTarget, rRoll)
+  local sCalledShotLocation = nil;
+  local nCalledShotMod = 0;
+
+  if ModifierStack.getModifierKey("CALLEDSHOT_ABDOMEN") then
+    sCalledShotLocation = "abdomen";
+    nCalledShotMod = -4;  -- TODO: Player's option is -4 to all... change for HM?
+  elseif ModifierStack.getModifierKey("CALLEDSHOT_ARM") then
+    sCalledShotLocation = "arm";
+    nCalledShotMod = -4;  -- TODO: Player's option is -4 to all... change for HM?
+  elseif ModifierStack.getModifierKey("CALLEDSHOT_HEAD") then
+    sCalledShotLocation = "head";
+    nCalledShotMod = -4;  -- TODO: Player's option is -4 to all... change for HM?
+  elseif ModifierStack.getModifierKey("CALLEDSHOT_LEG") then
+    sCalledShotLocation = "leg";
+    nCalledShotMod = -4;  -- TODO: Player's option is -4 to all... change for HM?
+  elseif ModifierStack.getModifierKey("CALLEDSHOT_TAIL") then
+    sCalledShotLocation = "tail";
+    nCalledShotMod = -4;  -- TODO: Player's option is -4 to all... change for HM?
+  elseif ModifierStack.getModifierKey("CALLEDSHOT_TORSO") then
+    sCalledShotLocation = "torso";
+    nCalledShotMod = -4;  -- TODO: Player's option is -4 to all... change for HM?
+  end
+
+
+  if sCalledShotLocation then
+    rRoll.sCalledShotLocation = sCalledShotLocation;
+    rRoll.sDesc = rRoll.sDesc .. string.format(" [Called Shot: %s (%s)]", sCalledShotLocation, nCalledShotMod);
+    rRoll.nMod = rRoll.nMod + nCalledShotMod;
+  end
 end
 
 function addWeaponTypeVsArmorMods(rSource, rTarget, rRoll)  

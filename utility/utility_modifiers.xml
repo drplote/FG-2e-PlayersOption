@@ -1,0 +1,60 @@
+<root>
+  <windowclass name="modifiers" merge="join">
+    <sheetdata>
+
+      <label name="label_calledshot" insertafter="DMG_CRIT">
+        <anchored width="80" height="25">
+          <top parent="buttonanchor" anchor="bottom" relation="relative" offset="20" />
+          <left parent="buttonanchor" anchor="center" offset="-40" />
+        </anchored>
+        <static textres="modifier_label_calledshot" />
+        <color>FFFFFF</color>
+        <center />
+      </label>
+
+      <button_modifierkey name="CALLEDSHOT_ABDOMEN">
+        <anchored width="70" height="25">
+          <top parent="buttonanchor" anchor="bottom" relation="relative" offset="10" />
+          <left offset="40" />
+        </anchored>
+        <textres>modifier_label_calledshot_abdomen</textres>
+      </button_modifierkey>
+      <button_modifierkey name="CALLEDSHOT_ARM">
+        <anchored width="70" height="25">
+          <top parent="CALLEDSHOT_ABDOMEN" />
+          <left parent="CALLEDSHOT_ABDOMEN" anchor="right" offset="10" />
+        </anchored>
+        <textres>modifier_label_calledshot_arm</textres>
+      </button_modifierkey>
+      <button_modifierkey name="CALLEDSHOT_HEAD">
+        <anchored width="70" height="25">
+          <top parent="buttonanchor" anchor="bottom" relation="relative" offset="10" />
+          <left offset="40" />
+        </anchored>
+        <textres>modifier_label_calledshot_head</textres>
+      </button_modifierkey>
+      <button_modifierkey name="CALLEDSHOT_LEG">
+        <anchored width="70" height="25">
+          <top parent="CALLEDSHOT_HEAD" />
+          <left parent="CALLEDSHOT_HEAD" anchor="right" offset="10" />
+        </anchored>
+        <textres>modifier_label_calledshot_leg</textres>
+      </button_modifierkey>
+      <button_modifierkey name="CALLEDSHOT_TAIL">
+        <anchored width="70" height="25">
+          <top parent="buttonanchor" anchor="bottom" relation="relative" offset="10" />
+          <left offset="40" />
+        </anchored>
+        <textres>modifier_label_calledshot_tail</textres>
+      </button_modifierkey>
+      <button_modifierkey name="CALLEDSHOT_TORSO">
+        <anchored width="70" height="25">
+          <top parent="CALLEDSHOT_TAIL" />
+          <left parent="CALLEDSHOT_TAIL" anchor="right" offset="10" />
+        </anchored>
+        <textres>modifier_label_calledshot_torso</textres>
+      </button_modifierkey>
+
+    </sheetdata>
+  </windowclass>
+</root>

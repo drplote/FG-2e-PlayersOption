@@ -82,4 +82,12 @@
     <string name="char_tooltip_honor_dice">The die type you roll for your honor die</string>
     <string name="char_label_honor_window">Honor Window</string>
     <string name="char_tooltip_honor_window">Great Honor gives +1 to every die rolled, 5% bonus XP, a 10% cost reduction on training, and one mulligan per session. Dishonor gives -1 to every die rolled, a 10% XP penalty, and a 10% cost increase on training.</string>
+
+    <string name="modifier_label_calledshot">Called Shots</string>
+    <string name="modifier_label_calledshot_abdomen">Abdomen</string>
+    <string name="modifier_label_calledshot_arm">Arm</string>
+    <string name="modifier_label_calledshot_head">Head</string>
+    <string name="modifier_label_calledshot_leg">Leg</string>
+    <string name="modifier_label_calledshot_tail">Tail</string>
+    <string name="modifier_label_calledshot_torso">Torso</string>
 </root>
