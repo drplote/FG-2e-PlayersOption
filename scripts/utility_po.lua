@@ -31,6 +31,16 @@ function getIntersecting(set1, set2)
   return aIntersecting; 
 end
 
+function removeIntersecting(set1, set2)
+  local aResult = {};
+  for i = 1, #set1 do
+    if not contains(set2, set1[i]) then
+      table.insert(aResult, set1[i]);
+    end
+  end
+  return aResult;
+end
+
 function intersects(compareSet, actualSet)
 	for i = 1, #actualSet do
 		if contains(compareSet, actualSet[i]) then

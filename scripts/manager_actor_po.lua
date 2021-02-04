@@ -7,8 +7,8 @@ function getNode(rChar)
 end
 
 function shouldUseThaco(nodeActor)
-  local sSpecialAttacks = DB.getValue(nodeActor, "specialAttacks", "");
-  if sSpecialAttacks:find("USETHACO") or sSpecialAttacks:find("USETHAC0") then
+  local sSpecialAttacks = DB.getValue(nodeActor, "specialAttacks", ""):lower();
+  if sSpecialAttacks:find("usethaco") or sSpecialAttacks:find("usethac0") then
     return true;
   end
 end

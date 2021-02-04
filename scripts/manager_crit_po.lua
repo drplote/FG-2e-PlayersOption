@@ -89,10 +89,15 @@ function getCritSizeBonus(rSource, rTarget)
 end
 
 function getCritSeverityBonus(rSource, rTarget, rAction)
+	-- attacker's crit bonus
 	local nModBonus = EffectManager5E.getEffectsBonus(rSource, {"CRITSEVERITY"}, true, {}, rTarget);
 	if rAction.nCritSeverityMod then
 		nModBonus = nModBonus + rAction.nCritSeverityMod;
 	end
+
+	-- Target's crit resist
+	local nModPenalty = EffectManager5E.getEffectsBonus(rTarget, {"CRITRESIST"}, true, {}, rSource);
+	nModBonus = nModBonus - nModPenalty;
 	Debug.console("Crit severity bonus:", nModBonus);
 	return nModBonus;
 end
@@ -179,6 +184,7 @@ function getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity)
 	else
 		local nSeverityIndex = nSeverity;
 		if nSeverityIndex > 13 then nSeverityIndex = 13; end
+		if nSeverityIndex < 1 then nSeverityIndex = 1; end
 		rCrit = DataCommonPO.aCritCharts[sDefenderType][sDamageType][rHitLocation.locationCategory][nSeverityIndex];		
 	end
 	

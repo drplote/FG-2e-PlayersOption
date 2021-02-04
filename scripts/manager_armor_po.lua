@@ -90,9 +90,15 @@ function repairArmor(nodeArmor, nDamageToRepair)
 end
 
 function canDamageTypeHurtArmor(aDmgTypes, nodeArmor)
-    local nBonus = getMagicAcBonus(nodeArmor);
+    local nBonus = getPotency(nodeArmor);
+    local aImmunities = DataManagerPO.parseArmorDamageImmunitiesFromProperties(getProperties(nodeArmor));
     if nBonus <= 0 then
-        return not UtilityPO.intersects({"poison", "psychic"}, aDmgTypes);
+        local aIgnoredDamageTypes = {"poison", "psychic"};
+        for _,sDamageType in pairs(aImmunities) do
+            table.insert(aIgnoredDamageTypes, sDamageType);
+        end
+
+        return not UtilityPO.intersects(aIgnoredDamageTypes, aDmgTypes);
     elseif not aDmgTypes or #aDmgTypes == 0 then
         return false;
     else
@@ -104,7 +110,9 @@ function canDamageTypeHurtArmor(aDmgTypes, nodeArmor)
         if nBonus <= 3 then table.insert(aDamagingTypes, "magic +3"); end
         if nBonus <= 2 then table.insert(aDamagingTypes, "magic +2"); end
         if nBonus <= 1 then table.insert(aDamagingTypes, "magic +1"); table.insert(aDamagingTypes, "magic"); end
-        
+
+
+        aDamagingTypes = UtilityPO.removeIntersecting(aDamagingTypes, aImmunities); 
         return UtilityPO.intersects(aDamagingTypes, aDmgTypes);
     end
 end
@@ -165,6 +173,15 @@ end
 
 function getMagicAcBonus(nodeArmor)
     return DB.getValue(nodeArmor, "bonus", 0);
+end
+
+function getPotency(nodeArmor)
+    local nPotency = DataManagerPO.parsePotencyFromProperties(getProperties(nodeArmor));
+    if nPotency then
+        return nPotency;
+    else
+        return getMagicAcBonus(nodeArmor);
+    end
 end
 
 function getAcLostFromDamage(nodeArmor)
@@ -234,8 +251,12 @@ function getHitModifierForDamageTypesVsArmor(nodeArmor, aDamageTypes)
 end
 
 function getDamageTypeVsArmorModifiers(nodeArmor)
-	-- TODO: Eventually want to try to read these from properties
-	return getDefaultDamageTypeVsArmorModifiers(nodeArmor);
+	local sProperties = getProperties(nodeArmor);
+    local aModifiers = DataManagerPO.parseArmorVsWeaponTypeModifiersFromProperties(sProperties);
+    if not aModifiers then
+	   aModifiers = getDefaultDamageTypeVsArmorModifiers(nodeArmor);
+    end
+    return aModifiers;
 end
 
 function getDefaultDamageTypeVsArmorModifiers(nodeArmor)
