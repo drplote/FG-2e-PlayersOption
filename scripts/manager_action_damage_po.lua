@@ -454,7 +454,8 @@ end
 
 function checkThresholdOfPain(rTarget, nAdjustedDamage, nTotalHP, aNotifications)
     if PlayerOptionManager.isUsingThresholdOfPain() and ActorManagerPO.canBeAffectedByThresholdOfPain(rTarget) then
-        if nAdjustedDamage >= (nTotalHP / 2) then
+      local nTraumaDamage = StateManagerPO.addTraumaDamage(rTarget, nAdjustedDamage);
+        if nTraumaDamage >= (nTotalHP / 2) then
             table.insert(aNotifications, "[THRESHOLD OF PAIN]");
             ActionSavePO.rollThresholdOfPain(rTarget); 
         end

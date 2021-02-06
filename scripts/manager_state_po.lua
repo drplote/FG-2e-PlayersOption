@@ -5,6 +5,16 @@ aRanStartEffects = {};
 function onInit()
 end
 
+function handleRoundStart()
+  if PlayerOptionManager.isUsingThresholdOfPain() then
+    local aCombatants = CombatManager.getCombatantNodes();
+    for _, ctNode in pairs(aCombatants) do
+        local nodeChar = CombatManagerADND.getNodeFromCT(ctNode);
+        StateManagerPO.clearTraumaDamage(nodeChar);
+    end
+  end
+end
+
 function getStateNode()
   local nodeState = DB.findNode("poState");
   if not nodeState then
@@ -119,6 +129,26 @@ end
 
 function clearFatigueState(nodeChar)
     DB.setValue(nodeChar, "fatigue.state", "number", 0);
+end
+
+function getTraumaDamage(nodeChar)
+  return DB.getValue(nodeChar, "traumadamage", 0);
+end
+
+function addTraumaDamage(rChar, nTraumaDamage)
+  local nodeChar = ActorManagerPO.getNode(rChar);
+  if not nodeChar then
+    return 0;
+  end
+
+  local nCurrentTraumaDamage = getTraumaDamage(nodeChar);
+  local nTotal = nCurrentTraumaDamage + nTraumaDamage;
+  DB.setValue(nodeChar, "traumadamage", "number", nTotal);
+  return nTotal;
+end
+
+function clearTraumaDamage(nodeChar)
+  DB.setValue(nodeChar, "traumadamage", "number", 0);
 end
 
 function setCritState(rSource, rTarget, nDmgMult)

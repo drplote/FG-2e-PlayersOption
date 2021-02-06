@@ -112,6 +112,8 @@ function onRoundStart()
         FatigueManagerPO.handleFatigueForCombatants();
         FatigueManagerPO.clearFatigueState();
     end
+    StateManagerPO.handleRoundStart();
+    
     if PlayerOptionManager.shouldRingBellOnRoundStart() then
         for _, sUserName in pairs(User.getActiveUsers()) do
             User.ringBell(sUserName);
