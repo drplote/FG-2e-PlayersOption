@@ -40,7 +40,8 @@ function getTHACOOverride(rActor)
   local bOptAscendingAC = (OptionsManager.getOption("HouseRule_ASCENDING_AC"):match("on") ~= nil);
 
   local nTHACO = 20;
-  local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+  local sActorType = ActorManager.getType(rActor);
+  local nodeActor = ActorManager.getCreatureNode(rActor);
   if not nodeActor then
     return 0;
   end
@@ -218,7 +219,7 @@ function onAttackOverride(rSource, rTarget, rRoll)
     if (nDefenseVal and nDefenseVal ~= 0) then
       
       -- target has encumbrance penalties
-      local _, nodeDefender = ActorManager.getTypeAndNode(rTarget);
+      local nodeDefender = ActorManager.getCreatureNode(rTarget);
       local sRank = DB.getValue(nodeDefender,"speed.encumbrancerank","");
       if sRank == "Heavy" then
         table.insert(rAction.aMessages, "[ENC: " .. sRank .. "]" );
@@ -423,8 +424,6 @@ function onAttackOverride(rSource, rTarget, rRoll)
     else
       -- check to see if displaced
       local bDisplacedTarget = (EffectManager5E.hasEffect(rTarget, "DISPLACED", nil));
-      -- local _, nodeCharTarget = ActorManager.getTypeAndNode(rTarget);
-      -- local aEquipmentList = ItemManager2.getItemsEquipped(nodeCharTarget);
       local sDisplacementTag = "DISPLACEMENT_" .. UtilityManagerADND.alphaOnly(ActorManager.getDisplayName(rTarget));
       --if UtilityManagerADND.containsAny(aEquipmentList, "displacement" ) and not EffectManager5E.hasEffect(rSource, sDisplacementTag) then
       if bDisplacedTarget and not EffectManager5E.hasEffect(rSource, sDisplacementTag) then
@@ -460,8 +459,8 @@ end
 
 function addHitLocation(rSource, rTarget, rAction)
 	if rSource and rTarget then
-		local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
-		local _, nodeDefender = ActorManager.getTypeAndNode(rTarget);
+		local nodeAttacker = ActorManager.getCreatureNode(rSource);
+		local nodeDefender = ActorManager.getCreatureNode(rTarget);
 		if nodeAttacker and nodeDefender then
 			local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender, rAction.sCalledShotLocation);
       addHitLocationToAction(rAction, rHitLocation.desc);

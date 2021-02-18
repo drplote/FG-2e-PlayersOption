@@ -5,8 +5,6 @@ function getHitLocation(nodeAttacker, nodeDefender, sHitLocation)
 	local sDefenderType = ActorManagerPO.getTypeForHitLocation(nodeDefender);
 	local nHitLocationRoll = nil;
 
-	Debug.console("getHitLocation", sHitLocation);
-
 	if sHitLocation then
 		for i,aHitLocationInfo in pairs(DataCommonPO.aHitLocations[sDefenderType]) do
 			if UtilityPO.contains(aHitLocationInfo.categoryNames, sHitLocation) then

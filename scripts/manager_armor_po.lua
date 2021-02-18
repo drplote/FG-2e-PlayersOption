@@ -271,7 +271,7 @@ end
 
 
 function getCharArmor(rChar)
-    local _, nodeChar = ActorManager.getTypeAndNode(rChar);
+    local nodeChar = ActorManager.getCreatureNode(rChar);
     local _, aArmorWorn = ItemManager2.getArmorWorn(nodeChar);
     return aArmorWorn;
 end

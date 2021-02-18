@@ -53,7 +53,7 @@ end
 
 function getWeaponInfo(rSource)
 	local rWeaponInfo = {};
-	local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
+	local nodeAttacker = ActorManager.getCreatureNode(rSource);
 	if not UtilityPO.isEmpty(rSource.weaponPath) then
 		-- First try to determine size from the weapon action, if it exists. Don't allow default values
 		local nodeWeapon = DB.findNode(rSource.weaponPath);
@@ -109,8 +109,8 @@ function handleCrit(rSource, rTarget, rAction)
 			return nil;
 		end
 		local rWeaponInfo = getWeaponInfo(rSource);
-		local _, nodeAttacker = ActorManager.getTypeAndNode(rSource);
-		local _, nodeDefender = ActorManager.getTypeAndNode(rTarget);
+		local nodeAttacker = ActorManager.getCreatureNode(rSource);
+		local nodeDefender = ActorManager.getCreatureNode(rTarget);
 		local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender, rAction.sCalledShotLocation);
 		local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender, rWeaponInfo) + getCritSizeBonus(rSource, rTarget);
 		local nSeverity = getSeverityDieRoll(nSizeDifference) + getCritSeverityBonus(rSource, rTarget, rAction);

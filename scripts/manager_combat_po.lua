@@ -55,7 +55,8 @@ end
 function handleDelayTurn(msgOOB)
     local nodeCT = CombatManager.getActiveCT()
     local rActor = ActorManager.getActorFromCT(nodeCT);
-    local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+    local sActorType = ActorManager.getType(rActor);
+    local nodeActor = ActorManager.getCreatureNode(rActor);
     if PlayerOptionManager.isUsingPhasedInitiative() then
         delayThenNextActor(2);
     elseif nodeCT then
@@ -203,7 +204,8 @@ function rollEntryPhasedInitiative(nodeEntry)
 
     -- Get any effect modifiers
     local rActor = ActorManager.getActorFromCT(nodeEntry);
-    local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+    local sActorType = ActorManager.getType(rActor);
+    local nodeActor = ActorManager.getCreatureNode(rActor);
     local nPhaseShift = getPhaseShiftForInitMod(nodeActor);
     
     -- For PCs, we always roll unique initiative

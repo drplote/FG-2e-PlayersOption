@@ -27,7 +27,8 @@ function onFactionChanged()
 end
 
 function onHealthChanged()
-  local sColor = ActorManager2.getWoundColor("ct", getDatabaseNode());
+  local rActor = ActorManager.resolveActor(getDatabaseNode())
+  local sColor = ActorHealthManager.getHealthColor(rActor);
   
   wounds.setColor(sColor);
   status.setColor(sColor);

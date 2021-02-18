@@ -2,8 +2,7 @@ function onInit()
 end
 
 function getNode(rChar)
-    local _, nodeChar = ActorManager.getTypeAndNode(rChar);
-    return nodeChar;
+  return ActorManager.getCreatureNode(rChar);
 end
 
 function shouldUseThaco(nodeActor)
@@ -30,7 +29,7 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
     bPsionic = rRoll.bPsionic == "true";
     if (bPsionic) then
       nDefense = tonumber(rRoll.Psionic_MAC) or 10;
-      nDefense = ActorManager2.convertToAscendingAC(nDefense);
+      nDefense = ActorManagerADND.convertToAscendingAC(nDefense);
     end
   end
 
@@ -60,7 +59,8 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
   
   local sDefenseStat = "dexterity";
 
-  local sDefenderType, nodeDefender = ActorManager.getTypeAndNode(rDefender);
+  local sDefenderType = ActorManager.getType(rDefender);
+  local nodeDefender = ActorManager.getCreatureNode(rDefender);
   if not nodeDefender then
     return nil, 0, 0, nACShield;
   end
@@ -82,7 +82,7 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
     else -- using a power with a MAC
       nDefense = tonumber(rRoll.Psionic_MAC) or 10;
     end
-    nDefense = ActorManager2.convertToAscendingAC(nDefense);
+    nDefense = ActorManagerADND.convertToAscendingAC(nDefense);
 
     -- if psionic attack, check psionic defenses
     if rRoll.Psionic_DisciplineType == "attack" then
@@ -90,7 +90,7 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
       if (nodeSpell) then
         local sSpellName = DB.getValue(nodeSpell,"name",""):lower();
         if sSpellName ~= "" then 
-          nAttackEffectMod = ActorManager2.getPsionicAttackVersusDefenseMode(rDefender,rAttacker,sSpellName,nAttackEffectMod);
+          nAttackEffectMod = ActorManagerADND.getPsionicAttackVersusDefenseMode(rDefender,rAttacker,sSpellName,nAttackEffectMod);
         end
       end
     end
@@ -228,7 +228,7 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
       -- dont apply dex in these cases
       else
       -- apply dex
-        local nDefenseStatMod = ActorManager2.getAbilityBonus(rDefender, sDefenseStat, "defenseadj");
+        local nDefenseStatMod = ActorManagerADND.getAbilityBonus(rDefender, sDefenseStat, "defenseadj");
         nDefense = nDefense + nDefenseStatMod;
       end
     end
@@ -236,7 +236,7 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
     -- flip ac to ascending since rest of the code uses ascending AC (but we show decending).
     -- this is just to make things easier sharing code with 5E. 
     -- Mathmatically it's the same and display shows what AD&Ders expect.
-    nDefense = ActorManager2.convertToAscendingAC(nDefense);
+    nDefense = ActorManagerADND.convertToAscendingAC(nDefense);
     --
     
     if ActorManager.hasCT(rDefender) then

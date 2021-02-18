@@ -24,10 +24,8 @@ end
 
 function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
   -- Get health fields
-  local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
-  if sTargetType ~= "pc" and sTargetType ~= "ct" then
-    return;
-  end
+  local nodeTarget = ActorManager.getCreatureNode(rTarget);
+  local sTargetType = ActorManager.getType(rTarget);
 
   local nRemainder = 0;
 
@@ -52,7 +50,7 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
   local bRemoveTarget = false;
 
   -- Remember current health status
-  local _,sOriginalStatus = ActorManager2.getPercentWounded(rTarget);
+  local _,sOriginalStatus = ActorHealthManager.getPercentWounded(rTarget);
 
   -- Decode damage/heal description
   local rDamageOutput = ActionDamage.decodeDamageText(nTotal, sDamage);
@@ -420,7 +418,7 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
     bShowStatus = not OptionsManager.isOption("SHNPC", "off");
   end
   if bShowStatus then
-    local _,sNewStatus = ActorManager2.getPercentWounded(rTarget);
+    local _,sNewStatus = ActorManagerADND.getPercentWounded(rTarget);
     if sOriginalStatus ~= sNewStatus then
       table.insert(aNotifications, "[" .. Interface.getString("combat_tag_status") .. ": " .. sNewStatus .. "]");
     end
@@ -442,10 +440,10 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
       ActionSave.expireConcentrationEffects(rTarget);
       local sLmsg = {font = "msgfont"};
       sLmsg.icon = "roll_cast";
-      sLmsg.text = string.format(Interface.getString("message_concentration_failed"), rTarget.sName);
+      sLmsg.text = string.format(Interface.getString("message_concentration_failed"), ActorManager.getDisplayName(rTarget));
       
       local sSmsg = {font = "msgfont"};
-      sSmsg.text = string.format("%s's spell casting interrupted.", rTarget.sName);
+      sSmsg.text = string.format("%s's spell casting interrupted.", ActorManager.getDisplayName(rTarget));
       
       ActionsManager.outputResult(bSecret, nil, rTarget, sLmsg, sSmsg);
     end
@@ -468,7 +466,8 @@ function handleShieldAbsorb(rSource, rTarget, rDamageOutput, nTotal)
 	if StateManagerPO.hasShieldHitState(rSource, rTarget) or Input.isAltPressed() then
 		local nShieldAbsorb = 0;	
 		-- if shield equipped then reduce damage by up to shield hp
-		local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
+		local sTargetType = ActorManager.getType(rTarget);
+    local nodeTarget = ActorManager.getCreatureNode(rTarget);
 		local nodeShield = ArmorManagerPO.getDamageableShieldWorn(nodeTarget);
 		local nArmorHpRemaining = ArmorManagerPO.getHpRemaining(nodeShield);
 		
@@ -663,7 +662,8 @@ function handleArmorDamageAbsorb(rTarget, aDice, aSrcDmgClauseTypes, nDamageToAb
 		return nAbsorbed;
 	end
 
-	local sTargetType, nodeTarget = ActorManager.getTypeAndNode(rTarget);
+	local sTargetType = ActorManager.getType(rTarget);
+  local nodeTarget = ActorManager.getCreatureNode(rTarget);
 	local nodeArmor = ArmorManagerPO.getDamageableArmorWorn(nodeTarget);
 	local nArmorHpRemaining = ArmorManagerPO.getHpRemaining(nodeArmor);
 	local nSoakPerDie = ArmorManagerPO.getDamageReduction(nodeArmor, aSrcDmgClauseTypes);
