@@ -40,8 +40,8 @@ end
 
 function rollSave(rTarget, sSave, sDesc, bSecretRoll)
 	if not bSecretRoll then bSecretRoll = false; end
-	local sActorType = ActorManager.getType(rTarget);
-	local nodeActor = ActorManager.getCreatureNode(rTarget);
+	local sActorType = ActorManagerPO.getType(rTarget);
+	local nodeActor = ActorManagerPO.getCreatureNode(rTarget);
 	local nSaveScore = ActorManagerPO.getSaveScore(nodeActor, sSave);
 	ActionSave.performRoll(nil, rTarget, sSave, nSaveScore, bSecretRoll, nil, false, sDesc);
 end
@@ -56,8 +56,8 @@ end
 
 function getMagicalDefenseAdjustment(rSource, sSaveDesc)
 	if sSaveDesc == "TOP" then
-		local sActorType = ActorManager.getType(rSource);
-		local nodeActor = ActorManager.getCreatureNode(rSource);
+		local sActorType = ActorManagerPO.getType(rSource);
+		local nodeActor = ActorManagerPO.getCreatureNode(rSource);
     	return ActorManagerPO.getMagicalDefenseAdjustment(nodeActor);
     end
     return 0;

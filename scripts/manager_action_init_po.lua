@@ -15,8 +15,8 @@ function getRollForPhasedInit(rActor, bSecretRoll, rItem)
 
   Debug.console("rActor", rActor);
   Debug.console("rItem", rItem);
-  local sActorType = ActorManager.getType(rActor);
-  local nodeActor = ActorManager.getCreatureNode(rActor);
+  local sActorType = ActorManagerPO.getType(rActor);
+  local nodeActor = ActorManagerPO.getCreatureNode(rActor);
   if nodeActor then
 	local nInitPhase = InitManagerPO.getBaseActorSpeedPhase(nodeActor);
   	if rItem then
@@ -50,8 +50,8 @@ function getRollOverride(rActor, bSecretRoll, rItem)
 	local rRoll = fGetRoll(rActor, bSecretRoll, rItem);
 	if PlayerOptionManager.isUsingReactionAdjustmentForInitiative() then
 		if rActor and rItem then
-			local sActorType = ActorManager.getType(rActor);
-			local nodeActor = ActorManager.getCreatureNode(rActor);
+			local sActorType = ActorManagerPO.getType(rActor);
+			local nodeActor = ActorManagerPO.getCreatureNode(rActor);
 			if nodeActor then
 				local nReactionAdj = 0 - DB.getValue(nodeActor, "abilities.dexterity.reactionadj", 0);
 				rRoll.sDesc = rRoll.sDesc .. "[Reaction Adj: " .. nReactionAdj .. "]";

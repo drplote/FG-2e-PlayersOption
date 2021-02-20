@@ -5,6 +5,16 @@ function getNode(rChar)
   return ActorManager.getCreatureNode(rChar);
 end
 
+function getCreatureNode(rChar)
+  local rType, rNode = ActorManager.getTypeAndNode(rChar);
+  return rNode;
+end
+
+function getType(rChar)
+  local rType, rNode = ActorManager.getTypeAndNode(rChar);
+  return rType;
+end
+
 function shouldUseThaco(nodeActor)
   local sSpecialAttacks = DB.getValue(nodeActor, "specialAttacks", ""):lower();
   if sSpecialAttacks:find("usethaco") or sSpecialAttacks:find("usethac0") then

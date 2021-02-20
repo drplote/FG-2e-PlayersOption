@@ -40,8 +40,8 @@ function getTHACOOverride(rActor)
   local bOptAscendingAC = (OptionsManager.getOption("HouseRule_ASCENDING_AC"):match("on") ~= nil);
 
   local nTHACO = 20;
-  local sActorType = ActorManager.getType(rActor);
-  local nodeActor = ActorManager.getCreatureNode(rActor);
+  local sActorType = ActorManagerPO.getType(rActor);
+  local nodeActor = ActorManagerPO.getCreatureNode(rActor);
   if not nodeActor then
     return 0;
   end
@@ -219,7 +219,7 @@ function onAttackOverride(rSource, rTarget, rRoll)
     if (nDefenseVal and nDefenseVal ~= 0) then
       
       -- target has encumbrance penalties
-      local nodeDefender = ActorManager.getCreatureNode(rTarget);
+      local nodeDefender = ActorManagerPO.getCreatureNode(rTarget);
       local sRank = DB.getValue(nodeDefender,"speed.encumbrancerank","");
       if sRank == "Heavy" then
         table.insert(rAction.aMessages, "[ENC: " .. sRank .. "]" );
@@ -459,8 +459,8 @@ end
 
 function addHitLocation(rSource, rTarget, rAction)
 	if rSource and rTarget then
-		local nodeAttacker = ActorManager.getCreatureNode(rSource);
-		local nodeDefender = ActorManager.getCreatureNode(rTarget);
+		local nodeAttacker = ActorManagerPO.getCreatureNode(rSource);
+		local nodeDefender = ActorManagerPO.getCreatureNode(rTarget);
 		if nodeAttacker and nodeDefender then
 			local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender, rAction.sCalledShotLocation);
       addHitLocationToAction(rAction, rHitLocation.desc);

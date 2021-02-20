@@ -24,8 +24,8 @@ end
 
 function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
   -- Get health fields
-  local nodeTarget = ActorManager.getCreatureNode(rTarget);
-  local sTargetType = ActorManager.getType(rTarget);
+  local nodeTarget = ActorManagerPO.getCreatureNode(rTarget);
+  local sTargetType = ActorManagerPO.getType(rTarget);
 
   local nRemainder = 0;
 
@@ -50,7 +50,7 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
   local bRemoveTarget = false;
 
   -- Remember current health status
-  local _,sOriginalStatus = ActorHealthManager.getPercentWounded(rTarget);
+  local _,sOriginalStatus = ActorManagerADND.getPercentWounded(rTarget);
 
   -- Decode damage/heal description
   local rDamageOutput = ActionDamage.decodeDamageText(nTotal, sDamage);
@@ -466,8 +466,8 @@ function handleShieldAbsorb(rSource, rTarget, rDamageOutput, nTotal)
 	if StateManagerPO.hasShieldHitState(rSource, rTarget) or Input.isAltPressed() then
 		local nShieldAbsorb = 0;	
 		-- if shield equipped then reduce damage by up to shield hp
-		local sTargetType = ActorManager.getType(rTarget);
-    local nodeTarget = ActorManager.getCreatureNode(rTarget);
+		local sTargetType = ActorManagerPO.getType(rTarget);
+    local nodeTarget = ActorManagerPO.getCreatureNode(rTarget);
 		local nodeShield = ArmorManagerPO.getDamageableShieldWorn(nodeTarget);
 		local nArmorHpRemaining = ArmorManagerPO.getHpRemaining(nodeShield);
 		
@@ -662,8 +662,8 @@ function handleArmorDamageAbsorb(rTarget, aDice, aSrcDmgClauseTypes, nDamageToAb
 		return nAbsorbed;
 	end
 
-	local sTargetType = ActorManager.getType(rTarget);
-  local nodeTarget = ActorManager.getCreatureNode(rTarget);
+	local sTargetType = ActorManagerPO.getType(rTarget);
+  local nodeTarget = ActorManagerPO.getCreatureNode(rTarget);
 	local nodeArmor = ArmorManagerPO.getDamageableArmorWorn(nodeTarget);
 	local nArmorHpRemaining = ArmorManagerPO.getHpRemaining(nodeArmor);
 	local nSoakPerDie = ArmorManagerPO.getDamageReduction(nodeArmor, aSrcDmgClauseTypes);
