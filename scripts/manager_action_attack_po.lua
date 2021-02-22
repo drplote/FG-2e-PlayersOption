@@ -468,14 +468,15 @@ function addHitLocation(rSource, rTarget, rAction)
 	end
 end
 
-function getCalledShotModifiers(sCalledShotLocation)
+function getCalledShotModifiers(sCalledShotLocation, rTarget)
   local nHitMod = -4;
   local nCritThresholdMod = 0;
   local nCritSeverityMod = 0;
   if PlayerOptionManager.isHackmasterCalledShotsEnabled() then
     local rCalledShotInfo = DataCommonPO.aCalledShotModifiers[sCalledShotLocation];
     if rCalledShotInfo then
-      nHitMod = rCalledShotInfo.hitModifier;
+      local nTargetSize = ActorManagerPO.getSizeCategory(rTarget);
+      nHitMod = rCalledShotInfo.hitModifier[nTargetSize];
       nCritThresholdMod = rCalledShotInfo.thresholdModifier;
       nCritSeverityMod = rCalledShotInfo.severityModifier;
     end
@@ -515,7 +516,7 @@ function addCalledShotMods(rSource, rTarget, rRoll)
     local nCritThresholdMod;
     local nCritSeverityMod;
 
-    nCalledShotMod, nCritThresholdMod, nCritSeverityMod = getCalledShotModifiers(sCalledShotLocation);
+    nCalledShotMod, nCritThresholdMod, nCritSeverityMod = getCalledShotModifiers(sCalledShotLocation, rTarget);
     rRoll.sCalledShotLocation = sCalledShotLocation;
     rRoll.nCritThresholdMod = nCritThresholdMod;
     rRoll.nCritSeverityMod = nCritSeverityMod;

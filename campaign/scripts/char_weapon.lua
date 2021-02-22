@@ -45,7 +45,7 @@ function onAttackAction(draginfo)
     end
     rAction.modifier = DB.getValue(nodeWeapon, "attackbonus", 0) + ActorManagerADND.getAbilityBonus(rActor, rAction.stat, "hitadj");
 
-    rAction.modifier = rAction.modifier + getToHitProfs(nodeWeapon);
+    rAction.modifier = rAction.modifier + WeaponManagerADND.getToHitProfs(nodeWeapon);
 
     rAction.bWeapon = true;
 

@@ -1422,14 +1422,14 @@ function initializeThac0ByHd()
 end
 
 function initializeCalledShots()
-  aCalledShotModifiers["abdomen"] = {hitModifier = -4, thresholdModifier = 1, severityModifier = 0};
-  aCalledShotModifiers["arm"] = {hitModifier = -3, thresholdModifier = 1, severityModifier = 0};
-  aCalledShotModifiers["eye"] = {hitModifier = -10, thresholdModifier = 1, severityModifier = 2};
-  aCalledShotModifiers["groin"] = {hitModifier = -4, thresholdModifier = 1, severityModifier = 0};
-  aCalledShotModifiers["hand"] = {hitModifier = -6, thresholdModifier = 1, severityModifier = 0};
-  aCalledShotModifiers["head"] = {hitModifier = -6, thresholdModifier = 1, severityModifier = 0};
-  aCalledShotModifiers["leg"] = {hitModifier = -6, thresholdModifier = 1, severityModifier = 0};
-  aCalledShotModifiers["neck"] = {hitModifier = -8, thresholdModifier = 1, severityModifier = 1};
-  aCalledShotModifiers["tail"] = {hitModifier = -6, thresholdModifier = 1, severityModifier = 0};
-  aCalledShotModifiers["torso"] = {hitModifier = -2, thresholdModifier = 1, severityModifier = 0};
+  aCalledShotModifiers["abdomen"] = {hitModifier = {[1]=-6, [2]=-5, [3]=-4, [4]=-4, [5]=-4, [6]=-4}, thresholdModifier = 1, severityModifier = 0};
+  aCalledShotModifiers["arm"] = {hitModifier = {[1]=-5, [2]=-4, [3]=-3, [4]=-3, [5]=-2, [6]=-2}, thresholdModifier = 1, severityModifier = 0};
+  aCalledShotModifiers["eye"] = {hitModifier = {[1]=-12, [2]=-11, [3]=-10, [4]=-10, [5]=-10, [6]=-10}, thresholdModifier = 1, severityModifier = 2};
+  aCalledShotModifiers["groin"] = {hitModifier = {[1]=-6, [2]=-5, [3]=-4, [4]=-4, [5]=-4, [6]=-4}, thresholdModifier = 1, severityModifier = 0};
+  aCalledShotModifiers["hand"] = {hitModifier = {[1]=-8, [2]=-7, [3]=-6, [4]=-6, [5]=-5, [6]=-4}, thresholdModifier = 1, severityModifier = 0};
+  aCalledShotModifiers["head"] = {hitModifier = {[1]=-10, [2]=-8, [3]=-6, [4]=-6, [5]=-5, [6]=-4}, thresholdModifier = 1, severityModifier = 0};
+  aCalledShotModifiers["leg"] = {hitModifier = {[1]=-4, [2]=-3, [3]=-2, [4]=-2, [5]=-2, [6]=-2}, thresholdModifier = 1, severityModifier = 0};
+  aCalledShotModifiers["neck"] = {hitModifier = {[1]=-9, [2]=-8, [3]=-6, [4]=-6, [5]=-4, [6]=-4}, thresholdModifier = 1, severityModifier = 1};
+  aCalledShotModifiers["tail"] = {hitModifier = {[1]=-7, [2]=-6, [3]=-5, [4]=-5, [5]=-4, [6]=-3}, thresholdModifier = 1, severityModifier = 0};
+  aCalledShotModifiers["torso"] = {hitModifier = {[1]=-6, [2]=-4, [3]=-2, [4]=-2, [5]=-2, [6]=-2}, thresholdModifier = 1, severityModifier = 0};
 end
