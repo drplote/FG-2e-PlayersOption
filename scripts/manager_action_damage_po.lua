@@ -50,7 +50,7 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
   local bRemoveTarget = false;
 
   -- Remember current health status
-  local _,sOriginalStatus = ActorManagerADND.getPercentWounded(rTarget);
+  local _,sOriginalStatus = ActorManagerADND.getWoundPercent(rTarget);
 
   -- Decode damage/heal description
   local rDamageOutput = ActionDamage.decodeDamageText(nTotal, sDamage);
@@ -418,7 +418,7 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
     bShowStatus = not OptionsManager.isOption("SHNPC", "off");
   end
   if bShowStatus then
-    local _,sNewStatus = ActorManagerADND.getPercentWounded(rTarget);
+    local _,sNewStatus = ActorManagerADND.getWoundPercent(rTarget);
     if sOriginalStatus ~= sNewStatus then
       table.insert(aNotifications, "[" .. Interface.getString("combat_tag_status") .. ": " .. sNewStatus .. "]");
     end
