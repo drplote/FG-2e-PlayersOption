@@ -318,9 +318,7 @@ function getNumOriginalDice(aDice)
 		return 0;
 	end
 	local nNumDice = 0;
-	Debug.console("aDice", aDice);
 	for _, vDie in pairs(aDice) do
-		Debug.console("vDie", vDie);
 		if vDie.result then
 			nNumDice = nNumDice + 1;
 		end
