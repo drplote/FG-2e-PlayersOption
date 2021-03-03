@@ -684,11 +684,15 @@ function handleArmorDamageAbsorb(rTarget, aDice, aSrcDmgClauseTypes, nDamageToAb
 end
 
 function modDamageOverride(rSource, rTarget, rRoll)
-	if PlayerOptionManager.isPOCritEnabled() then
-		-- TODO: make this visually roll dice
-		local bIsCrit, nCritMultiplier = StateManagerPO.hasCritState(rSource, rTarget);
-		if bIsCrit and nCritMultiplier > 0 then
-			rRoll.nCritMultiplier = nCritMultiplier;
+	if PlayerOptionManager.isAnyCritEnabled() then
+		local bIsCrit, nCritMultiplier, nBonusDie = StateManagerPO.hasCritState(rSource, rTarget);
+		if bIsCrit then
+      if nCritMultiplier and nCritMultiplier > 0 then
+			  rRoll.nCritMultiplier = nCritMultiplier;
+      end
+      if nBonusDie and nBonusDie > 0 then
+        rRoll.nCritBonusDie = nBonusDie;
+      end
 		end
 	end
 
@@ -702,11 +706,16 @@ function modDamageOverride(rSource, rTarget, rRoll)
 end
 
 function onDamageRollOverride(rSource, rRoll)
-	if PlayerOptionManager.isPOCritEnabled() then
+	if PlayerOptionManager.isAnyCritEnabled() then
 		if rRoll.nCritMultiplier then
 			rRoll.sDesc = string.format("%s [CRITICAL HIT (x%s)]", rRoll.sDesc, rRoll.nCritMultiplier);
 			DiceManagerPO.multiplyDice(rRoll, rRoll.nCritMultiplier);
 		end
+    if rRoll.nCritBonusDie then
+      rRoll.sDesc = string.format("%s [CRITICAL HIT (+d%s)]", rRoll.sDesc, rRoll.nCritBonusDie);
+      DiceManagerPO.addDie(rRoll, rRoll.nCritBonusDie);
+    end
+
 	end
 
   if rRoll.nDamageDiceMultiplier then

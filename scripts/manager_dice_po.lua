@@ -81,6 +81,13 @@ function multiplyDice(rRoll, nMultiplier)
 	end
 end
 
+function addDie(rRoll, nDieType)
+	local newDie = {};
+	newDie.type = "g" .. nDieType;
+	newDie.result = math.random(1, nDieType);
+	table.insert(rRoll.aDice, newDie);
+end
+
 function handlePenetration(rRoll, penPlus)
   checkForPenetration(rRoll, penPlus);  
   createPenetrationDice(rRoll);
@@ -101,7 +108,7 @@ function createExtraDice(rRoll)
 	for _, vDie in ipairs(rRoll.aDice) do
 		local sSign, sColor, sDieSides = vDie.type:match("^([%-%+]?)([dDrRgGbBpP])([%dF]+)");
 		local newDie = {};
-		newDie.type = sColor .. sDieSides;
+		newDie.type = "g" .. sDieSides;
 		local nSides = tonumber(sDieSides) or 0;
 		newDie.result = math.random(1, nSides);
 		table.insert(aNewDice, newDie);
@@ -113,7 +120,6 @@ function createPenetrationDice(rRoll)
   for _,vDie in ipairs(rRoll.aDice) do
 	local sSign, sColor, sDieSides = vDie.type:match("^([%-%+]?)([dDrRgGbBpP])([%dF]+)");
 	if vDie.penetrationRolls then
-		vDie.type = "b" .. sDieSides;
 		for _, rPenRoll in ipairs(vDie.penetrationRolls) do
 			local newDie = {}
 			newDie.type = "r" .. sDieSides

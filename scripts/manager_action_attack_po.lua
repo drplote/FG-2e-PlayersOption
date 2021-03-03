@@ -275,8 +275,8 @@ function onAttackOverride(rSource, rTarget, rRoll)
     rAction.bSpecial = true;
     bHitTarget = true;
     rAction.sResult = "crit";
-  	if PlayerOptionManager.isPOCritEnabled() then
-  		  rCrit = CritManagerPO.handleCrit(rSource, rTarget, rAction);
+  	if PlayerOptionManager.isAnyCritEnabled() then
+  		  rCrit = CritManagerPO.handleCrit(rRoll, rAction, nDefenseVal, rSource, rTarget);
         if rCrit and PlayerOptionManager.isGenerateHitLocationsEnabled() then
           addHitLocationToAction(rAction, rCrit.sHitLocation);
         end
@@ -372,7 +372,7 @@ function onAttackOverride(rSource, rTarget, rRoll)
   
   -- TRACK CRITICAL STATE
   if rAction.sResult == "crit" then
-    if PlayerOptionManager.isPOCritEnabled() and rCrit then
+    if PlayerOptionManager.isAnyCritEnabled() and rCrit then
       ChatManagerPO.deliverCriticalHitMessage(rCrit.message);
       local bIsTargetPc = (rTarget and rTarget.sType == "pc");
       ActionSavePO.rollCritSave(rTarget);
@@ -475,7 +475,8 @@ function getCalledShotModifiers(sCalledShotLocation, rTarget)
   if PlayerOptionManager.isHackmasterCalledShotsEnabled() then
     local rCalledShotInfo = DataCommonPO.aCalledShotModifiers[sCalledShotLocation];
     if rCalledShotInfo then
-      local nTargetSize = ActorManagerPO.getSizeCategory(rTarget);
+      local nodeActor = ActorManagerPO.getNode(rTarget);
+      local nTargetSize = ActorManagerPO.getSizeCategory(nodeActor);
       nHitMod = rCalledShotInfo.hitModifier[nTargetSize];
       nCritThresholdMod = rCalledShotInfo.thresholdModifier;
       nCritSeverityMod = rCalledShotInfo.severityModifier;
@@ -550,7 +551,7 @@ function clearCritStateOverride(rSource)
 end
 
 function isCritOverride(rSource, rTarget)
-  if PlayerOptionManager.isPOCritEnabled() then
+  if PlayerOptionManager.isAnyCritEnabled() then
     return StateManagerPO.hasCritState(rSource, rTarget);
   else
     return fIsCrit(rSource, rTarget);

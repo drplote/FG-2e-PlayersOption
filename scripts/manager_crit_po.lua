@@ -2,14 +2,18 @@ function onInit()
 end
 
 function isCriticalHit(rRoll, rAction, nDefenseVal, rSource, rTarget)
-	if PlayerOptionManager.isPOCritEnabled() then
-		return isCriticalHitCombatAndTactics(rRoll, rAction, nDefenseVal, rSource, rTarget);
+	if PlayerOptionManager.isAnyCritEnabled() then
+		return isOptionalRulesCriticalHit(rRoll, rAction, nDefenseVal, rSource, rTarget);
 	else
 		return isCriticalHit2e(rRoll, rAction, rSource, rTarget);
 	end
 end
 
-function isCriticalHitCombatAndTactics(rRoll, rAction, nDefenseVal, rSource, rTarget)
+function isOptionalRulesCriticalHit(rRoll, rAction, nDefenseVal, rSource, rTarget)
+	if EffectManagerPO.isNotAllowedToCrit(rSource) then
+		return false;
+	end
+	
 	if nDefenseVal and nDefenseVal ~= 0 then
 		local nRequiredCritRoll = getCritThreshold(rRoll, rSource, rTarget);
 		local bMustHitBy5 = PlayerOptionManager.mustCritHitBy5();
@@ -102,24 +106,33 @@ function getCritSeverityBonus(rSource, rTarget, rAction)
 	return nModBonus;
 end
 
-function handleCrit(rSource, rTarget, rAction)
+function handleCrit(rRoll, rAction, nDefenseVal, rSource, rTarget)
 	if rSource and rTarget then
 		if EffectManagerPO.hasImmunity(rSource, rTarget, "critical") then
 			Debug.console("Target was crit immune, so crit ignored");
 			return nil;
 		end
-		local rWeaponInfo = getWeaponInfo(rSource);
-		local nodeAttacker = ActorManager.getCreatureNode(rSource);
-		local nodeDefender = ActorManager.getCreatureNode(rTarget);
-		local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender, rAction.sCalledShotLocation);
-		local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender, rWeaponInfo) + getCritSizeBonus(rSource, rTarget);
-		local nSeverity = getSeverityDieRoll(nSizeDifference) + getCritSeverityBonus(rSource, rTarget, rAction);
-		local rCrit = getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity);
-		StateManagerPO.setCritState(rSource, rTarget, rCrit.dmgMultiplier);
-		Debug.console("Crit with weapon: ", rWeaponInfo, "hit location:", rHitLocation, "size difference", nSizeDifference, "severity", nSeverity);
-		return rCrit;
+
+		if PlayerOptionManager.isPOCritEnabled() then
+			return handlePlayersOptionCrit(rRoll, rAction, nDefenseVal, rSource, rTarget);
+		elseif PlayerOptionManager.isHackmasterCritEnabled() then
+			return CritManagerHM.handleCrit(rRoll, rAction, nDefenseVal, rSource, rTarget);
+		end
 	end
 	return nil;
+end
+
+function handlePlayersOptionCrit(rRoll, rAction, nDefenseVal, rSource, rTarget)
+	local rWeaponInfo = getWeaponInfo(rSource);
+	local nodeAttacker = ActorManager.getCreatureNode(rSource);
+	local nodeDefender = ActorManager.getCreatureNode(rTarget);
+	local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender, rAction.sCalledShotLocation);
+	local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender, rWeaponInfo) + getCritSizeBonus(rSource, rTarget);
+	local nSeverity = getSeverityDieRoll(nSizeDifference) + getCritSeverityBonus(rSource, rTarget, rAction);
+	local rCrit = getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity);
+	StateManagerPO.setCritState(rSource, rTarget, rCrit);
+	Debug.console("Crit with weapon: ", rWeaponInfo, "hit location:", rHitLocation, "size difference", nSizeDifference, "severity", nSeverity);
+	return rCrit;
 end
 
 function addCritMessage(rCrit)
@@ -225,4 +238,52 @@ function getSeverityDieRoll(nSizeDifference)
 		nRollResult = 13;
 	end
 	return nRollResult;
+end
+
+function getCritType(sDamageTypes)
+	local sCritType = selectRandomCritDamageType(aDamageTypes);
+	if not sCritType or sCritType == "" then
+		sCritType = "h"; -- couldn't parse anything, so call it hacking.
+	else
+		local sFirstChar = string.sub(sCritType, 1, 1);
+		if sFirstChar == "s" or sFirstChar == "h" then
+			sCritType = "h";
+		elseif sFirstChar == "b" or sFirstChar == "c" then
+			sCritType = "c";
+		elseif sFirstChar == "p" then
+			sCritType = "p"
+		else
+			sCritType = "h"; -- couldn't parse anything, so call it hacking.
+		end
+	end
+	
+	return sCritType;
+end
+
+function getCritEffects(sLocation, nSeverity, sDamageTypes)
+	local sCritType = getCritType(sDamageTypes);
+	if sCritType == "p" then
+		return getPuncturingCrit(sLocation, nSeverity);
+	elseif sCritType == "b" then
+		return getCrushingCrit(sLocation, nSeverity);
+	else	
+		return getHackingCrit(sLocation, nSeverity);
+	end
+end
+
+function calculateBaseSeverity(nAttackerThaco, nTargetAc, nAttackBonus)
+	local nToHitAc15 = nAttackerThaco - 15;
+	return nTargetAc - nToHitAc15 + nAttackBonus;
+end
+
+function getPuncturingCrit(sLocation, nSeverity)
+	return decodeCritEffect(aPuncturingCritMatrix[sLocation][nSeverity], sLocation, nSeverity);
+end
+
+function getCrushingCrit(sLocation, nSeverity)
+	return decodeCritEffect(aCrushingCritMatrix[sLocation][nSeverity], sLocation, nSeverity);
+end
+
+function getHackingCrit(sLocation, nSeverity)
+	return decodeCritEffect(aHackingCritMatrix[sLocation][nSeverity], sLocation, nSeverity);
 end

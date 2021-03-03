@@ -151,7 +151,8 @@ function clearTraumaDamage(nodeChar)
   DB.setValue(nodeChar, "traumadamage", "number", 0);
 end
 
-function setCritState(rSource, rTarget, nDmgMult)
+function setCritState(rSource, rTarget, rCrit)
+
   local sSourceCT = ActorManager.getCreatureNodeName(rSource);
   if sSourceCT == "" then
     return;
@@ -164,7 +165,7 @@ function setCritState(rSource, rTarget, nDmgMult)
   if not aCritState[sSourceCT] then
     aCritState[sSourceCT] = {};
   end
-  table.insert(aCritState[sSourceCT], {["sTargetCT"]=sTargetCT, ["nDmgMult"]=nDmgMult});
+  table.insert(aCritState[sSourceCT], {["sTargetCT"]=sTargetCT, ["nDmgMult"]=rCrit.dmgMultiplier, ["nDmgBonusDie"]=rCrit.dmgBonusDie});
 end
 
 function clearCritState(rSource)
@@ -185,15 +186,15 @@ function hasCritState(rSource, rTarget)
   end
 
   if not aCritState[sSourceCT] then
-    return false, 1;
+    return false, 1, 0;
   end
   
   for k,v in ipairs(aCritState[sSourceCT]) do
     if v.sTargetCT == sTargetCT then
       table.remove(aCritState[sSourceCT], k);
-      return true, v.nDmgMult;
+      return true, v.nDmgMult, v.nDmgBonusDie;
     end
   end
   
-  return false, 1;
+  return false, 1, 0;
 end

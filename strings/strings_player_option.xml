@@ -9,12 +9,17 @@
     <string name="option_val_nat20AndHitBy5">As base, hit by 5</string>
     <string name="option_val_anyNat20">As base ruleset</string>
 	
+    <!-- Additional Automation Options -->
 	<string name="option_header_automation">Additional Automation (GM)</string>
     <string name="option_label_weapontype_vs_armor_mods">Weapon vs Armor to-hit modifiers</string>
 	<string name="option_label_stricter_resistance">Stricter Resistance Rules</string>
 	<string name="option_label_generate_hit_locations">Generate Hit Locations</string>
+    <string name="option_val_hm">Hackmaster</string>
+    <string name="option_val_po">Player's Option</string>
     <string name="option_label_default_pc_init_to_99">Set Unrolled PC Init to 99</string>
     <string name="option_label_ring_bell_on_round_start">Ring Bell On Round Start</string>
+
+
     
     <!-- House Rule Options -->
     <string name="option_header_house_rule">Hackmaster House Rules (GM)</string>
@@ -34,6 +39,8 @@
     <string name="option_label_comeliness">Enable Comeliness</string>
     <string name="option_label_honor">Enable Honor</string>
     <string name="option_label_hackmaster_called_shots">HM Called Shot Modifiers</string>
+    <string name="option_label_hm_critical_hits">Hackmaster Critical Hits</string>
+    <string name="option_label_hm_init">Hackmaster 10-Segment Initiative</string>
 
     <!-- New Properties -->
     <string name="item_label_hp_lost">HP Lost</string>

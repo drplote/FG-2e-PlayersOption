@@ -130,7 +130,6 @@ function resetGroupInits()
 end
 
 function updatePcVsNpcInit()
-      printstack();
     if StateManagerPO.getNpcInit() == 0 or StateManagerPO.getPcInit() == 0 then
         while StateManagerPO.getPcInit() == StateManagerPO.getNpcInit() do
             StateManagerPO.setPcInit(math.random(10));

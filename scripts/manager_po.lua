@@ -17,10 +17,49 @@ sPhasedInitiativeOptionKey = "PlayersOption_PhasedInitiative";
 sAddComeliness = "HouseRule_Comeliness";
 sEnableHonor = "HouseRule_HackmasterHonor";
 sHackmasterCalledShots = "HouseRule_HackmasterCalledShots";
+sHackmasterCritsOptionKey = "HouseRule_HackmasterCrits";
+sHackmasterInitKey = "HouseRule_HackmasterInit";
 
 function onInit()
     registerOptions();
+    OptionsManager.registerCallback(sCritOptionKey, onPlayersOptionCritOptionChanged);
+    OptionsManager.registerCallback(sHackmasterCritsOptionKey, onHackmasterCritOptionChanged);
+    OptionsManager.registerCallback(sHackmasterInitKey, onHackmasterInitOptionChanged);
+    OptionsManager.registerCallback(sPhasedInitiativeOptionKey, onPlayersOptionInitOptionChanged);
+   
+   	updateOldOptionsToNewValues();
+
 end 
+
+function updateOldOptionsToNewValues()
+	if OptionsManager.isOption(sGenerateHitLocationsOptionKey, "on") then
+		OptionsManager.setOption(sGenerateHitLocationsOptionKey, "po");
+	end
+end
+
+function onPlayersOptionCritOptionChanged()
+	if isPOCritEnabled() then
+		OptionsManager.setOption(sHackmasterCritsOptionKey, "off");
+	end
+end
+
+function onHackmasterCritOptionChanged()
+	if isHackmasterCritEnabled() then
+		OptionsManager.setOption(sCritOptionKey, "off");
+	end
+end
+
+function onPlayersOptionInitOptionChanged()
+	if isUsingPhasedInitiative() then
+		OptionsManager.setOption(sHackmasterInitKey, "off");
+	end
+end
+
+function onHackmasterInitOptionChanged()
+	if isUsingHackmasterInitiative() then
+		OptionsManager.setOption(sPhasedInitiativeOptionKey, "off");
+	end
+end
 
 function registerOptions()
     
@@ -33,7 +72,7 @@ function registerOptions()
 	
 	OptionsManager.registerOption2(sStricterResistanceOptionKey, false, "option_header_automation", "option_label_stricter_resistance", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 	
-	OptionsManager.registerOption2(sGenerateHitLocationsOptionKey, false, "option_header_automation", "option_label_generate_hit_locations", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+	OptionsManager.registerOption2(sGenerateHitLocationsOptionKey, false, "option_header_automation", "option_label_generate_hit_locations", "option_entry_cycler",{ labels = "option_val_po|option_val_hm", values = "hm|po", baselabel = "option_val_off", baseval = "off", default = "off" });
 
 	OptionsManager.registerOption2(sDefaultPcInitTo99OptionKey, false, "option_header_automation", "option_label_default_pc_init_to_99", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" })
 
@@ -65,6 +104,10 @@ function registerOptions()
 
 	OptionsManager.registerOption2(sHackmasterCalledShots, false, "option_header_house_rule", "option_label_hackmaster_called_shots", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });        
 
+	OptionsManager.registerOption2(sHackmasterCritsOptionKey, false, "option_header_house_rule", "option_label_hm_critical_hits", "option_entry_cycler",{ labels = "option_val_nat20AndHitBy5|option_val_anyNat20", values = "nat20andHitBy5|anyNat20", baselabel = "option_val_off", baseval = "off", default = "off" });
+
+	OptionsManager.registerOption2(sHackmasterInitKey, false, "option_header_house_rule", "option_label_hm_init", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+
 end
 
 function isHackmasterCalledShotsEnabled()
@@ -81,6 +124,10 @@ end
 
 function isUsingPhasedInitiative()
 	return OptionsManager.isOption(sPhasedInitiativeOptionKey, "on");
+end
+
+function isUsingHackmasterInitiative()
+	return OptionsManager.isOption(sHackmasterInitKey, "on");
 end
 
 function shouldRingBellOnRoundStart()
@@ -127,18 +174,30 @@ function isUsingArmorDamage()
 	return OptionsManager.isOption(sArmorDamageOptionKey, "on");
 end
 
+function isUsingHackmasterCritsRAW()
+	return OptionsManager.isOption(sCritOptionKey, "anyNat20");
+end
+
 function isUsingCombatAndTacticsCritsRAW()
 	return OptionsManager.isOption(sCritOptionKey, "nat18OrBetterAndHitBy5");
 end
 
 function mustCritHitBy5()
 	return OptionsManager.isOption(sCritOptionKey, "nat18OrBetterAndHitBy5") 
-		or OptionsManager.isOption(sCritOptionKey, "nat20andHitBy5");
+		or OptionsManager.isOption(sCritOptionKey, "nat20andHitBy5")
+		or OptionsManager.isOption(sHackmasterCritsOptionKey, "nat20andHitBy5");
 end
 
+function isAnyCritEnabled()
+	return isPOCritEnabled() or isHackmasterCritEnabled();
+end
 
 function isPOCritEnabled()
 	return DataCommonADND.coreVersion == "2e" and not OptionsManager.isOption(sCritOptionKey, "off")
+end
+
+function isHackmasterCritEnabled()
+	return not OptionsManager.isOption(sHackmasterCritsOptionKey, "off");
 end
 
 function isWeaponTypeVsArmorModsEnabled()
@@ -149,8 +208,24 @@ function isStricterResistancesEnabled()
 	return OptionsManager.isOption(sStricterResistanceOptionKey, "on");
 end
 
+function isUsingPlayersOptionHitLocations()
+	if isAnyCritEnabled() then
+		return isPOCritEnabled();
+	else
+		return OptionsManager.isOption(sGenerateHitLocationsOptionKey, "po");
+	end
+end
+
+function isUsingHackmasterHitLocations()
+	if isAnyCritEnabled() then
+		return isHackmasterCritEnabled();
+	else
+		return OptionsManager.isOption(sGenerateHitLocationsOptionKey, "hm");
+	end
+end
+
 function isGenerateHitLocationsEnabled()
-	return OptionsManager.isOption(sGenerateHitLocationsOptionKey, "on");
+	return not OptionsManager.isOption(sGenerateHitLocationsOptionKey, "off");
 end
 
 function isHpKickerEnabled()

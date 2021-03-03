@@ -6,7 +6,7 @@ function isEmpty(s)
 end
 
 
-function contains(set, item)
+function contains(set, item) 
 	for i = 1, #set do
 		if set[i] == item then
 			return true;

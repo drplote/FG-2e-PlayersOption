@@ -19,6 +19,7 @@ aComeliness = {};
 aHonorDice = {};
 aHonorThresholdsByLevel = {};
 aCalledShotModifiers = {};
+aHackmasterCalledShotsRanges = {};
 
 
 function onInit()
@@ -1432,4 +1433,15 @@ function initializeCalledShots()
   aCalledShotModifiers["neck"] = {hitModifier = {[1]=-9, [2]=-8, [3]=-6, [4]=-6, [5]=-4, [6]=-4}, thresholdModifier = 1, severityModifier = 1};
   aCalledShotModifiers["tail"] = {hitModifier = {[1]=-7, [2]=-6, [3]=-5, [4]=-5, [5]=-4, [6]=-3}, thresholdModifier = 1, severityModifier = 0};
   aCalledShotModifiers["torso"] = {hitModifier = {[1]=-6, [2]=-4, [3]=-2, [4]=-2, [5]=-2, [6]=-2}, thresholdModifier = 1, severityModifier = 0};
+
+  aHackmasterCalledShotsRanges["abdomen"] = {low = 2436, high=3155};
+  aHackmasterCalledShotsRanges["arm"] = {low = 3821, high=5836};
+  aHackmasterCalledShotsRanges["eye"] = {low = 9824, high=9903};
+  aHackmasterCalledShotsRanges["groin"] = {low = 2331, high=2435};
+  aHackmasterCalledShotsRanges["hand"] = {low = 5909, high=6220};
+  aHackmasterCalledShotsRanges["head"] = {low = 9374, high=10000};
+  aHackmasterCalledShotsRanges["leg"] = {low = 1, high=2330};
+  aHackmasterCalledShotsRanges["neck"] = {low = 9101, high=9373};
+  aHackmasterCalledShotsRanges["tail"] = {low = 2406, high=2435};
+  aHackmasterCalledShotsRanges["torso"] = {low = 3156, high=3820};
 end
