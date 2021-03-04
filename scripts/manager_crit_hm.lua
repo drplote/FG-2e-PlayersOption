@@ -10,6 +10,7 @@ function onInit()
 	buildCritLocationInfo();		
 end
 
+
 function getCritType(aDamageTypes)
 	Debug.console("manager_crit_hm.lua", "getCritType", "aDamageTypes", aDamageTypes);
 	local sCritType = CritManagerPO.selectRandomCritDamageType(aDamageTypes);
@@ -70,7 +71,9 @@ function handleCrit(rRoll, rAction, nDefenseVal, rSource, rTarget)
 		if bPermanentDamage then
 			sResult = sResult .. "\r[Permanent Penalties: Will not heal normally. 50% of ability reductions, movement penalties, etc. will remain permanently if left to heal naturally. If cured by magic, 25% will remain permanently. A Cure Critical Wounds spell can cure one critical injury per application if the wound has not been healed by another method and one week has not transpired. See other Cleric spells for other healing possibilities.]"
 		end
-		sResult = sResult .. "\r[Bruised: 20 - Con days (minimum 1). If injured in same location again before healed, suffer +1 damage per injury.]"; 
+		local nConstitution = ActorManagerPO.getConstitution(rTarget);
+		local nBruiseDays = math.max(1, 20 - nConstitution);
+		sResult = sResult .. "\r[Bruised: " .. nBruiseDays .. " days. If injured in same location again before healed, suffer +1 damage per injury.]"; 
 		if nSeverity > 5 then
 			sResult = sResult .. "\r[Unable to follow-through damage until wound healed]";
 		end
@@ -83,7 +86,7 @@ function handleCrit(rRoll, rAction, nDefenseVal, rSource, rTarget)
 		
 		local rCritEffect = getCritEffects(rHitLocation.desc, nSeverity, rRoll.aDamageTypes);		
 
-		sResult = sResult .. "\r" .. decodeCritEffect(rCritEffect, rHitLocation.desc, nSeverity);
+		sResult = sResult .. "\r" .. decodeCritEffect(rCritEffect, rHitLocation.desc, nSeverity, rTarget);
 
 		rCrit.sDamageType = rCritEffect.sDamageType;
 		if rCritEffect.dm then 
@@ -140,15 +143,15 @@ function getHackingCrit(sLocation, nSeverity)
 	return aHackingCritMatrix[sLocation][nSeverity];
 end
 
-function decodeCritEffect(rCritEffect, sLocation, nSeverity)
+function decodeCritEffect(rCritEffect, sLocation, nSeverity, rTarget)
 	local rLocation = getLocation(sLocation);
 	local aEffects = {};
 	
 	if rCritEffect.db then
-		decodeDamageBonus(aEffects, rCritEffect.db, rLocation);
+		decodeDamageBonus(aEffects, rCritEffect.db, rLocation, rTarget);
 	end
 	if rCritEffect.dm then
-		decodeDamageMultiplier(aEffects, rCritEffect.dm, rLocation);
+		decodeDamageMultiplier(aEffects, rCritEffect.dm, rLocation, rTarget);
 	end
 	if rCritEffect.m then
 		decodeMovement(aEffects, rCritEffect.m);
@@ -181,31 +184,31 @@ function decodeCritEffect(rCritEffect, sLocation, nSeverity)
 		decodeParalyzation(aEffects, nSeverity, rLocation);
 	end
 	if rCritEffect.pb then
-		decodeProfuseBleeding(aEffects);
+		decodeProfuseBleeding(aEffects, rTarget);
 	end
 	if rCritEffect.v then
-		decodeVitalOrgan(aEffects, rCritEffect.v, nSeverity, rLocation);
+		decodeVitalOrgan(aEffects, rCritEffect.v, nSeverity, rLocation, rTarget);
 	end
 	if rCritEffect.h then
 		decodeTemporalHonorLoss(aEffects, rCritEffect.h);
 	end
 	if rCritEffect.mt then
-		decodeMuscleTear(aEffects, rCritEffect.mt, nSeverity, rLocation);
+		decodeMuscleTear(aEffects, rCritEffect.mt, nSeverity, rLocation, rTarget);
 	end
 	if rCritEffect.b then
-		decodeBrokenBone(aEffects, 0, rCritEffect.b, nSeverity, rLocation);
+		decodeBrokenBone(aEffects, 0, rCritEffect.b, nSeverity, rLocation, rTarget);
 	end
 	if rCritEffect.tl then
-		decodeTornLigaments(aEffects, rCritEffect.tl, nSeverity, rLocation);
+		decodeTornLigaments(aEffects, rCritEffect.tl, nSeverity, rLocation, rTarget);
 	end
 	if rCritEffect.bf then
-		decodeBrokenBone(aEffects, 1, rCritEffect.bf, nSeverity, rLocation);
+		decodeBrokenBone(aEffects, 1, rCritEffect.bf, nSeverity, rLocation, rTarget);
 	end
 	if rCritEffect.bm then
-		decodeBrokenBone(aEffects, 2, rCritEffect.bm, nSeverity, rLocation);
+		decodeBrokenBone(aEffects, 2, rCritEffect.bm, nSeverity, rLocation, rTarget);
 	end
 	if rCritEffect.bs then
-		decodeBrokenBone(aEffects, 3, rCritEffect.bs, nSeverity, rLocation);
+		decodeBrokenBone(aEffects, 3, rCritEffect.bs, nSeverity, rLocation, rTarget);
 	end
 	if rCritEffect.ib then
 		decodeInternalBleeding(aEffects);
@@ -214,7 +217,7 @@ function decodeCritEffect(rCritEffect, sLocation, nSeverity)
 		decodeUnconscious(aEffects);
 	end
 	if rCritEffect.ls then
-		decodeLimbSevered(aEffects, rLocation);
+		decodeLimbSevered(aEffects, rLocation, rTarget);
 	end
 	if rCritEffect.dead then
 		decodeDead(aEffects, rCritEffect.dead);
@@ -309,18 +312,20 @@ function decodeParalyzation(aEffects, nSeverity, rLocation)
 	table.insert(aEffects, sMsg);
 end
 
-function decodeProfuseBleeding(aEffects)
-	table.insert(aEffects, "Profuse bleeding! Will bleed to death in half Constitution (rounded down) rounds unless the wound has been treated by a successful first aid-related skill check or any cure spell that heals half the wound's HPs in damage, or one Cure Critical Wounds or better spell. Severed limbs may be cauterized by applying open flame for one round (1d4 damage)");
+function decodeProfuseBleeding(aEffects, rTarget)
+	local nConstitution = ActorManagerPO.getConstitution(rTarget);
+	local nHalfCon = math.max(1, math.floor(nConstitution/2));
+	table.insert(aEffects, "Profuse bleeding! Will bleed to death in ".. nHalfCon .. " rounds unless the wound has been treated by a successful first aid-related skill check or any cure spell that heals half the wound's HPs in damage, or one Cure Critical Wounds or better spell. Severed limbs may be cauterized by applying open flame for one round (1d4 damage)");
 end
 
-function decodeVitalOrgan(aEffects, nIndex, nSeverity, rLocation)
+function decodeVitalOrgan(aEffects, nIndex, nSeverity, rLocation, rTarget)
 	local sVitalOrganDamage, bWasHit = rollVitalOrganDamage(rLocation, nIndex);
 	table.insert(aEffects, sVitalOrganDamage);
 	if bWasHit then
 		decodeWeaponDrop(aEffects);
 		decodeInternalBleeding(aEffects);
 		if math.random(1, 100) <= 3 * nSeverity then
-			decodeProfuseBleeding(aEffects);
+			decodeProfuseBleeding(aEffects, rTarget);
 		end
 		if rLocation.isHead or rLocation.isSpine then
 			decodeParalyzation(aEffects, nSeverity, rLocation);
@@ -334,19 +339,19 @@ function decodeTemporalHonorLoss(aEffects, nValue)
 	table.insert(aEffects, "Lose " .. nLoss .. "% of his temporal honor. Only affects males.");
 end
 
-function decodeMuscleTear(aEffects, nIndex, nSeverity, rLocation)
-
-	table.insert(aEffects, "Muscle Tear (" .. getMuscle(rLocation, nIndex) .. ")! These wounds heal naturally at half normal rate. Any Dexterity and Strength reductions from this crit last for 20 - Constitution days, then are reduced by half for like periods until reduce to zero. This lasting effect occurs regardless of whether the wounds have been healed fully by spells. A Cure Critical Wounds spell or better will eliminate all ill effects instantly.");
+function decodeMuscleTear(aEffects, nIndex, nSeverity, rLocation, rTarget)
+	local nDays = math.max(1, 20 - ActorManagerPO.getConstitution(rTarget));
+	table.insert(aEffects, "Muscle Tear (" .. getMuscle(rLocation, nIndex) .. ")! These wounds heal naturally at half normal rate. Any Dexterity and Strength reductions from this crit last for " .. nDays .. " days, then are reduced by half for like periods until reduce to zero. This lasting effect occurs regardless of whether the wounds have been healed fully by spells. A Cure Critical Wounds spell or better will eliminate all ill effects instantly.");
 	if rLocation.isArm then 
 		decodeWeaponDrop(aEffects, true);
 	end
 	if math.random(1, 100) <= 3 * nSeverity then
-		decodeProfuseBleeding(aEffects);
+		decodeProfuseBleeding(aEffects, rTarget);
 	end
 end
 
 -- nFracture = 0 normal broken, 1 = compound fracture, 2 = multiple fracture, 3 = bone shatter
-function decodeBrokenBone(aEffects, nFracture, nIndex, nSeverity, rLocation) 
+function decodeBrokenBone(aEffects, nFracture, nIndex, nSeverity, rLocation, rTarget) 
 	local sBone = getBone(rLocation, nIndex);
 
 	local sHealRate = "onetenth";
@@ -374,7 +379,7 @@ function decodeBrokenBone(aEffects, nFracture, nIndex, nSeverity, rLocation)
 	end
 	if rLocation.isTorso then
 		if math.random(1, 100) <= nExtraEffectChance then
-			decodeProfuseBleeding(aEffects);
+			decodeProfuseBleeding(aEffects, rTarget);
 		end
 		if math.random(1, 100) <= nExtraEffectChance then
 			decodeInternalBleeding(aEffects);
@@ -382,7 +387,7 @@ function decodeBrokenBone(aEffects, nFracture, nIndex, nSeverity, rLocation)
 	end
 end
 
-function decodeTornLigaments(aEffects, nIndex, nSeverity, rLocation)
+function decodeTornLigaments(aEffects, nIndex, nSeverity, rLocation, rTarget)
 	
 	table.insert("Torn ligament or tendon (" .. getMuscle(rLocation, nIndex) .. ")! Unless the appropriate body part is isolated prior to healing, even magical healing, will heal incorrectly or incompletely, giving rise to lasting limps, obvious lumps, etc. In this case, half of any associated movement and/or ability score penalties will become permanent. A Cure Critical Wounds spell or better will eliminate all ill effects instantly.");
 	
@@ -397,7 +402,7 @@ function decodeTornLigaments(aEffects, nIndex, nSeverity, rLocation)
 	end
 	
 	if math.random(1, 100) <= 30 then
-		decodeProfuseBleeding(aEffects);
+		decodeProfuseBleeding(aEffects, rTarget);
 	end
 end
 
@@ -409,11 +414,11 @@ function decodeUnconscious(aEffects)
 	table.insert(aEffects, "Falls to the ground unconscious. Remains in a coma until the hit points suffered from this wound are healed (naturally or magically)");
 end
 
-function decodeLimbSevered(aEffects, rLocation)
+function decodeLimbSevered(aEffects, rLocation, rTarget)
 	table.insert(aEffects, "Limb severed! The stump can be cured by magical means or through natural healing at one third the normal rate. Regeneration, Reattach Limb, or the like needed to recover the limb.");
 	
 	if not rLocation.isDigit then
-		decodeProfuseBleeding(aEffects);
+		decodeProfuseBleeding(aEffects, rTarget);
 	end
 end
 
@@ -456,26 +461,27 @@ function decodeMovement(aEffects, nValue)
 	table.insert(aEffects, sMsg);
 end
 
-function decodeMaxDamageBonus(rLocation)
+function decodeMaxDamageBonus(rLocation, rTarget)
 	if rLocation.dam == 1.0 then	
 		return ""; -- No point in saying the bonus damage can't exceed 100% of their hp.
 	else
-		-- TODO: Eventually change this have it calculate this based on target rather than telling the player to figure it out.
+		local nMaxHp = ActorManagerPO.getMaxHp(rTarget);
+		local nAffectedHp = math.floor(nMaxHp * rLocation.dam);
+
 		if rLocation.isDigit then
-			return "Bonus damage may not exceed " .. rLocation.dam * 100 .. "% of health. If body part takes max damage, it is severed or destroyed";
+			return "If bonus damage exceeds " .. rLocation.dam * 100 .. "% of health (" .. nAffectedHp .. "), affected body part is severed or destroyed.";
 		else
-			-- TODO: Once we calculate if it was destroyed, this could cause profuse bleeding
-			return "Bonus damage may not exceed " .. rLocation.dam * 100 .. "% of health. If body part takes max damage, it is severed or destroyed";
+			return "If bonus damage exceeds " .. rLocation.dam * 100 .. "% of health (" .. nAffectedHp .. "), affected body part is severed or destroyed.";
 		end
 	end
 end
 
-function decodeDamageBonus(aEffects, nDieType, rLocation)
-	table.insert(aEffects, "Damage Bonus: (d" .. nDieType .. ") " .. decodeMaxDamageBonus(rLocation));
+function decodeDamageBonus(aEffects, nDieType, rLocation, rTarget)
+	table.insert(aEffects, "Damage Bonus: (d" .. nDieType .. ") " .. decodeMaxDamageBonus(rLocation, rTarget));
 end
 
-function decodeDamageMultiplier(aEffects, nMultiplier, rLocation)
-	table.insert(aEffects, "Damage Multiplier: (x" .. nMultiplier .. ") " .. decodeMaxDamageBonus(rLocation));
+function decodeDamageMultiplier(aEffects, nMultiplier, rLocation, rTarget)
+	table.insert(aEffects, "Damage Multiplier: (x" .. nMultiplier .. ") " .. decodeMaxDamageBonus(rLocation, rTarget));
 end
 
 function toCsv(tt)

@@ -211,8 +211,8 @@ function getMishapResult(nRollValue)
 	elseif nRollValue < 7186 then sResult = "Gains " .. CharBackgroundManagerPO.getMajorPhysicalFlaw() .. " for " .. getMishapDuration();
 	elseif nRollValue < 7276 then sResult = "Gains " .. CharBackgroundManagerPO.getMajorPhysicalFlaw() .. " permanently";
 	elseif nRollValue < 7296 then sResult = "Immediate alignment audit";
-	elseif nRollValue < 7306 then sResult = "Summon hostile monsters"; -- TODO, MS1
-	elseif nRollValue < 7315 then sResult = "Summon hostile monsters"; -- TODO, ms2
+	elseif nRollValue < 7306 then sResult = "Summon hostile monsters (MS1)"; -- TODO, MS1
+	elseif nRollValue < 7315 then sResult = "Summon hostile monsters (MS2)"; -- TODO, ms2
 	elseif nRollValue < 7357 then sResult = "Struck by Lightning Bolt from above";
 	elseif nRollValue < 7369 then sResult = "Switch gender for " .. getMishapDuration();
 	elseif nRollValue < 7384 then sResult = "Change race to " .. CharBackgroundManagerPO.getRandomRace() .. " for " .. getMishapDuration();
@@ -225,14 +225,14 @@ function getMishapResult(nRollValue)
 	elseif nRollValue < 7556 then sResult = "Lose one talent temporarily";
 	elseif nRollValue < 7560 then sResult = "Lose two talents temporarily";
 	elseif nRollValue < 7580 then sResult = "Suffer " .. DiceManagerPO.getDamageRoll(3, 6) .. " points of damage";
-	elseif nRollValue < 7588 then sResult = "Summon hostile monsters"; -- TODO: ms3
+	elseif nRollValue < 7588 then sResult = "Summon hostile monsters (MS3)"; -- TODO: ms3
 	elseif nRollValue < 7608 then sResult = "Lower temperature 10 degrees in a 5-foot radius";
 	elseif nRollValue < 7618 then sResult = "Lower temperature 25 degrees in a 5-foot radius";
 	elseif nRollValue < 7623 then sResult = "Lower temperature 50 degrees in a 5-foot radius";
 	elseif nRollValue < 7643 then sResult = "Raise temperature 10 degrees in a 5-foot radius";
 	elseif nRollValue < 7653 then sResult = "Raise temperature 25 degrees in a 5-foot radius";
 	elseif nRollValue < 7658 then sResult = "Raise temperature 50 degrees in a 5-foot radius";
-	elseif nRollValue < 7665 then sResult = "Summon hostile monsters"; -- TODO ms4
+	elseif nRollValue < 7665 then sResult = "Summon hostile monsters (MS4)"; -- TODO ms4
 	elseif nRollValue < 7685 then sResult = "Lose one class-specific ability for " .. getMishapDuration();
 	elseif nRollValue < 7690 then sResult = "Lose two class-specific abilities for " .. getMishapDuration();
 	elseif nRollValue < 7696 then sResult = "Sibling (or parents) contracts the flu";
@@ -247,7 +247,7 @@ function getMishapResult(nRollValue)
 	elseif nRollValue < 7843 then sResult = "Hatred of one gender (" .. CharBackgroundManagerPO.getGender() .. ")";
 	elseif nRollValue < 7857 then sResult = "-2 to-hit for " .. getMishapDuration();
 	elseif nRollValue < 7881 then sResult = "-1 to all rolls for " .. getMishapDuration();
-	elseif nRollValue < 7887 then sResult = "Summon hostile monsters"; -- TODO: MS5
+	elseif nRollValue < 7887 then sResult = "Summon hostile monsters (MS5)"; -- TODO: MS5
 	elseif nRollValue < 7896 then sResult = "Suffer permanent loss of 2 hp";
 	elseif nRollValue < 7901 then sResult = "Switdh gender permanently";
 	elseif nRollValue < 7903 then sResult = "Sibling (or parent) contracts malaria";
@@ -284,8 +284,8 @@ function getMishapResult(nRollValue)
 	elseif nRollValue < 8736 then sResult = "Lose 2 pointsfrom each ability score for " .. getMishapDuration();
 	elseif nRollValue < 8743 then sResult = "Permanent -2 to-hit";
 	elseif nRollValue < 8793 then sResult = "All memorized spells go off simultaneously";
-	elseif nRollValue < 8798 then sResult = "Summon hostile monsters"; -- MS6, TODO
-	elseif nRollValue < 8802 then sResult = "Summon hostile monsters"; -- MS7, todo
+	elseif nRollValue < 8798 then sResult = "Summon hostile monsters (MS6)"; -- MS6, TODO
+	elseif nRollValue < 8802 then sResult = "Summon hostile monsters (MS7)"; -- MS7, todo
 	elseif nRollValue < 8809 then sResult = "Lose sense of touch in fingers permanently (x3 casting time, -4 to hit)";
 	elseif nRollValue < 8814 then sResult = CharBackgroundManagerPO.getBodySide() .. " arm goes permanently numb, becoming useless";
 	elseif nRollValue < 8821 then sResult = CharBackgroundManagerPO.getBodySide() .. " leg goes permanently numb, becoming useless";

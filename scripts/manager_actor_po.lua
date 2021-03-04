@@ -1,6 +1,25 @@
 function onInit()
 end
 
+function getConstitution(rChar)
+  local nodeActor = getNode(rChar);
+  local nCon = DB.getValue(nodeActor, "abilities.constitution.total", DB.getValue(nodeActor, "abilities.constitution.score", 0));
+  return nCon;
+end
+
+function getMaxHp(rChar)
+  local sType, nodeActor = ActorManager.getTypeAndNode(rChar);
+  local nMaxHp = 0;
+  
+  if sType == "pc" then
+    nMaxHp = DB.getValue(nodeActor, "hp.total", 0);
+  else
+    nMaxHp = DB.getValue(nodeActor, "hptotal", 0);
+  end
+  Debug.console("manager_actor_po.getMaxHp", "nMaxHp", nMaxHp);
+  return nMaxHp;
+end
+
 function getNode(rChar)
   return ActorManager.getCreatureNode(rChar);
 end

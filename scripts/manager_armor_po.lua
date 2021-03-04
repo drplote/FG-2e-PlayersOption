@@ -312,7 +312,6 @@ function getBulkOfWornArmor(nodeChar)
     for _,vNode in pairs(CharManagerPO.getEquippedItems(nodeChar)) do
         if isSuitOfArmor(vNode) then
             local sProperties = getProperties(vNode):lower();
-            -- TODO: this parsing could be better
             local nThisArmorBulk = 0;
             if string.find(sProperties, "bulky") then
                 nThisArmorBulk = 2;

@@ -93,7 +93,6 @@ end
 
 function detailsUpdateOverride(nodeChar)
     fDetailsUpdate(nodeChar);
-    -- TODO: check for COM stat option
     local nBase =       DB.getValue(nodeChar, "abilities.comeliness.base",9);
     local nBaseMod =    DB.getValue(nodeChar, "abilities.comeliness.basemod",0);
     local nAdjustment = DB.getValue(nodeChar, "abilities.comeliness.adjustment",0);
@@ -123,7 +122,6 @@ end
 
 function detailsPercentUpdateOverride(nodeChar)
     fDetailsPercentUpdate(nodeChar);
-    -- TODO: check for COM option
     local nBase =       DB.getValue(nodeChar, "abilities.comeliness.percentbase",0);
     local nBaseMod =    DB.getValue(nodeChar, "abilities.comeliness.percentbasemod",0);
     local nAdjustment = DB.getValue(nodeChar, "abilities.comeliness.percentadjustment",0);
