@@ -41,6 +41,10 @@
     <string name="option_label_hackmaster_called_shots">HM Called Shot Modifiers</string>
     <string name="option_label_hm_critical_hits">Hackmaster Critical Hits</string>
     <string name="option_label_hm_init">Hackmaster 10-Segment Initiative</string>
+    <string name="option_label_magic_armor_damage">What can hurt magic armor (if using armor damage?)</string>
+    <string name="option_val_equal_magic">Equivalent magic</string>
+    <string name="option_val_penetration">Penetration</string>
+    <string name="option_val_both">Both</string>
 
     <!-- New Properties -->
     <string name="item_label_hp_lost">HP Lost</string>

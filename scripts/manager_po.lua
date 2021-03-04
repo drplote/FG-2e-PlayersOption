@@ -19,6 +19,7 @@ sEnableHonor = "HouseRule_HackmasterHonor";
 sHackmasterCalledShots = "HouseRule_HackmasterCalledShots";
 sHackmasterCritsOptionKey = "HouseRule_HackmasterCrits";
 sHackmasterInitKey = "HouseRule_HackmasterInit";
+sMagicArmorDamageOptionKey = "HouseRule_MagicArmorDamage";
 
 function onInit()
     registerOptions();
@@ -108,6 +109,18 @@ function registerOptions()
 
 	OptionsManager.registerOption2(sHackmasterInitKey, false, "option_header_house_rule", "option_label_hm_init", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 
+	OptionsManager.registerOption2(sMagicArmorDamageOptionKey, false, "option_header_house_rule", "option_label_magic_armor_damage", "option_entry_cycler",{ labels = "option_val_equal_magic|option_val_penetration|option_val_both", values = "magic|penetration|both", baselabel = "option_val_off", baseval = "off", default = "off" });
+
+end
+
+function isMagicArmorDamagedByPenetration()
+	return OptionsManager.isOption(sMagicArmorDamageOptionKey, "penetration")
+		or OptionsManager.isOption(sMagicArmorDamageOptionKey, "both");
+end
+
+function isMagicArmorDamagedByEqualMagic()
+	return OptionsManager.isOption(sMagicArmorDamageOptionKey, "magic")
+		or OptionsManager.isOption(sMagicArmorDamageOptionKey, "both");
 end
 
 function isHackmasterCalledShotsEnabled()

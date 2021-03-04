@@ -40,7 +40,7 @@ function getDefaultArmorHpChart(nodeArmor)
     return {};
 end
 
-function canArmorSoakDamageDamageType(aDmgTypes)
+function canArmorSoakDamageType(aDmgTypes)
     if not aDmgTypes or #aDmgTypes == 0 then
         return true;
     else
@@ -50,7 +50,7 @@ function canArmorSoakDamageDamageType(aDmgTypes)
 end
 
 function getDamageReduction(nodeArmor, aDmgTypes)
-    if not canArmorSoakDamageDamageType(aDmgTypes) then
+    if not canArmorSoakDamageType(aDmgTypes) then
         return 0;
     end
     local sProperties = getProperties(nodeArmor);
@@ -91,6 +91,7 @@ end
 
 function canDamageTypeHurtArmor(aDmgTypes, nodeArmor)
     local nBonus = getPotency(nodeArmor);
+
     local aImmunities = DataManagerPO.parseArmorDamageImmunitiesFromProperties(getProperties(nodeArmor));
     if nBonus <= 0 then
         local aIgnoredDamageTypes = {"poison", "psychic"};
@@ -104,12 +105,15 @@ function canDamageTypeHurtArmor(aDmgTypes, nodeArmor)
     else
        
         local aDamagingTypes = {"acid","cold","fire","force","lightning","necrotic","radiant","thunder"};
-        if nBonus <= 6 then table.insert(aDamagingTypes, "magic +6"); end
-        if nBonus <= 5 then table.insert(aDamagingTypes, "magic +5"); end
-        if nBonus <= 4 then table.insert(aDamagingTypes, "magic +4"); end
-        if nBonus <= 3 then table.insert(aDamagingTypes, "magic +3"); end
-        if nBonus <= 2 then table.insert(aDamagingTypes, "magic +2"); end
-        if nBonus <= 1 then table.insert(aDamagingTypes, "magic +1"); table.insert(aDamagingTypes, "magic"); end
+
+        if PlayerOptionManager.isMagicArmorDamagedByEqualMagic() then 
+            if nBonus <= 6 then table.insert(aDamagingTypes, "magic +6"); end
+            if nBonus <= 5 then table.insert(aDamagingTypes, "magic +5"); end
+            if nBonus <= 4 then table.insert(aDamagingTypes, "magic +4"); end
+            if nBonus <= 3 then table.insert(aDamagingTypes, "magic +3"); end
+            if nBonus <= 2 then table.insert(aDamagingTypes, "magic +2"); end
+            if nBonus <= 1 then table.insert(aDamagingTypes, "magic +1"); table.insert(aDamagingTypes, "magic"); end
+        end
 
 
         aDamagingTypes = UtilityPO.removeIntersecting(aDamagingTypes, aImmunities); 

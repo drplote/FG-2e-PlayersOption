@@ -199,12 +199,17 @@ function toCommaSepartedString(tt)
 	return string.sub(s, 2);
 end
 
-function totalPenetrationDamage(rRolls)
-	local lDamage = 0;
-	for _, rRoll in ipairs(rRolls) do
-		lDamage = lDamage + rRoll - 1;
+function getPenetrationTotal(aDice)
+	local nTotal = 0;
+	for _, vDie in pairs(aDice) do
+		if vDie.penetrationRolls then
+			for _, nRoll in ipairs(vDie.penetrationRolls) do
+				nTotal = nTotal + nRoll - 1;
+			end
+		end
 	end
-	return lDamage;
+
+	return nTotal;
 end
 
 
@@ -329,6 +334,30 @@ function getNumOriginalDice(aDice)
 		end
 	end
 	return nNumDice;
+end
+
+function getNumPenetrationDice(aDice)
+	if not aDice then return 0; end
+
+	return #aDice - getNumOriginalDice(aDice);
+end
+
+function getNumOriginalDiceThatPenetrated(aDice)
+	if not aDice then
+		return 0;
+	end
+
+	local nNumOriginalPenetrations = 0;
+	local nNumOriginalDice = getNumOriginalDice(aDice);
+	Debug.console("nNumOriginalDice", nNumOriginalDice);
+	local nIterator = 0;
+	for _, vDie in pairs(aDice) do
+		nIterator = nIterator + 1;
+		if nIterator <= nNumOriginalDice and vDie.penetrationRolls then
+			nNumOriginalPenetrations = nNumOriginalPenetrations + 1;
+		end
+	end
+	return nNumOriginalPenetrations;
 end
 
 -- penetration means if you roll max on the die (or also max -1 for penPlus), you roll again and subtract 1

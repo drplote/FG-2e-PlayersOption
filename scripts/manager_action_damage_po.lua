@@ -215,7 +215,7 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
       nTotal = math.max(math.floor(nTotal / 2), 1);
     end
 
-    nTotal = handleShieldAbsorb(rSource, rTarget, rDamageOutput, nTotal);
+    nTotal = handleShieldAbsorb(rSource, rTarget, rDamageOutput, nTotal, aDice);
     
     -- Apply damage type adjustments
     local nDamageAdjust, bVulnerable, bResist, bAbsorb, nDamageDice = ActionDamage.getDamageAdjust(rSource, rTarget, nTotal, rDamageOutput, aDice);
@@ -460,7 +460,7 @@ function checkThresholdOfPain(rTarget, nAdjustedDamage, nTotalHP, aNotifications
     end
 end
 
-function handleShieldAbsorb(rSource, rTarget, rDamageOutput, nTotal)
+function handleShieldAbsorb(rSource, rTarget, rDamageOutput, nTotal, aDice)
 	if not PlayerOptionManager.isUsingArmorDamage() then return nTotal; end;
 
 	if StateManagerPO.hasShieldHitState(rSource, rTarget) or Input.isAltPressed() then
@@ -497,6 +497,10 @@ function handleShieldAbsorb(rSource, rTarget, rDamageOutput, nTotal)
 			
 			if ArmorManagerPO.canDamageTypeHurtArmor(aSrcDmgClauseTypes, nodeShield) then
 				ArmorManagerPO.damageArmor(nodeShield, nShieldDamageTaken);
+      elseif PlayerOptionManager.isMagicArmorDamagedByPenetration() then
+        local nPenetrationDamage = math.min(nDamageSoaked, DiceManagerPO.getPenetrationTotal(aDice));
+        nShieldDamageTaken = math.floor(nPenetrationDamage/nDamageSoakedPerPointTaken);
+        ArmorManagerPO.damageArmor(nodeShield, nShieldDamageTaken);
 			else	
 				nShieldDamageTaken = 0;
 			end
@@ -674,7 +678,10 @@ function handleArmorDamageAbsorb(rTarget, aDice, aSrcDmgClauseTypes, nDamageToAb
 		local nArmorDamageTaken = nDamageSoaked;
 		if ArmorManagerPO.canDamageTypeHurtArmor(aSrcDmgClauseTypes, nodeArmor) then
 			ArmorManagerPO.damageArmor(nodeArmor, nDamageSoaked);
-		else	
+		elseif PlayerOptionManager.isMagicArmorDamagedByPenetration() then
+      nArmorDamageTaken = math.min(nDamageSoaked, DiceManagerPO.getNumOriginalDiceThatPenetrated(aDice));
+      ArmorManagerPO.damageArmor(nodeArmor, nArmorDamageTaken);
+    else
 			nArmorDamageTaken = 0;
 		end
 		
