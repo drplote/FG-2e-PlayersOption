@@ -315,7 +315,13 @@ end
 function decodeProfuseBleeding(aEffects, rTarget)
 	local nConstitution = ActorManagerPO.getConstitution(rTarget);
 	local nHalfCon = math.max(1, math.floor(nConstitution/2));
-	table.insert(aEffects, "Profuse bleeding! Will bleed to death in ".. nHalfCon .. " rounds unless the wound has been treated by a successful first aid-related skill check or any cure spell that heals half the wound's HPs in damage, or one Cure Critical Wounds or better spell. Severed limbs may be cauterized by applying open flame for one round (1d4 damage)");
+	table.insert(aEffects, createProfuseBleedingMessage(rTarget));
+end
+
+function createProfuseBleedingMessage(rTarget)
+	local nConstitution = ActorManagerPO.getConstitution(rTarget);
+	local nHalfCon = math.max(1, math.floor(nConstitution/2));
+	return "Profuse bleeding! Will bleed to death in ".. nHalfCon .. " rounds unless the wound has been treated by a successful first aid-related skill check or any cure spell that heals half the wound's HPs in damage, or one Cure Critical Wounds or better spell. Severed limbs may be cauterized by applying open flame for one round (1d4 damage)";
 end
 
 function decodeVitalOrgan(aEffects, nIndex, nSeverity, rLocation, rTarget)
@@ -471,7 +477,8 @@ function decodeMaxDamageBonus(rLocation, rTarget)
 		if rLocation.isDigit then
 			return "If bonus damage exceeds " .. rLocation.dam * 100 .. "% of health (" .. nAffectedHp .. "), affected body part is severed or destroyed.";
 		else
-			return "If bonus damage exceeds " .. rLocation.dam * 100 .. "% of health (" .. nAffectedHp .. "), affected body part is severed or destroyed.";
+			-- TODO: Once we calculate if it was severed, this could cause profuse bleeding
+			return "If bonus damage exceeds " .. rLocation.dam * 100 .. "% of health (" .. nAffectedHp .. "), affected body part is severed or destroyed. If severed, will cause " .. createProfuseBleedingMessage(rTarget);
 		end
 	end
 end
