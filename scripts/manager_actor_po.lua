@@ -411,6 +411,11 @@ end
 function canBeAffectedByFatigue(nodeActor)
   if not nodeActor then return false; end
 
+  local sSpecialDefenses = DB.getValue(nodeActor, "specialDefense", ""):lower();
+  if sSpecialAttacks:find("nofatigue")  then
+    return false;
+  end
+
   local sType = DB.getValue(nodeActor, "type", ""):lower();
   if sType:find("undead") then
     return false;
@@ -424,6 +429,11 @@ function canBeAffectedByThresholdOfPain(rActor)
 
   local nodeActor = getNode(rActor);
   if not nodeActor then return false; end
+
+  local sSpecialDefenses = DB.getValue(nodeActor, "specialDefense", ""):lower();
+  if sSpecialAttacks:find("notop") or sSpecialAttacks:find("nothreshold") then
+    return false;
+  end
 
   local sType = DB.getValue(nodeActor, "type", ""):lower();
   if sType:find("undead") then
@@ -456,3 +466,4 @@ function addItem(nodeActor, nodeItem)
   DB.copyNode(nodeItem, nodeNewItem);
   DB.setValue(nodeNewItem, "carried", "number", 2);
 end
+

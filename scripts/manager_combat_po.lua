@@ -645,6 +645,7 @@ function addBattleOverride(nodeBattle)
                 end
             end
           end -- for items
+          CharManager.calcItemArmorClass(nodeEntry);
         end -- end itemlist
 
         ---- end custom stuff for 2E ruleset encounter spawns
