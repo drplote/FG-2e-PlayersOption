@@ -505,6 +505,10 @@ function handleShieldAbsorb(rSource, rTarget, rDamageOutput, nTotal, aDice)
 				nShieldDamageTaken = 0;
 			end
 
+      if sTargetType ~= 'pc' then
+        CharManager.calcItemArmorClass(nodeTarget);
+      end
+
 			displayArmorDamageMessages(nodeTarget, nodeShield, nDamageSoaked, nShieldDamageTaken);
 		end
 	end
@@ -684,6 +688,11 @@ function handleArmorDamageAbsorb(rTarget, aDice, aSrcDmgClauseTypes, nDamageToAb
     else
 			nArmorDamageTaken = 0;
 		end
+
+    if sTargetType ~= 'pc' then
+      CharManager.calcItemArmorClass(nodeTarget);
+    end
+
 		
 		displayArmorDamageMessages(nodeTarget, nodeArmor, nDamageSoaked, nArmorDamageTaken);
 	end	

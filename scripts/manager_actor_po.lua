@@ -412,7 +412,7 @@ function canBeAffectedByFatigue(nodeActor)
   if not nodeActor then return false; end
 
   local sSpecialDefenses = DB.getValue(nodeActor, "specialDefense", ""):lower();
-  if sSpecialAttacks:find("nofatigue")  then
+  if sSpecialDefenses:find("nofatigue")  then
     return false;
   end
 
@@ -431,7 +431,7 @@ function canBeAffectedByThresholdOfPain(rActor)
   if not nodeActor then return false; end
 
   local sSpecialDefenses = DB.getValue(nodeActor, "specialDefense", ""):lower();
-  if sSpecialAttacks:find("notop") or sSpecialAttacks:find("nothreshold") then
+  if sSpecialDefenses:find("notop") or sSpecialDefenses:find("nothreshold") then
     return false;
   end
 
