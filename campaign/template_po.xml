@@ -7,6 +7,51 @@
 
 <root>
 
+  <template name="label_encounter_itemlist">
+    <label  >
+      <anchored>
+        <top parent="weapons" anchor="bottom" offset="5" />
+        <left offset="5"/>
+      </anchored>
+      <static textres="label_encounter_items" />
+      <tooltip textres="label_encounter_weapons_tooltip" />
+    </label>
+  </template>
+
+  <template name="number_encounter_items">
+    <stringu>
+      <script>
+        function onDrop(x, y, draginfo)
+          if draginfo.isType("shortcut") then
+            local nodeTarget = getDatabaseNode().getChild("....");
+            local bLocked = (DB.getValue(nodeTarget,"locked",0) == 1);
+            if not bLocked then 
+              local nodeSource = draginfo.getDatabaseNode();
+              local sClass, sRecord = draginfo.getShortcutData();
+              if sClass == 'item' or ItemManager2.isRefBaseItemClass(sClass) then 
+                local sName = DB.getValue(nodeSource,"name","");
+                local sCurrentText = getValue() or "";
+                if not sCurrentText:match(";%s?$") and sCurrentText:len() > 0 then
+                  sCurrentText = sCurrentText .. ";";
+                end
+                local sNewText = sCurrentText .. sName .. ";";
+                setValue(sNewText);
+              end
+            end
+            
+          end
+        end
+      </script>
+      <anchored>
+        <top parent="weapons" anchor="bottom" offset="5" />
+        <left parent="label_items" offset="3" anchor="right" relation="relative"/>
+        <right offset="-5" />
+      </anchored>
+      <multilinespacing>20</multilinespacing>
+      <nodrag />
+    </stringu>
+  </template>
+
   <template name="number_honor">
     <basicnumber>
       <anchored to="statstitle" position="insidetopleft"/> 

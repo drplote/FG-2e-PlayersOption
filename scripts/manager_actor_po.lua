@@ -433,3 +433,26 @@ function canBeAffectedByThresholdOfPain(rActor)
   return true;
 end
 
+function hasItemNamed(nodeActor, sItem)
+  if not sItem then
+    return false;
+  end
+
+  local bHasItem = false;
+  for _, nodeItem in pairs(DB.getChildren(nodeActor, "inventorylist")) do
+    local sName = DB.getValue(nodeItem, "name"):lower();
+    if sItem:lower() == sName then
+      bHasItem = true;
+      return bHasItem;
+    end
+  end
+  
+  return bHasItem;
+end
+
+function addItem(nodeActor, nodeItem)
+  local nodeInventory = DB.createChild(nodeActor, "inventorylist");
+  local nodeNewItem = nodeInventory.createChild();
+  DB.copyNode(nodeItem, nodeNewItem);
+  DB.setValue(nodeNewItem, "carried", "number", 2);
+end

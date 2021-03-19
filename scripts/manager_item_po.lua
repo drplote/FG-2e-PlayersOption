@@ -12,3 +12,7 @@ function getItemNameForPlayer(nodeItem)
 	end
 	return sDisplayName;
 end
+
+function getItemByName(sItemName)
+	return UtilityManagerADND.getItemByName(sItemName);
+end

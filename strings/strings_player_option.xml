@@ -77,6 +77,9 @@
     <string name="char_tooltip_fatigue_strength_penalty">Strength Penalty due to Fatigue</string>
     <string name="char_tooltip_fatigue_dexterity_penalty">Dexterity Penalty due to Fatigue</string>
 
+    <string name="label_encounter_items">Items</string>
+    <string name="label_encounter_weapons_tooltip">List of items separated by ; to be added to the NPCs inventory.</string>
+
     <string name="COM">COM</string>
     <string name="com">Com</string>
     <string name="comeliness">Comeliness</string>
