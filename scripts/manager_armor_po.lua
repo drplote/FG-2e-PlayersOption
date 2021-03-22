@@ -240,14 +240,16 @@ function getHitModifierForDamageTypesVsArmor(nodeArmor, aDamageTypes)
 	local aModifiers = getDamageTypeVsArmorModifiers(nodeArmor);
 	if aModifiers then
 		for _, sDamageType in pairs(aDamageTypes) do
-			local nMod = aModifiers[sDamageType] or 0;
-            local nBaseAc, nAcBonusGranted = getAcBase(nodeArmor);
-            -- Bonus to hit can't be higher than the AC the armor provides
-            nMod = math.min(nAcBonusGranted, nMod); 
-			if nHighestMod == nil or nHighestMod < nMod then
-				nHighestMod = nMod;
-				sHighestDamageType = sDamageType;
-			end
+			local nMod = aModifiers[sDamageType];
+            if nMod then
+                local nBaseAc, nAcBonusGranted = getAcBase(nodeArmor);
+                -- Bonus to hit can't be higher than the AC the armor provides
+                nMod = math.min(nAcBonusGranted, nMod); 
+    	   		if nHighestMod == nil or nHighestMod < nMod then
+    		  		nHighestMod = nMod;
+    		  		sHighestDamageType = sDamageType;
+    			end
+            end
 		end
 	end
     

@@ -176,7 +176,7 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
     end
     
     -- if PC
-    if sDefenderType == "pc" or PlayerOptionManager.isUsingArmorDamage() then
+    if sDefenderType == "pc" or PlayerOptionManager.shouldUseDynamicNpcAc() then
       local nodeDefender = DB.findNode(rDefender.sCreatureNode);
       Debug.console("nodeDefender", nodeDefender);
       nACTemp = DB.getValue(nodeDefender, "defenses.ac.temporary",0);
@@ -230,7 +230,7 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
     end
     -- 
     
-    if sDefenderType == "pc" or PlayerOptionManager.isUsingArmorDamage() then
+    if sDefenderType == "pc" or PlayerOptionManager.shouldUseDynamicNpcAc() then
       -- dont get shield bonus if you attacked from rear
       -- or if you are prone
 	    if bNoShield or bRearAtk or bProne or bParalyzed or bRestrainedStunned or 
@@ -244,7 +244,7 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
         nDefense = nDefense + nACTemp; -- nACTemp are "modifiders"
     end
        
-    if sDefenderType == "pc" or PlayerOptionManager.isUsingArmorDamage() then  
+    if sDefenderType == "pc" or PlayerOptionManager.shouldUseDynamicNpcAc() then  
       -- check to see if casting or if has NODEX effect, if so dont apply dex AC
       -- if attacking from rear no dex! if prone, they get no dex.
       -- also, make sure modifier

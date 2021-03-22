@@ -18,6 +18,7 @@
     <string name="option_val_po">Player's Option</string>
     <string name="option_label_default_pc_init_to_99">Set Unrolled PC Init to 99</string>
     <string name="option_label_ring_bell_on_round_start">Ring Bell On Round Start</string>
+    <string name="option_label_npc_ac_like_pc">Adjust NPC AC for items and abilities?</string>
 
 
     

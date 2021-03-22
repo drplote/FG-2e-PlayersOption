@@ -20,6 +20,7 @@ sHackmasterCalledShots = "HouseRule_HackmasterCalledShots";
 sHackmasterCritsOptionKey = "HouseRule_HackmasterCrits";
 sHackmasterInitKey = "HouseRule_HackmasterInit";
 sMagicArmorDamageOptionKey = "HouseRule_MagicArmorDamage";
+sAdjustNpcAcLikePc = "AdditionalAutomation_AdjustNpcAcLikePc";
 
 function onInit()
     registerOptions();
@@ -27,15 +28,23 @@ function onInit()
     OptionsManager.registerCallback(sHackmasterCritsOptionKey, onHackmasterCritOptionChanged);
     OptionsManager.registerCallback(sHackmasterInitKey, onHackmasterInitOptionChanged);
     OptionsManager.registerCallback(sPhasedInitiativeOptionKey, onPlayersOptionInitOptionChanged);
+    OptionsManager.registerCallback(sArmorDamageOptionKey, onArmorDamageOptionChanged);
    
    	updateOldOptionsToNewValues();
-
 end 
 
 function updateOldOptionsToNewValues()
 	if OptionsManager.isOption(sGenerateHitLocationsOptionKey, "on") then
 		OptionsManager.setOption(sGenerateHitLocationsOptionKey, "po");
 	end
+
+	if OptionsManager.isOption(sArmorDamageOptionKey, "on") then
+		OptionsManager.setOption(sAdjustNpcAcLikePc, "on");
+	end
+end
+
+function shouldUseDynamicNpcAc()
+	return OptionsManager.isOption(sAdjustNpcAcLikePc, "on") or OptionsManager.isUsingArmorDamage();
 end
 
 function onPlayersOptionCritOptionChanged()
@@ -53,6 +62,12 @@ end
 function onPlayersOptionInitOptionChanged()
 	if isUsingPhasedInitiative() then
 		OptionsManager.setOption(sHackmasterInitKey, "off");
+	end
+end
+
+function onArmorDamageOptionChanged()
+	if isUsingArmorDamage() then
+		OptionsManager.setOption(sAdjustNpcAcLikePc, "on");
 	end
 end
 
@@ -78,6 +93,8 @@ function registerOptions()
 	OptionsManager.registerOption2(sDefaultPcInitTo99OptionKey, false, "option_header_automation", "option_label_default_pc_init_to_99", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" })
 
 	OptionsManager.registerOption2(sRingBellOnRoundStartOptionKey, false, "option_header_automation", "option_label_ring_bell_on_round_start", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+
+	OptionsManager.registerOption2(sAdjustNpcAcLikePc, false, "option_header_automation", "option_label_npc_ac_like_pc", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
     
     -- House rules

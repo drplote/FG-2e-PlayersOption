@@ -106,7 +106,7 @@ end
 
 function copySourceToNodeCTOverride(nodeSource, nodeCT)
     fCopySourceToNodeCT(nodeSource, nodeCT);
-    if PlayerOptionManager.isUsingArmorDamage() then
+    if PlayerOptionManager.shouldUseDynamicNpcAc() then
         -- Need to recalc item AC after they've loaded items from source or their
         -- AC from armor doesn't work correctly.
         CharManager.calcItemArmorClass(nodeCT);
