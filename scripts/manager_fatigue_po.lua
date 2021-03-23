@@ -12,11 +12,15 @@ function recordCast(rChar)
 	StateManagerPO.setFatigueState(rChar, 1);
 end
 
-function recordAttack(rChar, sRange)
+function recordAttack(rChar, rTarget, sRange)
+	local nFatigueState = 1;
 	if sRange == "M" then
-		StateManagerPO.setFatigueState(rChar, 2);
-	else
-		StateManagerPO.setFatigueState(rChar, 1);
+		nFatigueState = 2;
+	end
+
+	StateManagerPO.setFatigueState(rChar, nFatigueState);
+	if rTarget then
+		StateManagerPO.setFatigueState(rTarget, nFatigueState);
 	end
 end
 

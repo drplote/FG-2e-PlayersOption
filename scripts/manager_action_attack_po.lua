@@ -152,7 +152,7 @@ end
 
 function onAttackOverride(rSource, rTarget, rRoll)
   if PlayerOptionManager.isUsingHackmasterFatigue() then
-      FatigueManagerPO.recordAttack(rSource, rRoll.range);
+      FatigueManagerPO.recordAttack(rSource, rTarget, rRoll.range);
   end
 
   if rSource and not rSource.weaponPath then
