@@ -136,3 +136,14 @@ function getWeaponPhase(nodeWeapon, nodeActor)
 	local nSpeedFactor = WeaponManagerPO.getSpeedFactor(nodeWeapon);
 	return getWeaponPhaseFromSpeed(nSpeedFactor, nodeActor);
 end
+
+function tryDelayActor(nodeChar, nDelay)
+	local nodeCT = CombatManager.getCTFromNode(nodeChar);
+	local nodeCTActive = CombatManager.getActiveCT();
+	if nodeCT == nodeCTActive then
+		CombatManagerPO.notifyDelayTurn(nDelay);
+	else
+		ChatManagerPO.deliverDelayFailedMessage(nodeChar);
+	end
+	return true;
+end

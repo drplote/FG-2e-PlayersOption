@@ -11,7 +11,7 @@
 			<tooltip textres="ct_tooltip_nextactor" />
 			<script>
 				function onButtonPress()
-					CombatManagerPO.nextActor();
+					CombatManager.nextActor();
 				end
 				
 				function onDragStart(button, x, y, draginfo)

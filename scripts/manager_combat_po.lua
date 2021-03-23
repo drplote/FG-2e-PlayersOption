@@ -5,8 +5,10 @@ local fNotifyEndTurn;
 local fRollInitOverride; 
 local fDelayTurn;
 local fAddBattle;
+local fNextActor;
 
 OOB_MSGTYPE_DELAYTURN = "delayturn";
+OOB_MSGTYPE_REQUESTTURN = "requestturn";
 
 function onInit()
     fRollNpcHitPoints = CombatManagerADND.rollNPCHitPoints;
@@ -27,6 +29,7 @@ function onInit()
     fNotifyEndTurn = CombatManager.notifyEndTurn;
     CombatManager.notifyEndTurn = notifyEndTurnOverride;
     OOBManager.registerOOBMsgHandler(OOB_MSGTYPE_DELAYTURN, handleDelayTurn);
+    OOBManager.registerOOBMsgHandler(OOB_MSGTYPE_REQUESTTURN, handleRequestTurn);
 
     fRollInit = CombatManager2.rollInit;
     CombatManager2.rollInit = rollInitOverride;
@@ -38,10 +41,25 @@ function onInit()
     CombatManagerADND.addBattle = addBattleOverride;
     CombatManager.addBattle = addBattleOverride;
 
+    fNextActor = CombatManager.nextActor;
+    CombatManager.nextActor = nextActorOverride;
+
+    fHandleEndTurn = CombatManager.handleEndTurn;
+    CombatManager.handleEndTurn = handleEndTurnOverride;
+    OOBManager.registerOOBMsgHandler(CombatManager.OOB_MSGTYPE_ENDTURN, handleEndTurnOverride);
+
+
+end
+
+function handleEndTurnOverride(msgOOB)
+    local rActor = ActorManager.resolveActor(CombatManager.getActiveCT());
+    local nodeActor = ActorManager.getCreatureNode(rActor);
+    if User.isHost() or (nodeActor and nodeActor.getOwner() == msgOOB.user) then
+        CombatManager.nextActor();
+    end
 end
 
 function delayTurnOverride(nodeCT)
-    Debug.console("delaying turn");
     if PlayerOptionManager.isUsingPhasedInitiative() then
         delayThenNextActor(2);
     else
@@ -58,19 +76,45 @@ function rollInitOverride(sType)
 end
 
 function handleDelayTurn(msgOOB)
-    local nodeCT = CombatManager.getActiveCT()
+    local nodeCT = CombatManager.getActiveCT();
     local rActor = ActorManager.getActorFromCT(nodeCT);
     local sActorType = ActorManager.getType(rActor);
     local nodeActor = ActorManager.getCreatureNode(rActor);
     if PlayerOptionManager.isUsingPhasedInitiative() then
         delayThenNextActor(2);
     elseif nodeCT then
-        moveActorToEndOfInit(nodeCT);
+        local nDelay = nil;
+        if msgOOB.nDelay then
+            nDelay = tonumber(msgOOB.nDelay);
+        end
+
+        if nDelay and nDelay > 0 then
+            delayThenNextActor(nDelay);
+        else
+            moveActorToEndOfInit(nodeCT);
+        end
     end
 end
 
+function handleRequestTurn(msgOOB)
+    local rChar = ActorManager.resolveActor(msgOOB.sNodeChar);
+    local nodeChar = ActorManagerPO.getNode(rChar);
+    if nodeChar then
+        local nodeActive = CombatManager.getActiveCT();
+        local nCurrentInit = DB.getValue(nodeActive, "initresult", 0);
+
+        local nodeCT = CombatManager.getCTFromNode(nodeChar);
+        if nodeCT ~= nodeActive then
+            local nPreviousInit = DB.getValue(nodeCT, "initresult", 99);
+            DB.setValue(nodeCT, "initresult", "number", nCurrentInit + 1);
+            ChatManagerPO.deliverTurnRequestMessage(nodeChar, nPreviousInit);
+        end
+    end
+end
+
+
 function moveActorToEndOfInit(nodeCT)
-    CombatManager.nextActor();
+    fNextActor();
 
     CombatManagerADND.showCTMessageADND(nodeEntry, DB.getValue(nodeCT, "name", "") .. " " .. Interface.getString("char_initdelay_message"));
     local nNewInit = CombatManagerADND.getLastInitiative() + 1;
@@ -81,7 +125,6 @@ function notifyEndTurnOverride()
     local msgOOB = {};
     msgOOB.type = CombatManager.OOB_MSGTYPE_ENDTURN;
     msgOOB.user = User.getUsername();
-    Debug.console("ending turn");
 
     if (Input.isAltPressed() or Input.isShiftPressed() or Input.isControlPressed()) then
         msgOOB.type = OOB_MSGTYPE_DELAYTURN;
@@ -90,10 +133,21 @@ function notifyEndTurnOverride()
     Comm.deliverOOBMessage(msgOOB, "");
 end
 
-function notifyDelayTurn()
+function notifyDelayTurn(nDelay)
     local msgOOB = {};
     msgOOB.type = OOB_MSGTYPE_DELAYTURN;
     msgOOB.user = User.getUsername();
+
+    msgOOB.nDelay = nDelay;
+
+    Comm.deliverOOBMessage(msgOOB, "");
+end
+
+function notifyRequestTurn(nodeChar)
+    local msgOOB = {};
+    msgOOB.type = OOB_MSGTYPE_REQUESTTURN;
+    msgOOB.user = User.getUsername();
+    msgOOB.sNodeChar = ActorManager.getCreatureNodeName(nodeChar);
 
     Comm.deliverOOBMessage(msgOOB, "");
 end
@@ -129,7 +183,6 @@ function onRoundStart()
 end
 
 function resetGroupInits()
-    Debug.console("setting inits to 0");
     StateManagerPO.setPcInit(0);
     StateManagerPO.setNpcInit(0);
 end
@@ -156,7 +209,6 @@ function getPhaseShiftForInitMod(nodeActor)
     else
         nPhaseShift = math.floor(nInitMod / 3);
     end
-    Debug.console("INIT effect of " .. nInitMod .. " shifted init by " .. nPhaseShift .. " phases.");
     return nPhaseShift;
 end 
 
@@ -168,19 +220,15 @@ function getFinalInitForActor(nodeActor, nInitPhase, bAllowInitEffects)
     if ActorManager.isPC(nodeActor) then
         nGroupInitRoll = StateManagerPO.getPcInit();
         nOtherGroupInitRoll = StateManagerPO.getNpcInit();
-        Debug.console("ispc", "pc init", nGroupInitRoll, "npc init", nOtherGroupInitRoll);
     else
         nGroupInitRoll = StateManagerPO.getNpcInit();
         nOtherGroupInitRoll = StateManagerPO.getPcInit();
-        Debug.console("is not pc", "npc init", nGroupInitRoll, "pc init", nOtherGroupInitRoll);
     end
 
 
     if nGroupInitRoll == 1 then
-        Debug.console("Shifted init down for a group roll of 1");
         nInitPhase = nInitPhase - 1;
     elseif nGroupInitRoll == 10 then
-        Debug.console("Shifted init up for a group roll of 10");
         nInitPhase = nInitPhase + 1;
     end
 
@@ -400,17 +448,18 @@ function getKickerFromSize(nodeNpc)
   
 end
 
-function nextActor()
+function nextActorOverride()
+    Debug.console("next actor");
     if PlayerOptionManager.isUsingPhasedInitiative() then
         if Input.isShiftPressed() or Input.isAltPressed() or Input.isControlPressed() then
             delayThenNextActor(2);
         else
-            CombatManagerADND.nextActor();
+           fNextActor();
         end
     elseif Input.isShiftPressed() or Input.isAltPressed() or Input.isControlPressed() then
         moveActorToEndOfInit(CombatManager.getActiveCT());
     else
-        CombatManager.nextActor();
+        fNextActor();
     end
 end
 
@@ -472,7 +521,6 @@ function delayThenNextActor(nInitDelay)
 
 
         if bShouldGoToNextActor then 
-            Debug.console("trying to go to next actor");
             -- End turn for current actor
             CombatManager.onTurnEndEvent(nodeActive);
         
@@ -493,6 +541,7 @@ function delayThenNextActor(nInitDelay)
         end
     end
     DB.setValue(nodeActive, "initresult", "number", nNewActiveNodeInit);    
+    ChatManagerPO.deliverDelayTurnMessage(nodeActive, nInitDelay);
 end
 
 function addBattleOverride(nodeBattle)
@@ -546,7 +595,6 @@ function addBattleOverride(nodeBattle)
         end
         local sName = DB.getValue(vNPCItem, "name", "");
 
---Debug.console("manager_combat_adnd.lua","addBattle","sName",sName);       
 
         if nodeNPC then
             local aPlacement = {};

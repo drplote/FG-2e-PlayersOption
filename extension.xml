@@ -4,10 +4,10 @@
 
   <properties>
     <name>2E Player's Option and more</name>
-    <version>0.991</version>
+    <version>0.992</version>
     <loadorder>99</loadorder>
     <description>
-      <text>Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.991)</text>
+      <text>Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.992)</text>
       <website></website>
       <author>Sterno</author>
     </description>
@@ -16,7 +16,7 @@
     </ruleset>
   </properties>
 
-  <announcement text="Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.991)" font="emotefont" icon="sterno_icon" />
+  <announcement text="Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v0.992)" font="emotefont" icon="sterno_icon" />
   <base>    
     
     <includefile source="graphics/graphics_fonts_po.xml" />
@@ -27,6 +27,7 @@
     <includefile source="campaign/record_item.xml" />
     <includefile source="campaign/record_char_main.xml" />
     <includefile source="campaign/record_encounter.xml" />
+    <includefile source="campaign/record_char_combat.xml" />
 
     <includefile source="desktop/desktop_classes.xml" />
 

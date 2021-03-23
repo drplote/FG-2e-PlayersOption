@@ -61,7 +61,7 @@
     <string name="char_label_delay_turn">Delay</string>
     <string name="char_label_delay_turn_tooltip">Delays your turn to the next combat phase</string>
     <string name="char_label_end_turn">Done</string>
-    <string name="char_label_end_turn_tooltip">Ends your turn. Can hold Shift, Control, or Alt while clicking to delay your turn one phase instead.</string>
+    <string name="char_label_end_turn_tooltip">Ends your turn.</string>
     <string name="char_label_fatigue_factor">FF</string>
     <string name="char_label_current_fatigue">FAT</string>
     <string name="char_label_current_armor_damage">ARM</string>
@@ -77,6 +77,18 @@
     <string name="char_tooltip_current_ac_loss">Points of AC lost due to armor damage</string>
     <string name="char_tooltip_fatigue_strength_penalty">Strength Penalty due to Fatigue</string>
     <string name="char_tooltip_fatigue_dexterity_penalty">Dexterity Penalty due to Fatigue</string>
+    <string name="char_initdelay1_tooltip">Delay your turn 1 segments</string>
+    <string name="char_initdelay2_tooltip">Delay your turn 2 segments</string>
+    <string name="char_initdelay3_tooltip">Delay your turn 3 segments</string>
+    <string name="char_initdelay4_tooltip">Delay your turn 4 segments</string>
+    <string name="char_initdelay5_tooltip">Delay your turn 5 segments</string>
+    <string name="char_initdelay6_tooltip">Delay your turn 6 segments</string>
+    <string name="char_initdelay7_tooltip">Delay your turn 7 segments</string>
+    <string name="char_initdelay8_tooltip">Delay your turn 8 segments</string>
+    <string name="char_initdelay9_tooltip">Delay your turn 9 segments</string>
+    <string name="segment_delay_label">Segment Delay</string>
+    <string name="char_label_request_turn">Act</string>
+    <string name="char_label_request_turn_tooltip">Moves your initiative so that you can act on the next segment.</string>
 
     <string name="label_encounter_items">Items</string>
     <string name="label_encounter_weapons_tooltip">List of items separated by ; to be added to the NPCs inventory.</string>

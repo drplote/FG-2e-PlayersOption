@@ -114,20 +114,24 @@
       <script>
         function action(draginfo)
             local nodeChar = window.getDatabaseNode();
-            local nodeCT = CombatManager.getCTFromNode(nodeChar);
-            local nodeCTActive = CombatManager.getActiveCT();
-            if nodeCT == nodeCTActive then
-              if PlayerOptionManager.isUsingPhasedInitiative() then
-                CombatManagerPO.notifyDelayTurn();
-              else
-                local nLastInit = CombatManagerADND.getLastInitiative();
-                CombatManagerADND.showCTMessageADND(nodeEntry,DB.getValue(nodeCT,"name","") .. " " .. Interface.getString("char_initdelay_message"));
-                if User.isHost() then 
-                  CombatManager.nextActor();
-                else 
-                  CombatManager.notifyEndTurn();
+            if PlayerOptionManager.isUsingHackmasterInitiative() then
+                InitManagerPO.tryDelayActor(nodeChar, 10);
+            else
+              local nodeCT = CombatManager.getCTFromNode(nodeChar);
+              local nodeCTActive = CombatManager.getActiveCT();
+              if nodeCT == nodeCTActive then
+                if PlayerOptionManager.isUsingPhasedInitiative() then
+                  CombatManagerPO.notifyDelayTurn();
+                else
+                  local nLastInit = CombatManagerADND.getLastInitiative();
+                  CombatManagerADND.showCTMessageADND(nodeEntry,DB.getValue(nodeCT,"name","") .. " " .. Interface.getString("char_initdelay_message"));
+                  if User.isHost() then 
+                    CombatManager.nextActor();
+                  else 
+                    CombatManager.notifyEndTurn();
+                  end
+                  CombatManagerADND.notifyInitiativeChange(nodeCT,nLastInit + 1);
                 end
-                CombatManagerADND.notifyInitiativeChange(nodeCT,nLastInit + 1);
               end
             end
             return true;

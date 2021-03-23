@@ -11,6 +11,44 @@ function deliverChatMessage(sText, sType)
 	--ChatManager.SystemMessage(sText);
 end
 
+function deliverEndTurnFailedMessage(nodeChar)
+	if nodeChar then
+		local sName = DB.getValue(nodeChar, "name", "");
+		deliverChatMessage(sName .. " tried to end their turn when it wasn't their turn.");
+	end
+end
+
+function deliverDelayTurnMessage(nodeChar, nDelay)
+	if nodeChar then
+		local sName = DB.getValue(nodeChar, "name", "");
+		local sMessage = sName .. " delays their turn";
+		if PlayerOptionManager.isUsingPhasedInitiative() then
+			sMessage = sMessage .. " one phase";
+		else
+			if nDelay and nDelay > 0 then
+				sMessage = sMessage .. " " .. nDelay .. " segments"
+			end
+			sMessage = sMessage .. ".";
+		end
+		deliverChatMessage(sMessage);
+	end
+end
+
+function deliverDelayFailedMessage(nodeChar)
+	if nodeChar then
+		local sName = DB.getValue(nodeChar, "name", "");
+		deliverChatMessage(sName .. " tried to delay when it wasn't their turn.");
+	end
+end
+
+function deliverTurnRequestMessage(nodeChar, nPreviousInit)
+	if nodeChar then
+		Debug.console(nodeChar);
+		local sName = DB.getValue(nodeChar, "name", "");
+		deliverChatMessage(sName .. " will now act on the next segment (previous init " .. nPreviousInit .. " ).");
+	end
+end
+
 function deliverArmorSoakMessage(sCharName, sItemName, nDamageSoaked, nArmorDamageTaken)
 	local sDamageMsg = sCharName .. "'s " .. sItemName .. " soaks " .. nDamageSoaked .. " and takes " .. nArmorDamageTaken .. " damage.";
 	deliverChatMessage(sDamageMsg);
