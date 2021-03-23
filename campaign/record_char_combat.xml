@@ -11,6 +11,34 @@
         		</anchored>
 			</button_surprise>
 
+			<buttoncontrol name="requestTurnButton">
+				<anchored height="25" width="20" >
+					<top offset="15" />
+					<left parent="surprise_total_roll" anchor="right" relation="relative" offset="15" />
+				</anchored>
+				<icon normal="requestTurnIcon" />
+				<script>         
+					function action(draginfo)
+					  local nodeChar = window.getDatabaseNode();
+					  CombatManagerPO.notifyRequestTurn(nodeChar);
+					  return true;
+					end
+
+					function onDragStart(button, x, y, draginfo)
+					  return action(draginfo);
+					end
+
+					function onDoubleClick(x,y)
+					  return action();
+					end
+				</script>
+				<frame name="fielddark" offset="7,5,7,5" />
+				<stateframe>
+					<hover name="rowshade" offset="7,5,7,5" />
+				</stateframe>
+				<tooltip textres="char_label_request_turn_tooltip" />
+			</buttoncontrol>
+
 
 			<buttoncontrol name="endturnbutton">
 				<anchored height="25" width="20" >
@@ -52,34 +80,6 @@
 				<static textres="char_label_end_turn" />
 				<tooltip textres="char_label_end_turn_tooltip" />
 			</label_fieldtop>
-
-			<buttoncontrol name="requestTurnButton">
-				<anchored height="25" width="20" >
-					<top offset="15" />
-					<left parent="surprise_total_roll" anchor="right" relation="relative" offset="15" />
-				</anchored>
-				<icon normal="requestTurnIcon" />
-				<script>         
-					function action(draginfo)
-					  local nodeChar = window.getDatabaseNode();
-					  CombatManagerPO.notifyRequestTurn(nodeChar);
-					  return true;
-					end
-
-					function onDragStart(button, x, y, draginfo)
-					  return action(draginfo);
-					end
-
-					function onDoubleClick(x,y)
-					  return action();
-					end
-				</script>
-				<frame name="fielddark" offset="7,5,7,5" />
-				<stateframe>
-					<hover name="rowshade" offset="7,5,7,5" />
-				</stateframe>
-				<tooltip textres="char_label_request_turn_tooltip" />
-			</buttoncontrol>
 
 			<label_fieldtop name="label_requestTurnButton">
 				<anchored to="requestTurnButton" />
