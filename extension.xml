@@ -28,6 +28,7 @@
     <includefile source="campaign/record_char_main.xml" />
     <includefile source="campaign/record_encounter.xml" />
     <includefile source="campaign/record_char_combat.xml" />
+    <includefile source="campaign/template_char.xml" />
 
     <includefile source="desktop/desktop_classes.xml" />
 

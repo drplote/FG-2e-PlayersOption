@@ -77,15 +77,26 @@
     <string name="char_tooltip_current_ac_loss">Points of AC lost due to armor damage</string>
     <string name="char_tooltip_fatigue_strength_penalty">Strength Penalty due to Fatigue</string>
     <string name="char_tooltip_fatigue_dexterity_penalty">Dexterity Penalty due to Fatigue</string>
-    <string name="char_initdelay1_tooltip">Delay your turn 1 segments</string>
-    <string name="char_initdelay2_tooltip">Delay your turn 2 segments</string>
-    <string name="char_initdelay3_tooltip">Delay your turn 3 segments</string>
-    <string name="char_initdelay4_tooltip">Delay your turn 4 segments</string>
-    <string name="char_initdelay5_tooltip">Delay your turn 5 segments</string>
-    <string name="char_initdelay6_tooltip">Delay your turn 6 segments</string>
-    <string name="char_initdelay7_tooltip">Delay your turn 7 segments</string>
-    <string name="char_initdelay8_tooltip">Delay your turn 8 segments</string>
-    <string name="char_initdelay9_tooltip">Delay your turn 9 segments</string>
+    <string name="char_initdelay1_tooltip">Delay for 1 segment</string>
+    <string name="char_initdelay2_tooltip">Delay for 2 segments</string>
+    <string name="char_initdelay3_tooltip">Delay for 3 segments</string>
+    <string name="char_initdelay4_tooltip">Delay for 4 segments</string>
+    <string name="char_initdelay5_tooltip">Delay for 5 segments</string>
+    <string name="char_initdelay6_tooltip">Delay for 6 segments</string>
+    <string name="char_initdelay7_tooltip">Delay for 7 segments</string>
+    <string name="char_initdelay8_tooltip">Delay for 8 segments</string>
+    <string name="char_initdelay9_tooltip">Delay for 9 segments</string>
+    <string name="delay1_menuitem">Delay for 1 segment</string>
+    <string name="delay2_menuitem">Delay for 2 segments</string>
+    <string name="delay3_menuitem">Delay for 3 segments</string>
+    <string name="delay4_menuitem">Delay for 4 segments</string>
+    <string name="delay5_menuitem">Delay for 5 segments</string>
+    <string name="delay6_menuitem">Delay for 6 segments</string>
+    <string name="delay7_menuitem">Delay for 7 segments</string>
+    <string name="delay8_menuitem">Delay for 8 segments</string>
+    <string name="delay9_menuitem">Delay for 9 segments</string>
+    <string name="delay10_menuitem">Delay for 1 round</string>
+    <string name="delay7plus_menuitem">Delay for 7+ segments</string>
     <string name="segment_delay_label">Segment Delay</string>
     <string name="char_label_request_turn">Act</string>
     <string name="char_label_request_turn_tooltip">Moves your initiative so that you can act on the next segment.</string>
@@ -122,4 +133,5 @@
     <string name="modifier_label_calledshot_eye">Eye</string>
     <string name="modifier_label_calledshot_groin">Groin</string>
     <string name="modifier_label_calledshot_hand">Hand</string>
+
 </root>

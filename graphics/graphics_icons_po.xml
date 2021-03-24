@@ -9,6 +9,7 @@
 <root>
   <icon name="endTurnButtonIcon" file="graphics/icons/end_turn.jpg" />      
   <icon name="requestTurnIcon" file="graphics/icons/request_turn_icon.png" />
+  <icon name="delayTurnButtonIcon" file="graphics/icons/delay_turn.png" />
   <icon name="delayTurn1ButtonIcon" file="graphics/icons/delay_turn1.png" />
   <icon name="delayTurn2ButtonIcon" file="graphics/icons/delay_turn2.png" />
   <icon name="delayTurn3ButtonIcon" file="graphics/icons/delay_turn3.png" />
@@ -18,6 +19,7 @@
   <icon name="delayTurn7ButtonIcon" file="graphics/icons/delay_turn7.png" />
   <icon name="delayTurn8ButtonIcon" file="graphics/icons/delay_turn8.png" />
   <icon name="delayTurn9ButtonIcon" file="graphics/icons/delay_turn9.png" />
+  <icon name="delayTurn10ButtonIcon" file="graphics/icons/delay_turn10.png" />
 
   <icon name="sterno_icon" file="graphics/icons/sterno_icon.png" />
 
