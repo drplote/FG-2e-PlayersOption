@@ -134,4 +134,20 @@
     <string name="modifier_label_calledshot_groin">Groin</string>
     <string name="modifier_label_calledshot_hand">Hand</string>
 
+    <string name="cover_radial_menuitem">Add Cover Modifier</string>
+    <string name="cover_25_radial_menuitem">25% Cover</string>
+    <string name="cover_50_radial_menuitem">50% Cover</string>
+    <string name="cover_75_radial_menuitem">75% Cover</string>
+    <string name="cover_90_radial_menuitem">90% Cover</string>
+    <string name="concealment_radial_menuitem">Add Concealment Modifier</string>
+    <string name="conceal_25_radial_menuitem">25% Concealment</string>
+    <string name="conceal_50_radial_menuitem">50% Concealment</string>
+    <string name="conceal_75_radial_menuitem">75% Concealment</string>
+    <string name="conceal_90_radial_menuitem">90% Concealment</string>
+
+    <string name="standardAttack">Standard Attack></string>
+    <string name="rearAttackModifier">Rear Attack</string>
+    <string name="noDexAttackModifier">Attack (defender gets no Dexterity bonus)</string>
+    <string name="noShieldAttackModifier">Attack (defender gets no shield bonus)</string>
+    <string name="touchAttackModifier">Touch Attack (defender gets no armor bonus)</string>
 </root>

@@ -11,6 +11,7 @@
   <icon name="endTurnButtonIcon_pressed" file="graphics/icons/end_turn_icon_pressed.png" />      
   <icon name="requestTurnIcon" file="graphics/icons/request_turn_icon.png" />
   <icon name="requestTurnIcon_pressed" file="graphics/icons/request_turn_icon_pressed.png" />
+
   <icon name="delayTurnButtonIcon" file="graphics/icons/delay_turn.png" />
   <icon name="delayTurn1ButtonIcon" file="graphics/icons/delay_turn1.png" />
   <icon name="delayTurn2ButtonIcon" file="graphics/icons/delay_turn2.png" />
@@ -23,6 +24,28 @@
   <icon name="delayTurn9ButtonIcon" file="graphics/icons/delay_turn9.png" />
   <icon name="delayTurn10ButtonIcon" file="graphics/icons/delay_turn10.png" />
 
+  <icon name="concealmentIcon" file="graphics/icons/concealment_icon.png" />
+  <icon name="coverIcon" file="graphics/icons/cover_icon.png" />
+  <icon name="25percentIcon" file="graphics/icons/25_percent_icon.png" />
+  <icon name="50percentIcon" file="graphics/icons/50_percent_icon.png" />
+  <icon name="75percentIcon" file="graphics/icons/75_percent_icon.png" />
+  <icon name="90percentIcon" file="graphics/icons/90_percent_icon.png" />
+
+  <icon name="calledShotIcon" file="graphics/icons/called_shot_icon.png" />
+  <icon name="calledShotTorsoIcon" file="graphics/icons/called_shot_torso.png" />
+  <icon name="calledShotHeadIcon" file="graphics/icons/called_shot_head.png" />
+  <icon name="calledShotArmIcon" file="graphics/icons/called_shot_arm.png" />
+  <icon name="calledShotLegIcon" file="graphics/icons/called_shot_leg.png" />
+  <icon name="calledShotAbdomenIcon" file="graphics/icons/called_shot_abdomen.png" />
+  <icon name="calledShotNeckIcon" file="graphics/icons/called_shot_neck.png" />
+
+  <icon name="standardAttackIcon" file="graphics/icons/standard_attack_icon.png" />
+  <icon name="rearAttackModifierIcon" file="graphics/icons/rear_attack_icon.png" />
+  <icon name="noDexAttackModifierIcon" file="graphics/icons/no_dex_modifier_icon.png" />
+  <icon name="noShieldAttackModifierIcon" file="graphics/icons/no_shield_modifier_icon.png" />
+  <icon name="touchAttackModifierIcon" file="graphics/icons/touch_attack_modifier_icon.png" />
+
   <icon name="sterno_icon" file="graphics/icons/sterno_icon.png" />
 
 </root>
+
