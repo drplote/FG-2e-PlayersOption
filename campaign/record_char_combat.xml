@@ -16,7 +16,7 @@
 					<top offset="15" />
 					<left parent="surprise_total_roll" anchor="right" relation="relative" offset="15" />
 				</anchored>
-				<icon normal="requestTurnIcon" />
+				<icon normal="requestTurnIcon" pressed="requestTurnIcon_pressed" />
 				<script>         
 					function action(draginfo)
 					  local nodeChar = window.getDatabaseNode();
@@ -45,7 +45,7 @@
 					<top offset="15" />
 					<left parent="surprise_total_roll" anchor="right" relation="relative" offset="15" />
 				</anchored>
-				<icon normal="endTurnButtonIcon" />
+				<icon normal="endTurnButtonIcon" pressed="endTurnButtonIcon_pressed" />
 				<script>         
 					function action(draginfo)
 		   			  local nodeChar = window.getDatabaseNode();

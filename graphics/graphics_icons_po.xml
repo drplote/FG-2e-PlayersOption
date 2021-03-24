@@ -7,8 +7,10 @@
 
 
 <root>
-  <icon name="endTurnButtonIcon" file="graphics/icons/end_turn.jpg" />      
+  <icon name="endTurnButtonIcon" file="graphics/icons/end_turn_icon.png" />      
+  <icon name="endTurnButtonIcon_pressed" file="graphics/icons/end_turn_icon_pressed.png" />      
   <icon name="requestTurnIcon" file="graphics/icons/request_turn_icon.png" />
+  <icon name="requestTurnIcon_pressed" file="graphics/icons/request_turn_icon_pressed.png" />
   <icon name="delayTurnButtonIcon" file="graphics/icons/delay_turn.png" />
   <icon name="delayTurn1ButtonIcon" file="graphics/icons/delay_turn1.png" />
   <icon name="delayTurn2ButtonIcon" file="graphics/icons/delay_turn2.png" />
