@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <root>
 
-  <template name="actions_attack">
+  <template name="actions_attack" merge="replace">
     <label>
       <rollable />
       <displaysign />
@@ -14,89 +14,12 @@
         end
 
         function initMenuItems()
-          resetMenuItems();
-		  
-		  registerMenuItem(Interface.getString("standardAttack"), "standardAttackIcon", 1);
-		  registerMenuItem(Interface.getString("rearAttackModifier"), "rearAttackModifierIcon", 2);
-		  registerMenuItem(Interface.getString("touchAttackModifier"), "touchAttackModifierIcon", 3);
-		  
-
-          registerMenuItem(Interface.getString("modifier_label_calledshot"), "calledShotIcon", 4);
-          registerMenuItem(Interface.getString("modifier_label_calledshot_torso"), "calledShotTorsoIcon", 4, 1);
-          registerMenuItem(Interface.getString("modifier_label_calledshot_head"), "calledShotHeadIcon", 4, 2);
-          registerMenuItem(Interface.getString("modifier_label_calledshot_arm"), "calledShotArmIcon", 4, 3);
-          registerMenuItem(Interface.getString("modifier_label_calledshot_leg"), "calledShotLegIcon", 4, 4);
-          registerMenuItem(Interface.getString("modifier_label_calledshot_abdomen"), "calledShotAbdomenIcon", 4, 5);
-          registerMenuItem(Interface.getString("modifier_label_calledshot_neck"), "calledShotNeckIcon", 4, 6);
-          
-          registerMenuItem(Interface.getString("concealment_radial_menuitem"), "concealmentIcon", 5);
-          registerMenuItem(Interface.getString("conceal_25_radial_menuitem"), "25percentIcon", 5, 3);
-          registerMenuItem(Interface.getString("conceal_50_radial_menuitem"), "50percentIcon", 5, 4);
-          registerMenuItem(Interface.getString("conceal_75_radial_menuitem"), "75percentIcon", 5, 5);
-          registerMenuItem(Interface.getString("conceal_90_radial_menuitem"), "90percentIcon", 5, 6);
-
-          registerMenuItem(Interface.getString("cover_radial_menuitem"), "coverIcon", 6);
-          registerMenuItem(Interface.getString("cover_25_radial_menuitem"), "25percentIcon", 6, 3);
-          registerMenuItem(Interface.getString("cover_50_radial_menuitem"), "50percentIcon", 6, 4);
-          registerMenuItem(Interface.getString("cover_75_radial_menuitem"), "75percentIcon", 6, 5);
-          registerMenuItem(Interface.getString("cover_90_radial_menuitem"), "90percentIcon", 6, 6);
-
-		  registerMenuItem(Interface.getString("noDexAttackModifier"), "noDexAttackModifierIcon", 7);
-		  registerMenuItem(Interface.getString("noShieldAttackModifier"), "noShieldAttackModifierIcon", 8);
-  		  
-          
+        	RadialMenuManagerPO.initAttackMenu(self);
         end
 
         function onMenuSelection(selection, subselection)
-            if selection == 1 then
-                attackWithModifier();
-            elseif selection == 2 then
-            	attackWithModifier("ATK_FROMREAR");
-        	elseif selection == 3 then
-            	attackWithModifier("ATK_IGNORE_ARMOR");
-            elseif selection == 4 and subselection == 1 then
-            	attackWithModifier("CALLEDSHOT_TORSO");
-            elseif selection == 4 and subselection == 2 then
-            	attackWithModifier("CALLEDSHOT_HEAD");
-            elseif selection == 4 and subselection == 3 then
-            	attackWithModifier("CALLEDSHOT_ARM");
-            elseif selection == 4 and subselection == 4 then
-            	attackWithModifier("CALLEDSHOT_LEG");
-            elseif selection == 4 and subselection == 5 then
-            	attackWithModifier("CALLEDSHOT_ABDOMEN");
-            elseif selection == 4 and subselection == 6 then
-            	attackWithModifier("CALLEDSHOT_HEAD");
-            elseif selection == 5 and subselection == 3 then
-            	attackWithModifier("DEF_CONCEAL_25");
-            elseif selection == 5 and subselection == 4 then
-            	attackWithModifier("DEF_CONCEAL_50");
-            elseif selection == 5 and subselection == 5 then
-            	attackWithModifier("DEF_CONCEAL_75");
-            elseif selection == 5 and subselection == 6 then
-            	attackWithModifier("DEF_CONCEAL_90");
-            elseif selection == 6 and subselection == 3 then
-            	attackWithModifier("DEF_COVER_25");
-            elseif selection == 6 and subselection == 4 then
-            	attackWithModifier("DEF_COVER_50");
-            elseif selection == 6 and subselection == 5 then
-            	attackWithModifier("DEF_COVER_75");
-            elseif selection == 6 and subselection == 6 then
-            	attackWithModifier("DEF_COVER_90");
-            elseif selection == 7 then
-            	attackWithModifier("ATK_SHIELDLESS");
-            elseif selection == 8 then
-            	attackWithModifier("ATK_NODEXTERITY")
-            end
+        	RadialMenuManagerPO.onAttackMenuSelection(self, selection, subselection);
         end
-
-        function attackWithModifier(sModifierKey)
-        	if sModifierKey then
-        		ModifierStack.setModifierKey(sModifierKey, true);
-        	end
-        	window.onAttackAction();
-       	end
-
-
 
         function onHover(bOnControl)
           if bOnControl then

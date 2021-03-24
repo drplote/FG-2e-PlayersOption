@@ -269,4 +269,3 @@ end
 function isPenetrationDiceEnabled()
 	return OptionsManager.isOption(sPenetrationOptionKey, "on");
 end
-

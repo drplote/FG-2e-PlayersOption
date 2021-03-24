@@ -75,6 +75,7 @@
     <script name="HonorManagerPO" file="scripts/manager_honor_po.lua"/>
     <script name="ActionCheckPO" file="scripts/manager_action_check_po.lua"/>
     <script name="CritManagerHM" file="scripts/manager_crit_hm.lua" />
+    <script name="RadialMenuManagerPO" file="scripts/manager_radial_menu_po.lua" />
 
     
   </base>

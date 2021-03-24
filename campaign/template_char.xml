@@ -12,49 +12,11 @@
         end
 
         function initMenuItems()
-            resetMenuItems();
-            if not PlayerOptionManager.isUsingPhasedInitiative() then
-              registerMenuItem(Interface.getString("delay10_menuitem"), "delayTurn10ButtonIcon", 1);
-              registerMenuItem(Interface.getString("delay1_menuitem"), "delayTurn1ButtonIcon", 2);
-              registerMenuItem(Interface.getString("delay2_menuitem"), "delayTurn2ButtonIcon", 3);
-              registerMenuItem(Interface.getString("delay3_menuitem"), "delayTurn3ButtonIcon", 4);
-              registerMenuItem(Interface.getString("delay4_menuitem"), "delayTurn4ButtonIcon", 5);
-              registerMenuItem(Interface.getString("delay5_menuitem"), "delayTurn5ButtonIcon", 6);
-              registerMenuItem(Interface.getString("delay6_menuitem"), "delayTurn6ButtonIcon", 7);
-              registerMenuItem(Interface.getString("delay7plus_menuitem"), "delayTurnButtonIcon", 8);
-              registerMenuItem(Interface.getString("delay7_menuitem"), "delayTurn7ButtonIcon", 8, 1);
-              registerMenuItem(Interface.getString("delay8_menuitem"), "delayTurn8ButtonIcon", 8, 2);
-              registerMenuItem(Interface.getString("delay9_menuitem"), "delayTurn9ButtonIcon", 8, 3);
-            end
+            RadialMenuManagerPO.initDelayMenu(self);
         end
 
         function onMenuSelection(selection, subselection)
-          if not PlayerOptionManager.isUsingPhasedInitiative() then
-            local nodeChar = window.getDatabaseNode();
-            if selection == 1 then
-              action();
-            elseif selection == 2 then
-              InitManagerPO.tryDelayActor(nodeChar, 1);
-            elseif selection == 3 then
-              InitManagerPO.tryDelayActor(nodeChar, 2);
-            elseif selection == 4 then
-              InitManagerPO.tryDelayActor(nodeChar, 3);
-            elseif selection == 5 then
-              InitManagerPO.tryDelayActor(nodeChar, 4);
-            elseif selection == 6 then
-              InitManagerPO.tryDelayActor(nodeChar, 5);
-            elseif selection == 7 then
-              InitManagerPO.tryDelayActor(nodeChar, 6);
-            elseif selection == 8 and subselection == 1 then
-              InitManagerPO.tryDelayActor(nodeChar, 7);
-            elseif selection == 8 and subselection == 2 then
-              InitManagerPO.tryDelayActor(nodeChar, 8);
-            elseif selection == 8 and subselection == 3 then
-              InitManagerPO.tryDelayActor(nodeChar, 9);
-            end
-          else
-            super.onMenuSelection(selection, subselection);
-          end
+            RadialMenuManagerPO.onDelayMenuSelection(self, selection, subselection);
         end
 
         function action(draginfo)
