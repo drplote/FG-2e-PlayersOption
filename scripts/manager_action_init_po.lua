@@ -13,8 +13,6 @@ function getRollForPhasedInit(rActor, bSecretRoll, rItem)
   rRoll.sDesc = "[INIT]";
   rRoll.bSecret = bSecretRoll;
 
-  Debug.console("rActor", rActor);
-  Debug.console("rItem", rItem);
   local sActorType = ActorManagerPO.getType(rActor);
   local nodeActor = ActorManagerPO.getCreatureNode(rActor);
   if nodeActor then
@@ -42,9 +40,29 @@ function getRollForPhasedInit(rActor, bSecretRoll, rItem)
   return rRoll;
 end
 
+function getFixedInitiativeRoll(nFixedInit, bSecretRoll)
+  local rRoll = {};
+  rRoll.sType = "init";
+  rRoll.aDice = { "d0" };
+  rRoll.nMod = nFixedInit; -- Default to last
+  rRoll.sDesc = "[INIT][FORCED]";
+  rRoll.bSecret = bSecretRoll;
+  return rRoll;
+end
+
 function getRollOverride(rActor, bSecretRoll, rItem)
     if PlayerOptionManager.isUsingPhasedInitiative() then
         return getRollForPhasedInit(rActor, bSecretRoll, rItem);
+    end
+
+    if ModifierStack.getModifierKey("INIT_START_ROUND") then
+    	return getFixedInitiativeRoll(1);
+    elseif ModifierStack.getModifierKey("INIT_END_ROUND") then
+    	if PlayerOptionManager.isUsingHackmasterInitiative() then
+			return getFixedInitiativeRoll(10);
+		else
+			return getFixedInitiativeRoll(99);
+		end
     end
 
 	local rRoll = fGetRoll(rActor, bSecretRoll, rItem);

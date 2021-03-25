@@ -76,9 +76,9 @@ function onAttackMenuSelection(control, selection, subselection)
 	elseif selection == 6 and subselection == 6 then
 		attackWithModifier("DEF_COVER_90");
 	elseif selection == 7 then
-		attackWithModifier("ATK_SHIELDLESS");
+		attackWithModifier("ATK_NODEXTERITY");
 	elseif selection == 8 then
-		attackWithModifier("ATK_NODEXTERITY")
+		attackWithModifier("ATK_SHIELDLESS")
 	end
 end
 
@@ -125,5 +125,40 @@ function onDelayMenuSelection(control, selection, subselection)
 		end
 	else
 		control.super.onMenuSelection(selection, subselection);
+	end
+end
+
+function initInitiativeMenu(control)
+	control.resetMenuItems();
+	if not PlayerOptionManager.isUsingPhasedInitiative() then
+		control.registerMenuItem(Interface.getString("standard_init_menuitem"), "standardInitIcon", 1);
+		control.registerMenuItem(Interface.getString("first_init_menuitem"), "firstInitIcon", 2);
+
+		if PlayerOptionManager.isUsingHackmasterInitiative() then
+			control.registerMenuItem(Interface.getString("last_init_menuitem"), "lastInitHmIcon", 8);
+		else
+			control.registerMenuItem(Interface.getString("last_init_menuitem"), "lastInitIcon", 8);
+		end
+		
+	end
+end
+
+function onInitiativeMenuSelection(control, selection, subselection)
+	if not PlayerOptionManager.isUsingPhasedInitiative() then
+		
+		function rollInitWithModifier(sModifierKey)
+			if sModifierKey then
+				ModifierStack.setModifierKey(sModifierKey, true);
+			end
+			control.action();
+		end
+
+		if selection == 1 then
+			rollInitWithModifier();
+		elseif selection == 2 then
+			rollInitWithModifier("INIT_START_ROUND");
+		elseif selection == 8 then
+			rollInitWithModifier("INIT_END_ROUND");
+		end
 	end
 end

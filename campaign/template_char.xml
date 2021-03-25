@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <root>
 
+  <template name="button_charinit" merge="replace">
+    <buttoncontrol>
+      <icon normal="button_initiative" pressed="button_initiative_down" />
+      <script>
+        function onInit()
+          OptionsManager.registerCallback(PlayerOptionManager.sHackmasterInitKey, initMenuItems);
+          OptionsManager.registerCallback(PlayerOptionManager.sPhasedInitiativeOptionKey, initMenuItems);
+          initMenuItems();
+        end
+
+        function initMenuItems()
+            RadialMenuManagerPO.initInitiativeMenu(self);
+        end
+
+        function onMenuSelection(selection, subselection)
+            RadialMenuManagerPO.onInitiativeMenuSelection(self, selection, subselection);
+        end
+
+        function action(draginfo)
+          local nodeChar = window.getDatabaseNode();
+          local rActor = ActorManager.resolveActor( window.getDatabaseNode());
+          ActionInit.performRoll(draginfo, rActor);
+
+          return true;
+        end
+        
+        function onDragStart(button, x, y, draginfo)
+          return action(draginfo);
+        end
+        
+        function onDoubleClick(x,y)
+          return action();
+        end
+      </script>
+      <frame name="fielddark" offset="7,5,7,5" />
+      <stateframe>
+        <hover name="rowshade" offset="7,5,7,5" />
+      </stateframe>
+    </buttoncontrol>
+  </template>
+
   <template name="button_charinitdelay" merge="replace">
     <buttoncontrol>
       <icon normal="button_initdelay" pressed="button_initdelay_down" />

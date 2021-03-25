@@ -436,12 +436,29 @@ function onAttackOverride(rSource, rTarget, rRoll)
   end
 end
 
+function addMissingModifierKeyDescriptions(rRoll)
+    if ModifierStackPO.peekModifierKey("ATK_NODEXTERITY") then
+      rRoll.sDesc = rRoll.sDesc .. "[NO DEXTERITY]";
+    end
+
+    if ModifierStackPO.peekModifierKey("ATK_SHIELDLESS") then
+      rRoll.sDesc = rRoll.sDesc .. "[NO SHIELD]";
+    end
+
+    if ModifierStackPO.peekModifierKey("ATK_IGNORE_ARMOR") then
+      rRoll.sDesc = rRoll.sDesc .. "[TOUCH]";
+    end
+
+end
+
 function modAttackOverride(rSource, rTarget, rRoll)
     StateManagerPO.clearShieldHitState(rSource);
     if rSource and not rSource.aDamageTypes then
       rSource.aDamageTypes = WeaponManagerPO.decodeDamageTypes(rRoll.aDamageTypes);
     end
     fModAttack(rSource, rTarget, rRoll);
+
+    addMissingModifierKeyDescriptions(rRoll);
 	
     if rSource and PlayerOptionManager.isWeaponTypeVsArmorModsEnabled() then
         addWeaponTypeVsArmorMods(rSource, rTarget, rRoll);
