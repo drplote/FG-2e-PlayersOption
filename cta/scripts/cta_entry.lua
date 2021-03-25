@@ -6,6 +6,7 @@ function onInit()
     update();
 end
 
+
 function onClose()
     super.onClose();
     local node = getDatabaseNode();
@@ -30,4 +31,29 @@ function update()
         initresult.setVisible(true);
         initresultpo.setVisible(false);
     end
+    RadialMenuManagerPO.initCombatTrackerActorMenu(self);
 end
+
+function onMenuSelection(selection, subselection, subsubselection)
+  RadialMenuManagerPO.onCombatTrackerActorMenuSelection(rollInitWithModifier, delayActor, selection, subselection, subsubselection);
+  super.onMenuSelection(selection, subselection);
+end
+
+function rollInitWithModifier(sModifierKey)
+    if sModifierKey then
+        ModifierStack.setModifierKey(sModifierKey, true);
+    end
+    local nodeChar = getDatabaseNode();
+    local rActor = ActorManager.resolveActor(nodeChar);
+    ActionInit.performRoll(nil, rActor);
+end
+
+function delayActor(nDelay)
+    local nodeChar = getDatabaseNode();
+    if not nDelay then
+        InitManagerPO.delayActor(nodeChar);
+    else
+        InitManagerPO.delayActorForSegments(nodeChar, nDelay);
+    end
+end
+

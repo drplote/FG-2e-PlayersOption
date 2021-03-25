@@ -32,15 +32,17 @@ end
 
 ]]
 function onMenuSelection(selection, subselection, subsubselection)
-	Debug.console("onMenuSelection", selection, subselection, subsubselection);
     if selection == 6 and subselection == 7 then
         nodeAction.delete();
 	else -- NOTE: This is one of the few changes to this file
-		RadialMenuManagerPO.onCombatTrackerActionMenuSelection(self, selection, subselection, subsubselection);
+		RadialMenuManagerPO.onCombatTrackerActionMenuSelection(performAttackAction, selection, subselection, subsubselection);
 	end
 end
 
-function performAttackAction()
+function performAttackAction(sModifierKey)
+	if sModifierKey then
+		ModifierStack.setModifierKey(sModifierKey, true);
+	end
 	actionAbility(nil, rAttackRecord);
 end
 

@@ -16,8 +16,15 @@
         end
 
         function onMenuSelection(selection, subselection)
-            RadialMenuManagerPO.onInitiativeMenuSelection(self, selection, subselection);
+            RadialMenuManagerPO.onInitiativeMenuSelection(rollInitWithModifier, selection, subselection);
         end
+
+        function rollInitWithModifier(sModifierKey)
+          if sModifierKey then
+            ModifierStack.setModifierKey(sModifierKey, true);
+          end
+          action();
+      end
 
         function action(draginfo)
           local nodeChar = window.getDatabaseNode();
@@ -57,27 +64,21 @@
         end
 
         function onMenuSelection(selection, subselection)
-            RadialMenuManagerPO.onDelayMenuSelection(self, selection, subselection);
+            RadialMenuManagerPO.onDelayMenuSelection(delayActor, selection, subselection);
+        end
+
+        function delayActor(nDelay)
+          if not nDelay then
+            action();
+          else
+            local nodeChar = window.getDatabaseNode();
+            InitManagerPO.delayActorForSegments(nodeChar, nDelay);
+          end
         end
 
         function action(draginfo)
           local nodeChar = window.getDatabaseNode();
-          if PlayerOptionManager.isUsingHackmasterInitiative() then
-            InitManagerPO.tryDelayActor(nodeChar, 10);
-          else
-            local nodeCT = CombatManager.getCTFromNode(nodeChar);
-            local nodeCTActive = CombatManager.getActiveCT();
-            if nodeCT == nodeCTActive then
-              local nLastInit = CombatManagerADND.getLastInitiative();
-              CombatManagerADND.showCTMessageADND(nodeEntry,DB.getValue(nodeCT,"name","") .. " " .. Interface.getString("char_initdelay_message"));
-              if Session.IsHost then 
-                CombatManager.nextActor();
-              else 
-                CombatManager.notifyEndTurn();
-              end
-              CombatManagerADND.notifyInitiativeChange(nodeCT,nLastInit + 1);
-            end
-          end
+          InitManagerPO.delayActor(nodeChar);
           return true;
         end
         

@@ -137,7 +137,7 @@ function getWeaponPhase(nodeWeapon, nodeActor)
 	return getWeaponPhaseFromSpeed(nSpeedFactor, nodeActor);
 end
 
-function tryDelayActor(nodeChar, nDelay)
+function delayActorForSegments(nodeChar, nDelay)
 	local nodeCT = CombatManager.getCTFromNode(nodeChar);
 	local nodeCTActive = CombatManager.getActiveCT();
 	if nodeCT == nodeCTActive then
@@ -146,4 +146,29 @@ function tryDelayActor(nodeChar, nDelay)
 		ChatManagerPO.deliverDelayFailedMessage(nodeChar);
 	end
 	return true;
+end
+
+function delayActor(nodeChar)
+	if PlayerOptionManager.isUsingHackmasterInitiative() then
+		InitManagerPO.delayActorForSegments(nodeChar, 10);
+	else
+		local nodeCT = CombatManager.getCTFromNode(nodeChar);
+		local nodeCTActive = CombatManager.getActiveCT();
+		if nodeCT == nodeCTActive then
+		    if PlayerOptionManager.isUsingPhasedInitiative() then
+                CombatManagerPO.notifyDelayTurn();
+            else
+	  			local nLastInit = CombatManagerADND.getLastInitiative();
+	  			CombatManagerADND.showCTMessageADND(nodeEntry,DB.getValue(nodeCT,"name","") .. " " .. Interface.getString("char_initdelay_message"));
+	  			if Session.IsHost then 
+	    			CombatManager.nextActor();
+	  			else 
+	    			CombatManager.notifyEndTurn();
+	  			end
+  				CombatManagerADND.notifyInitiativeChange(nodeCT,nLastInit + 1);
+  			end
+  		else
+  			ChatManagerPO.deliverDelayFailedMessage(nodeChar);
+		end
+	end
 end

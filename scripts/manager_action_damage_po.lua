@@ -739,7 +739,7 @@ function onDamageRollOverride(rSource, rRoll)
     DiceManagerPO.multiplyDice(rRoll, rRoll.nDamageDiceMultiplier);
   end
 
-  if PlayerOptionManager.isPenetrationDiceEnabled() then
+  if PlayerOptionManager.isPenetrationDiceEnabled() and EffectManagerPO.isAllowedToPenetrate(rSource) then
       local aDmgTypes = parseDamageTypes(rRoll);
       local bExtraPenetration = UtilityPO.contains(aDmgTypes, "penetrating");
       DiceManagerPO.handlePenetration(rRoll, bExtraPenetration);

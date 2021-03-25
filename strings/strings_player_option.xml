@@ -97,7 +97,7 @@
     <string name="delay8_menuitem">Delay for 8 segments</string>
     <string name="delay9_menuitem">Delay for 9 segments</string>
     <string name="delay10_menuitem">Delay for 1 round</string>
-    <string name="delay7plus_menuitem">Delay for 7+ segments</string>
+    <string name="delay6plus_menuitem">Delay for 6+ segments</string>
     <string name="segment_delay_label">Segment Delay</string>
     <string name="char_label_request_turn">Act</string>
     <string name="char_label_request_turn_tooltip">Moves your initiative so that you can act on the next segment.</string>
@@ -162,4 +162,8 @@
     <string name="cheater_dice_menuitem">Cheater Dice</string>
     <string name="roll_1_menuitem">Roll a Natural 1</string>
     <string name="roll_20_menuitem">Roll a Natural 20</string>
+
+    <string name="actor_init_menuitem">Initiative</string>
+    <string name="delay_submenu_menuitem">Delay</string>
+
 </root>

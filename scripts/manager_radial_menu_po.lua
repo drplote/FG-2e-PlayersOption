@@ -41,57 +41,49 @@ function initAttackMenu(control)
 	
 end
 
-function onAttackMenuSelection(control, selection, subselection)
-
-	function attackWithModifier(sModifierKey)
-		if sModifierKey then
-			ModifierStack.setModifierKey(sModifierKey, true);
-		end
-		control.window.onAttackAction();
-	end
-
+function onAttackMenuSelection(fAttackAction, selection, subselection)
 	if selection == 1 then
-		attackWithModifier();
+		fAttackAction();
 	elseif selection == 2 and subselection == 1 then
-		attackWithModifier("ATK_FROMREAR");
+		fAttackAction("ATK_FROMREAR");
 	elseif selection == 2 and subselection == 2 then
-		attackWithModifier("ATK_IGNORE_ARMOR");
+		fAttackAction("ATK_IGNORE_ARMOR");
 	elseif selection == 2 and subselection == 3 then
-		attackWithModifier("ATK_NODEXTERITY");
+		fAttackAction("ATK_NODEXTERITY");
 	elseif selection == 2 and subselection == 4 then
-		attackWithModifier("ATK_SHIELDLESS")
+		fAttackAction("ATK_SHIELDLESS")
 	elseif selection == 4 and subselection == 1 then
-		attackWithModifier("CALLEDSHOT_TORSO");
+		fAttackAction("CALLEDSHOT_TORSO");
 	elseif selection == 4 and subselection == 2 then
-		attackWithModifier("CALLEDSHOT_HEAD");
+		fAttackAction("CALLEDSHOT_HEAD");
 	elseif selection == 4 and subselection == 3 then
-		attackWithModifier("CALLEDSHOT_ARM");
+		fAttackAction("CALLEDSHOT_ARM");
 	elseif selection == 4 and subselection == 4 then
-		attackWithModifier("CALLEDSHOT_LEG");
+		fAttackAction("CALLEDSHOT_LEG");
 	elseif selection == 4 and subselection == 5 then
-		attackWithModifier("CALLEDSHOT_ABDOMEN");
+		fAttackAction("CALLEDSHOT_ABDOMEN");
 	elseif selection == 4 and subselection == 6 then
-		attackWithModifier("CALLEDSHOT_NECK");
+		fAttackAction("CALLEDSHOT_NECK");
 	elseif selection == 5 and subselection == 3 then
-		attackWithModifier("DEF_CONCEAL_25");
+		fAttackAction("DEF_CONCEAL_25");
 	elseif selection == 5 and subselection == 4 then
-		attackWithModifier("DEF_CONCEAL_50");
+		fAttackAction("DEF_CONCEAL_50");
 	elseif selection == 5 and subselection == 5 then
-		attackWithModifier("DEF_CONCEAL_75");
+		fAttackAction("DEF_CONCEAL_75");
 	elseif selection == 5 and subselection == 6 then
-		attackWithModifier("DEF_CONCEAL_90");
+		fAttackAction("DEF_CONCEAL_90");
 	elseif selection == 6 and subselection == 3 then
-		attackWithModifier("DEF_COVER_25");
+		fAttackAction("DEF_COVER_25");
 	elseif selection == 6 and subselection == 4 then
-		attackWithModifier("DEF_COVER_50");
+		fAttackAction("DEF_COVER_50");
 	elseif selection == 6 and subselection == 5 then
-		attackWithModifier("DEF_COVER_75");
+		fAttackAction("DEF_COVER_75");
 	elseif selection == 6 and subselection == 6 then
-		attackWithModifier("DEF_COVER_90");
+		fAttackAction("DEF_COVER_90");
 	elseif selection == 8 and subselection == 2 then
-		attackWithModifier("ATK_NAT_20");
+		fAttackAction("ATK_NAT_20");
 	elseif selection == 8 and subselection == 8 then
-		attackWithModifier("ATK_NAT_1");
+		fAttackAction("ATK_NAT_1");
 	end
 end
 
@@ -132,59 +124,51 @@ function initCombatTrackerActionMenu(control)
 
 end
 
-function onCombatTrackerActionMenuSelection(control, selection, subselection, subsubselection)
-
-	function attackWithModifier(sModifierKey)
-		if sModifierKey then
-			ModifierStack.setModifierKey(sModifierKey, true);
-		end
-		control.performAttackAction();
-	end
+function onCombatTrackerActionMenuSelection(fAttackAction, selection, subselection, subsubselection)
 
 	if selection == 3 then
-
 		if subselection == 1 then
-			attackWithModifier();
+			fAttackAction();
 		elseif subselection == 2 and subsubselection == 1 then
-			attackWithModifier("ATK_FROMREAR");
+			fAttackAction("ATK_FROMREAR");
 		elseif subselection == 2 and subsubselection == 2 then
-			attackWithModifier("ATK_IGNORE_ARMOR");
+			fAttackAction("ATK_IGNORE_ARMOR");
 		elseif subselection == 2 and subsubselection == 3 then
-			attackWithModifier("ATK_NODEXTERITY");
+			fAttackAction("ATK_NODEXTERITY");
 		elseif subselection == 2 and subsubselection == 4 then
-			attackWithModifier("ATK_SHIELDLESS")
+			fAttackAction("ATK_SHIELDLESS")
 		elseif subselection == 4 and subsubselection == 1 then
-			attackWithModifier("CALLEDSHOT_TORSO");
+			fAttackAction("CALLEDSHOT_TORSO");
 		elseif subselection == 4 and subsubselection == 2 then
-			attackWithModifier("CALLEDSHOT_HEAD");
+			fAttackAction("CALLEDSHOT_HEAD");
 		elseif subselection == 4 and subsubselection == 3 then
-			attackWithModifier("CALLEDSHOT_ARM");
+			fAttackAction("CALLEDSHOT_ARM");
 		elseif subselection == 4 and subsubselection == 4 then
-			attackWithModifier("CALLEDSHOT_LEG");
+			fAttackAction("CALLEDSHOT_LEG");
 		elseif subselection == 4 and subsubselection == 5 then
-			attackWithModifier("CALLEDSHOT_ABDOMEN");
+			fAttackAction("CALLEDSHOT_ABDOMEN");
 		elseif subselection == 4 and subsubselection == 6 then
-			attackWithModifier("CALLEDSHOT_NECK");
+			fAttackAction("CALLEDSHOT_NECK");
 		elseif subselection == 5 and subsubselection == 3 then
-			attackWithModifier("DEF_CONCEAL_25");
+			fAttackAction("DEF_CONCEAL_25");
 		elseif subselection == 5 and subsubselection == 4 then
-			attackWithModifier("DEF_CONCEAL_50");
+			fAttackAction("DEF_CONCEAL_50");
 		elseif subselection == 5 and subsubselection == 5 then
-			attackWithModifier("DEF_CONCEAL_75");
+			fAttackAction("DEF_CONCEAL_75");
 		elseif subselection == 5 and subsubselection == 6 then
-			attackWithModifier("DEF_CONCEAL_90");
+			fAttackAction("DEF_CONCEAL_90");
 		elseif subselection == 6 and subsubselection == 3 then
-			attackWithModifier("DEF_COVER_25");
+			fAttackAction("DEF_COVER_25");
 		elseif subselection == 6 and subsubselection == 4 then
-			attackWithModifier("DEF_COVER_50");
+			fAttackAction("DEF_COVER_50");
 		elseif subselection == 6 and subsubselection == 5 then
-			attackWithModifier("DEF_COVER_75");
+			fAttackAction("DEF_COVER_75");
 		elseif subselection == 6 and subsubselection == 6 then
-			attackWithModifier("DEF_COVER_90");
+			fAttackAction("DEF_COVER_90");
 		elseif subselection == 8 and subsubselection == 2 then
-			attackWithModifier("ATK_NAT_20");
+			fAttackAction("ATK_NAT_20");
 		elseif subselection == 8 and subsubselection == 8 then
-			attackWithModifier("ATK_NAT_1");
+			fAttackAction("ATK_NAT_1");
 		end
 
 	end
@@ -195,46 +179,43 @@ end
 function initDelayMenu(control)
     control.resetMenuItems();
 	if not PlayerOptionManager.isUsingPhasedInitiative() then
-		control.registerMenuItem(Interface.getString("delay10_menuitem"), "delayTurn10ButtonIcon", 1);
-		control.registerMenuItem(Interface.getString("delay1_menuitem"), "delayTurn1ButtonIcon", 2);
-		control.registerMenuItem(Interface.getString("delay2_menuitem"), "delayTurn2ButtonIcon", 3);
-		control.registerMenuItem(Interface.getString("delay3_menuitem"), "delayTurn3ButtonIcon", 4);
-		control.registerMenuItem(Interface.getString("delay4_menuitem"), "delayTurn4ButtonIcon", 5);
-		control.registerMenuItem(Interface.getString("delay5_menuitem"), "delayTurn5ButtonIcon", 6);
-		control.registerMenuItem(Interface.getString("delay6_menuitem"), "delayTurn6ButtonIcon", 7);
-		control.registerMenuItem(Interface.getString("delay7plus_menuitem"), "delayTurnButtonIcon", 8);
+		control.registerMenuItem(Interface.getString("delay10_menuitem"), "delayTurn10ButtonIcon", 2);
+		control.registerMenuItem(Interface.getString("delay1_menuitem"), "delayTurn1ButtonIcon", 3);
+		control.registerMenuItem(Interface.getString("delay2_menuitem"), "delayTurn2ButtonIcon", 4);
+		control.registerMenuItem(Interface.getString("delay3_menuitem"), "delayTurn3ButtonIcon", 5);
+		control.registerMenuItem(Interface.getString("delay4_menuitem"), "delayTurn4ButtonIcon", 6);
+		control.registerMenuItem(Interface.getString("delay5_menuitem"), "delayTurn5ButtonIcon", 7);
+		control.registerMenuItem(Interface.getString("delay6plus_menuitem"), "delayTurnButtonIcon", 8);
+		control.registerMenuItem(Interface.getString("delay6_menuitem"), "delayTurn6ButtonIcon", 8, 8);
 		control.registerMenuItem(Interface.getString("delay7_menuitem"), "delayTurn7ButtonIcon", 8, 1);
 		control.registerMenuItem(Interface.getString("delay8_menuitem"), "delayTurn8ButtonIcon", 8, 2);
 		control.registerMenuItem(Interface.getString("delay9_menuitem"), "delayTurn9ButtonIcon", 8, 3);
 	end
 end
 
-function onDelayMenuSelection(control, selection, subselection)
+function onDelayMenuSelection(fDelayAction, selection, subselection)
 	if not PlayerOptionManager.isUsingPhasedInitiative() then
-		local nodeChar = control.window.getDatabaseNode();
-		if selection == 1 then
-			control.action();
-		elseif selection == 2 then
-			InitManagerPO.tryDelayActor(nodeChar, 1);
+		if selection == 2 then
+			fDelayAction();
 		elseif selection == 3 then
-			InitManagerPO.tryDelayActor(nodeChar, 2);
+			fDelayAction(1);
 		elseif selection == 4 then
-			InitManagerPO.tryDelayActor(nodeChar, 3);
+			fDelayAction(2);
 		elseif selection == 5 then
-			InitManagerPO.tryDelayActor(nodeChar, 4);
+			fDelayAction(3);
 		elseif selection == 6 then
-			InitManagerPO.tryDelayActor(nodeChar, 5);
+			fDelayAction(4);
 		elseif selection == 7 then
-			InitManagerPO.tryDelayActor(nodeChar, 6);
+			fDelayAction(5);
+		elseif selection == 8 and subselection == 8 then
+			fDelayAction(6);
 		elseif selection == 8 and subselection == 1 then
-			InitManagerPO.tryDelayActor(nodeChar, 7);
+			fDelayAction(7);
 		elseif selection == 8 and subselection == 2 then
-		 	InitManagerPO.tryDelayActor(nodeChar, 8);
+		 	fDelayAction(8);
 		elseif selection == 8 and subselection == 3 then
-			InitManagerPO.tryDelayActor(nodeChar, 9);
+			fDelayAction(9);
 		end
-	else
-		control.super.onMenuSelection(selection, subselection);
 	end
 end
 
@@ -253,22 +234,78 @@ function initInitiativeMenu(control)
 	end
 end
 
-function onInitiativeMenuSelection(control, selection, subselection)
+function onInitiativeMenuSelection(fInitAction, selection, subselection)
 	if not PlayerOptionManager.isUsingPhasedInitiative() then
-		
-		function rollInitWithModifier(sModifierKey)
-			if sModifierKey then
-				ModifierStack.setModifierKey(sModifierKey, true);
-			end
-			control.action();
-		end
-
 		if selection == 1 then
-			rollInitWithModifier();
+			fInitAction();
 		elseif selection == 2 then
-			rollInitWithModifier("INIT_START_ROUND");
+			fInitAction("INIT_START_ROUND");
 		elseif selection == 8 then
-			rollInitWithModifier("INIT_END_ROUND");
+			fInitAction("INIT_END_ROUND");
 		end
 	end
+end
+
+function initCombatTrackerActorMenu(control) 
+	control.resetMenuItems();
+	if not PlayerOptionManager.isUsingPhasedInitiative() then
+		control.registerMenuItem(Interface.getString("actor_init_menuitem"), "standardInitIcon", 2);
+		control.registerMenuItem(Interface.getString("standard_init_menuitem"), "standardInitIcon", 2, 1);
+		control.registerMenuItem(Interface.getString("first_init_menuitem"), "firstInitIcon", 2, 2);
+
+		control.registerMenuItem(Interface.getString("delay_submenu_menuitem"), "delayTurnButtonIcon", 2, 5);
+		control.registerMenuItem(Interface.getString("delay10_menuitem"), "delayTurn10ButtonIcon", 2, 5, 2);
+		control.registerMenuItem(Interface.getString("delay1_menuitem"), "delayTurn1ButtonIcon", 2, 5, 3);
+		control.registerMenuItem(Interface.getString("delay2_menuitem"), "delayTurn2ButtonIcon", 2, 5, 4);
+		control.registerMenuItem(Interface.getString("delay3_menuitem"), "delayTurn3ButtonIcon", 2, 5, 5);
+		control.registerMenuItem(Interface.getString("delay4_menuitem"), "delayTurn4ButtonIcon", 2, 5, 6);
+		control.registerMenuItem(Interface.getString("delay5_menuitem"), "delayTurn5ButtonIcon", 2, 5, 7);
+		control.registerMenuItem(Interface.getString("delay6plus_menuitem"), "delayTurnButtonIcon", 2, 5, 8);
+		control.registerMenuItem(Interface.getString("delay6_menuitem"), "delayTurn6ButtonIcon", 2, 5, 8, 8);
+		control.registerMenuItem(Interface.getString("delay7_menuitem"), "delayTurn7ButtonIcon", 2, 5, 8, 1);
+		control.registerMenuItem(Interface.getString("delay8_menuitem"), "delayTurn8ButtonIcon", 2, 5, 8, 2);
+		control.registerMenuItem(Interface.getString("delay9_menuitem"), "delayTurn9ButtonIcon", 2, 5, 8, 3);
+
+		if PlayerOptionManager.isUsingHackmasterInitiative() then
+			control.registerMenuItem(Interface.getString("last_init_menuitem"), "lastInitHmIcon", 2, 8);
+		else
+			control.registerMenuItem(Interface.getString("last_init_menuitem"), "lastInitIcon", 2, 8);
+		end
+
+
+	end
+
+end
+
+function onCombatTrackerActorMenuSelection(fInitAction, fDelayAction, selection, subselection, sub2selection, sub3selection)
+	if not PlayerOptionManager.isUsingPhasedInitiative() then
+	    if selection == 2 and subselection == 1 then
+	        fInitAction();
+	    elseif selection == 2 and subselection == 2 then
+	        fInitAction("INIT_START_ROUND");
+	    elseif selection == 2 and subselection == 8 then
+	        fInitAction("INIT_END_ROUND");
+	    elseif selection == 2 and subselection == 5 and sub2selection == 2 then
+			fDelayAction();
+		elseif selection == 2 and subselection == 5 and sub2selection == 3 then
+			fDelayAction(1);
+		elseif selection == 2 and subselection == 5 and sub2selection == 4 then
+			fDelayAction(2);
+		elseif selection == 2 and subselection == 5 and sub2selection == 5 then
+			fDelayAction(3);
+		elseif selection == 2 and subselection == 5 and sub2selection == 6 then
+			fDelayAction(4);
+		elseif selection == 2 and subselection == 5 and sub2selection == 7 then
+			fDelayAction(5);
+		elseif selection == 2 and subselection == 5 and sub2selection == 8 and sub3selection == 8 then
+			fDelayAction(6);
+		elseif selection == 2 and subselection == 5 and sub2selection == 8 and sub3selection == 1 then
+			fDelayAction(7);
+		elseif selection == 2 and subselection == 5 and sub2selection == 8 and sub3selection == 2 then
+		 	fDelayAction(8);
+		elseif selection == 2 and subselection == 5 and sub2selection == 8 and sub3selection == 3 then
+			fDelayAction(9);
+		end
+	end
+    
 end

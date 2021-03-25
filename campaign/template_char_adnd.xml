@@ -19,7 +19,14 @@
         end
 
         function onMenuSelection(selection, subselection)
-        	RadialMenuManagerPO.onAttackMenuSelection(self, selection, subselection);
+        	RadialMenuManagerPO.onAttackMenuSelection(attackWithModifier, selection, subselection);
+        end
+
+        function attackWithModifier(sModifierKey)
+          if sModifierKey then
+            ModifierStack.setModifierKey(sModifierKey, true);
+          end
+          window.onAttackAction();
         end
 
         function onHover(bOnControl)
