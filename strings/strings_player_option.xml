@@ -19,6 +19,7 @@
     <string name="option_label_default_pc_init_to_99">Set Unrolled PC Init to 99</string>
     <string name="option_label_ring_bell_on_round_start">Ring Bell On Round Start</string>
     <string name="option_label_npc_ac_like_pc">Adjust NPC AC for items and abilities?</string>
+    <string name="option_label_allow_player_cheater_dice">Allow Player Cheater Dice?</string>
 
 
     
@@ -146,6 +147,7 @@
     <string name="conceal_90_radial_menuitem">90% Concealment</string>
 
     <string name="standardAttack">Standard Attack></string>
+    <string name="defenderModifiers">Attack Type Modifiers</string>
     <string name="rearAttackModifier">Rear Attack</string>
     <string name="noDexAttackModifier">Attack (defender gets no Dexterity bonus)</string>
     <string name="noShieldAttackModifier">Attack (defender gets no shield bonus)</string>
@@ -154,4 +156,10 @@
     <string name="standard_init_menuitem">Roll a d10 for initiative</string>
     <string name="first_init_menuitem">Go at the start of the round</string>
     <string name="last_init_menuitem">Go at the end of the round</string>
+
+    <string name="attack_submenu_menuitem">Attack Submenu</string>
+
+    <string name="cheater_dice_menuitem">Cheater Dice</string>
+    <string name="roll_1_menuitem">Roll a Natural 1</string>
+    <string name="roll_20_menuitem">Roll a Natural 20</string>
 </root>

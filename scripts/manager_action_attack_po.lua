@@ -151,6 +151,20 @@ function getRollOverride(rActor, rAction)
 end
 
 function onAttackOverride(rSource, rTarget, rRoll)
+  if #(rRoll.aDice) > 0 then
+    if ModifierStack.getModifierKey("ATK_NAT_20") then
+      if not Session.IsHost then
+        rRoll.sDesc = rRoll.sDesc .. "[" .. Interface.getString("message_manualroll") .. "]";
+      end
+      rRoll.aDice[1].result = 20;
+    elseif ModifierStack.getModifierKey("ATK_NAT_1") then
+      if not Session.IsHost then
+        rRoll.sDesc = rRoll.sDesc .. "[" .. Interface.getString("message_manualroll") .. "]";
+      end
+      rRoll.aDice[1].result = 1;
+    end
+  end
+
   if PlayerOptionManager.isUsingHackmasterFatigue() then
       FatigueManagerPO.recordAttack(rSource, rTarget, rRoll.range);
   end

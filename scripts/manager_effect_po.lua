@@ -32,7 +32,19 @@ function hasImmunity(rSource, rTarget, sImmunity)
 	return false;
 end
 
-function isNotAllowedToCrit(rSource)
-	return EffectManager5E.hasEffect(rTarget, "NOCRIT", nil);
+function isAllowedToCrit(rSource)
+	if not rSource then
+		return true;
+	end
+	
+	return not EffectManager5E.hasEffect(rSource, "NOCRIT", nil);
+end
+
+function isAllowedToPenetrate(rSource)
+	if not rSource then
+		return true;
+	end
+
+	return not EffectManager5E.hasEffect(rSource, "NOPENETRATE", nil);
 end
 

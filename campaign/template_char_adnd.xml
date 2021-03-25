@@ -10,6 +10,7 @@
       <cursor hover="hand" /> 
       <script>
         function onInit()
+          OptionsManager.registerCallback(PlayerOptionManager.sAllowPlayerCheaterDice, initMenuItems);
           initMenuItems();
         end
 

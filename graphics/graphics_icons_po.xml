@@ -38,8 +38,9 @@
   <icon name="calledShotLegIcon" file="graphics/icons/called_shot_leg.png" />
   <icon name="calledShotAbdomenIcon" file="graphics/icons/called_shot_abdomen.png" />
   <icon name="calledShotNeckIcon" file="graphics/icons/called_shot_neck.png" />
-
+  
   <icon name="standardAttackIcon" file="graphics/icons/standard_attack_icon.png" />
+  <icon name="defenderModifiersIcon" file="graphics/icons/defender_modifiers_icon.png" />
   <icon name="rearAttackModifierIcon" file="graphics/icons/rear_attack_icon.png" />
   <icon name="noDexAttackModifierIcon" file="graphics/icons/no_dex_modifier_icon.png" />
   <icon name="noShieldAttackModifierIcon" file="graphics/icons/no_shield_modifier_icon.png" />
@@ -51,6 +52,13 @@
   <icon name="firstInitIcon" file="graphics/icons/first_init_icon.png" />
 
   <icon name="sterno_icon" file="graphics/icons/sterno_icon.png" />
+  <icon name="blankIcon" file="graphics/icons/blank_icon.png" />
+
+  <icon name="attackSubmenuIcon" file="graphics/icons/attack_submenu_icon.png" />
+
+  <icon name="cheaterDiceSubmenuIcon" file="graphics/icons/nat_20_icon.png" />
+  <icon name="nat20Icon" file="graphics/icons/nat_20_icon.png" />
+  <icon name="nat1Icon" file="graphics/icons/nat_1_icon.png" />
 
 </root>
 

@@ -21,6 +21,7 @@ sHackmasterCritsOptionKey = "HouseRule_HackmasterCrits";
 sHackmasterInitKey = "HouseRule_HackmasterInit";
 sMagicArmorDamageOptionKey = "HouseRule_MagicArmorDamage";
 sAdjustNpcAcLikePc = "AdditionalAutomation_AdjustNpcAcLikePc";
+sAllowPlayerCheaterDice = "AdditionalAutomation_AllowPlayerCheaterDice";
 
 function onInit()
     registerOptions();
@@ -95,6 +96,9 @@ function registerOptions()
 	OptionsManager.registerOption2(sRingBellOnRoundStartOptionKey, false, "option_header_automation", "option_label_ring_bell_on_round_start", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 
 	OptionsManager.registerOption2(sAdjustNpcAcLikePc, false, "option_header_automation", "option_label_npc_ac_like_pc", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+
+	OptionsManager.registerOption2(sAllowPlayerCheaterDice, false, "option_header_automation", "option_label_allow_player_cheater_dice", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+
     
     
     -- House rules
@@ -158,6 +162,10 @@ end
 
 function isUsingHackmasterInitiative()
 	return OptionsManager.isOption(sHackmasterInitKey, "on");
+end
+
+function isAllowingPlayerCheaterDice()
+	return OptionsManager.isOption(sAllowPlayerCheaterDice, "on");
 end
 
 function shouldRingBellOnRoundStart()

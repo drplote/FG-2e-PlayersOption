@@ -10,15 +10,13 @@ function isCriticalHit(rRoll, rAction, nDefenseVal, rSource, rTarget)
 end
 
 function isOptionalRulesCriticalHit(rRoll, rAction, nDefenseVal, rSource, rTarget)
-	if EffectManagerPO.isNotAllowedToCrit(rSource) then
-		return false;
-	end
-	
-	if nDefenseVal and nDefenseVal ~= 0 then
-		local nRequiredCritRoll = getCritThreshold(rRoll, rSource, rTarget);
-		local bMustHitBy5 = PlayerOptionManager.mustCritHitBy5();
-		local nHitDifference = CombatCalcManagerPO.getAttackVsDefenseDifference(rRoll, rAction, nDefenseVal);
-		return rAction.nFirstDie >= nRequiredCritRoll and (not bMustHitBy5 or nHitDifference >= 5);
+	if EffectManagerPO.isAllowedToCrit(rSource) then
+		if nDefenseVal and nDefenseVal ~= 0 then
+			local nRequiredCritRoll = getCritThreshold(rRoll, rSource, rTarget);
+			local bMustHitBy5 = PlayerOptionManager.mustCritHitBy5();
+			local nHitDifference = CombatCalcManagerPO.getAttackVsDefenseDifference(rRoll, rAction, nDefenseVal);
+			return rAction.nFirstDie >= nRequiredCritRoll and (not bMustHitBy5 or nHitDifference >= 5);
+		end
 	end
 	return false;
 end
