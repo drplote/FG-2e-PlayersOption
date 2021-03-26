@@ -172,3 +172,12 @@ function delayActor(nodeChar)
 		end
 	end
 end
+
+function getActiveInit()
+	local nodeActive = CombatManager.getActiveCT();
+	if not nodeActive then
+		return 0;
+	end
+
+	return DB.getValue(nodeActive, "initresult", 0);
+end

@@ -41,8 +41,10 @@ end
 
 function performChargeAction()
 	local nodeChar = nodeAction.getChild("...");
-	Debug.console("nodeChar", nodeChar);
-	EffectManager.addEffect("", "", nodeChar, { sName = "Charged", sLabel = "Charged", nDuration = 1 }, true);
+	local nodeCT = ActorManager.getCTNode(nodeChar);
+    local nCurrentInit = DB.getValue(nodeCT, "initresult", 0);
+
+	EffectManager.addEffect("", "", nodeCT, { sName = "Charged", sLabel = "Charged", nDuration = 1, nInit = nCurrentInit }, true);
 	performAttackAction();
 end
 

@@ -26,7 +26,8 @@
           local nodeWeapon = window.getDatabaseNode();
           local nodeChar = nodeWeapon.getChild("...")
           local nodeCT = CombatManager.getCTFromNode(nodeChar);
-          EffectManager.addEffect("", "", nodeCT, { sName = "Charged", sLabel = "Charged", nDuration = 1 }, true);
+          local nCurrentInit = DB.getValue(nodeCT, "initresult", 0);
+          EffectManager.addEffect("", "", nodeCT, { sName = "Charged", sLabel = "Charged", nDuration = 1, nInit = nCurrentInit }, true);
           attackWithModifier();
         end
 

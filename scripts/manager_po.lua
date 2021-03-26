@@ -138,7 +138,7 @@ function isUsingAlternateTargetEffectModifiers()
 end
 
 function shouldUseDynamicNpcAc()
-	return OptionsManager.isOption(sAdjustNpcAcLikePc, "on") or OptionsManager.isUsingArmorDamage();
+	return OptionsManager.isOption(sAdjustNpcAcLikePc, "on") or isUsingArmorDamage();
 end
 
 function isMagicArmorDamagedByPenetration()
