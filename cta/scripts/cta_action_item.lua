@@ -35,8 +35,15 @@ function onMenuSelection(selection, subselection, subsubselection)
     if selection == 6 and subselection == 7 then
         nodeAction.delete();
 	else -- NOTE: This is one of the few changes to this file
-		RadialMenuManagerPO.onCombatTrackerActionMenuSelection(performAttackAction, selection, subselection, subsubselection);
+		RadialMenuManagerPO.onCombatTrackerActionMenuSelection(performAttackAction, performChargeAction, selection, subselection, subsubselection);
 	end
+end
+
+function performChargeAction()
+	local nodeChar = nodeAction.getChild("...");
+	Debug.console("nodeChar", nodeChar);
+	EffectManager.addEffect("", "", nodeChar, { sName = "Charged", sLabel = "Charged", nDuration = 1 }, true);
+	performAttackAction();
 end
 
 function performAttackAction(sModifierKey)

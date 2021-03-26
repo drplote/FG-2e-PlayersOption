@@ -45,6 +45,7 @@
   <icon name="noDexAttackModifierIcon" file="graphics/icons/no_dex_modifier_icon.png" />
   <icon name="noShieldAttackModifierIcon" file="graphics/icons/no_shield_modifier_icon.png" />
   <icon name="touchAttackModifierIcon" file="graphics/icons/touch_attack_modifier_icon.png" />
+  <icon name="chargeAttackModifierIcon" file="graphics/icons/charge_icon.png" />
 
   <icon name="standardInitIcon" file="graphics/icons/standard_init_icon.png" />
   <icon name="lastInitHmIcon" file="graphics/icons/last_init_hm_icon.png" />

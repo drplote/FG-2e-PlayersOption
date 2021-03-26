@@ -153,6 +153,7 @@
     <string name="noDexAttackModifier">Attack (defender gets no Dexterity bonus)</string>
     <string name="noShieldAttackModifier">Attack (defender gets no shield bonus)</string>
     <string name="touchAttackModifier">Touch Attack (defender gets no armor bonus)</string>
+    <string name="chargeAttackModifier">Charge!</string>
 
     <string name="standard_init_menuitem">Roll a d10 for initiative</string>
     <string name="first_init_menuitem">Go at the start of the round</string>

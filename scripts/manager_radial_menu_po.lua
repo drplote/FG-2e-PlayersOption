@@ -10,6 +10,7 @@ function initAttackMenu(control)
 	control.registerMenuItem(Interface.getString("touchAttackModifier"), "touchAttackModifierIcon", 2, 2);
 	control.registerMenuItem(Interface.getString("noDexAttackModifier"), "noDexAttackModifierIcon", 2, 3);
 	control.registerMenuItem(Interface.getString("noShieldAttackModifier"), "noShieldAttackModifierIcon", 2, 4);
+	control.registerMenuItem(Interface.getString("chargeAttackModifier"), "chargeAttackModifierIcon", 2, 8);
 
 	control.registerMenuItem(Interface.getString("modifier_label_calledshot"), "calledShotIcon", 4);
 	control.registerMenuItem(Interface.getString("modifier_label_calledshot_torso"), "calledShotTorsoIcon", 4, 1);
@@ -41,7 +42,7 @@ function initAttackMenu(control)
 	
 end
 
-function onAttackMenuSelection(fAttackAction, selection, subselection)
+function onAttackMenuSelection(fAttackAction, fChargeAction, selection, subselection)
 	if selection == 1 then
 		fAttackAction();
 	elseif selection == 2 and subselection == 1 then
@@ -52,6 +53,8 @@ function onAttackMenuSelection(fAttackAction, selection, subselection)
 		fAttackAction("ATK_NODEXTERITY");
 	elseif selection == 2 and subselection == 4 then
 		fAttackAction("ATK_SHIELDLESS")
+	elseif selection == 2 and subselection == 8 then
+		fChargeAction();
 	elseif selection == 4 and subselection == 1 then
 		fAttackAction("CALLEDSHOT_TORSO");
 	elseif selection == 4 and subselection == 2 then
@@ -88,7 +91,6 @@ function onAttackMenuSelection(fAttackAction, selection, subselection)
 end
 
 function initCombatTrackerActionMenu(control)
-	control.resetMenuItems();
 	control.registerMenuItem(Interface.getString("attack_submenu_menuitem"), "attackSubmenuIcon", 3);
 
 	control.registerMenuItem(Interface.getString("standardAttack"), "standardAttackIcon", 3, 1);
@@ -97,6 +99,7 @@ function initCombatTrackerActionMenu(control)
 	control.registerMenuItem(Interface.getString("touchAttackModifier"), "touchAttackModifierIcon", 3, 2, 2);
 	control.registerMenuItem(Interface.getString("noDexAttackModifier"), "noDexAttackModifierIcon", 3, 2, 3);
 	control.registerMenuItem(Interface.getString("noShieldAttackModifier"), "noShieldAttackModifierIcon", 3, 2, 4);
+	control.registerMenuItem(Interface.getString("chargeAttackModifier"), "chargeAttackModifierIcon", 3, 2, 8);
 
 	control.registerMenuItem(Interface.getString("modifier_label_calledshot"), "calledShotIcon", 3, 4);
 	control.registerMenuItem(Interface.getString("modifier_label_calledshot_torso"), "calledShotTorsoIcon", 3, 4, 1);
@@ -124,7 +127,7 @@ function initCombatTrackerActionMenu(control)
 
 end
 
-function onCombatTrackerActionMenuSelection(fAttackAction, selection, subselection, subsubselection)
+function onCombatTrackerActionMenuSelection(fAttackAction, fChargeAction, selection, subselection, subsubselection)
 
 	if selection == 3 then
 		if subselection == 1 then
@@ -136,7 +139,9 @@ function onCombatTrackerActionMenuSelection(fAttackAction, selection, subselecti
 		elseif subselection == 2 and subsubselection == 3 then
 			fAttackAction("ATK_NODEXTERITY");
 		elseif subselection == 2 and subsubselection == 4 then
-			fAttackAction("ATK_SHIELDLESS")
+			fAttackAction("ATK_SHIELDLESS");
+		elseif subselection == 2 and subsubselection == 8 then
+			fChargeAction();
 		elseif subselection == 4 and subsubselection == 1 then
 			fAttackAction("CALLEDSHOT_TORSO");
 		elseif subselection == 4 and subsubselection == 2 then
@@ -296,6 +301,8 @@ function initCombatTrackerActorMenu(control)
 	control.registerMenuItem(Interface.getString("add_effect_menuitem") .. Interface.getString("no_dexterity_effect_menuitem"), "addEffectIcon", 3, 8, 2);
 	control.registerMenuItem(Interface.getString("remove_effect_menuitem") .. Interface.getString("no_dexterity_effect_menuitem"), "removeEffectIcon", 3, 8, 8);
 
+	control.registerMenuItem(Interface.getString("list_menu_deleteitem"), "delete", 6);
+    control.registerMenuItem(Interface.getString("list_menu_deleteconfirm"), "delete", 6, 7);
 end
 
 function onCombatTrackerActorMenuSelection(fInitAction, fDelayAction, fEffectAction, selection, subselection, sub2selection, sub3selection)

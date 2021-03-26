@@ -19,7 +19,15 @@
         end
 
         function onMenuSelection(selection, subselection)
-        	RadialMenuManagerPO.onAttackMenuSelection(attackWithModifier, selection, subselection);
+        	RadialMenuManagerPO.onAttackMenuSelection(attackWithModifier, performChargeAction, selection, subselection);
+        end
+
+        function performChargeAction()
+          local nodeWeapon = window.getDatabaseNode();
+          local nodeChar = nodeWeapon.getChild("...")
+          local nodeCT = CombatManager.getCTFromNode(nodeChar);
+          EffectManager.addEffect("", "", nodeCT, { sName = "Charged", sLabel = "Charged", nDuration = 1 }, true);
+          attackWithModifier();
         end
 
         function attackWithModifier(sModifierKey)
