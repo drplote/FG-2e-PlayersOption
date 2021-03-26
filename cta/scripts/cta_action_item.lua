@@ -431,10 +431,7 @@ end
 --[[
     Run action
 ]]
-function actionAbility(draginfo, rRecord)
-	Debug.console("cta_action_item.lua", "rAttackRecord", rAttackRecord);
-Debug.console("cta_action_item.lua","actionAbility","rRecord",rRecord);       
-Debug.console("cta_action_item.lua","actionAbility","rRecord.type",rRecord.type);            
+function actionAbility(draginfo, rRecord)       
 	local bResult = true;
     if not rRecord then
         return false;

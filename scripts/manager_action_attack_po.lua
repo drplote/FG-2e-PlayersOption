@@ -465,12 +465,36 @@ function addMissingModifierKeyDescriptions(rRoll)
 
 end
 
+function applyAlternateEffectModifiers(rTarget, rRoll)
+  local sAttackType = string.match(rRoll.sDesc, "%[ATTACK *%((%w+)%)%]");
+  if not sAttackType then
+    sAttackType = "M";
+  end
+
+  local bIsProneOrUnconscious = EffectManager5E.hasEffectCondition(rTarget, "Prone") or EffectManager5E.hasEffectCondition(rTarget, "Unconscious");
+  local bIsStunnedOrRestrained = EffectManager5E.hasEffectCondition(rTarget, "Restrained") or EffectManager5E.hasEffectCondition(rTarget, "Stunned");
+
+  if sAttackType == "M" and bIsProneOrUnconscious and bIsStunnedOrRestrained then
+    -- 2E ruleset adds 4 for restrained/stunned and 4 for unconscious/prone. I don't think they should stack, so remove the extra +4.
+    rRoll.nMod = rRoll.nMod - 4;
+  end
+
+  if not bIsProneOrUnconscious and not bIsStunnedOrRestrained and EffectManager5E.hasEffectCondition(rTarget, "Paralyzed") then
+    -- 2E ruleset didn't add 4 for paralyzed, but that seems equivalent to restrained/stunned.
+    rRoll.nMod = rRoll.nMod + 4;
+  end
+end
+
 function modAttackOverride(rSource, rTarget, rRoll)
     StateManagerPO.clearShieldHitState(rSource);
     if rSource and not rSource.aDamageTypes then
       rSource.aDamageTypes = WeaponManagerPO.decodeDamageTypes(rRoll.aDamageTypes);
     end
     fModAttack(rSource, rTarget, rRoll);
+
+    if PlayerOptionManager.isUsingAlternateTargetEffectModifiers() then
+      applyAlternateEffectModifiers(rTarget, rRoll);
+    end
 
     addMissingModifierKeyDescriptions(rRoll);
 	

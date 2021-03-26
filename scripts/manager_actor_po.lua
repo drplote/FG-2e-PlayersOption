@@ -159,6 +159,7 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
     local bProne = false;
     local bParalyzed = false;
     local bRestrainedStunned = false;
+    local bUnconscious = false;
     if EffectManager5E.hasEffect(rDefender, "Paralyzed", rAttacker) then
       bParalyzed = true;
     end
@@ -172,6 +173,7 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
       bRestrainedStunned = true;
     end
     if EffectManager5E.hasEffect(rDefender, "Unconscious", rAttacker) then
+      bUnconscious = true;
       bProne = true;
     end
     
@@ -233,7 +235,7 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
     if sDefenderType == "pc" or PlayerOptionManager.shouldUseDynamicNpcAc() then
       -- dont get shield bonus if you attacked from rear
       -- or if you are prone
-	    if bNoShield or bRearAtk or bProne or bParalyzed or bRestrainedStunned or 
+	    if bNoShield or bRearAtk or bUnconscious or bParalyzed or bRestrainedStunned or (bProne and not PlayerOptionManager.isUsingAlternateTargetEffectModifiers()) or
 	        EffectManager5E.hasEffect(rDefender, "NOSHIELD", nil) or 
 	        EffectManager5E.hasEffect(rDefender, "SHIELDLESS", nil) or 
 	        EffectManager5E.hasEffect(rDefender, "Charged", nil) then

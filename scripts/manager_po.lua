@@ -22,6 +22,7 @@ sHackmasterInitKey = "HouseRule_HackmasterInit";
 sMagicArmorDamageOptionKey = "HouseRule_MagicArmorDamage";
 sAdjustNpcAcLikePc = "AdditionalAutomation_AdjustNpcAcLikePc";
 sAllowPlayerCheaterDice = "AdditionalAutomation_AllowPlayerCheaterDice";
+sAlternateTargetEffectModifiers = "AdditionalAutomation_AlternateTargetEffectModifiers";
 
 function onInit()
     registerOptions();
@@ -42,10 +43,6 @@ function updateOldOptionsToNewValues()
 	if OptionsManager.isOption(sArmorDamageOptionKey, "on") then
 		OptionsManager.setOption(sAdjustNpcAcLikePc, "on");
 	end
-end
-
-function shouldUseDynamicNpcAc()
-	return OptionsManager.isOption(sAdjustNpcAcLikePc, "on") or OptionsManager.isUsingArmorDamage();
 end
 
 function onPlayersOptionCritOptionChanged()
@@ -99,6 +96,8 @@ function registerOptions()
 
 	OptionsManager.registerOption2(sAllowPlayerCheaterDice, false, "option_header_automation", "option_label_allow_player_cheater_dice", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 
+	OptionsManager.registerOption2(sAlternateTargetEffectModifiers, false, "option_header_automation", "option_label_alternate_target_effect_modifiers", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+
     
     
     -- House rules
@@ -132,6 +131,14 @@ function registerOptions()
 
 	OptionsManager.registerOption2(sMagicArmorDamageOptionKey, false, "option_header_house_rule", "option_label_magic_armor_damage", "option_entry_cycler",{ labels = "option_val_equal_magic|option_val_penetration|option_val_both", values = "magic|penetration|both", baselabel = "option_val_off", baseval = "off", default = "off" });
 
+end
+
+function isUsingAlternateTargetEffectModifiers()
+	return OptionsManager.isOption(sAlternateTargetEffectModifiers, "on");
+end
+
+function shouldUseDynamicNpcAc()
+	return OptionsManager.isOption(sAdjustNpcAcLikePc, "on") or OptionsManager.isUsingArmorDamage();
 end
 
 function isMagicArmorDamagedByPenetration()

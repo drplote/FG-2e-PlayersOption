@@ -60,5 +60,17 @@
   <icon name="nat20Icon" file="graphics/icons/nat_20_icon.png" />
   <icon name="nat1Icon" file="graphics/icons/nat_1_icon.png" />
 
+  <icon name="effectsSubmenuIcon" file="graphics/icons/effects_submenu_icon.png" />
+  <icon name="blindEffectIcon" file="graphics/icons/blind_effect_icon.png" />
+  <icon name="invisibleEffectIcon" file="graphics/icons/invisible_effect_icon.png" />
+  <icon name="paralyzedEffectIcon" file="graphics/icons/paralyzed_effect_icon.png" />
+  <icon name="proneEffectIcon" file="graphics/icons/prone_effect_icon.png" />
+  <icon name="stunnedEffectIcon" file="graphics/icons/stunned_effect_icon.png" />
+  <icon name="unconsciousEffectIcon" file="graphics/icons/unconscious_effect_icon.png" />
+  <icon name="restrainedEffectIcon" file="graphics/icons/restrained_effect_icon.png" />
+  <icon name="noDexterityEffectIcon" file="graphics/icons/no_dex_effect_icon.png" />
+  <icon name="addEffectIcon" file="graphics/icons/plus_icon.png" />
+  <icon name="removeEffectIcon" file="graphics/icons/minus_icon.png" />
+
 </root>
 

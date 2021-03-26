@@ -271,13 +271,34 @@ function initCombatTrackerActorMenu(control)
 		else
 			control.registerMenuItem(Interface.getString("last_init_menuitem"), "lastInitIcon", 2, 8);
 		end
-
-
 	end
+
+	control.registerMenuItem(Interface.getString("effects_submenu_menuitem"), "effectsSubmenuIcon", 3);
+	control.registerMenuItem(Interface.getString("restrained_effect_menuitem"), "restrainedEffectIcon", 3, 1);
+	control.registerMenuItem(Interface.getString("add_effect_menuitem") .. Interface.getString("restrained_effect_menuitem"), "addEffectIcon", 3, 1, 2);
+	control.registerMenuItem(Interface.getString("remove_effect_menuitem") .. Interface.getString("restrained_effect_menuitem"), "removeEffectIcon", 3, 1, 8);
+	control.registerMenuItem(Interface.getString("unconscious_effect_menuitem"), "unconsciousEffectIcon", 3, 2);
+	control.registerMenuItem(Interface.getString("add_effect_menuitem") .. Interface.getString("unconscious_effect_menuitem"), "addEffectIcon", 3, 2, 2);
+	control.registerMenuItem(Interface.getString("remove_effect_menuitem") .. Interface.getString("unconscious_effect_menuitem"), "removeEffectIcon", 3, 2, 8);
+	control.registerMenuItem(Interface.getString("prone_effect_menuitem"), "proneEffectIcon", 3, 3);
+	control.registerMenuItem(Interface.getString("add_effect_menuitem") .. Interface.getString("prone_effect_menuitem"), "addEffectIcon", 3, 3, 2);
+	control.registerMenuItem(Interface.getString("remove_effect_menuitem") .. Interface.getString("prone_effect_menuitem"), "removeEffectIcon", 3, 3, 8);
+	control.registerMenuItem(Interface.getString("stunned_effect_menuitem"), "stunnedEffectIcon", 3, 4);
+	control.registerMenuItem(Interface.getString("add_effect_menuitem") .. Interface.getString("stunned_effect_menuitem"), "addEffectIcon", 3, 4, 4);
+	control.registerMenuItem(Interface.getString("remove_effect_menuitem") .. Interface.getString("stunned_effect_menuitem"), "removeEffectIcon", 3, 4, 6);	
+	control.registerMenuItem(Interface.getString("blind_effect_menuitem"), "blindEffectIcon", 3, 5);
+	control.registerMenuItem(Interface.getString("add_effect_menuitem") .. Interface.getString("blind_effect_menuitem"), "addEffectIcon", 3, 5, 2);
+	control.registerMenuItem(Interface.getString("remove_effect_menuitem") .. Interface.getString("blind_effect_menuitem"), "removeEffectIcon", 3, 5, 8);
+	control.registerMenuItem(Interface.getString("invisible_effect_menuitem"), "invisibleEffectIcon", 3, 6);
+	control.registerMenuItem(Interface.getString("add_effect_menuitem") .. Interface.getString("invisible_effect_menuitem"), "addEffectIcon", 3, 6, 4);
+	control.registerMenuItem(Interface.getString("remove_effect_menuitem") .. Interface.getString("invisible_effect_menuitem"), "removeEffectIcon", 3, 6, 6);
+	control.registerMenuItem(Interface.getString("no_dexterity_effect_menuitem"), "noDexterityEffectIcon", 3, 8);
+	control.registerMenuItem(Interface.getString("add_effect_menuitem") .. Interface.getString("no_dexterity_effect_menuitem"), "addEffectIcon", 3, 8, 2);
+	control.registerMenuItem(Interface.getString("remove_effect_menuitem") .. Interface.getString("no_dexterity_effect_menuitem"), "removeEffectIcon", 3, 8, 8);
 
 end
 
-function onCombatTrackerActorMenuSelection(fInitAction, fDelayAction, selection, subselection, sub2selection, sub3selection)
+function onCombatTrackerActorMenuSelection(fInitAction, fDelayAction, fEffectAction, selection, subselection, sub2selection, sub3selection)
 	if not PlayerOptionManager.isUsingPhasedInitiative() then
 	    if selection == 2 and subselection == 1 then
 	        fInitAction();
@@ -305,6 +326,38 @@ function onCombatTrackerActorMenuSelection(fInitAction, fDelayAction, selection,
 		 	fDelayAction(8);
 		elseif selection == 2 and subselection == 5 and sub2selection == 8 and sub3selection == 3 then
 			fDelayAction(9);
+		end
+	end
+
+	if selection == 3 then
+		if subselection == 1 and sub2selection == 2 then
+			fEffectAction("Restrained");
+		elseif subselection == 1 and sub2selection == 8 then
+			fEffectAction("Restrained", true);
+		elseif subselection == 2 and sub2selection == 2 then
+			fEffectAction("Unconscious");
+		elseif subselection == 2 and sub2selection == 8 then
+			fEffectAction("Unconscious", true);
+		elseif subselection == 3 and sub2selection == 2 then
+			fEffectAction("Prone");
+		elseif subselection == 3 and sub2selection == 8 then
+			fEffectAction("Prone", true);
+		elseif subselection == 4 and sub2selection == 4 then
+			fEffectAction("Stunned");
+		elseif subselection == 4 and sub2selection == 6 then			
+			fEffectAction("Stunned", true);
+		elseif subselection == 5 and sub2selection == 2 then			
+			fEffectAction("Blinded");
+		elseif subselection == 5 and sub2selection == 8 then						
+			fEffectAction("Blinded", true);
+		elseif subselection == 6 and sub2selection == 4 then			
+			fEffectAction("Invisible");
+		elseif subselection == 6 and sub2selection == 6 then						
+			fEffectAction("Invisible", true);
+		elseif subselection == 8 and sub2selection == 2 then			
+			fEffectAction("NO-DEXTERITY");
+		elseif subselection == 8 and sub2selection == 8 then			
+			fEffectAction("DEXTERITY", true); -- Need to do this because NO-DEXTERITY fails matching, probably due to the hyphen
 		end
 	end
     
