@@ -42,51 +42,51 @@ function initAttackMenu(control)
 	
 end
 
-function onAttackMenuSelection(fAttackAction, fChargeAction, selection, subselection)
+function onAttackMenuSelection(control, selection, subselection)
 	if selection == 1 then
-		fAttackAction();
+		control.performAttackAction();
 	elseif selection == 2 and subselection == 1 then
-		fAttackAction("ATK_FROMREAR");
+		control.performAttackAction("ATK_FROMREAR");
 	elseif selection == 2 and subselection == 2 then
-		fAttackAction("ATK_IGNORE_ARMOR");
+		control.performAttackAction("ATK_IGNORE_ARMOR");
 	elseif selection == 2 and subselection == 3 then
-		fAttackAction("ATK_NODEXTERITY");
+		control.performAttackAction("ATK_NODEXTERITY");
 	elseif selection == 2 and subselection == 4 then
-		fAttackAction("ATK_SHIELDLESS")
+		control.performAttackAction("ATK_SHIELDLESS")
 	elseif selection == 2 and subselection == 8 then
-		fChargeAction();
+		control.performChargeAction();
 	elseif selection == 4 and subselection == 1 then
-		fAttackAction("CALLEDSHOT_TORSO");
+		control.performAttackAction("CALLEDSHOT_TORSO");
 	elseif selection == 4 and subselection == 2 then
-		fAttackAction("CALLEDSHOT_HEAD");
+		control.performAttackAction("CALLEDSHOT_HEAD");
 	elseif selection == 4 and subselection == 3 then
-		fAttackAction("CALLEDSHOT_ARM");
+		control.performAttackAction("CALLEDSHOT_ARM");
 	elseif selection == 4 and subselection == 4 then
-		fAttackAction("CALLEDSHOT_LEG");
+		control.performAttackAction("CALLEDSHOT_LEG");
 	elseif selection == 4 and subselection == 5 then
-		fAttackAction("CALLEDSHOT_ABDOMEN");
+		control.performAttackAction("CALLEDSHOT_ABDOMEN");
 	elseif selection == 4 and subselection == 6 then
-		fAttackAction("CALLEDSHOT_NECK");
+		control.performAttackAction("CALLEDSHOT_NECK");
 	elseif selection == 5 and subselection == 3 then
-		fAttackAction("DEF_CONCEAL_25");
+		control.performAttackAction("DEF_CONCEAL_25");
 	elseif selection == 5 and subselection == 4 then
-		fAttackAction("DEF_CONCEAL_50");
+		control.performAttackAction("DEF_CONCEAL_50");
 	elseif selection == 5 and subselection == 5 then
-		fAttackAction("DEF_CONCEAL_75");
+		control.performAttackAction("DEF_CONCEAL_75");
 	elseif selection == 5 and subselection == 6 then
-		fAttackAction("DEF_CONCEAL_90");
+		control.performAttackAction("DEF_CONCEAL_90");
 	elseif selection == 6 and subselection == 3 then
-		fAttackAction("DEF_COVER_25");
+		control.performAttackAction("DEF_COVER_25");
 	elseif selection == 6 and subselection == 4 then
-		fAttackAction("DEF_COVER_50");
+		control.performAttackAction("DEF_COVER_50");
 	elseif selection == 6 and subselection == 5 then
-		fAttackAction("DEF_COVER_75");
+		control.performAttackAction("DEF_COVER_75");
 	elseif selection == 6 and subselection == 6 then
-		fAttackAction("DEF_COVER_90");
+		control.performAttackAction("DEF_COVER_90");
 	elseif selection == 8 and subselection == 2 then
-		fAttackAction("ATK_NAT_20");
+		control.performAttackAction("ATK_NAT_20");
 	elseif selection == 8 and subselection == 8 then
-		fAttackAction("ATK_NAT_1");
+		control.performAttackAction("ATK_NAT_1");
 	end
 end
 
@@ -127,53 +127,53 @@ function initCombatTrackerActionMenu(control)
 
 end
 
-function onCombatTrackerActionMenuSelection(fAttackAction, fChargeAction, selection, subselection, subsubselection)
+function onCombatTrackerActionMenuSelection(control, selection, subselection, subsubselection)
 
 	if selection == 3 then
 		if subselection == 1 then
-			fAttackAction();
+			control.performAttackAction();
 		elseif subselection == 2 and subsubselection == 1 then
-			fAttackAction("ATK_FROMREAR");
+			control.performAttackAction("ATK_FROMREAR");
 		elseif subselection == 2 and subsubselection == 2 then
-			fAttackAction("ATK_IGNORE_ARMOR");
+			control.performAttackAction("ATK_IGNORE_ARMOR");
 		elseif subselection == 2 and subsubselection == 3 then
-			fAttackAction("ATK_NODEXTERITY");
+			control.performAttackAction("ATK_NODEXTERITY");
 		elseif subselection == 2 and subsubselection == 4 then
-			fAttackAction("ATK_SHIELDLESS");
+			control.performAttackAction("ATK_SHIELDLESS");
 		elseif subselection == 2 and subsubselection == 8 then
-			fChargeAction();
+			control.performChargeAction();
 		elseif subselection == 4 and subsubselection == 1 then
-			fAttackAction("CALLEDSHOT_TORSO");
+			control.performAttackAction("CALLEDSHOT_TORSO");
 		elseif subselection == 4 and subsubselection == 2 then
-			fAttackAction("CALLEDSHOT_HEAD");
+			control.performAttackAction("CALLEDSHOT_HEAD");
 		elseif subselection == 4 and subsubselection == 3 then
-			fAttackAction("CALLEDSHOT_ARM");
+			control.performAttackAction("CALLEDSHOT_ARM");
 		elseif subselection == 4 and subsubselection == 4 then
-			fAttackAction("CALLEDSHOT_LEG");
+			control.performAttackAction("CALLEDSHOT_LEG");
 		elseif subselection == 4 and subsubselection == 5 then
-			fAttackAction("CALLEDSHOT_ABDOMEN");
+			control.performAttackAction("CALLEDSHOT_ABDOMEN");
 		elseif subselection == 4 and subsubselection == 6 then
-			fAttackAction("CALLEDSHOT_NECK");
+			control.performAttackAction("CALLEDSHOT_NECK");
 		elseif subselection == 5 and subsubselection == 3 then
-			fAttackAction("DEF_CONCEAL_25");
+			control.performAttackAction("DEF_CONCEAL_25");
 		elseif subselection == 5 and subsubselection == 4 then
-			fAttackAction("DEF_CONCEAL_50");
+			control.performAttackAction("DEF_CONCEAL_50");
 		elseif subselection == 5 and subsubselection == 5 then
-			fAttackAction("DEF_CONCEAL_75");
+			control.performAttackAction("DEF_CONCEAL_75");
 		elseif subselection == 5 and subsubselection == 6 then
-			fAttackAction("DEF_CONCEAL_90");
+			control.performAttackAction("DEF_CONCEAL_90");
 		elseif subselection == 6 and subsubselection == 3 then
-			fAttackAction("DEF_COVER_25");
+			control.performAttackAction("DEF_COVER_25");
 		elseif subselection == 6 and subsubselection == 4 then
-			fAttackAction("DEF_COVER_50");
+			control.performAttackAction("DEF_COVER_50");
 		elseif subselection == 6 and subsubselection == 5 then
-			fAttackAction("DEF_COVER_75");
+			control.performAttackAction("DEF_COVER_75");
 		elseif subselection == 6 and subsubselection == 6 then
-			fAttackAction("DEF_COVER_90");
+			control.performAttackAction("DEF_COVER_90");
 		elseif subselection == 8 and subsubselection == 2 then
-			fAttackAction("ATK_NAT_20");
+			control.performAttackAction("ATK_NAT_20");
 		elseif subselection == 8 and subsubselection == 8 then
-			fAttackAction("ATK_NAT_1");
+			control.performAttackAction("ATK_NAT_1");
 		end
 
 	end
@@ -198,28 +198,28 @@ function initDelayMenu(control)
 	end
 end
 
-function onDelayMenuSelection(fDelayAction, selection, subselection)
+function onDelayMenuSelection(control, selection, subselection)
 	if not PlayerOptionManager.isUsingPhasedInitiative() then
 		if selection == 2 then
-			fDelayAction();
+			control.performDelayAction();
 		elseif selection == 3 then
-			fDelayAction(1);
+			control.performDelayAction(1);
 		elseif selection == 4 then
-			fDelayAction(2);
+			control.performDelayAction(2);
 		elseif selection == 5 then
-			fDelayAction(3);
+			control.performDelayAction(3);
 		elseif selection == 6 then
-			fDelayAction(4);
+			control.performDelayAction(4);
 		elseif selection == 7 then
-			fDelayAction(5);
+			control.performDelayAction(5);
 		elseif selection == 8 and subselection == 8 then
-			fDelayAction(6);
+			control.performDelayAction(6);
 		elseif selection == 8 and subselection == 1 then
-			fDelayAction(7);
+			control.performDelayAction(7);
 		elseif selection == 8 and subselection == 2 then
-		 	fDelayAction(8);
+		 	control.performDelayAction(8);
 		elseif selection == 8 and subselection == 3 then
-			fDelayAction(9);
+			control.performDelayAction(9);
 		end
 	end
 end
@@ -239,14 +239,14 @@ function initInitiativeMenu(control)
 	end
 end
 
-function onInitiativeMenuSelection(fInitAction, selection, subselection)
+function onInitiativeMenuSelection(control, selection, subselection)
 	if not PlayerOptionManager.isUsingPhasedInitiative() then
 		if selection == 1 then
-			fInitAction();
+			control.performInitAction();
 		elseif selection == 2 then
-			fInitAction("INIT_START_ROUND");
+			control.performInitAction("INIT_START_ROUND");
 		elseif selection == 8 then
-			fInitAction("INIT_END_ROUND");
+			control.performInitAction("INIT_END_ROUND");
 		end
 	end
 end
@@ -305,66 +305,66 @@ function initCombatTrackerActorMenu(control)
     control.registerMenuItem(Interface.getString("list_menu_deleteconfirm"), "delete", 6, 7);
 end
 
-function onCombatTrackerActorMenuSelection(fInitAction, fDelayAction, fEffectAction, selection, subselection, sub2selection, sub3selection)
+function onCombatTrackerActorMenuSelection(control, selection, subselection, sub2selection, sub3selection)
 	if not PlayerOptionManager.isUsingPhasedInitiative() then
 	    if selection == 2 and subselection == 1 then
-	        fInitAction();
+	        control.performInitAction();
 	    elseif selection == 2 and subselection == 2 then
-	        fInitAction("INIT_START_ROUND");
+	        control.performInitAction("INIT_START_ROUND");
 	    elseif selection == 2 and subselection == 8 then
-	        fInitAction("INIT_END_ROUND");
+	        control.performInitAction("INIT_END_ROUND");
 	    elseif selection == 2 and subselection == 5 and sub2selection == 2 then
-			fDelayAction();
+			control.performDelayAction();
 		elseif selection == 2 and subselection == 5 and sub2selection == 3 then
-			fDelayAction(1);
+			control.performDelayAction(1);
 		elseif selection == 2 and subselection == 5 and sub2selection == 4 then
-			fDelayAction(2);
+			control.performDelayAction(2);
 		elseif selection == 2 and subselection == 5 and sub2selection == 5 then
-			fDelayAction(3);
+			control.performDelayAction(3);
 		elseif selection == 2 and subselection == 5 and sub2selection == 6 then
-			fDelayAction(4);
+			control.performDelayAction(4);
 		elseif selection == 2 and subselection == 5 and sub2selection == 7 then
-			fDelayAction(5);
+			control.performDelayAction(5);
 		elseif selection == 2 and subselection == 5 and sub2selection == 8 and sub3selection == 8 then
-			fDelayAction(6);
+			control.performDelayAction(6);
 		elseif selection == 2 and subselection == 5 and sub2selection == 8 and sub3selection == 1 then
-			fDelayAction(7);
+			control.performDelayAction(7);
 		elseif selection == 2 and subselection == 5 and sub2selection == 8 and sub3selection == 2 then
-		 	fDelayAction(8);
+		 	control.performDelayAction(8);
 		elseif selection == 2 and subselection == 5 and sub2selection == 8 and sub3selection == 3 then
-			fDelayAction(9);
+			control.performDelayAction(9);
 		end
 	end
 
 	if selection == 3 then
 		if subselection == 1 and sub2selection == 2 then
-			fEffectAction("Restrained");
+			control.performEffectAction("Restrained");
 		elseif subselection == 1 and sub2selection == 8 then
-			fEffectAction("Restrained", true);
+			control.performEffectAction("Restrained", true);
 		elseif subselection == 2 and sub2selection == 2 then
-			fEffectAction("Unconscious");
+			control.performEffectAction("Unconscious");
 		elseif subselection == 2 and sub2selection == 8 then
-			fEffectAction("Unconscious", true);
+			control.performEffectAction("Unconscious", true);
 		elseif subselection == 3 and sub2selection == 2 then
-			fEffectAction("Prone");
+			control.performEffectAction("Prone");
 		elseif subselection == 3 and sub2selection == 8 then
-			fEffectAction("Prone", true);
+			control.performEffectAction("Prone", true);
 		elseif subselection == 4 and sub2selection == 4 then
-			fEffectAction("Stunned");
+			control.performEffectAction("Stunned");
 		elseif subselection == 4 and sub2selection == 6 then			
-			fEffectAction("Stunned", true);
+			control.performEffectAction("Stunned", true);
 		elseif subselection == 5 and sub2selection == 2 then			
-			fEffectAction("Blinded");
+			control.performEffectAction("Blinded");
 		elseif subselection == 5 and sub2selection == 8 then						
-			fEffectAction("Blinded", true);
+			control.performEffectAction("Blinded", true);
 		elseif subselection == 6 and sub2selection == 4 then			
-			fEffectAction("Invisible");
+			control.performEffectAction("Invisible");
 		elseif subselection == 6 and sub2selection == 6 then						
-			fEffectAction("Invisible", true);
+			control.performEffectAction("Invisible", true);
 		elseif subselection == 8 and sub2selection == 2 then			
-			fEffectAction("NO-DEXTERITY");
+			control.performEffectAction("NO-DEXTERITY");
 		elseif subselection == 8 and sub2selection == 8 then			
-			fEffectAction("DEXTERITY", true); -- Need to do this because NO-DEXTERITY fails matching, probably due to the hyphen
+			control.performEffectAction("DEXTERITY", true); -- Need to do this because NO-DEXTERITY fails matching, probably due to the hyphen
 		end
 	end
     

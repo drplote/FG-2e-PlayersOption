@@ -35,11 +35,11 @@ function update()
 end
 
 function onMenuSelection(selection, subselection, subsubselection)
-  RadialMenuManagerPO.onCombatTrackerActorMenuSelection(rollInitWithModifier, delayActor, modifyActorEffect, selection, subselection, subsubselection);
+  RadialMenuManagerPO.onCombatTrackerActorMenuSelection(self, selection, subselection, subsubselection);
   super.onMenuSelection(selection, subselection);
 end
 
-function rollInitWithModifier(sModifierKey)
+function performInitAction(sModifierKey)
     if sModifierKey then
         ModifierStack.setModifierKey(sModifierKey, true);
     end
@@ -48,7 +48,7 @@ function rollInitWithModifier(sModifierKey)
     ActionInit.performRoll(nil, rActor);
 end
 
-function delayActor(nDelay)
+function performDelayAction(nDelay)
     local nodeChar = getDatabaseNode();
     if not nDelay then
         InitManagerPO.delayActor(nodeChar);
@@ -57,8 +57,7 @@ function delayActor(nDelay)
     end
 end
 
-function modifyActorEffect(sEffectName, isRemoving)
-    Debug.console("modifyActorEffect", sEffectName, isRemoving);
+function performEffectAction(sEffectName, isRemoving)
     local nodeChar = getDatabaseNode();
 
     if isRemoving then

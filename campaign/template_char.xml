@@ -16,10 +16,10 @@
         end
 
         function onMenuSelection(selection, subselection)
-            RadialMenuManagerPO.onInitiativeMenuSelection(rollInitWithModifier, selection, subselection);
+            RadialMenuManagerPO.onInitiativeMenuSelection(self, selection, subselection);
         end
 
-        function rollInitWithModifier(sModifierKey)
+        function performInitAction(sModifierKey)
           if sModifierKey then
             ModifierStack.setModifierKey(sModifierKey, true);
           end
@@ -64,10 +64,10 @@
         end
 
         function onMenuSelection(selection, subselection)
-            RadialMenuManagerPO.onDelayMenuSelection(delayActor, selection, subselection);
+            RadialMenuManagerPO.onDelayMenuSelection(self, selection, subselection);
         end
 
-        function delayActor(nDelay)
+        function performDelayAction(nDelay)
           if not nDelay then
             action();
           else

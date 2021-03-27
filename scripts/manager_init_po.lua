@@ -181,3 +181,18 @@ function getActiveInit()
 
 	return DB.getValue(nodeActive, "initresult", 0);
 end
+
+function generateDefaultHackmasterInit(nodeCT, nodeWeapon)
+	local rItem = WeaponManagerADND.builtInitiativeItem(nodeWeapon);
+	local rActor = ActorManager.resolveActor(nodeCT);	
+	local rRoll = ActionInitPO.getHackmasterInitRoll(rActor, true, rItem);
+	ActionInit.modRoll(rActor, nil, rRoll);
+
+	local nInitResult = 0;
+	if rRoll.nDieType and rRoll.nDieType > 0 then
+		nInitResult = nInitResult + math.random(rRoll.nDieType);
+	end
+
+	nInitResult = nInitResult + rRoll.nMod;
+	return nInitResult;
+end

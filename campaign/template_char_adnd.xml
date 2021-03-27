@@ -92,7 +92,7 @@
         end
 
         function onMenuSelection(selection, subselection)
-        	RadialMenuManagerPO.onAttackMenuSelection(attackWithModifier, performChargeAction, selection, subselection);
+        	RadialMenuManagerPO.onAttackMenuSelection(self, selection, subselection);
         end
 
         function performChargeAction()
@@ -101,10 +101,10 @@
           local nodeCT = CombatManager.getCTFromNode(nodeChar);
           local nCurrentInit = DB.getValue(nodeCT, "initresult", 0);
           EffectManager.addEffect("", "", nodeCT, { sName = "Charged", sLabel = "Charged", nDuration = 1, nInit = nCurrentInit }, true);
-          attackWithModifier();
+          performAttackAction();
         end
 
-        function attackWithModifier(sModifierKey)
+        function performAttackAction(sModifierKey)
           if sModifierKey then
             ModifierStack.setModifierKey(sModifierKey, true);
           end

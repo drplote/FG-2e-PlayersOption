@@ -56,20 +56,7 @@ end
 function rollTypeInitOverride(sType, fRollCombatantEntryInit, ...)
     if PlayerOptionManager.isUsingHackmasterInitiative() then
         for _,v in pairs(CombatManager.getCombatantNodes()) do
-            local bRoll = true;
-            if sType then
-                local rActor = ActorManager.resolveActor(v);
-                if sType == "pc" then
-                    if not ActorManager.isPC(rActor) then
-                        bRoll = false;
-                    end
-                elseif not ActorManager.isRecordType(rActor, sType) then
-                    bRoll = false;
-                end
-            end
-            if bRoll then
-                DB.setValue(v, "previnitresult", "number", DB.getValue(v, "initresult", 0));
-            end
+            DB.setValue(v, "previnitresult", "number", DB.getValue(v, "initresult", 0));
         end   
     end
 
@@ -368,10 +355,12 @@ function rollEntryInitOverride(nodeEntry)
         -- flip through weaponlist, get the largest speedfactor as default
         local nSpeedFactor = 0;
 
+        local nodeSlowestWeapon = nil;
         for _,nodeWeapon in pairs(DB.getChildren(nodeEntry, "weaponlist")) do
             local nSpeed = DB.getValue(nodeWeapon,"speedfactor",0);
             if nSpeed > nSpeedFactor then
                 nSpeedFactor = nSpeed;
+                nodeSlowestWeapon = nodeWeapon;
             end
         end
 
@@ -392,8 +381,11 @@ function rollEntryInitOverride(nodeEntry)
             local nPreviousInit = DB.getValue(nodeEntry, "previnitresult", 0);
             if PlayerOptionManager.isUsingHackmasterInitiative() and nPreviousInit > 10 then -- If > 10, they didn't go last round and subtract 10 this round to get a new init
                 DB.setValue(nodeEntry, "initresult", "number", nPreviousInit - 10);
+            elseif PlayerOptionManager.isUsingHackmasterInitiative() then
+                local nInitResult = InitManagerPO.generateDefaultHackmasterInit(nodeEntry, nodeSlowestWeapon);
+                DB.setValue(nodeEntry, "initresult", "number", nInitResult);
             else
-                local nInitResult = rollRandomInit(nInit, bADV);
+                local nInitResult = CombatManagerADND.rollRandomInit(nInit, bADV);
                 DB.setValue(nodeEntry, "initresult", "number", nInitResult);
             end
             return;

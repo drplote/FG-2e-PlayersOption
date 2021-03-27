@@ -1,8 +1,19 @@
 local fBuildAttackAction;
+local fBuiltInitiativeItem;
 
 function onInit()
     fBuildAttackAction = WeaponManagerADND.buildAttackAction;
     WeaponManagerADND.buildAttackAction = buildAttackActionOverride;
+
+    fBuiltInitiativeItem = WeaponManagerADND.builtInitiativeItem;
+    WeaponManagerADND.builtInitiativeItem = builtInitiativeItemOverride;
+end
+
+function builtInitiativeItemOverride(nodeWeapon)
+    local rItem = fBuiltInitiativeItem(nodeWeapon);
+    rItem.nType = DB.getValue(nodeWeapon, "type", 0);
+    rItem.isNil = (not nodeWeapon);
+    return rItem;
 end
 
 function buildAttackActionOverride(rActor, nodeWeapon)

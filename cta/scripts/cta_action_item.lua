@@ -8,6 +8,7 @@ local hoverOnEntry = nil;
 local clickOnEntry = nil;
 local nodeAction = nil;
 local rAttackRecord = nil;
+local rInitRecord = nil;
 
 function onInit()
 	createRadialMenu(); -- NOTE: This is one of the few changes to this file
@@ -35,8 +36,12 @@ function onMenuSelection(selection, subselection, subsubselection)
     if selection == 6 and subselection == 7 then
         nodeAction.delete();
 	else -- NOTE: This is one of the few changes to this file
-		RadialMenuManagerPO.onCombatTrackerActionMenuSelection(performAttackAction, performChargeAction, selection, subselection, subsubselection);
+		RadialMenuManagerPO.onCombatTrackerActionMenuSelection(self, selection, subselection, subsubselection);
 	end
+end
+
+function performInitAction()
+    actionAbility(nil, rInitRecord);
 end
 
 function performChargeAction()
@@ -269,6 +274,7 @@ function addWeaponEntry(sText,nodeEntry)
     local rRecordInit = {};
     rRecordInit.type = 'initiative'
     rRecordInit.name = 'INIT'
+    rInitRecord = rRecordInit;
 
     sText = addHyperTextRecord(sText,rRecordInit,nodeEntry);
 
