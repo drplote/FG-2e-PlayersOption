@@ -55,7 +55,7 @@ function getHackmasterInitRoll(rActor, bSecretRoll, rItem)
 
 	rRoll.bSecret = bSecretRoll;
 
-	local bIsFixedInitiative = (rItem and (rItem.nType and rItem.nType ~= 0));
+	local bIsFixedInitiative = (rItem and (rItem.nType and rItem.nType ~= 0)) or Input.isShiftPressed();
 	local bIsSpell = false;
 	if bIsFixedInitiative then -- ranged weapons go on a fixed initiative
 		rRoll.aDice = { "d0" }; 
