@@ -381,6 +381,8 @@ function rollEntryInitOverride(nodeEntry)
             local nPreviousInit = DB.getValue(nodeEntry, "previnitresult", 0);
             if PlayerOptionManager.isUsingHackmasterInitiative() and nPreviousInit > 10 then -- If > 10, they didn't go last round and subtract 10 this round to get a new init
                 DB.setValue(nodeEntry, "initresult", "number", nPreviousInit - 10);
+            elseif PlayerOptionManager.isDefaultingNpcInitTo99() then
+                DB.setValue(nodeEntry, "initresult", "number", 99);
             elseif PlayerOptionManager.isUsingHackmasterInitiative() then
                 local nInitResult = InitManagerPO.generateDefaultHackmasterInit(nodeEntry, nodeSlowestWeapon);
                 DB.setValue(nodeEntry, "initresult", "number", nInitResult);
@@ -394,24 +396,20 @@ function rollEntryInitOverride(nodeEntry)
 
         -- For NPCs with group option enabled
         -- Get the entry's database node name and creature name
-        local sStripName = CombatManager.stripCreatureNumber(DB.getValue(nodeEntry, "name", ""));
-        if sStripName == "" then
-            local nInitResult = CombatManagerADND.rollRandomInit(nInit, bADV);
-            DB.setValue(nodeEntry, "initresult", "number", nInitResult);
-            return;
-        end
-      
+        local sStripName = CombatManager.stripCreatureNumber(DB.getValue(nodeEntry, "name", ""));      
         -- Iterate through list looking for other creature's with same name and faction
         local nLastInit = nil;
-        local sEntryFaction = DB.getValue(nodeEntry, "friendfoe", "");
-        for _,v in pairs(CombatManager.getCombatantNodes()) do
-            if v.getName() ~= nodeEntry.getName() then
-                if DB.getValue(v, "friendfoe", "") == sEntryFaction then
-                    local sTemp = CombatManager.stripCreatureNumber(DB.getValue(v, "name", ""));
-                    if sTemp == sStripName then
-                        local nChildInit = DB.getValue(v, "initresult", 0);
-                        if nChildInit ~= -10000 then
-                            nLastInit = nChildInit;
+        if sStripName ~= "" then
+            local sEntryFaction = DB.getValue(nodeEntry, "friendfoe", "");
+            for _,v in pairs(CombatManager.getCombatantNodes()) do
+                if v.getName() ~= nodeEntry.getName() then
+                    if DB.getValue(v, "friendfoe", "") == sEntryFaction then
+                        local sTemp = CombatManager.stripCreatureNumber(DB.getValue(v, "name", ""));
+                        if sTemp == sStripName then
+                            local nChildInit = DB.getValue(v, "initresult", 0);
+                            if nChildInit ~= -10000 then
+                                nLastInit = nChildInit;
+                            end
                         end
                     end
                 end
@@ -421,6 +419,8 @@ function rollEntryInitOverride(nodeEntry)
         -- If we found similar creatures, then match the initiative of the last one found
         if nLastInit then
             DB.setValue(nodeEntry, "initresult", "number", nLastInit);
+        elseif PlayerOptionManager.isDefaultingNpcInitTo99() then
+            DB.setValue(nodeEntry, "initresult", "number", 99);
         else
             local nInitResult = CombatManagerADND.rollRandomInit(nInit, bADV);
             DB.setValue(nodeEntry, "initresult", "number", nInitResult);
@@ -733,3 +733,29 @@ function addBattleOverride(nodeBattle)
     
     Interface.openWindow("combattracker_host", "combattracker");
 end
+
+function getSimilarCreaturesInCT(nodeEntry)
+    local aCreatures = {};
+    local sStripName = CombatManager.stripCreatureNumber(DB.getValue(nodeEntry, "name", ""));
+    Debug.console("getSimilarCreaturesInCT", "nodeEntry", nodeEntry);
+    Debug.console("getSimilarCreaturesInCT", "sStripName", sStripName);
+    if sStripName ~= "" then
+        local sEntryFaction = DB.getValue(nodeEntry, "friendfoe", "");
+        for _,v in pairs(CombatManager.getCombatantNodes()) do
+            Debug.console("getSimilarCreaturesInCT", "combatant node", v.getName(), DB.getValue(v, "friendfoe", ""));
+            if v.getName() ~= nodeEntry.getName() then
+                if DB.getValue(v, "friendfoe", "") == sEntryFaction then
+                    local sTemp = CombatManager.stripCreatureNumber(DB.getValue(v, "name", ""));
+                    Debug.console("getSimilarCreaturesInCT", "sTemp", sTemp);
+                    if sTemp == sStripName then
+                        Debug.console("found match");
+                        table.insert(aCreatures, v);
+                    end
+                end
+            end
+        end
+    end
+
+    return aCreatures;
+end
+

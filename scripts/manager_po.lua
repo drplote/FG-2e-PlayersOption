@@ -9,6 +9,7 @@ sThresholdOfPainOptionKey = "HouseRule_ThresholdOfPain";
 sHackmasterStatScaling = "HouseRule_HackmasterStatScaling";
 sReactionAdjAffectsInit = "HouseRule_ReactionAdjustmentAffectsInit"
 sDefaultPcInitTo99OptionKey = "AdditionalAutomation_DefaultPCInitTo99";
+sDefaultNpcInitTo99OptionKey = "AdditionalAutomation_DefaultNPCInitTo99";
 sFumbleOptionKey = "HouseRule_FumbleTable";
 sHackmasterAttackMatrixOptionKey = "HouseRule_HackmasterAttackMatrix";
 sFatigueOptionKey = "HouseRule_HackmasterFatigueOption";
@@ -89,6 +90,8 @@ function registerOptions()
 	OptionsManager.registerOption2(sGenerateHitLocationsOptionKey, false, "option_header_automation", "option_label_generate_hit_locations", "option_entry_cycler",{ labels = "option_val_po|option_val_hm", values = "hm|po", baselabel = "option_val_off", baseval = "off", default = "off" });
 
 	OptionsManager.registerOption2(sDefaultPcInitTo99OptionKey, false, "option_header_automation", "option_label_default_pc_init_to_99", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" })
+
+	OptionsManager.registerOption2(sDefaultNpcInitTo99OptionKey, false, "option_header_automation", "option_label_default_npc_init_to_99", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" })
 
 	OptionsManager.registerOption2(sRingBellOnRoundStartOptionKey, false, "option_header_automation", "option_label_ring_bell_on_round_start", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 
@@ -201,6 +204,10 @@ end
 
 function isDefaultingPcInitTo99()
 	return OptionsManager.isOption(sDefaultPcInitTo99OptionKey, "on");
+end
+
+function isDefaultingNpcInitTo99()
+	return OptionsManager.isOption(sDefaultNpcInitTo99OptionKey, "on");
 end
 
 function isUsingReactionAdjustmentForInitiative()

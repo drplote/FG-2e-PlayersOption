@@ -73,5 +73,7 @@
   <icon name="addEffectIcon" file="graphics/icons/plus_icon.png" />
   <icon name="removeEffectIcon" file="graphics/icons/minus_icon.png" />
 
+  <icon name="groupIcon" file="graphics/icons/group_icon.png" />
+
 </root>
 

@@ -40,8 +40,26 @@ function onMenuSelection(selection, subselection, subsubselection)
 	end
 end
 
+function performGroupInitAction()
+    performInitAction();
+    local nodeChar = nodeAction.getChild("...");
+    local aSimilarActors = CombatManagerPO.getSimilarCreaturesInCT(nodeChar);
+    for _,nodeActor in pairs(aSimilarActors) do
+        WeaponManagerADND.onInitiative(nil, nodeActor, nodeAction);
+    end
+end
+
 function performInitAction()
     actionAbility(nil, rInitRecord);
+end
+
+function performDelayAction(nDelay)
+    local nodeChar = nodeAction.getChild("...");
+    if not nDelay then
+        InitManagerPO.delayActor(nodeChar);
+    else
+        InitManagerPO.delayActorForSegments(nodeChar, nDelay);
+    end
 end
 
 function performChargeAction()
