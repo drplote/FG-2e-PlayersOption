@@ -6,6 +6,7 @@ local fRollInitOverride;
 local fDelayTurn;
 local fAddBattle;
 local fNextActor;
+local fRollTypeInit;
 
 OOB_MSGTYPE_DELAYTURN = "delayturn";
 OOB_MSGTYPE_REQUESTTURN = "requestturn";
@@ -48,7 +49,31 @@ function onInit()
     CombatManager.handleEndTurn = handleEndTurnOverride;
     OOBManager.registerOOBMsgHandler(CombatManager.OOB_MSGTYPE_ENDTURN, handleEndTurnOverride);
 
+    fRollTypeInit = CombatManager.rollTypeInit;
+    CombatManager.rollTypeInit = rollTypeInitOverride;
+end
 
+function rollTypeInitOverride(sType, fRollCombatantEntryInit, ...)
+    if PlayerOptionManager.isUsingHackmasterInitiative() then
+        for _,v in pairs(CombatManager.getCombatantNodes()) do
+            local bRoll = true;
+            if sType then
+                local rActor = ActorManager.resolveActor(v);
+                if sType == "pc" then
+                    if not ActorManager.isPC(rActor) then
+                        bRoll = false;
+                    end
+                elseif not ActorManager.isRecordType(rActor, sType) then
+                    bRoll = false;
+                end
+            end
+            if bRoll then
+                DB.setValue(v, "previnitresult", "number", DB.getValue(v, "initresult", 0));
+            end
+        end   
+    end
+
+    return fRollTypeInit(sType, fRollCombatantEntryInit, ...);
 end
 
 function handleEndTurnOverride(msgOOB)
@@ -290,7 +315,7 @@ function rollEntryInitOverride(nodeEntry)
     -- Start with the base initiative bonus
     local nInit = DB.getValue(nodeEntry, "init", 0);
     -- Get any effect modifiers
-    local rActor = ActorManager.getActorFromCT(nodeEntry);
+    local rActor = ActorManager.resolveActor(nodeEntry);
     local aEffectDice, nEffectBonus = EffectManager5E.getEffectsBonus(rActor, "INIT");
     local nInitMOD = StringManager.evalDice(aEffectDice, nEffectBonus);
     
@@ -311,7 +336,10 @@ function rollEntryInitOverride(nodeEntry)
                 nInitResult = CombatManagerADND.PC_LASTINIT;
             end
         else
-            if PlayerOptionManager.isDefaultingPcInitTo99() then
+            local nPreviousInitResult = DB.getValue(nodeEntry, "previnitresult", 0);
+            if PlayerOptionManager.isUsingHackmasterInitiative() and nPreviousInitResult > 10 then
+                nInitResult = nPreviousInitResult - 10;
+            elseif PlayerOptionManager.isDefaultingPcInitTo99() then
                 nInitResult = 99;
             else
                 nInitResult = CombatManagerADND.rollRandomInit(nInitPC + nInitMOD, bADV);
@@ -354,15 +382,20 @@ function rollEntryInitOverride(nodeEntry)
         end
 
         --[[ IF we ignore size/mods, clear nInit ]]
-        if OptionsManager.getOption("OPTIONAL_INIT_SIZEMODS") ~= "on" then
+        if OptionsManager.getOption("OPTIONAL_INIT_SIZEMODS") ~= "on" or PlayerOptionManager.isUsingHackmasterInitiative() then
             nInit = 0;
         end
         -- For NPCs, if NPC init option is not group, then roll unique initiative
         local sOptINIT = OptionsManager.getOption("INIT");
         if sOptINIT ~= "group" then
             -- if they have custom init then we use it.
-            local nInitResult = CombatManagerADND.rollRandomInit(nInit, bADV);
-            DB.setValue(nodeEntry, "initresult", "number", nInitResult);
+            local nPreviousInit = DB.getValue(nodeEntry, "previnitresult", 0);
+            if PlayerOptionManager.isUsingHackmasterInitiative() and nPreviousInit > 10 then -- If > 10, they didn't go last round and subtract 10 this round to get a new init
+                DB.setValue(nodeEntry, "initresult", "number", nPreviousInit - 10);
+            else
+                local nInitResult = rollRandomInit(nInit, bADV);
+                DB.setValue(nodeEntry, "initresult", "number", nInitResult);
+            end
             return;
         end
 
