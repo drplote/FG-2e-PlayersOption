@@ -168,7 +168,10 @@
 
     <string name="actor_init_menuitem">Initiative</string>
     <string name="delay_submenu_menuitem">Delay</string>
-    <string name="group_init_menuitem">Roll init and apply to similar creatures</string>
+
+    <string name="group_init_menuitem">Group Initiative Options</string>
+    <string name="roll_group_init_menuitem">Roll init and apply to similar unrolled creatures</string>
+    <string name="clone_group_init_menuitem">Copy this creature's init to similar unrolled creatures</string>
 
     <string name="effects_submenu_menuitem">Add/Remove Effects</string>
     <string name="blind_effect_menuitem">Blinded</string>

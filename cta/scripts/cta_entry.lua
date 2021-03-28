@@ -2,8 +2,8 @@ function onInit()
     super.onInit();
     local node = getDatabaseNode();
     OptionsManager.registerCallback(PlayerOptionManager.sPhasedInitiativeOptionKey, update);   
-    DB.addHandler(DB.getPath(node, "initresult"), "onUpdate", updateInitResult);
-    DB.addHandler(DB.getPath(node, "initQueue"), "onUpdate", updateInitResult);
+    DB.addHandler(DB.getPath(node, "initresult"), "onUpdate", update);
+    DB.addHandler(DB.getPath(node, "initQueue"), "onUpdate", update);
     update();
 end
 
@@ -21,7 +21,8 @@ function updateInitResult()
         local sPhaseName = InitManagerPO.getPhaseName(math.floor(nInitResult/2));
         initresultpo.setValue(sPhaseName);
     else
-        initresultpo.setValue(DB.getValue(node, "initQueue"));
+        local sInitQueue = DB.getValue(node, "initQueue");
+        initresultpo.setValue(sInitQueue);
     end
 end
 
@@ -45,6 +46,15 @@ end
 function onMenuSelection(selection, subselection, subsubselection)
   RadialMenuManagerPO.onCombatTrackerActorMenuSelection(self, selection, subselection, subsubselection);
   super.onMenuSelection(selection, subselection);
+end
+
+function performFixedSequenceInitAction(nNumAttacks)
+    InitManagerPO.setActorFixedAttackRate(getDatabaseNode(), nNumAttacks);
+end
+
+function performCloneGroupInitAction()
+    local nodeChar = getDatabaseNode();
+    InitManagerPO.cloneInitToSimilarCreatures(nodeChar, true);
 end
 
 function performInitAction(sModifierKey)

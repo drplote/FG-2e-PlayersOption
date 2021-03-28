@@ -74,6 +74,9 @@
   <icon name="removeEffectIcon" file="graphics/icons/minus_icon.png" />
 
   <icon name="groupIcon" file="graphics/icons/group_icon.png" />
+  <icon name="cloneIcon" file="graphics/icons/clone_icon.png" />
+  <icon name="rollDiceIcon" file="graphics/icons/rolling_dice_icon.png" />
+
   <icon name="rateOfFireIcon" file="graphics/icons/rate_of_fire_icon.png" />
   <icon name="attackRateIcon" file="graphics/icons/attack_rate_icon.png" />
 

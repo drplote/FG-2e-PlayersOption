@@ -40,11 +40,16 @@ function onMenuSelection(selection, subselection, subsubselection)
 	end
 end
 
-function performGroupInitAction()
+function performCloneGroupInitAction()
+    local nodeChar = nodeAction.getChild("...");
+    InitManagerPO.cloneInitToSimilarCreatures(nodeChar, true);
+end
+
+function performRollGroupInitAction()
     performInitAction();
 
     local nodeChar = nodeAction.getChild("...");
-    InitManagerPO.rollInitForSimilarCreatures(nodeChar, nodeAction);
+    InitManagerPO.rollInitForSimilarCreatures(nodeChar, nodeAction, true);
 end
 
 function performInitAction(sModifierKey)

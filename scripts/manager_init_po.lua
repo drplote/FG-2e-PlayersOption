@@ -197,10 +197,27 @@ function generateDefaultHackmasterInit(nodeCT, nodeWeapon)
 	return nInitResult;
 end
 
-function rollInitForSimilarCreatures(nodeCT, nodeAction)
+function rollInitForSimilarCreatures(nodeCT, nodeAction, bUnrolledOnly)
     local aSimilarActors = CombatManagerPO.getSimilarCreaturesInCT(nodeCT);
     for _,nodeActor in pairs(aSimilarActors) do
-        WeaponManagerADND.onInitiative(nil, nodeActor, nodeAction);
+    	if not bUnrolledOnly or DB.getValue(nodeActor, "initrolled", 0) == 0 then
+        	WeaponManagerADND.onInitiative(nil, nodeActor, nodeAction);
+        end
+    end
+end
+
+function cloneInitToSimilarCreatures(nodeCT, bUnrolledOnly)
+	local aSimilarActors = CombatManagerPO.getSimilarCreaturesInCT(nodeCT);
+	local nSourceInitResult = DB.getValue(nodeCT, "initresult", 99);
+	local nSourceInitRolled = DB.getValue(nodeCT, "initrolled", 0);
+	local nSourceInitQueue = DB.getValue(nodeCT, "initQueue", nil);
+
+    for _,nodeActor in pairs(aSimilarActors) do
+    	if not bUnrolledOnly or DB.getValue(nodeActor, "initrolled", 0) == 0 then
+        	DB.setValue(nodeActor, "initresult", "number", nSourceInitResult);
+        	DB.setValue(nodeActor, "initrolled", "number", nSourceInitRolled);
+        	DB.setValue(nodeActor, "initQueue", "string", nSourceInitQueue);
+        end
     end
 end
 
@@ -218,31 +235,17 @@ function getNextActorInit(nodeCT)
 	return nil;
 end
 
-function addDelayToActor(nodeCT, nDelay, bDelayAll)
-	local aQueue = DB.getValue(nodeCT, "initresult", 0);
-	local nSoonestInit = aQueue[1] + nDelay;
-
-	local aNewQueue = {};
-	for _,nInit in pairs(aQueue) do
-		if bDelayAll then
-			table.insert(nInit + nDelay);	
-		else
-			table.insert(math.max(nInit, nSoonestInit));
+function addDelayToActorInitQueue(nodeCT, nDelay)
+	local aQueue = getActorInitQueue(nodeCT);
+	if aQueue and #aQueue > 0 then
+		local aNewQueue = {};
+		for _,nInit in pairs(aQueue) do
+			table.insert(aNewQueue, nInit + nDelay);
 		end
+		setActorInitQueue(nodeCT, aNewQueue);
 	end
-
-
-	table.sort(aNewQueue);
-	local nFirstInit = table.remove(aNewQueue, 1);
-	DB.setValue(nodeCT, "initresult", "number", nFirstInit);
-
-	clearActorInitQueue(nodeCT);
-	for _,nInit in pairs(aNewQueue) do
-		addInitToActor(nodeCT, nInit);
-	end
-
-	return nFirstInit;
 end
+
 
 function addInitToActor(nodeCT, nNewInit)
 	local nActiveInit = InitManagerPO.getActiveInit();
@@ -273,16 +276,20 @@ end
 
 function addActorInitToQueue(nodeCT, nInit)
 	local aQueue = getActorInitQueue(nodeCT);
+	if nInit == DB.getValue(nodeCT, "initresult", 0) then
+		nInit = nInit + 1;
+	end
+
 	while UtilityPO.contains(aQueue, nInit) do
 		nInit = nInit + 1;
 	end
 	table.insert(aQueue, nInit);
-	table.sort(aQueue);
 	setActorInitQueue(nodeCT, aQueue);
 	return 
 end
 
 function setActorInitQueue(nodeCT, aQueue)
+	table.sort(aQueue);
 	DB.setValue(nodeCT, "initQueue", "string", UtilityPO.toCSV(aQueue));
 end
 
@@ -299,8 +306,8 @@ function getActorInitQueue(nodeCT)
 end
 
 function hasAdditionalInitsInQueue(nodeCT)
-	local aQueue = DB.getValue(nodeCT, "initQueue", nil);
-	return aQueue and #aQueue > 0;
+	local sInitQueue = DB.getValue(nodeCT, "initQueue");
+	return sInitQueue ~= nil and sInitQueue ~= "";
 end
 
 function popActorInitFromQueue(nodeCT)
@@ -354,6 +361,40 @@ function setActorFixedAttackRate(nodeChar, nNumAttacks)
 	if ActorManagerPO.isPC(nodeCT) then
 		ChatManagerPO.deliverRateOfFireInitMessage(nodeCT, nNumAttacks);
 	end
+end
+
+function clearActorInitQueueBelowThreshold(nodeCT, nThreshold)
+	local aQueue = getActorInitQueue(nodeCT);
+	if aQueue and #aQueue > 0 then
+		local aNewQueue = {};
+		for _,nInit in pairs(aQueue) do
+			if nInit >= nThreshold then
+				table.insert(aNewQueue, nInit);
+			end
+		end
+		setActorInitQueue(nodeCT, aNewQueue);
+	end
+end
+
+function moveHackmasterActorToNextRound(nodeCT, nInitMOD)
+	local nInitResult = 0;
+	local nPreviousInitResult = DB.getValue(nodeCT, "previnitresult", 0);
+
+	InitManagerPO.addDelayToActorInitQueue(nodeCT, -10);
+	clearActorInitQueueBelowThreshold(nodeCT, 1);
+
+	if nPreviousInitResult > 10 then
+        nInitResult = nPreviousInitResult - 10;
+    elseif InitManagerPO.hasAdditionalInitsInQueue(nodeCT) then 
+        nInitResult = InitManagerPO.popActorInitFromQueue(nodeCT);
+    else 
+	    if PlayerOptionManager.isDefaultingPcInitTo99() then
+	        nInitResult = 99;
+	    else
+	        nInitResult = CombatManagerADND.rollRandomInit(nInitPC + nInitMOD);
+	    end
+	end
+	return nInitResult;
 end
 
 function getMeleeInitDieType()

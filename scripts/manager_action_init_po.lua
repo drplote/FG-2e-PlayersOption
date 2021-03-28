@@ -18,11 +18,16 @@ function onInit()
 end
 
 function handleApplyInitOverride(msgOOB)
+	if PlayerOptionManager.isUsingHackmasterInitiative() then
+		local nTotal = tonumber(msgOOB.nTotal) or 1;
+		msgOOB.nTotal = math.max(1, nTotal);
+	end
+
 	local rSource = ActorManager.resolveActor(msgOOB.sSourceNode);
 	local nodeCT = ActorManager.getCTNode(rSource);
 	local bWasInitRolled = DB.getValue(nodeCT, "initrolled", 0) == 1;
 	if bWasInitRolled and ModifierStack.getModifierKey("ADDITIONAL_ATTACK") then
-		local nNewInit = tonumber(msgOOB.nTotal) or 0;
+		local nNewInit = tonumber(msgOOB.nTotal) or 1;
 		nNewInit = InitManagerPO.addInitToActor(nodeCT, nNewInit);
 
 		if ActorManager.isPC(rSource) then
@@ -34,7 +39,7 @@ function handleApplyInitOverride(msgOOB)
 		
 		local nSequencedAttacks = ModifierStackPO.getSequencedInitModifierKey();
 		if nSequencedAttacks > 0 then
-			local nNewInit = tonumber(msgOOB.nTotal) or 0;
+			local nNewInit = tonumber(msgOOB.nTotal) or 1;
 			DB.setValue(nodeCT, "initrolled", "number", 1);
 			DB.setValue(nodeCT, "initresult", "number", nNewInit);
 
