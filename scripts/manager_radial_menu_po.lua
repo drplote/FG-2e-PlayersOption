@@ -1,6 +1,36 @@
 function onInit()
 end
 
+function initPlayerInitMenu(control)
+	control.resetMenuItems();
+	
+	control.registerMenuItem(Interface.getString("additional_attack_menuitem"), "attackRateIcon", 2);
+
+	control.registerMenuItem(Interface.getString("rate_of_fire_menuitem"), "rateOfFireIcon", 3);
+	control.registerMenuItem(Interface.getString("rate_of_fire_1_menuitem"), "oneIcon", 3, 1);
+	control.registerMenuItem(Interface.getString("rate_of_fire_2_menuitem"), "twoIcon", 3, 2);
+	control.registerMenuItem(Interface.getString("rate_of_fire_3_menuitem"), "threeIcon", 3, 3);
+	control.registerMenuItem(Interface.getString("rate_of_fire_4_menuitem"), "fourIcon", 3, 4);
+	control.registerMenuItem(Interface.getString("rate_of_fire_5_menuitem"), "fiveIcon", 3, 5);
+
+end
+
+function onPlayerInitMenuSelection(control, selection, subselection, sub2selection)
+	if selection == 2 then
+		control.performAdditionalInitAction("ADDITIONAL_ATTACK");
+	elseif selection == 3 and subselection == 1 then
+		control.performFixedSequenceInitAction(1);
+	elseif selection == 3 and subselection == 2 then
+		control.performFixedSequenceInitAction(2);
+	elseif selection == 3 and subselection == 3 then
+		control.performFixedSequenceInitAction(3);
+	elseif selection == 3 and subselection == 4 then
+		control.performFixedSequenceInitAction(4);
+	elseif selection == 3 and subselection == 5 then
+		control.performFixedSequenceInitAction(5);
+	end
+end
+
 function initAttackMenu(control)
 	control.resetMenuItems();
 

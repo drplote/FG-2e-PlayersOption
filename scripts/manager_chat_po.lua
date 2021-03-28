@@ -1,6 +1,20 @@
 function onInit()
 end
 
+function deliverInitQueueMessage(nodeCT, nNewInit)
+	local sName = ActorManager.getDisplayName(nodeCT);
+	local aQueue = InitManagerPO.getAllActorInits(nodeCT);
+	local sMessage = sName .. " rolled an additional intiative of " .. nNewInit .. ". They now have attacks on " .. UtilityPO.toCSV(aQueue) .. ".";
+	deliverChatMessage(sMessage);	
+end
+
+function deliverRateOfFireInitMessage(nodeCT, nNumAttacks)
+	local sName = ActorManager.getDisplayName(nodeCT);
+	local aQueue = InitManagerPO.getAllActorInits(nodeCT);
+	local sMessage = sName .. " has a fixed rate of fire of " .. nNumAttacks .. ". They have attacks on " .. UtilityPO.toCSV(aQueue) .. ".";
+	deliverChatMessage(sMessage);	
+end
+
 function deliverChatMessage(sText, sType)
 	--local rMessage = ChatManager.createBaseMessage();
 	--if sType then

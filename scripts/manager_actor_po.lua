@@ -1,6 +1,11 @@
 function onInit()
 end
 
+function isPC(nodeCT)
+  local rActor = ActorManager.resolveActor(nodeCT);
+  return ActorManager.isPC(rActor);
+end
+
 function getConstitution(rChar)
   local nodeActor = getNode(rChar);
   local nCon = DB.getValue(nodeActor, "abilities.constitution.total", DB.getValue(nodeActor, "abilities.constitution.score", 0));

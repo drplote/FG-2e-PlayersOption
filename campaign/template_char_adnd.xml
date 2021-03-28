@@ -25,17 +25,47 @@
           local node = window.getDatabaseNode();
           DB.addHandler(DB.getPath(node, "speedfactor"), "onUpdate", setLabelValue);
           setLabelValue();
+          initMenuItems();
         end
+
+        function initMenuItems()
+        end
+
+        function initMenuItems()
+          RadialMenuManagerPO.initPlayerInitMenu(self);
+        end
+
+        function onMenuSelection(selection, subselection, sub2selection)
+          RadialMenuManagerPO.onPlayerInitMenuSelection(self, selection, subselection, sub2selection);
+        end
+
+        function performAdditionalInitAction(sModifierKey)
+          if sModifierKey then
+            ModifierStack.setModifierKey(sModifierKey, true);
+          end
+          action();
+        end
+
+        function performFixedSequenceInitAction(nNumAttacks)
+          if nNumAttacks == 1 then
+            action();
+          else
+            InitManagerPO.setActorFixedAttackRate(window.getDatabaseNode().getChild("..."), nNumAttacks);
+          end
+        end
+
         function onClose()
           local node = window.getDatabaseNode();
           DB.removeHandler(DB.getPath(node, "speedfactor"), "onUpdate", setLabelValue);
         end
+
         function setLabelValue()
           local nodeWeapon = window.getDatabaseNode();
           local nSpeedFactor = DB.getValue(nodeWeapon,"speedfactor",0);
           setValue(nSpeedFactor);
           onHover(nil);
         end
+
         function onHover(oncontrol)
           if oncontrol then
             setColor("c44242");
@@ -43,6 +73,7 @@
             setColor(nil);
           end
         end
+
         function action(draginfo)
           local nodeWeapon = window.getDatabaseNode();
           local nodeChar = nodeWeapon.getChild("...");

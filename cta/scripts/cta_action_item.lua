@@ -42,14 +42,15 @@ end
 
 function performGroupInitAction()
     performInitAction();
+
     local nodeChar = nodeAction.getChild("...");
-    local aSimilarActors = CombatManagerPO.getSimilarCreaturesInCT(nodeChar);
-    for _,nodeActor in pairs(aSimilarActors) do
-        WeaponManagerADND.onInitiative(nil, nodeActor, nodeAction);
-    end
+    InitManagerPO.rollInitForSimilarCreatures(nodeChar, nodeAction);
 end
 
-function performInitAction()
+function performInitAction(sModifierKey)
+    if sModifierKey then
+        ModifierStack.setModifierKey(sModifierKey, true);
+    end
     actionAbility(nil, rInitRecord);
 end
 

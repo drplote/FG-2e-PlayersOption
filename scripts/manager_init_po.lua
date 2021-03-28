@@ -196,3 +196,178 @@ function generateDefaultHackmasterInit(nodeCT, nodeWeapon)
 	nInitResult = nInitResult + rRoll.nMod;
 	return nInitResult;
 end
+
+function rollInitForSimilarCreatures(nodeCT, nodeAction)
+    local aSimilarActors = CombatManagerPO.getSimilarCreaturesInCT(nodeCT);
+    for _,nodeActor in pairs(aSimilarActors) do
+        WeaponManagerADND.onInitiative(nil, nodeActor, nodeAction);
+    end
+end
+
+function getNextActorInit(nodeCT)
+	local nActiveInit = getActiveInit();
+	local aQueue = getAllActorInits();
+	if aQueue and #aQueue > 1 then
+		for _,nInit in pairs(aQueue) do
+			if nInit <= nActiveInit then
+				return nInit;
+			end
+		end
+	end
+
+	return nil;
+end
+
+function addDelayToActor(nodeCT, nDelay, bDelayAll)
+	local aQueue = DB.getValue(nodeCT, "initresult", 0);
+	local nSoonestInit = aQueue[1] + nDelay;
+
+	local aNewQueue = {};
+	for _,nInit in pairs(aQueue) do
+		if bDelayAll then
+			table.insert(nInit + nDelay);	
+		else
+			table.insert(math.max(nInit, nSoonestInit));
+		end
+	end
+
+
+	table.sort(aNewQueue);
+	local nFirstInit = table.remove(aNewQueue, 1);
+	DB.setValue(nodeCT, "initresult", "number", nFirstInit);
+
+	clearActorInitQueue(nodeCT);
+	for _,nInit in pairs(aNewQueue) do
+		addInitToActor(nodeCT, nInit);
+	end
+
+	return nFirstInit;
+end
+
+function addInitToActor(nodeCT, nNewInit)
+	local nActiveInit = InitManagerPO.getActiveInit();
+	if nNewInit < nActiveInit then
+		nNewInit = nActiveInit + 1;
+	end
+
+	local nInitResult = DB.getValue(nodeCT, "initresult", 0);
+
+	if nInitResult < nActiveInit then
+		-- initresult is a turn that already happened
+		DB.setValue(nodeCT, "initresult", "number", nNewInit);
+	elseif nNewInit < nInitResult then
+		DB.setValue(nodeCT, "initresult", "number", nNewInit);
+		addActorInitToQueue(nodeCT, nInitResult);
+	else			
+		addActorInitToQueue(nodeCT, nNewInit);
+	end
+
+	return nNewInit;
+end
+
+function getAllActorInits(nodeCT)
+	local aQueue = getActorInitQueue(nodeCT);
+	table.insert(aQueue, 1, DB.getValue(nodeCT, "initresult", 0));
+	return aQueue;
+end
+
+function addActorInitToQueue(nodeCT, nInit)
+	local aQueue = getActorInitQueue(nodeCT);
+	while UtilityPO.contains(aQueue, nInit) do
+		nInit = nInit + 1;
+	end
+	table.insert(aQueue, nInit);
+	table.sort(aQueue);
+	setActorInitQueue(nodeCT, aQueue);
+	return 
+end
+
+function setActorInitQueue(nodeCT, aQueue)
+	DB.setValue(nodeCT, "initQueue", "string", UtilityPO.toCSV(aQueue));
+end
+
+function getActorInitQueue(nodeCT)
+	local aQueue = {};
+	local sQueue = DB.getValue(nodeCT, "initQueue", nil);
+	if sQueue then
+		local aStringQueue = UtilityPO.fromCSV(sQueue);
+		for _,s in pairs(aStringQueue) do
+			table.insert(aQueue, tonumber(s));
+		end
+	end
+	return aQueue;
+end
+
+function popActorInitFromQueue(nodeCT)
+	local aQueue = getActorInitQueue(nodeCT);
+	local nInit = nil;
+	if aQueue and #aQueue > 0 then
+		nInit = table.remove(aQueue, 1);
+		setActorInitQueue(nodeCT, aQueue);
+	end
+	return nInit;
+end
+
+function clearActorInitQueue(nodeCT)
+	DB.setValue(nodeCT, "initQueue", "string", nil);
+end
+
+function moveActorToNextInit(nodeCT)
+	local nInitResult = DB.getValue(nodeCT, "initresult", 0);
+	local nNextInit = popActorInitFromQueue(nodeCT);
+	if nNextInit ~= nil then
+		DB.setValue(nodeCT, "initresult", "number", nNextInit);
+		return nNextInit;
+	end
+	return nil;
+end
+
+function setActorFixedAttackRate(nodeChar, nNumAttacks)
+	local nodeCT = ActorManager.getCTNode(nodeChar);
+
+	if not nNumAttacks or nNumAttacks < 1 or nNumAttacks > 5 then
+		Debug.console("nNumAttacks", nNumAttacks, "Only support a value of 1-5");
+		return;
+	end
+
+	DB.setValue(nodeCT, "initrolled", "number", 1);
+	DB.setValue(nodeCT, "initresult", "number", 1);
+
+	local aInits = {};
+	if nNumAttacks == 1 then
+		setActorInitQueue(nodeCT, {});
+	elseif nNumAttacks == 2 then
+		setActorInitQueue(nodeCT, {6});
+	elseif nNumAttacks == 3 then
+		setActorInitQueue(nodeCT, {5, 9});
+	elseif nNumAttacks == 4 then
+		setActorInitQueue(nodeCT, {4, 7, 10});
+	elseif nNumAttacks == 5 then
+		setActorInitQueue(nodeCT, {3, 5, 7, 9});
+	end
+
+	if ActorManagerPO.isPC(nodeCT) then
+		ChatManagerPO.deliverRateOfFireInitMessage(nodeCT, nNumAttacks);
+	end
+end
+
+function getMeleeInitDieType()
+	if not PlayerOptionManager.isUsingHackmasterInitiative() then
+		return 10;
+	end
+
+	local nSequencedAttacks = ModifierStackPO.peekSequencedInitModifierKey();
+
+	if nSequencedAttacks == 2 then
+		return 5;
+	elseif nSequencedAttacks == 3 then
+		return 3;
+	elseif nSequencedAttacks == 4 then
+		return 3;
+	elseif nSequencedAttacks == 5 then
+		return 2;
+	else
+		return 10;
+	end
+
+end

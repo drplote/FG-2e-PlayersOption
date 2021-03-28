@@ -1,8 +1,94 @@
 local fGetRoll;
+local fPerformRoll;
+local fHandleApplyInit;
+
+OOB_MSGTYPE_APPLYINIT = "applyinit";
 
 function onInit()
 	fGetRoll = ActionInit.getRoll;
 	ActionInit.getRoll = getRollOverride;
+
+	fPerformRoll = ActionInit.performRoll;
+	ActionInit.performRoll = performRollOverride;
+
+	fHandleApplyInit = ActionInit.handleApplyInit;
+	ActionInit.handleApplyInit = handleApplyInitOverride;
+
+	OOBManager.registerOOBMsgHandler(OOB_MSGTYPE_APPLYINIT, handleApplyInitOverride);
+end
+
+function handleApplyInitOverride(msgOOB)
+	local rSource = ActorManager.resolveActor(msgOOB.sSourceNode);
+	local nodeCT = ActorManager.getCTNode(rSource);
+	local bWasInitRolled = DB.getValue(nodeCT, "initrolled", 0) == 1;
+	Debug.console("handleApplyInit", bWasInitRolled);
+	if bWasInitRolled and ModifierStack.getModifierKey("ADDITIONAL_ATTACK") then
+		Debug.console("handleApplyInit additional attack");
+		local nNewInit = tonumber(msgOOB.nTotal) or 0;
+		nNewInit = InitManagerPO.addInitToActor(nodeCT, nNewInit);
+
+		if ActorManager.isPC(rSource) then
+			ChatManagerPO.deliverInitQueueMessage(nodeCT, nNewInit);
+		end
+
+	else
+		InitManagerPO.clearActorInitQueue(nodeCT);
+		
+		local nSequencedAttacks = ModifierStackPO.getSequencedInitModifierKey();
+		if nSequencedAttacks > 0 then
+			local nNewInit = tonumber(msgOOB.nTotal) or 0;
+			DB.setValue(nodeCT, "initrolled", "number", 1);
+			DB.setValue(nodeCT, "initresult", "number", nNewInit);
+
+			if nSequencedAttacks == 2 then
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 5);
+			elseif nSequencedAttacks == 3 then
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 3);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 6);
+			elseif nSequencedAttacks == 4 then	
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 2);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 4);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 6);
+			elseif nSequencedAttacks == 5 then
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 2);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 4);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 6);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 8);
+			end
+		else
+			InitManagerPO.clearActorInitQueue(nodeCT);
+			fHandleApplyInit(msgOOB);
+		end
+	end
+end
+
+function performRollOverride(draginfo, rActor, bSecretRoll, rItem)
+
+	if ModifierStackPO.peekModifierKey("ADDITIONAL_ATTACK") then
+		if not ActorManager.isPC(rActor) then
+      		bSecretRoll = true;
+    	end
+
+    	local rRoll = ActionInit.getRoll(rActor, bSecretRoll, rItem);
+
+	    if (draginfo and rActor.itemPath and rActor.itemPath ~= "") then
+	        draginfo.setMetaData("itemPath",rActor.itemPath);
+	    end
+	    if (draginfo and rItem and rItem.spellPath and rItem.spellPath ~= "") then
+	        draginfo.setMetaData("spellPath",rActor.spellPath);
+	        rActor.spellPath = rItem.spellPath;
+	    end
+	    -- dont like this but I need the spell path to for later and this
+	    -- is the easiest place to put it. We need to know the spellPath AFTER
+	    -- the initiative is set so the initiative for the effect is correct
+	    if (rItem and rItem.spellPath and rItem.spellPath ~= "") then
+	        rRoll.spellPath = rItem.spellPath;
+	    end
+	      
+	    ActionsManager.performAction(draginfo, rActor, rRoll);
+	else
+		fPerformRoll(draginfo, rActor, bSecretRoll, rItem);
+	end
 end
 
 function getRollForPhasedInit(rActor, bSecretRoll, rItem)
@@ -75,8 +161,10 @@ function getHackmasterInitRoll(rActor, bSecretRoll, rItem)
 		rRoll.nMod = nSpellSpeed; -- Cap spell time at 10.
 		rRoll.sDesc = rRoll.sDesc .. " [MOD (" .. rItem.sName .. "): " .. nSpellSpeed .. "]";
 	else
-		rRoll.aDice = { "d10" };   
-		rRoll.nDieType = 10; 
+		local nDieType = InitManagerPO.getMeleeInitDieType();
+
+		rRoll.aDice = { "d" .. nDieType };   
+		rRoll.nDieType = nDieType; 
 	end  
 
     -- Determine the modifier and ability to use for this roll

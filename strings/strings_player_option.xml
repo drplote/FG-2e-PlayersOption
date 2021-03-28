@@ -182,4 +182,31 @@
     <string name="add_effect_menuitem">Add </string>
     <string name="remove_effect_menuitem">Remove </string>
 
+    <string name="additional_attack_menuitem">Roll additional attack</string>
+    <string name="additional_attack_1_menuitem">Roll 1 additional attack</string>
+    <string name="additional_attack_2_menuitem">Roll 2 additional attacks</string>
+    <string name="additional_attack_3_menuitem">Roll 3 additional attacks</string>
+    <string name="additional_attack_4_menuitem">Roll 4 additional attacks</string>
+    <string name="additional_attack_5_menuitem">Roll 5 additional attacks</string>
+    <string name="additional_attack_6_menuitem">Roll 6 additional attacks</string>
+    <string name="additional_attack_7_menuitem">Roll 7 additional attacks</string>
+    <string name="additional_attack_7plus_menuitem">Roll 7+ additional attack</string>
+    <string name="additional_attack_8_menuitem">Roll 8 additional attack</string>
+    <string name="additional_attack_9_menuitem">Roll 9 additional attack</string>
+    <string name="additional_attack_10_menuitem">Roll 10 additional attack</string>
+
+    <string name="rate_of_fire_menuitem">Specify Rate of Fire</string>
+    <string name="rate_of_fire_1_menuitem">1 attack</string>
+    <string name="rate_of_fire_2_menuitem">2 attacks</string>
+    <string name="rate_of_fire_3_menuitem">3 attacks</string>
+    <string name="rate_of_fire_4_menuitem">4 attacks</string>
+    <string name="rate_of_fire_5_menuitem">5 attacks</string>
+    <string name="rate_of_fire_6_menuitem">6 attacks</string>
+    <string name="rate_of_fire_7_menuitem">7-10 attacks</string>
+    <string name="rate_of_fire_7plus_menuitem">7 attacks</string>
+    <string name="rate_of_fire_8_menuitem">8 attacks</string>
+    <string name="rate_of_fire_9_menuitem">9 attacks</string>
+    <string name="rate_of_fire_10_menuitem">10 attacks</string>
+
 </root>
+

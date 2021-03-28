@@ -74,6 +74,20 @@
   <icon name="removeEffectIcon" file="graphics/icons/minus_icon.png" />
 
   <icon name="groupIcon" file="graphics/icons/group_icon.png" />
+  <icon name="rateOfFireIcon" file="graphics/icons/rate_of_fire_icon.png" />
+  <icon name="attackRateIcon" file="graphics/icons/attack_rate_icon.png" />
+
+  <icon name="oneIcon" file="graphics/icons/1_icon.png" />
+  <icon name="twoIcon" file="graphics/icons/2_icon.png" />
+  <icon name="threeIcon" file="graphics/icons/3_icon.png" />
+  <icon name="fourIcon" file="graphics/icons/4_icon.png" />
+  <icon name="fiveIcon" file="graphics/icons/5_icon.png" />
+  <icon name="sixIcon" file="graphics/icons/6_icon.png" />
+  <icon name="sevenIcon" file="graphics/icons/7_icon.png" />
+  <icon name="sevenPlusIcon" file="graphics/icons/7plus_icon.png" />
+  <icon name="eightIcon" file="graphics/icons/8_icon.png" />
+  <icon name="nineIcon" file="graphics/icons/9_icon.png" />
+  <icon name="tenIcon" file="graphics/icons/10_icon.png" />
 
 </root>
 

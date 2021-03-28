@@ -101,7 +101,6 @@ function updateFatigueFactor(nodeChar)
 	local nMultiplier = DB.getValue(nodeChar, "fatigue.multiplier", 1);
 	nFatigueFactor = nFatigueFactor * nMultiplier;
 
-	Debug.console(ActorManager.getDisplayName(nodeChar) .. " now has a fatigue factor of " .. nFatigueFactor);
 	DB.setValue(nodeChar, "fatigue.factor", "number", nFatigueFactor);
 end
 
