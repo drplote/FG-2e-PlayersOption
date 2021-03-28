@@ -11,7 +11,8 @@ end
 function onClose()
     super.onClose();
     local node = getDatabaseNode();
-    DB.removeHandler(DB.getPath(node, "initresult"), "onUpdate", updateInitResult);
+    DB.removeHandler(DB.getPath(node, "initresult"), "onUpdate", update);
+    DB.removeHandler(DB.getPath(node, "initQueue"), "onUpdate", update);
 end
 
 function updateInitResult()

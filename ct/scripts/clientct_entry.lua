@@ -7,14 +7,15 @@ function onInit()
   -- make sure first time load of map has proper indicator
   toggleActiveUpdateFeatures()
   OptionsManager.registerCallback(PlayerOptionManager.sPhasedInitiativeOptionKey, updateInitDisplay);   
-  DB.addHandler(DB.getPath(node, "initresult"), "onUpdate", updateInitResult);
+  DB.addHandler(DB.getPath(node, "initresult"), "onUpdate", updateInitDisplay);
+  DB.addHandler(DB.getPath(node, "initQueue"), "onUpdate", updateInitDisplay);
   updateInitDisplay();
 end
 
 function onClose()
   local node = getDatabaseNode();
-  DB.removeHandler(node.getPath() .. ".active", "onUpdate", toggleActiveUpdateFeatures);
-  DB.removeHandler(DB.getPath(node, "initresult"), "onUpdate", updateInitResult);
+  DB.removeHandler(node.getPath() .. ".active", "onUpdate", updateInitDisplay);
+  DB.removeHandler(DB.getPath(node, "initresult"), "onUpdate", updateInitDisplay);
 end
 
 function onActiveChanged()
@@ -150,6 +151,10 @@ function updateInitResult()
       local nInitResult = DB.getValue(node, "initresult", 12);
       local sPhaseName = InitManagerPO.getPhaseName(math.floor(nInitResult/2));
       initresultpo.setValue(sPhaseName);
+  else
+      local aAllInits = InitManagerPO.getAllActorInits(getDatabaseNode());
+      local sAllInits = UtilityPO.toCSV(aAllInits);
+      initresultpo.setValue(sAllInits);
   end
 end
 
@@ -160,15 +165,20 @@ function shouldShowInit()
 end
 
 function updateInitDisplay()
+  updateInitResult();
   if not shouldShowInit then
-    initresult.setVisible(false);
-    initresultpo.setVisible(false);
+      initresult.setVisible(false);
+      initresultpo.setVisible(false);
   elseif PlayerOptionManager.isUsingPhasedInitiative() then
       initresult.setVisible(false);
-      initresultpo.setVisible(true);
-      updateInitResult();
+      initresultpo.setVisible(true);  
   else
-      initresult.setVisible(true);
-      initresultpo.setVisible(false);
+      if InitManagerPO.hasAdditionalInitsInQueue(getDatabaseNode()) then
+          initresultpo.setVisible(true);
+          initresult.setVisible(false);
+      else
+          initresultpo.setVisible(false);
+          initresult.setVisible(true);
+      end
   end
 end
