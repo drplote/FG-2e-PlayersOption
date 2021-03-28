@@ -1,6 +1,7 @@
 local fGetRoll;
 local fPerformRoll;
 local fHandleApplyInit;
+local fNotifyApplyInit;
 
 OOB_MSGTYPE_APPLYINIT = "applyinit";
 
@@ -15,6 +16,30 @@ function onInit()
 	ActionInit.handleApplyInit = handleApplyInitOverride;
 
 	OOBManager.registerOOBMsgHandler(OOB_MSGTYPE_APPLYINIT, handleApplyInitOverride);
+
+	fNotifyApplyInit = ActionInit.notifyApplyInit;
+	ActionInit.notifyApplyInit = notifyApplyInitOverride;
+end
+
+function notifyApplyInitOverride(rSource, nTotal)
+  if not rSource then
+    return;
+  end
+  
+  local msgOOB = {};
+  msgOOB.type = OOB_MSGTYPE_APPLYINIT;
+  
+  msgOOB.nTotal = nTotal;
+
+  --msgOOB.sSourceNode = ActorManager.getCreatureNodeName(rSource);
+
+  local sSourceType, sSourceNode = ActorManager.getTypeAndNodeName(rSource);
+  msgOOB.sSourceType = sSourceType;
+  msgOOB.sSourceNode = sSourceNode;
+  local bIsAdditionalAttack = ModifierStack.getModifierKey("ADDITIONAL_ATTACK");
+  msgOOB.sIsAdditionalAttack = tostring(bIsAdditionalAttack);
+
+  Comm.deliverOOBMessage(msgOOB, "");
 end
 
 function handleApplyInitOverride(msgOOB)
@@ -26,7 +51,7 @@ function handleApplyInitOverride(msgOOB)
 	local rSource = ActorManager.resolveActor(msgOOB.sSourceNode);
 	local nodeCT = ActorManager.getCTNode(rSource);
 	local bWasInitRolled = DB.getValue(nodeCT, "initrolled", 0) == 1;
-	if bWasInitRolled and ModifierStack.getModifierKey("ADDITIONAL_ATTACK") then
+	if bWasInitRolled and msgOOB.sIsAdditionalAttack then
 		local nNewInit = tonumber(msgOOB.nTotal) or 1;
 		nNewInit = InitManagerPO.addInitToActor(nodeCT, nNewInit);
 
@@ -165,29 +190,28 @@ function getHackmasterInitRoll(rActor, bSecretRoll, rItem)
 		rRoll.sDesc = rRoll.sDesc .. " [MOD (" .. rItem.sName .. "): " .. nSpellSpeed .. "]";
 	else
 		local nDieType = InitManagerPO.getMeleeInitDieType();
+		local nNumSequencedAttacks = ModifierStackPO.peekSequencedInitModifierKey();
+		if nNumSequencedAttacks > 1 then
+			rRoll.sDesc = rRoll.sDesc .. "[" .. nNumSequencedAttacks .. " sequenced attacks]";
+		end
 
 		rRoll.aDice = { "d" .. nDieType };   
 		rRoll.nDieType = nDieType; 
 	end  
 
+
     -- Determine the modifier and ability to use for this roll
     local sAbility = nil;
     local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
 	if nodeActor then
-	    if rItem then
-	    	if not bIsFixedInitiative and not bIsSpell then
-	    		modifyRollForDexterity(rActor, rItem, rRoll);
-	    		
-	    		if not rItem.isNil then
-		    		local nWeaponSpeed = rItem.nInit -5; -- Subtract 5 because all the HM weapons have 5 less speed than 2E Counterparts
-	            	rRoll.nMod = rRoll.nMod + nWeaponSpeed ;   		
-	        		rRoll.sDesc = rRoll.sDesc .. " [MOD (" .. rItem.sName .. "): " .. nWeaponSpeed .. "]";
-	        	end
-	    	end
-	    elseif sActorType == "pc" then
-	        rRoll.nMod = DB.getValue(nodeActor, "initiative.total", 0);
-	    else     
-	      rRoll.nMod = 0;
+		if not bIsFixedInitiative then
+			Debug.console("modifying roll");
+			modifyRollForDexterity(rActor, rRoll);
+		end
+	    if rItem and not bIsFixedInitiative and not bIsSpell and not rItem.isNil then    		
+    		local nWeaponSpeed = rItem.nInit -5; -- Subtract 5 because all the HM weapons have 5 less speed than 2E Counterparts
+        	rRoll.nMod = rRoll.nMod + nWeaponSpeed ;   		
+    		rRoll.sDesc = rRoll.sDesc .. " [MOD (" .. rItem.sName .. "): " .. nWeaponSpeed .. "]";
 	    end
 	end
   return rRoll;
@@ -203,23 +227,14 @@ function getBaseRulesetRoll(rActor, bSecretRoll, rItem)
 	local rRoll = fGetRoll(rActor, bSecretRoll, rItem);
 
 	if PlayerOptionManager.isUsingReactionAdjustmentForInitiative() then
-		modifyRollForDexterity(rActor, rItem, rRoll);
-		if rActor and rItem then
-			local sActorType = ActorManagerPO.getType(rActor);
-			local nodeActor = ActorManagerPO.getCreatureNode(rActor);
-			if nodeActor then
-				local nReactionAdj = 0 - DB.getValue(nodeActor, "abilities.dexterity.reactionadj", 0);
-				rRoll.sDesc = rRoll.sDesc .. "[Reaction Adj: " .. nReactionAdj .. "]";
-				rRoll.nMod = rRoll.nMod + nReactionAdj;
-			end
-		end
+		modifyRollForDexterity(rActor, rRoll);
 	end
 
 	return rRoll;
 end
 
-function modifyRollForDexterity(rActor, rItem, rRoll)
-	if rActor and rItem then
+function modifyRollForDexterity(rActor, rRoll)
+	if rActor then
 		local sActorType = ActorManagerPO.getType(rActor);
 		local nodeActor = ActorManagerPO.getCreatureNode(rActor);
 		if nodeActor then

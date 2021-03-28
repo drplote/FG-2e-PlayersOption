@@ -122,9 +122,7 @@ end
 
 function initCombatTrackerActionMenu(control)
 
-	control.registerMenuItem(Interface.getString("group_init_menuitem"), "groupIcon", 2);
-	control.registerMenuItem(Interface.getString("roll_group_init_menuitem"), "rollDiceIcon", 2, 3);
-	control.registerMenuItem(Interface.getString("clone_group_init_menuitem"), "cloneIcon", 2, 4);
+	control.registerMenuItem(Interface.getString("additional_attack_menuitem"), "attackRateIcon", 2);
 
 	control.registerMenuItem(Interface.getString("attack_submenu_menuitem"), "attackSubmenuIcon", 3);
 
@@ -160,10 +158,25 @@ function initCombatTrackerActionMenu(control)
 	control.registerMenuItem(Interface.getString("roll_20_menuitem"), "nat20Icon", 3, 8, 2);
 	control.registerMenuItem(Interface.getString("roll_1_menuitem"), "nat1Icon", 3, 8, 8);
 
+	control.registerMenuItem(Interface.getString("rate_of_fire_menuitem"), "rateOfFireIcon", 4);
+	control.registerMenuItem(Interface.getString("rate_of_fire_1_menuitem"), "oneIcon", 4, 1);
+	control.registerMenuItem(Interface.getString("rate_of_fire_2_menuitem"), "twoIcon", 4, 2);
+	control.registerMenuItem(Interface.getString("rate_of_fire_3_menuitem"), "threeIcon", 4, 3);
+	control.registerMenuItem(Interface.getString("rate_of_fire_4_menuitem"), "fourIcon", 4, 4);
+	control.registerMenuItem(Interface.getString("rate_of_fire_5_menuitem"), "fiveIcon", 4, 5);
+
+	control.registerMenuItem(Interface.getString("attack_rate_menuitem"), "attackRateIcon", 5);
+	control.registerMenuItem(Interface.getString("attack_rate_1_menuitem"), "oneIcon", 5, 2);
+	control.registerMenuItem(Interface.getString("attack_rate_2_menuitem"), "twoIcon", 5, 3);
+	control.registerMenuItem(Interface.getString("attack_rate_3_menuitem"), "threeIcon", 5, 4);
+	control.registerMenuItem(Interface.getString("attack_rate_4_menuitem"), "fourIcon", 5, 5);
+	control.registerMenuItem(Interface.getString("attack_rate_5_menuitem"), "fiveIcon", 5, 6);
+
 	if not PlayerOptionManager.isUsingPhasedInitiative() then
 		control.registerMenuItem(Interface.getString("actor_init_menuitem"), "standardInitIcon", 8);
 		control.registerMenuItem(Interface.getString("standard_init_menuitem"), "standardInitIcon", 8, 1);
 		control.registerMenuItem(Interface.getString("first_init_menuitem"), "firstInitIcon", 8, 2);
+		control.registerMenuItem(Interface.getString("clone_group_init_menuitem"), "cloneIcon", 8, 3);
 
 		control.registerMenuItem(Interface.getString("delay_submenu_menuitem"), "delayTurnButtonIcon", 8, 5);
 		control.registerMenuItem(Interface.getString("delay10_menuitem"), "delayTurn10ButtonIcon", 8, 5, 2);
@@ -178,6 +191,8 @@ function initCombatTrackerActionMenu(control)
 		control.registerMenuItem(Interface.getString("delay8_menuitem"), "delayTurn8ButtonIcon", 8, 5, 8, 2);
 		control.registerMenuItem(Interface.getString("delay9_menuitem"), "delayTurn9ButtonIcon", 8, 5, 8, 3);
 
+		control.registerMenuItem(Interface.getString("roll_group_init_menuitem"), "rollDiceIcon", 8, 7);
+
 		if PlayerOptionManager.isUsingHackmasterInitiative() then
 			control.registerMenuItem(Interface.getString("last_init_menuitem"), "lastInitHmIcon", 8, 8);
 		else
@@ -190,11 +205,7 @@ end
 function onCombatTrackerActionMenuSelection(control, selection, subselection, sub2selection)
 
 	if selection == 2 then
-		if subselection == 3 then
-			control.performRollGroupInitAction();
-		elseif subselection == 4 then
-			control.performCloneGroupInitAction();
-		end
+		control.performInitAction("ADDITIONAL_ATTACK");
 	elseif selection == 3 then
 		if subselection == 1 then
 			control.performAttackAction();
@@ -241,33 +252,63 @@ function onCombatTrackerActionMenuSelection(control, selection, subselection, su
 		elseif subselection == 8 and sub2selection == 8 then
 			control.performAttackAction("ATK_NAT_1");
 		end
+	elseif selection == 4 then
+		if subselection == 1 then
+			control.performFixedSequenceInitAction(1);
+		elseif subselection == 2 then
+			control.performFixedSequenceInitAction(2);
+		elseif subselection == 3 then
+			control.performFixedSequenceInitAction(3);
+		elseif subselection == 4 then
+			control.performFixedSequenceInitAction(4);
+		elseif subselection == 5 then
+			control.performFixedSequenceInitAction(5);
+		end
+	elseif selection == 5 then
+		if subselection == 2 then
+			control.performSequencedInitAction(1);
+		elseif subselection == 3 then
+			control.performSequencedInitAction(2);
+		elseif subselection == 4 then
+			control.performSequencedInitAction(3);
+		elseif subselection == 5 then
+			control.performSequencedInitAction(4);
+		elseif subselection == 6 then
+			control.performSequencedInitAction(5);
+		end
 	elseif not PlayerOptionManager.isUsingPhasedInitiative() then
-	    if selection == 8 and subselection == 1 then
-	        control.performInitAction();
-	    elseif selection == 8 and subselection == 2 then
-	        control.performInitAction("INIT_START_ROUND");
-	    elseif selection == 8 and subselection == 8 then
-	        control.performInitAction("INIT_END_ROUND");
-	    elseif selection == 8 and subselection == 5 and sub2selection == 2 then
-			control.performDelayAction();
-		elseif selection == 8 and subselection == 5 and sub2selection == 3 then
-			control.performDelayAction(1);
-		elseif selection == 8 and subselection == 5 and sub2selection == 4 then
-			control.performDelayAction(2);
-		elseif selection == 8 and subselection == 5 and sub2selection == 5 then
-			control.performDelayAction(3);
-		elseif selection == 8 and subselection == 5 and sub2selection == 6 then
-			control.performDelayAction(4);
-		elseif selection == 8 and subselection == 5 and sub2selection == 7 then
-			control.performDelayAction(5);
-		elseif selection == 8 and subselection == 5 and sub2selection == 8 and sub3selection == 8 then
-			control.performDelayAction(6);
-		elseif selection == 8 and subselection == 5 and sub2selection == 8 and sub3selection == 1 then
-			control.performDelayAction(7);
-		elseif selection == 8 and subselection == 5 and sub2selection == 8 and sub3selection == 2 then
-		 	control.performDelayAction(8);
-		elseif selection == 8 and subselection == 5 and sub2selection == 8 and sub3selection == 3 then
-			control.performDelayAction(9);
+	    if selection == 8 then
+	    	if subselection == 1 then
+		        control.performInitAction();
+		    elseif subselection == 2 then
+		        control.performInitAction("INIT_START_ROUND");
+		    elseif subselection == 3 then
+		    	control.performCloneGroupInitAction();
+		    elseif subselection == 7 then
+    			control.performRollGroupInitAction();
+		    elseif subselection == 8 then
+		        control.performInitAction("INIT_END_ROUND");
+		    elseif subselection == 5 and sub2selection == 2 then
+				control.performDelayAction();
+			elseif subselection == 5 and sub2selection == 3 then
+				control.performDelayAction(1);
+			elseif subselection == 5 and sub2selection == 4 then
+				control.performDelayAction(2);
+			elseif subselection == 5 and sub2selection == 5 then
+				control.performDelayAction(3);
+			elseif subselection == 5 and sub2selection == 6 then
+				control.performDelayAction(4);
+			elseif subselection == 5 and sub2selection == 7 then
+				control.performDelayAction(5);
+			elseif subselection == 5 and sub2selection == 8 and sub3selection == 8 then
+				control.performDelayAction(6);
+			elseif subselection == 5 and sub2selection == 8 and sub3selection == 1 then
+				control.performDelayAction(7);
+			elseif subselection == 5 and sub2selection == 8 and sub3selection == 2 then
+			 	control.performDelayAction(8);
+			elseif subselection == 5 and sub2selection == 8 and sub3selection == 3 then
+				control.performDelayAction(9);
+			end
 		end
 	end
 end
@@ -347,8 +388,6 @@ end
 function initCombatTrackerActorMenu(control) 
 	control.resetMenuItems();
 
-	control.registerMenuItem(Interface.getString("clone_group_init_menuitem"), "cloneIcon", 2);
-
 	control.registerMenuItem(Interface.getString("effects_submenu_menuitem"), "effectsSubmenuIcon", 3);
 	control.registerMenuItem(Interface.getString("restrained_effect_menuitem"), "restrainedEffectIcon", 3, 1);
 	control.registerMenuItem(Interface.getString("add_effect_menuitem") .. Interface.getString("restrained_effect_menuitem"), "addEffectIcon", 3, 1, 2);
@@ -379,6 +418,13 @@ function initCombatTrackerActorMenu(control)
 	control.registerMenuItem(Interface.getString("rate_of_fire_4_menuitem"), "fourIcon", 4, 4);
 	control.registerMenuItem(Interface.getString("rate_of_fire_5_menuitem"), "fiveIcon", 4, 5);
 
+	control.registerMenuItem(Interface.getString("attack_rate_menuitem"), "attackRateIcon", 5);
+	control.registerMenuItem(Interface.getString("attack_rate_1_menuitem"), "oneIcon", 5, 2);
+	control.registerMenuItem(Interface.getString("attack_rate_2_menuitem"), "twoIcon", 5, 3);
+	control.registerMenuItem(Interface.getString("attack_rate_3_menuitem"), "threeIcon", 5, 4);
+	control.registerMenuItem(Interface.getString("attack_rate_4_menuitem"), "fourIcon", 5, 5);
+	control.registerMenuItem(Interface.getString("attack_rate_5_menuitem"), "fiveIcon", 5, 6);
+
 	control.registerMenuItem(Interface.getString("list_menu_deleteitem"), "delete", 6);
     control.registerMenuItem(Interface.getString("list_menu_deleteconfirm"), "delete", 6, 7);
 
@@ -386,6 +432,7 @@ function initCombatTrackerActorMenu(control)
 		control.registerMenuItem(Interface.getString("actor_init_menuitem"), "standardInitIcon", 8);
 		control.registerMenuItem(Interface.getString("standard_init_menuitem"), "standardInitIcon", 8, 1);
 		control.registerMenuItem(Interface.getString("first_init_menuitem"), "firstInitIcon", 8, 2);
+		control.registerMenuItem(Interface.getString("clone_group_init_menuitem"), "cloneIcon", 8, 3);
 
 		control.registerMenuItem(Interface.getString("delay_submenu_menuitem"), "delayTurnButtonIcon", 8, 5);
 		control.registerMenuItem(Interface.getString("delay10_menuitem"), "delayTurn10ButtonIcon", 8, 5, 2);
@@ -410,9 +457,7 @@ end
 
 function onCombatTrackerActorMenuSelection(control, selection, subselection, sub2selection, sub3selection)
 
-	if selection == 2 then
-		control.performCloneGroupInitAction();
-	elseif selection == 3 then
+	if selection == 3 then
 		if subselection == 1 and sub2selection == 2 then
 			control.performEffectAction("Restrained");
 		elseif subselection == 1 and sub2selection == 8 then
@@ -454,6 +499,18 @@ function onCombatTrackerActorMenuSelection(control, selection, subselection, sub
 		elseif subselection == 5 then
 			control.performFixedSequenceInitAction(5);
 		end
+	elseif selection == 5 then
+		if subselection == 2 then
+			control.performSequencedInitAction(1);
+		elseif subselection == 3 then
+			control.performSequencedInitAction(2);
+		elseif subselection == 4 then
+			control.performSequencedInitAction(3);
+		elseif subselection == 5 then
+			control.performSequencedInitAction(4);
+		elseif subselection == 6 then
+			control.performSequencedInitAction(5);
+		end
 	end
 
 	if not PlayerOptionManager.isUsingPhasedInitiative() then
@@ -462,6 +519,8 @@ function onCombatTrackerActorMenuSelection(control, selection, subselection, sub
 		        control.performInitAction();
 		    elseif subselection == 2 then
 		        control.performInitAction("INIT_START_ROUND");
+		    elseif subselection == 3 then
+    			control.performCloneGroupInitAction();
 		    elseif subselection == 8 then
 		        control.performInitAction("INIT_END_ROUND");
 		    elseif subselection == 5 and sub2selection == 2 then

@@ -48,6 +48,10 @@ function onMenuSelection(selection, subselection, subsubselection)
   super.onMenuSelection(selection, subselection);
 end
 
+function performSequencedInitAction(nNumAttacks)
+    InitManagerPO.rollSequencedAttackInit(getDatabaseNode(), nNumAttacks);
+end
+
 function performFixedSequenceInitAction(nNumAttacks)
     InitManagerPO.setActorFixedAttackRate(getDatabaseNode(), nNumAttacks);
 end

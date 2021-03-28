@@ -1,4 +1,8 @@
+OOB_MSGTYPE_REQUEST_FIXED_INIT = "requestFixedInitSequence";
+
+
 function onInit()
+	OOBManager.registerOOBMsgHandler(OOB_MSGTYPE_REQUEST_FIXED_INIT, handleRequestFixedInitSequence);
 end
 
 -- Speeds: 1 = Very Fast, 2 = Fast, 3 = Average, 4 = Slow, 5 = Very Slow
@@ -334,6 +338,19 @@ function moveActorToNextInit(nodeCT)
 	return nil;
 end
 
+function requestSetActorFixedAttackRate(nodeChar, nNumAttacks)
+  local msgOOB = {};
+  msgOOB.type = OOB_MSGTYPE_REQUEST_FIXED_INIT;
+  msgOOB.sNumAttacks = tostring(nNumAttacks);
+  msgOOB.sCharNodeName = nodeChar.getNodeName();
+  Comm.deliverOOBMessage(msgOOB, "");
+end
+
+function handleRequestFixedInitSequence(msgOOB)
+	local nodeChar = ActorManager.resolveActor(msgOOB.sCharNodeName);
+	setActorFixedAttackRate(nodeChar, tonumber(msgOOB.sNumAttacks));
+end
+
 function setActorFixedAttackRate(nodeChar, nNumAttacks)
 	local nodeCT = ActorManager.getCTNode(nodeChar);
 
@@ -395,6 +412,13 @@ function moveHackmasterActorToNextRound(nodeCT, nInitMOD)
 	    end
 	end
 	return nInitResult;
+end
+
+
+function rollSequencedAttackInit(nodeChar, nNumAttacks)
+	ModifierStackPO.setSequencedInitModifierKey(nNumAttacks);
+    local rActor = ActorManager.resolveActor(nodeChar);
+    ActionInit.performRoll(nil, rActor);
 end
 
 function getMeleeInitDieType()

@@ -806,3 +806,6 @@ function getSimilarCreaturesInCT(nodeEntry)
     return aCreatures;
 end
 
+function requestChargeAction(nodeChar, nodeWeapon)
+    
+end

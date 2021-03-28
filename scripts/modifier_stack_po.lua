@@ -37,3 +37,7 @@ function getSequencedInitModifierKey()
 
 	return 0;
 end
+
+function setSequencedInitModifierKey(nNumAttacks)
+	ModifierStack.setModifierKey("SEQUENCED_ATTACK_" .. nNumAttacks, true);
+end

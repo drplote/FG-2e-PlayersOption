@@ -211,5 +211,12 @@
     <string name="rate_of_fire_9_menuitem">9 attacks</string>
     <string name="rate_of_fire_10_menuitem">10 attacks</string>
 
+    <string name="attack_rate_menuitem">Specify # of natural attacks</string>
+    <string name="attack_rate_1_menuitem">1 attack</string>
+    <string name="attack_rate_2_menuitem">2 attacks</string>
+    <string name="attack_rate_3_menuitem">3 attacks</string>
+    <string name="attack_rate_4_menuitem">4 attacks</string>
+    <string name="attack_rate_5_menuitem">5 attacks</string>
+
 </root>
 

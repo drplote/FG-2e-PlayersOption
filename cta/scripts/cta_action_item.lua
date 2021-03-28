@@ -40,6 +40,16 @@ function onMenuSelection(selection, subselection, subsubselection)
 	end
 end
 
+function performFixedSequenceInitAction(nNumAttacks)
+    local nodeChar = nodeAction.getChild("...");
+    InitManagerPO.requestSetActorFixedAttackRate(nodeChar, nNumAttacks);
+end
+
+function performSequencedInitAction(nNumAttacks)
+    local nodeChar = nodeAction.getChild("...");
+    InitManagerPO.rollSequencedAttackInit(nodeChar, nNumAttacks);
+end
+
 function performCloneGroupInitAction()
     local nodeChar = nodeAction.getChild("...");
     InitManagerPO.cloneInitToSimilarCreatures(nodeChar, true);

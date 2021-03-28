@@ -211,7 +211,7 @@ function isDefaultingNpcInitTo99()
 end
 
 function isUsingReactionAdjustmentForInitiative()
-	return OptionsManager.isOption(sReactionAdjAffectsInit, "on");
+	return OptionsManager.isOption(sReactionAdjAffectsInit, "on") or isUsingHackmasterInitiative();
 end
 
 function isUsingHackmasterStats()

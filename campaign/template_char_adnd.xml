@@ -50,7 +50,7 @@
           if nNumAttacks == 1 then
             action();
           else
-            InitManagerPO.setActorFixedAttackRate(window.getDatabaseNode().getChild("..."), nNumAttacks);
+            InitManagerPO.requestSetActorFixedAttackRate(window.getDatabaseNode().getChild("..."), nNumAttacks);
           end
         end
 
@@ -129,10 +129,7 @@
         function performChargeAction()
           local nodeWeapon = window.getDatabaseNode();
           local nodeChar = nodeWeapon.getChild("...")
-          local nodeCT = CombatManager.getCTFromNode(nodeChar);
-          local nCurrentInit = DB.getValue(nodeCT, "initresult", 0);
-          EffectManager.addEffect("", "", nodeCT, { sName = "Charged", sLabel = "Charged", nDuration = 1, nInit = nCurrentInit }, true);
-          performAttackAction();
+          EffectManagerPO.requestAddEffect(nodeChar, "Charged", 1, true);
         end
 
         function performAttackAction(sModifierKey)
