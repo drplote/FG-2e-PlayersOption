@@ -3,6 +3,7 @@ function onInit()
     local node = getDatabaseNode();
     OptionsManager.registerCallback(PlayerOptionManager.sPhasedInitiativeOptionKey, update);   
     DB.addHandler(DB.getPath(node, "initresult"), "onUpdate", updateInitResult);
+    DB.addHandler(DB.getPath(node, "initQueue"), "onUpdate", updateInitResult);
     update();
 end
 
@@ -14,22 +15,29 @@ function onClose()
 end
 
 function updateInitResult()
+    local node = getDatabaseNode();
     if PlayerOptionManager.isUsingPhasedInitiative() then
-        local node = getDatabaseNode();
         local nInitResult = DB.getValue(node, "initresult", 12);
         local sPhaseName = InitManagerPO.getPhaseName(math.floor(nInitResult/2));
         initresultpo.setValue(sPhaseName);
+    else
+        initresultpo.setValue(DB.getValue(node, "initQueue"));
     end
 end
 
 function update()
+    updateInitResult();
     if PlayerOptionManager.isUsingPhasedInitiative() then
         initresult.setVisible(false);
         initresultpo.setVisible(true);
-        updateInitResult();
     else
         initresult.setVisible(true);
-        initresultpo.setVisible(false);
+        
+        if InitManagerPO.hasAdditionalInitsInQueue(getDatabaseNode()) then
+            initresultpo.setVisible(true);
+        else
+            initresultpo.setVisible(false);
+        end
     end
     RadialMenuManagerPO.initCombatTrackerActorMenu(self);
 end

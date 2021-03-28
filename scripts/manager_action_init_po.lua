@@ -21,9 +21,7 @@ function handleApplyInitOverride(msgOOB)
 	local rSource = ActorManager.resolveActor(msgOOB.sSourceNode);
 	local nodeCT = ActorManager.getCTNode(rSource);
 	local bWasInitRolled = DB.getValue(nodeCT, "initrolled", 0) == 1;
-	Debug.console("handleApplyInit", bWasInitRolled);
 	if bWasInitRolled and ModifierStack.getModifierKey("ADDITIONAL_ATTACK") then
-		Debug.console("handleApplyInit additional attack");
 		local nNewInit = tonumber(msgOOB.nTotal) or 0;
 		nNewInit = InitManagerPO.addInitToActor(nodeCT, nNewInit);
 

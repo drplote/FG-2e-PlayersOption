@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <root>
+
 	<template name="button_cta_nextactor">
 		<buttoncontrol>
 			<anchored width="30" height="30">
@@ -44,7 +45,7 @@
 	      <!-- <icon>d10ricon</icon> -->
 	      <anchored to="token" height="20" width="100">
 	        <top anchor="top" offset="5" />
-	        <left anchor="right" relation="relative" offset="0" />
+	        <left anchor="left" relation="relative" offset="100" />
 	      </anchored>
 	      <tooltip textres="cta_initiative_tooltip" />
 	    </stringcontrol>

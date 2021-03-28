@@ -298,6 +298,11 @@ function getActorInitQueue(nodeCT)
 	return aQueue;
 end
 
+function hasAdditionalInitsInQueue(nodeCT)
+	local aQueue = DB.getValue(nodeCT, "initQueue", nil);
+	return aQueue and #aQueue > 0;
+end
+
 function popActorInitFromQueue(nodeCT)
 	local aQueue = getActorInitQueue(nodeCT);
 	local nInit = nil;
