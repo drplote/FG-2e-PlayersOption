@@ -2,6 +2,7 @@ local fOnDamageRoll;
 local fCheckReductionType;
 local fModDamage;
 local fApplyDamage;
+local fGetRoll;
 
 function onInit()
     fOnDamageRoll = ActionDamage.onDamageRoll;
@@ -20,6 +21,16 @@ function onInit()
 
 	fApplyDamage = ActionDamage.applyDamage;
 	ActionDamage.applyDamage = applyDamageOverride;
+
+  fGetRoll = ActionDamage.getRoll;
+  ActionDamage.getRoll = getRollOverride;
+end
+
+function getRollOverride(rActor, rAction)
+  local rRoll = fGetRoll(rActor, rAction);
+  rRoll.sPowerType = rAction.sPowerType;
+  rRoll.sPowerSchool = rAction.sPowerSchool;
+  return rRoll;
 end
 
 function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
@@ -743,6 +754,15 @@ function onDamageRollOverride(rSource, rRoll)
       local aDmgTypes = parseDamageTypes(rRoll);
       local bExtraPenetration = UtilityPO.contains(aDmgTypes, "penetrating");
       DiceManagerPO.handlePenetration(rRoll, bExtraPenetration);
+  end
+
+  Debug.console("rRoll", rRoll);
+  if rRoll.sPowerType and rRoll.sPowerType == "arcane" and EffectManagerPO.hasSpellRazor(rSource) then
+    local nNumDiceRolled = #rRoll.aDice; 
+    if nNumDiceRolled > 0 then
+      rRoll.sDesc = string.format("%s [Spell Razor (+%s)]", rRoll.sDesc, nNumDiceRolled);
+      rRoll.nMod = rRoll.nMod + nNumDiceRolled;
+    end
   end
 
   HonorManagerPO.addDamageModifier(rSource, rRoll);

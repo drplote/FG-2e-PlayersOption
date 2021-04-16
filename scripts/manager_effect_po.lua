@@ -44,6 +44,14 @@ function isAllowedToCrit(rSource)
 	return not EffectManager5E.hasEffect(rSource, "NOCRIT", nil);
 end
 
+function hasSpellRazor(rSource)
+	if not rSource then
+		return false;
+	end
+	
+	return EffectManager5E.hasEffect(rSource, "SPELLRAZOR", nil);
+end
+
 function isAllowedToPenetrate(rSource)
 	if not rSource then
 		return true;

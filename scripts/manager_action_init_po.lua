@@ -37,8 +37,12 @@ function notifyApplyInitOverride(rSource, nTotal)
   msgOOB.sSourceType = sSourceType;
   msgOOB.sSourceNode = sSourceNode;
   local bIsAdditionalAttack = ModifierStack.getModifierKey("ADDITIONAL_ATTACK");
-  msgOOB.sIsAdditionalAttack = tostring(bIsAdditionalAttack);
-
+  if bIsAdditionalAttack then
+  	msgOOB.sIsAdditionalAttack = "1";
+  else
+  	msgOOB.sIsAdditionalAttack = "0";
+  end
+  Debug.console("msgOOB sent", msgOOB);
   Comm.deliverOOBMessage(msgOOB, "");
 end
 
@@ -51,7 +55,11 @@ function handleApplyInitOverride(msgOOB)
 	local rSource = ActorManager.resolveActor(msgOOB.sSourceNode);
 	local nodeCT = ActorManager.getCTNode(rSource);
 	local bWasInitRolled = DB.getValue(nodeCT, "initrolled", 0) == 1;
-	if bWasInitRolled and msgOOB.sIsAdditionalAttack then
+	Debug.console("msgOOB received", msgOOB);
+	local bIsAdditionalAttack = tonumber(msgOOB.sIsAdditionalAttack) == 1;
+	Debug.console("bIsAdditionalAttack", bIsAdditionalAttack);
+
+	if bWasInitRolled and bIsAdditionalAttack then
 		local nNewInit = tonumber(msgOOB.nTotal) or 1;
 		nNewInit = InitManagerPO.addInitToActor(nodeCT, nNewInit);
 
@@ -205,7 +213,6 @@ function getHackmasterInitRoll(rActor, bSecretRoll, rItem)
     local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
 	if nodeActor then
 		if not bIsFixedInitiative then
-			Debug.console("modifying roll");
 			modifyRollForDexterity(rActor, rRoll);
 		end
 	    if rItem and not bIsFixedInitiative and not bIsSpell and not rItem.isNil then    		

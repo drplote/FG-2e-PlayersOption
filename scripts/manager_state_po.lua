@@ -2,7 +2,10 @@ aCritState = {};
 aFatigueState = {};
 aRanStartEffects = {};
 
+OOB_MSGTYPE_SET_FATIGUE_STATE = "requestSetFatigueState";
+
 function onInit()
+  OOBManager.registerOOBMsgHandler(OOB_MSGTYPE_SET_FATIGUE_STATE, handleSetFatigueState);
 end
 
 function handleRoundStart()
@@ -114,16 +117,32 @@ function getFatigueState(nodeChar)
     return DB.getValue(nodeChar, "fatigue.state", 0);
 end
 
-function setFatigueState(rChar, nFatigue)
-  -- nFatigue = 0 (decrease fatigue at end of turn), = 1 (no recovery, no increase), = 2 (increase)
-  local nodeChar = ActorManagerPO.getNode(rChar);
-  if not nodeChar then
+function handleSetFatigueState(msgOOB)
+  local rActor = ActorManager.resolveActor(msgOOB.sCharNodeName);
+  if not rActor then
     return;
   end
 
+  local nodeChar = ActorManagerPO.getNode(rActor);
+
+  Debug.console("nodeChar", nodeChar);
+  local nFatigue = tonumber(msgOOB.sFatigue);
   local nCurrentFatigueState = DB.getValue(nodeChar, "fatigue.state");
   if not nCurrentFatigueState or nCurrentFatigueState < nFatigue then
     DB.setValue(nodeChar, "fatigue.state", "number", nFatigue);
+  end
+end
+
+
+function setFatigueState(rChar, nFatigue)
+  local msgOOB = {};
+  msgOOB.type = OOB_MSGTYPE_SET_FATIGUE_STATE;
+  msgOOB.sFatigue = tostring(nFatigue);
+  
+  local nodeChar = ActorManagerPO.getNode(rChar);
+  if nodeChar then
+    msgOOB.sCharNodeName = nodeChar.getNodeName();
+    Comm.deliverOOBMessage(msgOOB, "");
   end
 end
 

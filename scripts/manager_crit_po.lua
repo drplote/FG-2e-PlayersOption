@@ -42,7 +42,6 @@ function getCritThreshold(rRoll, rSource, rTarget)
 	if rRoll.nCritThresholdMod then
 		nBaseThreshold = nBaseThreshold - rRoll.nCritThresholdMod;
 	end
-	Debug.console("crit threshold", nBaseThreshold);
 	return nBaseThreshold;
 end
 

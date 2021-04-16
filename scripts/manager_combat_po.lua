@@ -61,7 +61,9 @@ function turnOffAllInitRolledOverride()
   for _,vChild in pairs(CombatManager.getCombatantNodes()) do
     local rActor = ActorManager.resolveActor(vChild);
     local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);  
-    DB.setValue(vChild, "initrolled", "number", 0);
+    if not PlayerOptionManager.isUsingHackmasterInitiative() then
+        DB.setValue(vChild, "initrolled", "number", 0);
+    end
   end
 end
 
@@ -78,7 +80,7 @@ end
 function handleEndTurnOverride(msgOOB)
     local rActor = ActorManager.resolveActor(CombatManager.getActiveCT());
     local nodeActor = ActorManager.getCreatureNode(rActor);
-    if User.isHost() or (nodeActor and nodeActor.getOwner() == msgOOB.user) then
+    if Session.IsHost or (nodeActor and nodeActor.getOwner() == msgOOB.user) then
         CombatManager.nextActor();
     end
 end
@@ -804,8 +806,4 @@ function getSimilarCreaturesInCT(nodeEntry)
     end
 
     return aCreatures;
-end
-
-function requestChargeAction(nodeChar, nodeWeapon)
-    
 end
