@@ -127,25 +127,20 @@ function getCasterLevelByTypeOverride(nodeCaster,sSpellType,bIsPC, nodeSpell)
     		aSpellSchools = UtilityPO.fromCSV(sSpellSchools);
     	end
     end
-    Debug.console("aSpellSchools", aSpellSchools);
 
     -- get sSpellType "ARCANE: X" effect modifier?
     local aSpellTypesList = EffectManager5E.getEffectsByType(rActor, sSpellType:upper(), {}, {});
-    Debug.console("aSpellTypesList", aSpellTypesList);
     for k, v in pairs(aSpellTypesList)do
     	if #v.remainder > 0 then
-    		Debug.console("v.remainder", v.remainder);
     		if aSpellSchools and #aSpellSchools > 0 then
     			if UtilityPO.intersects(aSpellSchools, v.remainder) then
     				local nAddTotal = StringManager.evalDice(v.dice, v.mod)
 	      			nCasterLevel = nCasterLevel + nAddTotal;
-	      			Debug.console("raised conditional caster level to ", nCasterLevel);
 	      		end
     		end
     	else
     		local nAddTotal = StringManager.evalDice(v.dice, v.mod);
       		nCasterLevel = nCasterLevel + nAddTotal;
-      		Debug.console("raised general caster level to ", nCasterLevel);
     	end
 
     end

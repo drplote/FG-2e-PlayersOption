@@ -27,15 +27,59 @@ end
 
 
 function modSaveOverride(rSource, rTarget, rRoll)
+	addMagicalDefenseAdjustment(rSource, rTarget, rRoll);
+
+    HonorManagerPO.addSaveModifier(rSource, rRoll);
+	fModSave(rSource, rTarget, rRoll);
+	addSpellPenetrationModifier(rSource, rTarget, rRoll);
+end
+
+function addSpellPenetrationModifier(rSource, rTarget, rRoll)
+	local aSpellPenList = nil;
+    if rRoll.sSource then
+    	local rSaveSource = ActorManager.resolveActor(rRoll.sSource);
+    	aSpellPenList = EffectManager5E.getEffectsByType(rSaveSource, "SPELLPEN", {}, {});
+    end
+
+    local aPowerProperties = nil;
+    if rRoll.sPowerProperties then
+    	aPowerProperties = UtilityPO.fromCSV(rRoll.sPowerProperties);
+    end
+
+    if aSpellPenList then 
+    	for k, v in pairs(aSpellPenList) do
+    		if #v.remainder > 0 then
+    			if aPowerProperties then
+    				local aIntersecting = UtilityPO.getIntersecting(aPowerProperties, v.remainder);
+    				if aIntersecting and #aIntersecting > 0 then
+    					local nSaveMod = StringManager.evalDice(v.dice, v.mod) * -1;
+      					rRoll.nMod = rRoll.nMod + nSaveMod;
+    					rRoll.sDesc = rRoll.sDesc .. string.format("[Spell Penetration (%s): %s]", UtilityPO.toCSV(aIntersecting), nSaveMod);
+    				end
+      			end
+    		else
+    			local nSaveMod = StringManager.evalDice(v.dice, v.mod) * -1;
+      			rRoll.nMod = rRoll.nMod + nSaveMod;
+				rRoll.sDesc = rRoll.sDesc .. string.format("[Spell Penetration: %s]", nSaveMod);
+    		end
+    	end
+    	if rRoll.sPowerProperties then
+			local aProperties = StringManager.split(rRoll.sPowerProperties, ",", true);
+
+		end
+    end
+
+end
+
+function addMagicalDefenseAdjustment(rSource, rTarget, rRoll)
 	local nMagicalDefenseAdjustment = getMagicalDefenseAdjustment(rSource, rRoll.sSaveDesc);
     rRoll.nMod = rRoll.nMod + nMagicalDefenseAdjustment;
+
     if nMagicalDefenseAdjustment > 0 then
       rRoll.sDesc = rRoll.sDesc .. " [MAGIC DEF ADJ +" .. nMagicalDefenseAdjustment .. "]";
     elseif nMagicalDefenseAdjustment < 0 then
       rRoll.sDesc = rRoll.sDesc .. " [MAGIC DEF ADJ " .. nMagicalDefenseAdjustment .. "]";
     end
-    HonorManagerPO.addSaveModifier(rSource, rRoll);
-	fModSave(rSource, rTarget, rRoll);
 end
 
 function rollSave(rTarget, sSave, sDesc, bSecretRoll)
