@@ -38,6 +38,19 @@ function onInit()
   initializeHonor();
   initializeCalledShots();
 
+  table.insert(DataCommon.powertypes, "abjuration");
+  table.insert(DataCommon.powertypes, "alteration");
+  table.insert(DataCommon.powertypes, "conjuration");
+  table.insert(DataCommon.powertypes, "divination");
+  table.insert(DataCommon.powertypes, "enchantment");
+  table.insert(DataCommon.powertypes, "evocation");
+  table.insert(DataCommon.powertypes, "illusion");
+  table.insert(DataCommon.powertypes, "invocation");
+  table.insert(DataCommon.powertypes, "necromancy");
+  table.insert(DataCommon.powertypes, "phantasm");
+  table.insert(DataCommon.powertypes, "summoning");
+
+
 end
 
 function initializeHonor()

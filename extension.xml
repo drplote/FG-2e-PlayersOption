@@ -77,6 +77,7 @@
     <script name="CritManagerHM" file="scripts/manager_crit_hm.lua" />
     <script name="RadialMenuManagerPO" file="scripts/manager_radial_menu_po.lua" />
     <script name="ModifierStackPO" file="scripts/modifier_stack_po.lua" />
+    <script name="PowerManagerPO" file="scripts/manager_power_po.lua" />
 
     
   </base>
