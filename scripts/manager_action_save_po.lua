@@ -38,7 +38,7 @@ function addSpellPenetrationModifier(rSource, rTarget, rRoll)
 	local aSpellPenList = nil;
     if rRoll.sSource then
     	local rSaveSource = ActorManager.resolveActor(rRoll.sSource);
-    	aSpellPenList = EffectManager5E.getEffectsByType(rSaveSource, "SPELLPEN", {}, {});
+    	aSpellPenList = EffectManager5E.getEffectsByType(rSaveSource, "SPELLPEN", {}, rSource);
     end
 
     local aPowerProperties = nil;
