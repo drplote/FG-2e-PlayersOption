@@ -405,11 +405,11 @@ function moveHackmasterActorToNextRound(nodeCT, nInitMOD)
     elseif InitManagerPO.hasAdditionalInitsInQueue(nodeCT) then 
         nInitResult = InitManagerPO.popActorInitFromQueue(nodeCT);
     else 
-    	DB.setValue(nodeCT, "initrolled", "number", 0);
-	    if PlayerOptionManager.isDefaultingPcInitTo99() then
+    	local bIsPc = ActorManagerPO.isPC(nodeCT);
+	    if (bIsPc and PlayerOptionManager.isDefaultingPcInitTo99()) or (not bIsPc and PlayerOptionManager.isDefaultingNpcInitTo99()) then
 	        nInitResult = 99;
 	    else
-	        nInitResult = CombatManagerADND.rollRandomInit(nInitPC + nInitMOD);
+	        nInitResult = CombatManagerADND.rollRandomInit(nInitMOD);
 	    end
 	end
 	return nInitResult;
