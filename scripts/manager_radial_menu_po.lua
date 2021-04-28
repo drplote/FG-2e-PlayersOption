@@ -586,13 +586,13 @@ function onCombatTrackerActorMenuSelection(control, selection, subselection, sub
 			end
 		elseif subselection == 8 then -- spell submenu
 			if sub2selection == 1 then
-				LightingManagerPO.addLight(nodeActor, LightingManagerPO.LightSpell);
-			elseif sub2selection == 2 then
 				LightingManagerPO.addLight(nodeActor, LightingManagerPO.ContinualLightSpell);
-			elseif sub2selection == 3 then
+			elseif sub2selection == 2 then
 				LightingManagerPO.addLight(nodeActor, LightingManagerPO.DarknessSpell);
-			elseif sub2selection == 8 then
+			elseif sub2selection == 3 then
 				LightingManagerPO.addLight(nodeActor, LightingManagerPO.ContinualDarknessSpell);
+			elseif sub2selection == 8 then
+				LightingManagerPO.addLight(nodeActor, LightingManagerPO.LightSpell);
 			end	
 		end
 	end
