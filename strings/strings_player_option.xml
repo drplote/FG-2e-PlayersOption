@@ -218,5 +218,31 @@
     <string name="attack_rate_4_menuitem">4 attacks</string>
     <string name="attack_rate_5_menuitem">5 attacks</string>
 
+    <string name="lighting_vision_menuitem">Lighting and Vision</string>
+    <string name="weapon_glow_menuitem">Add Weapon Glow</string>
+    <string name="weapon_glow_blue_menuitem">Blue Glow</string>
+    <string name="weapon_glow_red_menuitem">Red Glow</string>
+    <string name="weapon_glow_green_menuitem">Green Glow</string>
+    <string name="weapon_glow_orange_menuitem">Orange Glow</string>
+    <string name="weapon_glow_yellow_menuitem">Yellow Glow</string>
+    <string name="weapon_glow_purple_menuitem">Purple Glow</string>
+    <string name="weapon_glow_white_menuitem">White Glow</string>
+    <string name="remove_lights_menuitem">Remove all light sources</string>
+    <string name="torch_menuitem">Torch</string>
+    <string name="hooded_lantern_menuitem">Hooded Lantern</string>
+    <string name="candle_menuitem">Candle</string>
+    <string name="vision_menuitem">Add Vision Type</string>
+    <string name="infravision_120_menuitem">Infravision 120'</string>
+    <string name="truesight_240_menuitem">Truesight 240'</string>
+    <string name="blindsight_60_menuitem">Blindsight 60'</string>
+    <string name="blindsight_120_menuitem">Blindsight 120'</string>
+    <string name="infravision_30_menuitem">Infravision 30'</string>
+    <string name="infravision_60_menuitem">Infravision 60'</string>
+    <string name="infravision_90_menuitem">Infravision 90'</string>
+    <string name="lighting_spells_menuitem">Light/Darkness Spells</string>
+    <string name="light_spell_menuitem">Light 20'</string>
+    <string name="continual_light_spell_menuitem">Continual Light 60'</string>
+    <string name="darkness_15_menuitem">Darkness 15'</string>
+    <string name="darkness_continual_menuitem">Continual Darkness 60'</string>
 </root>
 

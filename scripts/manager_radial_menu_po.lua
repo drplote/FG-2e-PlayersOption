@@ -428,6 +428,35 @@ function initCombatTrackerActorMenu(control)
 	control.registerMenuItem(Interface.getString("list_menu_deleteitem"), "delete", 6);
     control.registerMenuItem(Interface.getString("list_menu_deleteconfirm"), "delete", 6, 7);
 
+    control.registerMenuItem(Interface.getString("lighting_vision_menuitem"), "lightingVisionIcon", 7);
+    control.registerMenuItem(Interface.getString("weapon_glow_menuitem"), "weaponGlowMenuIcon", 7, 1);
+    control.registerMenuItem(Interface.getString("weapon_glow_blue_menuitem"), "blueColorIcon", 7, 1, 1);
+    control.registerMenuItem(Interface.getString("weapon_glow_red_menuitem"), "redColorIcon", 7, 1, 2);
+    control.registerMenuItem(Interface.getString("weapon_glow_green_menuitem"), "greenColorIcon", 7, 1, 3);
+    control.registerMenuItem(Interface.getString("weapon_glow_orange_menuitem"), "orangeColorIcon", 7, 1, 4);
+    control.registerMenuItem(Interface.getString("weapon_glow_yellow_menuitem"), "yellowColorIcon", 7, 1, 6);
+    control.registerMenuItem(Interface.getString("weapon_glow_purple_menuitem"), "purpleColorIcon", 7, 1, 7);
+    control.registerMenuItem(Interface.getString("weapon_glow_white_menuitem"), "whiteColorIcon", 7, 1, 8);
+    control.registerMenuItem(Interface.getString("remove_lights_menuitem"), "removeLightsIcon", 7, 2);
+    control.registerMenuItem(Interface.getString("torch_menuitem"), "torchIcon", 7, 4);
+    control.registerMenuItem(Interface.getString("hooded_lantern_menuitem"), "lanternIcon", 7, 5);
+    control.registerMenuItem(Interface.getString("candle_menuitem"), "candleIcon", 7, 6);
+    control.registerMenuItem(Interface.getString("vision_menuitem"), "visionMenuIcon", 7, 7);
+    control.registerMenuItem(Interface.getString("infravision_120_menuitem"), "infravision120Icon", 7, 7, 1);
+    control.registerMenuItem(Interface.getString("truesight_240_menuitem"), "truesightIcon", 7, 7, 2);
+    control.registerMenuItem(Interface.getString("blindsight_60_menuitem"), "blindsight60Icon", 7, 7, 4);
+    control.registerMenuItem(Interface.getString("blindsight_120_menuitem"), "blindsight120Icon", 7, 7, 5);
+    control.registerMenuItem(Interface.getString("infravision_30_menuitem"), "infravision30Icon", 7, 7, 6);
+    control.registerMenuItem(Interface.getString("infravision_60_menuitem"), "infravision60Icon", 7, 7, 7);
+    control.registerMenuItem(Interface.getString("infravision_90_menuitem"), "infravision90Icon", 7, 7, 8);
+    control.registerMenuItem(Interface.getString("lighting_spells_menuitem"), "lightingSpellsMenuIcon", 7, 8);
+    control.registerMenuItem(Interface.getString("light_spell_menuitem"), "light20Icon", 7, 8, 8);
+    control.registerMenuItem(Interface.getString("continual_light_spell_menuitem"), "light60Icon", 7, 8, 1);
+    control.registerMenuItem(Interface.getString("darkness_15_menuitem"), "darkness15Icon", 7, 8, 2);
+    control.registerMenuItem(Interface.getString("darkness_continual_menuitem"), "darkness60Icon", 7, 8, 3);
+
+
+
 	if not PlayerOptionManager.isUsingPhasedInitiative() then
 		control.registerMenuItem(Interface.getString("actor_init_menuitem"), "standardInitIcon", 8);
 		control.registerMenuItem(Interface.getString("standard_init_menuitem"), "standardInitIcon", 8, 1);
@@ -457,7 +486,7 @@ end
 
 function onCombatTrackerActorMenuSelection(control, selection, subselection, sub2selection, sub3selection)
 
-	if selection == 3 then
+	if selection == 3 then -- effects submenu
 		if subselection == 1 and sub2selection == 2 then
 			control.performEffectAction("Restrained");
 		elseif subselection == 1 and sub2selection == 8 then
@@ -487,7 +516,7 @@ function onCombatTrackerActorMenuSelection(control, selection, subselection, sub
 		elseif subselection == 8 and sub2selection == 8 then			
 			control.performEffectAction("DEXTERITY", true); -- Need to do this because NO-DEXTERITY fails matching, probably due to the hyphen
 		end
-	elseif selection == 4 then
+	elseif selection == 4 then -- ranged attack sequence submenu
 		if subselection == 1 then
 			control.performFixedSequenceInitAction(1);
 		elseif subselection == 2 then
@@ -499,7 +528,7 @@ function onCombatTrackerActorMenuSelection(control, selection, subselection, sub
 		elseif subselection == 5 then
 			control.performFixedSequenceInitAction(5);
 		end
-	elseif selection == 5 then
+	elseif selection == 5 then -- melee attack sequence submenu
 		if subselection == 2 then
 			control.performSequencedInitAction(1);
 		elseif subselection == 3 then
@@ -513,8 +542,63 @@ function onCombatTrackerActorMenuSelection(control, selection, subselection, sub
 		end
 	end
 
+	if selection == 7 then -- vision and lighting submen u
+		local nodeActor = control.getCtNodeActor();
+		if subselection == 1 then -- weapon glow submenu
+			if sub2selection == 1 then 
+				LightingManagerPO.addWeaponGlow(nodeActor, LightingManagerPO.Blue);
+			elseif sub2selection == 2 then
+				LightingManagerPO.addWeaponGlow(nodeActor, LightingManagerPO.Red);
+			elseif sub2selection == 3 then
+				LightingManagerPO.addWeaponGlow(nodeActor, LightingManagerPO.Green);
+			elseif sub2selection == 4 then				
+				LightingManagerPO.addWeaponGlow(nodeActor, LightingManagerPO.Orange);
+			elseif sub2selection == 6 then
+				LightingManagerPO.addWeaponGlow(nodeActor, LightingManagerPO.Yellow);
+			elseif sub2selection == 7 then
+				LightingManagerPO.addWeaponGlow(nodeActor, LightingManagerPO.Purple);
+			elseif sub2selection == 8 then
+				LightingManagerPO.addWeaponGlow(nodeActor, LightingManagerPO.White);
+			end
+		elseif subselection == 2 then
+			LightingManagerPO.removeAllLights(nodeActor);
+		elseif subselection == 4 then
+			LightingManagerPO.addLight(nodeActor, LightingManagerPO.Torch);
+		elseif subselection == 5 then
+			LightingManagerPO.addLight(nodeActor, LightingManagerPO.HoodedLantern);
+		elseif subselection == 6 then
+			LightingManagerPO.addLight(nodeActor, LightingManagerPO.Candle);
+		elseif subselection == 7 then -- vision submenu
+			if sub2selection == 1 then
+				LightingManagerPO.addInfravision(nodeActor, 120);
+			elseif sub2selection == 2 then
+				LightingManagerPO.addTruesight(nodeActor, 240);
+			elseif sub2selection == 4 then
+				LightingManagerPO.addBlindsight(nodeActor, 60);
+			elseif sub2selection == 5 then
+				LightingManagerPO.addBlindsight(nodeActor, 120);
+			elseif sub2selection == 6 then
+				LightingManagerPO.addInfravision(nodeActor, 30);
+			elseif sub2selection == 7 then
+				LightingManagerPO.addInfravision(nodeActor, 60);
+			elseif sub2selection == 8 then
+				LightingManagerPO.addInfravision(nodeActor, 90);
+			end
+		elseif subselection == 8 then -- spell submenu
+			if sub2selection == 1 then
+				LightingManagerPO.addLight(nodeActor, LightingManagerPO.LightSpell);
+			elseif sub2selection == 2 then
+				LightingManagerPO.addLight(nodeActor, LightingManagerPO.ContinualLightSpell);
+			elseif sub2selection == 3 then
+				LightingManagerPO.addLight(nodeActor, LightingManagerPO.DarknessSpell);
+			elseif sub2selection == 8 then
+				LightingManagerPO.addLight(nodeActor, LightingManagerPO.ContinualDarknessSpell);
+			end	
+		end
+	end
+
 	if not PlayerOptionManager.isUsingPhasedInitiative() then
-	    if selection == 8 then
+	    if selection == 8 then -- initiative submenu
 		    if subselection == 1 then
 		        control.performInitAction();
 		    elseif subselection == 2 then

@@ -92,5 +92,33 @@
   <icon name="nineIcon" file="graphics/icons/9_icon.png" />
   <icon name="tenIcon" file="graphics/icons/10_icon.png" />
 
+
+  <icon name="lightingVisionIcon" file="graphics/icons/LightingMenu.png" />
+  <icon name="weaponGlowMenuIcon" file="graphics/icons/WeaponGlow.png" />
+  <icon name="blueColorIcon" file="graphics/icons/blue.png" />
+  <icon name="redColorIcon" file="graphics/icons/red.png" />
+  <icon name="greenColorIcon" file="graphics/icons/green.png" />
+  <icon name="orangeColorIcon" file="graphics/icons/orange.png" />
+  <icon name="yellowColorIcon" file="graphics/icons/yellow.png" />
+  <icon name="purpleColorIcon" file="graphics/icons/purple.png" />
+  <icon name="whiteColorIcon" file="graphics/icons/white.png" />
+  <icon name="removeLightsIcon" file="graphics/icons/RemoveLight.png" />
+  <icon name="torchIcon" file="graphics/icons/torch.png" />
+  <icon name="lanternIcon" file="graphics/icons/lantern.png" />
+  <icon name="candleIcon" file="graphics/icons/candle.png" />
+  <icon name="visionMenuIcon" file="graphics/icons/VisionMenu.png" />
+  <icon name="infravision120Icon" file="graphics/icons/Infravision120.png" />
+  <icon name="truesightIcon" file="graphics/icons/Truesight.png" />
+  <icon name="blindsight60Icon" file="graphics/icons/Blindsight60.png" />
+  <icon name="blindsight120Icon" file="graphics/icons/Blindsight120.png" />
+  <icon name="infravision30Icon" file="graphics/icons/Infravision30.png" />
+  <icon name="infravision60Icon" file="graphics/icons/Infravision60.png" />
+  <icon name="infravision90Icon" file="graphics/icons/Infravision90.png" />
+  <icon name="lightingSpellsMenuIcon" file="graphics/icons/spell-book.png" />
+  <icon name="light20Icon" file="graphics/icons/Light20.png" />
+  <icon name="light60Icon" file="graphics/icons/Light60.png" />
+  <icon name="darkness15Icon" file="graphics/icons/Darkness15.png" />
+  <icon name="darkness60Icon" file="graphics/icons/Darkness60.png" />
+
 </root>
 

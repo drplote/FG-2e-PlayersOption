@@ -91,3 +91,7 @@ function performEffectAction(sEffectName, isRemoving)
         end
     end
 end
+
+function getCtNodeActor()
+    return getDatabaseNode();
+end

@@ -78,6 +78,7 @@
     <script name="RadialMenuManagerPO" file="scripts/manager_radial_menu_po.lua" />
     <script name="ModifierStackPO" file="scripts/modifier_stack_po.lua" />
     <script name="PowerManagerPO" file="scripts/manager_power_po.lua" />
+    <script name="LightingManagerPO" file="scripts/manager_lighting_po.lua" />
 
     
   </base>

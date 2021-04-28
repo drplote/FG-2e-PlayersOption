@@ -91,3 +91,12 @@ function handleRequestAddEffect(msgOOB)
 		EffectManager.addEffect("", "", nodeCT, { sName = sEffectName, sLabel = sEffectName }, true);
 	end
 end
+
+function removeEffectsThatMatch(nodeCT, sEffectPrefix)
+	for _, nodeEffect in pairs(DB.getChildren(nodeCT, "effects")) do
+		local sEffectLabel = DB.getValue(nodeEffect, "label");
+		if sEffectLabel:match(sEffectPrefix) then
+			nodeEffect.delete();
+		end
+	end
+end
