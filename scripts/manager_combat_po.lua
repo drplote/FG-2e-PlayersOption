@@ -778,8 +778,7 @@ function addBattleOverride(nodeBattle)
         ---- end custom stuff for 2E ruleset encounter spawns
         
       end -- end for
-        -- rebuild CT cache
-          CombatManagerADND.buildCombatantNodesCache();
+        
       else
           ChatManager.SystemMessage(Interface.getString("ct_error_addnpcfail2") .. " (" .. sName .. ")");
       end
