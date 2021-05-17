@@ -61,6 +61,14 @@ function isAllowedToPenetrate(rSource)
 end
 
 function requestAddEffect(nodeChar, sEffectName, nDuration, bUseActiveInitSegment)
+  if not nDuration then
+  	nDuration = 0;
+  end
+
+  if not bUseActiveInitSegment then
+  	bUseActiveInitSegment = false;
+  end
+
   local msgOOB = {};
   msgOOB.type = OOB_MSGTYPE_REQUEST_ADD_EFFECT;
   msgOOB.sEffectName = sEffectName;

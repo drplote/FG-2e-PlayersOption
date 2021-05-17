@@ -402,6 +402,8 @@ function getSizeCategory(nodeActor)
 	if not nSizeCategory then
 		nSizeCategory = 3; -- If we couldn't figure it out, default to medium
 	end
+
+  Debug.console(nSizeCategory, " found for size category");
 	return nSizeCategory;
 end
 

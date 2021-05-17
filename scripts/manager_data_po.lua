@@ -108,17 +108,17 @@ function parseSizeString(sSizeRaw)
 		return 5;
 	elseif sSize:find("gargantuan") then
 		return 6;
-	elseif sSizeRaw:find("T") then
+	elseif sSizeRaw:find("^T") then
 		return 1;
-	elseif sSizeRaw:find("S") then
+	elseif sSizeRaw:find("^S") then
 		return 2;
-	elseif sSizeRaw:find("M") then
+	elseif sSizeRaw:find("^M") then
 		return 3;
-	elseif sSizeRaw:find("L") then
+	elseif sSizeRaw:find("^L") then
 		return 4;
-	elseif sSizeRaw:find("H") then
+	elseif sSizeRaw:find("^H") then
 		return 5;
-	elseif sSizeRaw:find("G") then
+	elseif sSizeRaw:find("^G") then
 		return 6;
 	else 
 		return nil;

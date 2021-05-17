@@ -4,10 +4,10 @@
 
   <properties>
     <name>2E Player's Option and more</name>
-    <version>1.01</version>
+    <version>1.02</version>
     <loadorder>99</loadorder>
     <description>
-      <text>Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v1.01)</text>
+      <text>Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v1.02)</text>
       <website></website>
       <author>Sterno</author>
     </description>
@@ -16,7 +16,7 @@
     </ruleset>
   </properties>
 
-  <announcement text="Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v1.01). Some radial menu icons taken from https://game-icons.net/ and used under CC by 3.0 license (https://creativecommons.org/licenses/by/3.0/)" font="emotefont" icon="sterno_icon" />
+  <announcement text="Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v1.02). Some radial menu icons taken from https://game-icons.net/ and used under CC by 3.0 license (https://creativecommons.org/licenses/by/3.0/)" font="emotefont" icon="sterno_icon" />
   <base>    
     
     <includefile source="graphics/graphics_fonts_po.xml" />
