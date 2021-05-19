@@ -369,7 +369,7 @@ function rollEntryInitOverride(nodeEntry)
         -- and set nInit.
         local nTotal = DB.getValue(nodeEntry,"initiative.total",0);
         -- flip through weaponlist, get the largest speedfactor as default
-        local nSpeedFactor = 0;
+        local nSpeedFactor = nil;
 
         local nodeSlowestWeapon = nil;
         for _,nodeWeapon in pairs(DB.getChildren(nodeEntry, "weaponlist")) do
@@ -380,14 +380,17 @@ function rollEntryInitOverride(nodeEntry)
             end
         end
 
-        if nSpeedFactor ~= 0 then
+        if nSpeedFactor then
             nInit = nSpeedFactor + nInitMOD ;
+            if PlayerOptionManager.isUsingHackmasterInitiative() then
+                nInit = nInit - 5;
+            end
         elseif (nTotal ~= 0) then 
             nInit = nTotal + nInitMOD ;
         end
 
         --[[ IF we ignore size/mods, clear nInit ]]
-        if OptionsManager.getOption("OPTIONAL_INIT_SIZEMODS") ~= "on" or PlayerOptionManager.isUsingHackmasterInitiative() then
+        if OptionsManager.getOption("OPTIONAL_INIT_SIZEMODS") ~= "on" and not PlayerOptionManager.isUsingHackmasterInitiative() then
             nInit = 0;
         end
         -- For NPCs, if NPC init option is not group, then roll unique initiative
@@ -396,7 +399,7 @@ function rollEntryInitOverride(nodeEntry)
             -- if they have custom init then we use it.
             local nPreviousInit = DB.getValue(nodeEntry, "previnitresult", 0);
             if PlayerOptionManager.isUsingHackmasterInitiative() then
-                local nInitResult = InitManagerPO.moveHackmasterActorToNextRound(nodeEntry, nInitMOD);
+                local nInitResult = InitManagerPO.moveHackmasterActorToNextRound(nodeEntry, nInit);
                 DB.setValue(nodeEntry, "initresult", "number", nInitResult);
             else
                 InitManagerPO.clearActorInitQueue(nodeEntry);
