@@ -42,7 +42,7 @@ function notifyApplyInitOverride(rSource, nTotal)
   else
   	msgOOB.sIsAdditionalAttack = "0";
   end
-  Debug.console("msgOOB sent", msgOOB);
+  DebugPO.log("msgOOB sent", msgOOB);
   Comm.deliverOOBMessage(msgOOB, "");
 end
 
@@ -55,9 +55,9 @@ function handleApplyInitOverride(msgOOB)
 	local rSource = ActorManager.resolveActor(msgOOB.sSourceNode);
 	local nodeCT = ActorManager.getCTNode(rSource);
 	local bWasInitRolled = DB.getValue(nodeCT, "initrolled", 0) == 1;
-	Debug.console("msgOOB received", msgOOB);
+	DebugPO.log("msgOOB received", msgOOB);
 	local bIsAdditionalAttack = tonumber(msgOOB.sIsAdditionalAttack) == 1;
-	Debug.console("bIsAdditionalAttack", bIsAdditionalAttack);
+	DebugPO.log("bIsAdditionalAttack", bIsAdditionalAttack);
 
 	if bWasInitRolled and bIsAdditionalAttack then
 		local nNewInit = tonumber(msgOOB.nTotal) or 1;

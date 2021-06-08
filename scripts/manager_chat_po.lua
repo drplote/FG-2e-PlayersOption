@@ -57,7 +57,7 @@ end
 
 function deliverTurnRequestMessage(nodeChar, nPreviousInit)
 	if nodeChar then
-		Debug.console(nodeChar);
+		DebugPO.log(nodeChar);
 		local sName = DB.getValue(nodeChar, "name", "");
 		deliverChatMessage(sName .. " will now act on the next segment (previous init " .. nPreviousInit .. " ).");
 	end

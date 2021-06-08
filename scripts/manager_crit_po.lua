@@ -99,14 +99,14 @@ function getCritSeverityBonus(rSource, rTarget, rAction)
 	-- Target's crit resist
 	local nModPenalty = EffectManager5E.getEffectsBonus(rTarget, {"CRITRESIST"}, true, {}, rSource);
 	nModBonus = nModBonus - nModPenalty;
-	Debug.console("Crit severity bonus:", nModBonus);
+	DebugPO.log("Crit severity bonus:", nModBonus);
 	return nModBonus;
 end
 
 function handleCrit(rRoll, rAction, nDefenseVal, rSource, rTarget)
 	if rSource and rTarget then
 		if EffectManagerPO.hasImmunity(rSource, rTarget, "critical") then
-			Debug.console("Target was crit immune, so crit ignored");
+			DebugPO.log("Target was crit immune, so crit ignored");
 			return nil;
 		end
 
@@ -128,7 +128,7 @@ function handlePlayersOptionCrit(rRoll, rAction, nDefenseVal, rSource, rTarget)
 	local nSeverity = getSeverityDieRoll(nSizeDifference) + getCritSeverityBonus(rSource, rTarget, rAction);
 	local rCrit = getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity);
 	StateManagerPO.setCritState(rSource, rTarget, rCrit);
-	Debug.console("Crit with weapon: ", rWeaponInfo, "hit location:", rHitLocation, "size difference", nSizeDifference, "severity", nSeverity);
+	DebugPO.log("Crit with weapon: ", rWeaponInfo, "hit location:", rHitLocation, "size difference", nSizeDifference, "severity", nSeverity);
 	return rCrit;
 end
 
@@ -188,7 +188,7 @@ function getCritResult(rWeaponInfo, nodeDefender, rHitLocation, nSeverity)
 	local rCrit = nil;
 	if not sDamageType or not sDefenderType or not rHitLocation or not rHitLocation.locationCategory or not nSeverity then
 		-- Build up what we can of a crit in an error case (usually just hit location and damage multiplier)
-		Debug.console("couldn't generate crit", "sDefenderType", sDefenderType, "sDamageType", sDamageType, "rHitLocation", rHitLocation, "nSeverity", nSeverity);
+		DebugPO.log("couldn't generate crit", "sDefenderType", sDefenderType, "sDamageType", sDamageType, "rHitLocation", rHitLocation, "nSeverity", nSeverity);
 		rCrit = {};
 		rCrit.error = true;
 	else

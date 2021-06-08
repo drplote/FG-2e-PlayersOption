@@ -125,7 +125,7 @@ function handleSetFatigueState(msgOOB)
 
   local nodeChar = ActorManagerPO.getNode(rActor);
 
-  Debug.console("nodeChar", nodeChar);
+  DebugPO.log("nodeChar", nodeChar);
   local nFatigue = tonumber(msgOOB.sFatigue);
   local nCurrentFatigueState = DB.getValue(nodeChar, "fatigue.state");
   if not nCurrentFatigueState or nCurrentFatigueState < nFatigue then

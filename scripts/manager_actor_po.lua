@@ -21,7 +21,7 @@ function getMaxHp(rChar)
   else
     nMaxHp = DB.getValue(nodeActor, "hptotal", 0);
   end
-  Debug.console("manager_actor_po.getMaxHp", "nMaxHp", nMaxHp);
+  DebugPO.log("manager_actor_po.getMaxHp", "nMaxHp", nMaxHp);
   return nMaxHp;
 end
 
@@ -185,7 +185,7 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
     -- if PC
     if sDefenderType == "pc" or PlayerOptionManager.shouldUseDynamicNpcAc() then
       local nodeDefender = DB.findNode(rDefender.sCreatureNode);
-      Debug.console("nodeDefender", nodeDefender);
+      DebugPO.log("nodeDefender", nodeDefender);
       nACTemp = DB.getValue(nodeDefender, "defenses.ac.temporary",0);
       nACBase = DB.getValue(nodeDefender, "defenses.ac.base",10);
       nACArmor = DB.getValue(nodeDefender, "defenses.ac.armor",0);
@@ -403,7 +403,7 @@ function getSizeCategory(nodeActor)
 		nSizeCategory = 3; -- If we couldn't figure it out, default to medium
 	end
 
-  Debug.console(nSizeCategory, " found for size category");
+  DebugPO.log(nSizeCategory, " found for size category");
 	return nSizeCategory;
 end
 

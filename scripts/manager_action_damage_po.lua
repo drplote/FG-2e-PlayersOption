@@ -506,16 +506,8 @@ function handleShieldAbsorb(rSource, rTarget, rDamageOutput, nTotal, aDice)
 				end
 			end
 			
-			if ArmorManagerPO.canDamageTypeHurtArmor(aSrcDmgClauseTypes, nodeShield) then
-				ArmorManagerPO.damageArmor(nodeShield, nShieldDamageTaken);
-      elseif PlayerOptionManager.isMagicArmorDamagedByPenetration() then
-        local nPenetrationDamage = math.min(nDamageSoaked, DiceManagerPO.getPenetrationTotal(aDice));
-        nShieldDamageTaken = math.floor(nPenetrationDamage/nDamageSoakedPerPointTaken);
-        ArmorManagerPO.damageArmor(nodeShield, nShieldDamageTaken);
-			else	
-				nShieldDamageTaken = 0;
-			end
-
+			ArmorManagerPO.damageArmor(nodeShield, nShieldDamageTaken);
+      
       if sTargetType ~= 'pc' then
         CharManager.calcItemArmorClass(nodeTarget);
       end
@@ -756,7 +748,7 @@ function onDamageRollOverride(rSource, rRoll)
       DiceManagerPO.handlePenetration(rRoll, bExtraPenetration);
   end
 
-  Debug.console("rRoll", rRoll);
+  DebugPO.log("rRoll", rRoll);
   if rRoll.sPowerType and rRoll.sPowerType == "arcane" and EffectManagerPO.hasSpellRazor(rSource) then
     local nNumDiceRolled = #rRoll.aDice; 
     if nNumDiceRolled > 0 then

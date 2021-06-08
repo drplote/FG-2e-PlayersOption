@@ -349,7 +349,7 @@ function getNumOriginalDiceThatPenetrated(aDice)
 
 	local nNumOriginalPenetrations = 0;
 	local nNumOriginalDice = getNumOriginalDice(aDice);
-	Debug.console("nNumOriginalDice", nNumOriginalDice);
+	DebugPO.log("nNumOriginalDice", nNumOriginalDice);
 	local nIterator = 0;
 	for _, vDie in pairs(aDice) do
 		nIterator = nIterator + 1;

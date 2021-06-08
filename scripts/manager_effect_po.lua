@@ -86,7 +86,7 @@ function handleRequestAddEffect(msgOOB)
     local useActiveInitSegment = tonumber(msgOOB.sUseActiveInitSegment);
 
     local nodeCT = ActorManager.getCTNode(nodeChar);
-    Debug.console("nodeCT", nodeCT);
+    DebugPO.log("nodeCT", nodeCT);
 
     if nDuration then
 	    if msgOOB.sUseActiveInitSegment then

@@ -24,6 +24,8 @@ sMagicArmorDamageOptionKey = "HouseRule_MagicArmorDamage";
 sAdjustNpcAcLikePc = "AdditionalAutomation_AdjustNpcAcLikePc";
 sAllowPlayerCheaterDice = "AdditionalAutomation_AllowPlayerCheaterDice";
 sAlternateTargetEffectModifiers = "AdditionalAutomation_AlternateTargetEffectModifiers";
+sMoreDurableMagicShields = "HouseRule_MoreDurableMagicShields";
+sDebugOptionKey = "AdditionalAutomation_DebugOptions";
 
 function onInit()
     registerOptions();
@@ -101,6 +103,7 @@ function registerOptions()
 
 	OptionsManager.registerOption2(sAlternateTargetEffectModifiers, false, "option_header_automation", "option_label_alternate_target_effect_modifiers", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 
+	OptionsManager.registerOption2(sDebugOptionKey, false, "option_header_automation", "open_label_show_debug_messages", "option_entry_cycler",{ labels = "option_val_chat|option_val_console", values = "chat|console", baselabel = "option_val_off", baseval = "off", default = "off" });
     
     
     -- House rules
@@ -134,6 +137,20 @@ function registerOptions()
 
 	OptionsManager.registerOption2(sMagicArmorDamageOptionKey, false, "option_header_house_rule", "option_label_magic_armor_damage", "option_entry_cycler",{ labels = "option_val_equal_magic|option_val_penetration|option_val_both", values = "magic|penetration|both", baselabel = "option_val_off", baseval = "off", default = "off" });
 
+	OptionsManager.registerOption2(sMoreDurableMagicShields, false, "option_header_house_rule", "option_label_more_durable_magic_shields", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
+
+end
+
+function shouldShowDebugInConsole()
+	return OptionsManager.isOption(sDebugOptionKey, "console");
+end
+
+function shouldShowDebugInChat()
+	return OptionsManager.isOption(sDebugOptionKey, "chat");
+end
+
+function isUsingMoreDurableMagicShields()
+	return OptionsManager.isOption(sMoreDurableMagicShields, "on");
 end
 
 function isUsingAlternateTargetEffectModifiers()

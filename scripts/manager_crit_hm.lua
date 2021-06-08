@@ -12,7 +12,7 @@ end
 
 
 function getCritType(aDamageTypes)
-	Debug.console("manager_crit_hm.lua", "getCritType", "aDamageTypes", aDamageTypes);
+	DebugPO.log("manager_crit_hm.lua", "getCritType", "aDamageTypes", aDamageTypes);
 	local sCritType = CritManagerPO.selectRandomCritDamageType(aDamageTypes);
 	if not sCritType or sCritType == "" then
 		sCritType = "h"; -- couldn't parse anything, so call it hacking.
@@ -52,7 +52,7 @@ function handleCrit(rRoll, rAction, nDefenseVal, rSource, rTarget)
 	local rCrit = {};
 	local nSeverity = getCritSeverity(rRoll, rAction, nDefenseVal, rSource, rTarget);
 	local rHitLocation = HitLocationManagerPO.getHackmasterHitLocation(rSource, rTarget, rAction.sCalledShotLocation);
-	Debug.console("manager_crit_hm.lua", "handleCrit", "hit location", rHitLocation.desc);
+	DebugPO.log("manager_crit_hm.lua", "handleCrit", "hit location", rHitLocation.desc);
 
 	local sResult = "[Severity: " .. nSeverity .. "]"
 	sResult = sResult .. "\r[Location (d10000=" .. rHitLocation.roll .. "): " .. rHitLocation.desc .. "(" .. rHitLocation.side .. ")]";
@@ -111,17 +111,17 @@ end
 
 function getCritSeverity(rRoll, rAction, nDefenseVal, rSource, rTarget)
 	local nAttackerThaco = 20 - rRoll.nBaseAttack;
-	Debug.console("manager_crit_hm.lua", "getCritSeverity", "nAttackerThaco", nAttackerThaco);
+	DebugPO.log("manager_crit_hm.lua", "getCritSeverity", "nAttackerThaco", nAttackerThaco);
 	local nTargetAc = 20 - nDefenseVal;
-	Debug.console("manager_crit_hm.lua", "getCritSeverity", "nTargetAc", nTargetAc);
+	DebugPO.log("manager_crit_hm.lua", "getCritSeverity", "nTargetAc", nTargetAc);
 	local nAttackBonus = rAction.nTotal - 20; 
-	Debug.console("manager_crit_hm.lua", "nAttackBonus", "nAttackBonus", nAttackBonus);
+	DebugPO.log("manager_crit_hm.lua", "nAttackBonus", "nAttackBonus", nAttackBonus);
 	local nBaseSeverity = calculateBaseSeverity(nAttackerThaco, nTargetAc, nAttackBonus);
-	Debug.console("manager_crit_hm.lua", "getCritSeverity", "nBaseSeverity", nBaseSeverity);
+	DebugPO.log("manager_crit_hm.lua", "getCritSeverity", "nBaseSeverity", nBaseSeverity);
 	local nSeverityDieRoll = DiceManagerPO.rollPenetrateInBothDirection(8);
-	Debug.console("manager_crit_hm.lua", "getCritSeverity", "nSeverityDieRoll", nSeverityDieRoll);
+	DebugPO.log("manager_crit_hm.lua", "getCritSeverity", "nSeverityDieRoll", nSeverityDieRoll);
 	local nFinalSeverity = math.min(24, nBaseSeverity + nSeverityDieRoll + CritManagerPO.getCritSeverityBonus(rSource, rTarget, rAction));
-	Debug.console("manager_crit_hm.lua", "getCritSeverity", "nFinalSeverity", nFinalSeverity);
+	DebugPO.log("manager_crit_hm.lua", "getCritSeverity", "nFinalSeverity", nFinalSeverity);
 	return nFinalSeverity;
 end
 

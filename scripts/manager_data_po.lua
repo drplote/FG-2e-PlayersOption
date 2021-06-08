@@ -142,7 +142,6 @@ function parseHonorStateFromString(sString)
 end
 
 function parseArmorVsWeaponTypeModifiersFromProperties(sProperties)
-	Debug.console("sProperties", sProperties);
 	if not sProperties then
 		return nil;
 	end

@@ -57,7 +57,7 @@ function getBaseActorSpeedPhase(nodeActor)
 	
 	local nMovementRateModifierToPhase = getMovementRateModifierToPhase(nodeActor);
 	local nEncumbranceModifierToPhase = getEncumbranceModifierToPhase(nodeActor);
-	Debug.console("Base Speed Phase", nBaseSpeed, "Movement Rate Modifier", nMovementRateModifierToPhase, "Encumbrance Modifier", nEncumbranceModifierToPhase);
+	DebugPO.log("Base Speed Phase", nBaseSpeed, "Movement Rate Modifier", nMovementRateModifierToPhase, "Encumbrance Modifier", nEncumbranceModifierToPhase);
 	nBaseSpeed = nBaseSpeed + nMovementRateModifierToPhase + nEncumbranceModifierToPhase;
 
 	nBaseSpeed = math.max(1, math.min(5, nBaseSpeed)); -- bounds check
@@ -108,11 +108,11 @@ function getSpellPhase(nSpellInitMod)
 end
 
 function getWeaponPhaseFromSpeed(nSpeedFactor, nodeActor)
-	Debug.console("Weapon Speed Factor", nSpeedFactor);
+	DebugPO.log("Weapon Speed Factor", nSpeedFactor);
 	if PlayerOptionManager.isUsingReactionAdjustmentForInitiative() and nodeActor then
 		local nReactionAdj = DB.getValue(nodeActor, "abilities.dexterity.reactionadj", 0);
 		nSpeedFactor = nSpeedFactor - nReactionAdj;
-		Debug.console("Weapon Speed Factor after Reaction Adjustment", nSpeedFactor);
+		DebugPO.log("Weapon Speed Factor after Reaction Adjustment", nSpeedFactor);
 	end
 
 	local nWeaponPhase = 5;
@@ -128,7 +128,7 @@ function getWeaponPhaseFromSpeed(nSpeedFactor, nodeActor)
 		nWeaponPhase = 5;
 	end
 
-	Debug.console("Weapon Phase", nWeaponPhase);
+	DebugPO.log("Weapon Phase", nWeaponPhase);
 	return nWeaponPhase;
 end
 
@@ -355,7 +355,7 @@ function setActorFixedAttackRate(nodeChar, nNumAttacks)
 	local nodeCT = ActorManager.getCTNode(nodeChar);
 
 	if not nNumAttacks or nNumAttacks < 1 or nNumAttacks > 5 then
-		Debug.console("nNumAttacks", nNumAttacks, "Only support a value of 1-5");
+		DebugPO.log("nNumAttacks", nNumAttacks, "Only support a value of 1-5");
 		return;
 	end
 

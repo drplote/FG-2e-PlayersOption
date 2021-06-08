@@ -25,6 +25,14 @@ function getArmorHpChart(nodeArmor)
             for i = 1, nBonus, 1 do
                 table.insert(aHpChart, 1, nBonusLevelHp);
             end
+
+            if PlayerOptionManager.isUsingMoreDurableMagicShields() and ItemManager2.isShield(nodeArmor) then
+                -- If we want them more durable, we give them an extra level of HP for each + of bonus
+                local nMultiplier = nBonus + 1;
+                for i = 1, #aHpChart, 1 do
+                    aHpChart[i] = aHpChart[i] * nMultiplier;
+                end
+            end
         end
     end
     return aHpChart;
@@ -190,7 +198,7 @@ end
 
 function getAcLostFromDamage(nodeArmor)
     local aHpChart = getArmorHpChart(nodeArmor);
-    local nHpLost = getHpLost(nodeArmor)
+    local nHpLost = getHpLost(nodeArmor);
     local nAcLost = 0;
 
     if nHpLost > 0 and #aHpChart > 0 then

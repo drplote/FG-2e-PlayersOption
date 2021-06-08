@@ -71,7 +71,7 @@ function getDefaultWeaponSizeCategory(nodeWeapon)
 			return DataManagerPO.parseSizeString(sSize);
 		end
 	end
-    Debug.console("couldn't find size for ", sName);
+    DebugPO.log("couldn't find size for ", sName);
     return nil;
 end
 
