@@ -374,7 +374,7 @@ function rollEntryInitOverride(nodeEntry)
         local nodeSlowestWeapon = nil;
         for _,nodeWeapon in pairs(DB.getChildren(nodeEntry, "weaponlist")) do
             local nSpeed = DB.getValue(nodeWeapon,"speedfactor",0);
-            if nSpeed > nSpeedFactor then
+            if not nSpeedFactor or nSpeed > nSpeedFactor then
                 nSpeedFactor = nSpeed;
                 nodeSlowestWeapon = nodeWeapon;
             end

@@ -26,6 +26,7 @@ sAllowPlayerCheaterDice = "AdditionalAutomation_AllowPlayerCheaterDice";
 sAlternateTargetEffectModifiers = "AdditionalAutomation_AlternateTargetEffectModifiers";
 sMoreDurableMagicShields = "HouseRule_MoreDurableMagicShields";
 sDebugOptionKey = "AdditionalAutomation_DebugOptions";
+sCoinWeightOptionKey = "HouseRule_CoinWeight";
 
 function onInit()
     registerOptions();
@@ -34,9 +35,11 @@ function onInit()
     OptionsManager.registerCallback(sHackmasterInitKey, onHackmasterInitOptionChanged);
     OptionsManager.registerCallback(sPhasedInitiativeOptionKey, onPlayersOptionInitOptionChanged);
     OptionsManager.registerCallback(sArmorDamageOptionKey, onArmorDamageOptionChanged);
+    OptionsManager.registerCallback(sCoinWeightOptionKey, onCoinWeightChanged);
    
    	updateOldOptionsToNewValues();
 end 
+
 
 function updateOldOptionsToNewValues()
 	if OptionsManager.isOption(sGenerateHitLocationsOptionKey, "on") then
@@ -47,6 +50,15 @@ function updateOldOptionsToNewValues()
 		OptionsManager.setOption(sAdjustNpcAcLikePc, "on");
 	end
 end
+
+function onCoinWeightChanged()
+	if isUsing1eCoinWeight() then
+		DataCommonADND.nDefaultCoinWeight = 0.1;
+	else
+		DataCommonADND.nDefaultCoinWeight = 0.02;
+	end
+end
+
 
 function onPlayersOptionCritOptionChanged()
 	if isPOCritEnabled() then
@@ -139,6 +151,12 @@ function registerOptions()
 
 	OptionsManager.registerOption2(sMoreDurableMagicShields, false, "option_header_house_rule", "option_label_more_durable_magic_shields", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
+	OptionsManager.registerOption2(sCoinWeightOptionKey, false, "option_header_house_rule", "option_label_coin_weight", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
+
+end
+
+function isUsing1eCoinWeight()
+	return OptionsManager.isOption(sCoinWeightOptionKey, "on");
 end
 
 function shouldShowDebugInConsole()

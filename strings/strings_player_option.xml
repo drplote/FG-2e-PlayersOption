@@ -50,6 +50,7 @@
     <string name="option_label_hm_init">Hackmaster 10-Segment Initiative</string>
     <string name="option_label_magic_armor_damage">What can hurt magic armor? (if using armor damage)</string>
     <string name="option_label_more_durable_magic_shields">Give Magic Shields more HP? (if using armor damage)</string>
+    <string name="option_label_coin_weight">Use 1E coin weight (10 per lb)?</string>
     <string name="option_val_equal_magic">Equivalent magic</string>
     <string name="option_val_penetration">Penetration</string>
     <string name="option_val_both">Both</string>
