@@ -225,7 +225,6 @@
 			  <top parent="repair_armor_button" anchor="top" relation="relative" offset="0" />
 			  <left parent="current_ac_loss" anchor="right" relation="relative" offset="10"/>
 			</anchored>    
-			<font>regular20</font>
 	      </label>
 		  
 		  <buttoncontrol name="repair_shield_button" insertafter="specialdef">
@@ -290,7 +289,6 @@
 			  <top parent="repair_shield_button" anchor="top" relation="relative" offset="0" />
 			  <left parent="current_shield_loss" anchor="right" relation="relative" offset="10"/>
 			</anchored>    
-			<font>regular20</font>
 	      </label>  
 
 		</sheetdata>
