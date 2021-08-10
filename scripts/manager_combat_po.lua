@@ -118,6 +118,8 @@ function handleDelayTurn(msgOOB)
 
         if nDelay and nDelay > 0 then
             delayThenNextActor(nDelay);
+        elseif PlayerOptionManager.isUsingHackmasterInitiative() then
+            delayThenNextActor(1);
         else
             moveActorToEndOfInit(nodeCT);
         end
