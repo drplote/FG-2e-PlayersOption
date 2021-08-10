@@ -154,7 +154,7 @@ end
 
 function delayActor(nodeChar)
 	if PlayerOptionManager.isUsingHackmasterInitiative() then
-		InitManagerPO.delayActorForSegments(nodeChar, 10);
+		InitManagerPO.delayActorForSegments(nodeChar, 1);
 	else
 		local nodeCT = CombatManager.getCTFromNode(nodeChar);
 		local nodeCTActive = CombatManager.getActiveCT();
