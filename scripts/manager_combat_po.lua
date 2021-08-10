@@ -88,6 +88,8 @@ end
 function delayTurnOverride(nodeCT)
     if PlayerOptionManager.isUsingPhasedInitiative() then
         delayThenNextActor(2);
+    elseif PlayerOptionmanager.isUsingHackmasterInitiative() delayThenNextActor
+        delayThenNextActor(1);
     else
         fDelayTurn(nodeCT);
     end
