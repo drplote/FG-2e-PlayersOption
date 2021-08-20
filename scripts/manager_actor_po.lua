@@ -476,3 +476,18 @@ function addItem(nodeActor, nodeItem)
   DB.setValue(nodeNewItem, "carried", "number", 2);
 end
 
+function addWeapon(nodeActor, nodeSourceWeapon)
+  if not UtilityManagerADND.hasWeaponNamed(nodeActor, DB.getValue(nodeSourceWeapon, "name", ""):lower() ) then 
+    local nodeWeapons = nodeActor.createChild("weaponlist");
+    for _,v in pairs(DB.getChildren(nodeSourceWeapon, "weaponlist")) do
+      local nodeWeapon = nodeWeapons.createChild();
+      DB.copyNode(v,nodeWeapon);
+      local sName = DB.getValue(v,"name","");
+      local sText = DB.getValue(v,"text","");
+      DB.setValue(nodeWeapon,"itemnote.name","string",sName);
+      DB.setValue(nodeWeapon,"itemnote.text","formattedtext",sText);
+      DB.setValue(nodeWeapon,"itemnote.locked","number",1);
+    end
+  end
+  addItem(nodeActor, nodeSourceWeapon);
+end

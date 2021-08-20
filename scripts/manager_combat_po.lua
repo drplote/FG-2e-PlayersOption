@@ -771,11 +771,17 @@ function addBattleOverride(nodeBattle)
         if (sItemList ~= "") then
           for _,sItem in ipairs(StringManager.split(sItemList, ";", true)) do
             if not ActorManagerPO.hasItemNamed(nodeEntry, sItem) then 
-                local nodeSourceItem = ItemManagerPO.getItemByName(sItem);
-                if nodeSourceItem then
-                  ActorManagerPO.addItem(nodeEntry, nodeSourceItem);
+                -- First see if it's a weapon
+                local nodeSourceWeapon = UtilityManagerADND.getWeaponNodeByName(sItem);
+                if nodeSourceWeapon then
+                    ActorManagerPO.addWeapon(nodeEntry, nodeSourceWeapon);
                 else
-                  ChatManager.SystemMessage("Encounter [" .. DB.getValue(nodeBattle,"name","") .. "], unable to find item [" .. sItem .. "] for NPC [" .. DB.getValue(nodeEntry,"name","") .."].");   
+                    local nodeSourceItem = ItemManagerPO.getItemByName(sItem);
+                    if nodeSourceItem then
+                      ActorManagerPO.addItem(nodeEntry, nodeSourceItem);
+                    else
+                      DebugPO.log("Encounter [" .. DB.getValue(nodeBattle,"name","") .. "], unable to find item [" .. sItem .. "] for NPC [" .. DB.getValue(nodeEntry,"name","") .."].");   
+                    end
                 end
             end
           end -- for items
