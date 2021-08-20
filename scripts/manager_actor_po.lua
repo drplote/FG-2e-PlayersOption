@@ -421,7 +421,7 @@ function canBeAffectedByFatigue(nodeActor)
   if not nodeActor then return false; end
 
   local sSpecialDefenses = DB.getValue(nodeActor, "specialDefense", ""):lower();
-  if sSpecialDefenses:find("nofatigue") or sSpecialDefenses:find("nofat")  then
+  if sSpecialDefenses:find("nofatigue") or sSpecialDefenses:find("nofat") then
     return false;
   end
 
