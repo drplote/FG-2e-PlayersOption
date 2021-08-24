@@ -102,7 +102,7 @@ function canDamageTypeHurtArmor(aDmgTypes, nodeArmor)
 
     local aImmunities = DataManagerPO.parseArmorDamageImmunitiesFromProperties(getProperties(nodeArmor));
     if nBonus <= 0 then
-        local aIgnoredDamageTypes = {"poison", "psychic", "force"};
+        local aIgnoredDamageTypes = {"poison", "psychic"};
         for _,sDamageType in pairs(aImmunities) do
             table.insert(aIgnoredDamageTypes, sDamageType);
         end
@@ -112,7 +112,7 @@ function canDamageTypeHurtArmor(aDmgTypes, nodeArmor)
         return false;
     else
        
-        local aDamagingTypes = {"acid","cold","fire","lightning","necrotic","radiant","thunder"};
+        local aDamagingTypes = {"acid","cold","fire","force","lightning","necrotic","radiant","thunder"};
 
         if PlayerOptionManager.isMagicArmorDamagedByEqualMagic() then 
             if nBonus <= 6 then table.insert(aDamagingTypes, "magic +6"); end
