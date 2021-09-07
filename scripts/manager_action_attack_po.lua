@@ -388,8 +388,9 @@ function onAttackOverride(rSource, rTarget, rRoll)
   if rAction.sResult == "crit" then
     if PlayerOptionManager.isAnyCritEnabled() and rCrit then
       ChatManagerPO.deliverCriticalHitMessage(rCrit.message);
-      local bIsTargetPc = (rTarget and rTarget.sType == "pc");
-      ActionSavePO.rollCritSave(rTarget);
+      if PlayerOptionManager.isPOCritEnabled() then
+        ActionSavePO.rollCritSave(rTarget);
+      end
     else
       ActionAttack.setCritState(rSource, rTarget);
     end
