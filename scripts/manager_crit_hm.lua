@@ -8,8 +8,44 @@ function onInit()
 	buildCrushingCritMatrix();
 	buildPuncturingCritMatrix();
 	buildCritLocationInfo();		
+
+	Comm.registerSlashHandler("hmcrit", onCritCommand)
 end
 
+function onCritCommand(sCmd, sParams)
+	local aParams = {};
+	if sParams then
+		for sParam in sParams:gmatch("%w+") do
+			table.insert(aParams, sParam);
+		end
+	end
+
+	local sType = nil;
+	local nSeverity = -1;
+	local nLocation = -1;
+
+	local bValidParams = false;
+	if #aParams == 3 then
+		sType = aParams[1];
+		nSeverity = tonumber(aParams[2]);
+		nLocation = tonumber(aParams[3]);
+
+		if (sType == "a" or sType =="b" or sType == "c") and (nSeverity < 25 and nSeverity > 0) and (nLocation > 0 and nLocation < 10001)  then
+			bValidParams = true;
+		end
+	end
+	if not bValidParams then
+		ChatManagerPO.deliverChatMessage("Usage: /hmcrit [damage type (s,p, or b)] [#severity (1-24)] [#location (1-10000)]");
+	else
+		forceCrit(sType, nSeverity, nLocation);
+	end
+end
+
+function forceCrit(sType, nSeverity, nLocation)
+	local rHitLocation = HitLocationManagerPO.getHackmasterHitLocationFromNumber(nLocation);
+	local rCrit = getCritResult(nSeverity, rHitLocation, {sType});
+	ChatManagerPO.deliverCriticalHitMessage(rCrit.message);
+end
 
 function getCritType(aDamageTypes)
 	DebugPO.log("manager_crit_hm.lua", "getCritType", "aDamageTypes", aDamageTypes);
@@ -28,7 +64,6 @@ function getCritType(aDamageTypes)
 			sCritType = "h"; -- couldn't parse anything, so call it hacking.
 		end
 	end
-	
 	return sCritType;
 end
 
@@ -48,11 +83,8 @@ function getCritEffects(sLocation, nSeverity, aDamageTypes)
 	return rCritEffect;
 end
 
-function handleCrit(rRoll, rAction, nDefenseVal, rSource, rTarget)
+function getCritResult(nSeverity, rHitLocation, aDamageTypes)
 	local rCrit = {};
-	local nSeverity = getCritSeverity(rRoll, rAction, nDefenseVal, rSource, rTarget);
-	local rHitLocation = HitLocationManagerPO.getHackmasterHitLocation(rSource, rTarget, rAction.sCalledShotLocation);
-	DebugPO.log("manager_crit_hm.lua", "handleCrit", "hit location", rHitLocation.desc);
 
 	local sResult = "[Severity: " .. nSeverity .. "]"
 	sResult = sResult .. "\r[Location (d10000=" .. rHitLocation.roll .. "): " .. rHitLocation.desc .. "(" .. rHitLocation.side .. ")]";
@@ -84,7 +116,7 @@ function handleCrit(rRoll, rAction, nDefenseVal, rSource, rTarget)
 			sResult = sResult .. "\r[Unable to penetrate damage until wound healed]";
 		end
 		
-		local rCritEffect = getCritEffects(rHitLocation.desc, nSeverity, rRoll.aDamageTypes);		
+		local rCritEffect = getCritEffects(rHitLocation.desc, nSeverity, aDamageTypes);		
 
 		sResult = sResult .. "\r" .. decodeCritEffect(rCritEffect, rHitLocation.desc, nSeverity, rTarget);
 
@@ -106,7 +138,13 @@ function handleCrit(rRoll, rAction, nDefenseVal, rSource, rTarget)
 	rCrit.message = sResult;
 
 	return rCrit;
+end
 
+function handleCrit(rRoll, rAction, nDefenseVal, rSource, rTarget)
+	local nSeverity = getCritSeverity(rRoll, rAction, nDefenseVal, rSource, rTarget);
+	local rHitLocation = HitLocationManagerPO.getHackmasterHitLocation(rSource, rTarget, rAction.sCalledShotLocation);
+	DebugPO.log("manager_crit_hm.lua", "handleCrit", "hit location", rHitLocation.desc);
+	return getCritResult(nSeverity, rHitLocation, rRoll.aDamageTypes);
 end
 
 function getCritSeverity(rRoll, rAction, nDefenseVal, rSource, rTarget)

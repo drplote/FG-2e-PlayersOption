@@ -9,7 +9,7 @@ function onMishapSlashCommand(sCmd)
 	
 	local sResult = getMishapResult(nRollValue);
 	local sText = "[" .. sRollName .. "(d10000=" .. nRollValue .. ")] " .. sResult;
-	ChatManagerPO.deliverChatMessage(sText, "mishap");
+	ChatManagerPO.deliverChatMessage(sText);
 end
 
 function onFumbleSlashCommand(sCmd, sParam)
@@ -29,7 +29,7 @@ end
 function handleSternoFumble()
 	local sResult = getSternoFumbleResult(nRollValue);
 	local sText = "[Fumble] " .. sResult;
-	ChatManagerPO.deliverChatMessage(sText, "fumble");
+	ChatManagerPO.deliverChatMessage(sText);
 end
 
 function getSternoFumbleResult()
@@ -75,7 +75,7 @@ function handleHackmasterFumble(bIsUnarmed)
 
 	local sResult = getHackmasterFumbleResult(nRollValue, bIsUnarmed);
 	local sText = "[" .. sRollName .. "(d1000=" .. nRollValue .. ")] " .. sResult;
-	ChatManagerPO.deliverChatMessage(sText, "fumble");
+	ChatManagerPO.deliverChatMessage(sText);
 end
 
 function getHackmasterFumbleResult(nRollValue, isUnarmed)

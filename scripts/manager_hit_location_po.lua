@@ -65,30 +65,8 @@ function getHitSizeBonus(rSource, rTarget)
 	return nModBonus;
 end
 
-function getHackmasterHitLocation(rSource, rTarget, sCalledShotLocation)
+function getHackmasterHitLocationFromNumber(nHitLocationRoll)
 	local rHitLocation = {};
-	local nHitLocationRoll;
-
-	if sCalledShotLocation then
-		local rHitRange = DataCommonPO.aHackmasterCalledShotsRanges[sCalledShotLocation];
-		if rHitRange then
-			nHitLocationRoll = math.random(rHitRange.low, rHitRange.high);
-		end
-	end
-	if not nHitLocationRoll then	
-		local nLocationDieType = 10000;
-		local nLocationHitModifier = 0;
-		local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender);
-		if nSizeDifference > 0 then
-			nLocationHitModifier = nLocationHitModifier + (1000 * nSizeDifference);
-		elseif nSizeDifference < 0  then
-			nLocationDieType = nLocationDieType - (1000 * nSizeDifference)
-		end
-
-		nHitLocationRoll = math.random(1, nLocationDieType) + nLocationHitModifier;
-	end
-
-	
 	local bIsRightSide = nHitLocationRoll % 2 == 0;
 	local sLocation = "";
 		
@@ -143,7 +121,7 @@ function getHackmasterHitLocation(rSource, rTarget, sCalledShotLocation)
 	elseif nHitLocationRoll < 9924 then sLocation = "Face, upper center";
 	else sLocation = "Head, top";
 	end
-	
+
 	local sSide = "";
 	if bIsRightSide then
 		sSide = "right"
@@ -155,4 +133,29 @@ function getHackmasterHitLocation(rSource, rTarget, sCalledShotLocation)
 	rHitLocation.side = sSide;
 	rHitLocation.roll = nHitLocationRoll;
 	return rHitLocation;
+end
+
+function getHackmasterHitLocation(rSource, rTarget, sCalledShotLocation)
+	local nHitLocationRoll;
+
+	if sCalledShotLocation then
+		local rHitRange = DataCommonPO.aHackmasterCalledShotsRanges[sCalledShotLocation];
+		if rHitRange then
+			nHitLocationRoll = math.random(rHitRange.low, rHitRange.high);
+		end
+	end
+	if not nHitLocationRoll then	
+		local nLocationDieType = 10000;
+		local nLocationHitModifier = 0;
+		local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender);
+		if nSizeDifference > 0 then
+			nLocationHitModifier = nLocationHitModifier + (1000 * nSizeDifference);
+		elseif nSizeDifference < 0  then
+			nLocationDieType = nLocationDieType - (1000 * nSizeDifference)
+		end
+
+		nHitLocationRoll = math.random(1, nLocationDieType) + nLocationHitModifier;
+	end
+
+	return getHackmasterHitLocationFromNumber(nHitLocationRoll);
 end

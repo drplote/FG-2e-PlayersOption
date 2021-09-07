@@ -15,13 +15,13 @@ function deliverRateOfFireInitMessage(nodeCT, nNumAttacks)
 	deliverChatMessage(sMessage);	
 end
 
-function deliverChatMessage(sText, sType)
+function deliverChatMessage(sText, bBroadcast)
 	--local rMessage = ChatManager.createBaseMessage();
 	--if sType then
 	--	rMessage.type = sType;
 	--end
 	--rMessage.text = sText;
-	ChatManager.Message(sText, true);
+	ChatManager.Message(sText, bBroadcast);
 	--ChatManager.SystemMessage(sText);
 end
 
@@ -73,7 +73,8 @@ function deliverArmorBrokenMessage(sCharName, sItemName)
 end
 
 function deliverCriticalHitMessage(sMessage)
-	deliverChatMessage("[CRITICAL HIT] " .. sMessage);
+	local bGmOnlyCritMessage = PlayerOptionManager.isHackmasterCritEnabled();
+	deliverChatMessage("[CRITICAL HIT] " .. sMessage, not bGmOnlyCritMessage);
 end
 
 function deliverInitRollMessage(nPcInit, nNpcInit)
