@@ -18,38 +18,91 @@ function onFumbleSlashCommand(sCmd, sParam)
 	handleFumble(isUnarmed);	
 end
 
-function handleFumble(bIsUnarmed)
+function handleFumble(bIsUnarmed, rAction, nDefenseVal)
 	if PlayerOptionManager.isUsingHackmasterFumbles() then
 		handleHackmasterFumble(bIsUnarmed);
 	elseif PlayerOptionManager.isUsingSternoFumbles() then
-		handleSternoFumble();
+		if not rAction or not nDefenseVal then
+			handleHackmasterFumble(bIsUnarmed);
+		else
+			local nNewRollValue = math.random(1, 20);
+			DebugPO.log("Roll to confirm fumble(" .. nNewRollValue .. ") + attack bonus (" .. rAction.nTotal .. ") vs defense value (" .. nDefenseVal .. ").");
+			local bHit = (rAction.nTotal + nNewRollValue) >= nDefenseVal;
+			if not bHit then
+				handleHackmasterFumble(bIsUnarmed);
+			else
+				ChatManagerPO.deliverChatMessage("Fumble averted!");
+			end
+		end
 	end
 end
 
-function handleSternoFumble()
-	local sResult = getSternoFumbleResult(nRollValue);
-	local sText = "[Fumble] " .. sResult;
-	ChatManagerPO.deliverChatMessage(sText);
+-- CURRENTLY UNUSED
+function handleSeverityBasedFumble(bIsUnarmed, rRoll, rAction, nDefenseVal, rSource, rTarget)
+	local rFumble = getSternoFumbleResult(bIsUnarmed, rRoll, rAction, nDefenseVal, rSource, rTarget);
+	if rFumble then
+		local sText = "[Fumble] [Severity " .. rFumble.nSeverity .. "] " .. rFumble.sResult;
+		ChatManagerPO.deliverChatMessage(sText);
+	end
 end
 
-function getSternoFumbleResult()
-	local nRollValue = DiceManagerPO.getDieResult(20);
-	local sResult = "";
-	if nRollValue < 2 then sResult = getArmorTroubleResult();
-	elseif nRollValue < 5 then sResult = "Exposed: Nearby enemy may make a free attack on character (if in range)."
-	elseif nRollValue < 7 then sResult = "Battlefield Damaged: Something near the character is damaged."
-	elseif nRollValue < 8 then sResult = "Item Damaged: Choose anything on the character except a weapon and roll an item saving throw to see if to broke."
-	elseif nRollValue < 9 then sResult = "Item Dropped: Choose anything on the character except a weapon. The item is spilled, dropped, or cut free from the character."
-	elseif nRollValue < 11 then sResult = "Collision: The character is knocked to the ground by a collision with someone near him (friend or foe). The nearest figure must save vs paralyzation or be knocked down as well."
-	elseif nRollValue < 12 then sResult = "Shaken: The character is thrown off balance and receives a -4 to his attack(s) next round."
-	elseif nRollValue < 13 then sResult = "Off-balance: The character is thrown off balance and recieves a +2 penalty to his AC next round."
-	elseif nRollValue < 14 then sResult = "Slowed: The character is thrown off balance and receives a +5 penalty to initiative next round as they recover."
-	elseif nRollValue < 18 then sResult = "Retreat: The character is forced back away from his opponent. Opponent chooses which direction the character moves 5'. If there is no valid spot to move, the character falls prone."
-	elseif nRollValue < 19 then sResult = "Slip: The character slips and falls prone."
-	else sResult = getWeaponTroubleResult()
+-- CURRENTLY UNUSED
+function getSeverityBasedFumbleResult(bIsUnarmed, rRoll, rAction, nDefenseVal, rSource, rTarget)
+	local rFumble = nil;
+	if not rRoll or not rAction or not nDistance or not rSource or not rTarget then
+		handleHackmasterFumble(bIsUnarmed);
+	else
+		rFumble = {};
+		rFumble.nSeverity = getFumbleSeverity(rRoll, rAction, nDefenseVal, rSource, rTarget);
+		rFumble.sResult = getFumbleEffectBySeverity(bIsUnarmed, rFumble.nSeverity);
 	end
-	
-	return sResult;
+
+	return rFumble;
+end
+
+-- CURRENTLY UNUSED
+function getFumbleEffectBySeverity(bIsUnarmed, nSeverity)
+	if nSeverity <= 0 then 
+		return "No effect";
+	else
+		local nRollValue = DiceManagerPO.getDieResult(1000);
+		return getHackmasterFumbleResult(nRollValue, bIsUnarmed);
+	end
+end
+
+-- CURRENTLY UNUSED
+function getFumbleSeverity(rRoll, rAction, nDefenseVal, rSource, rTarget)
+	local nAttackerThaco = 20 - rRoll.nBaseAttack;
+	DebugPO.log("manager_fumble_po.lua", "getFumbleSeverity", "nAttackerThaco", nAttackerThaco);
+	local nTargetAc = 20 - nDefenseVal;
+	DebugPO.log("manager_fumble_po.lua", "getFumbleSeverity", "nTargetAc", nTargetAc);
+	local nAttackBonus = rAction.nTotal - 20; 
+	DebugPO.log("manager_fumble_po.lua", "getFumbleSeverity", "nAttackBonus", nAttackBonus);
+	local nBaseSeverity = calculateBaseFumbleSeverity(nAttackerThaco, nTargetAc, nAttackBonus);
+	DebugPO.log("manager_fumble_po.lua", "getFumbleSeverity", "nBaseSeverity", nBaseSeverity);
+	local nSeverityDieRoll = DiceManagerPO.rollPenetrateInBothDirection(8);
+	DebugPO.log("manager_fumble_po.lua", "getFumbleSeverity", "nSeverityDieRoll", nSeverityDieRoll);
+	local nSeverityBeforeReversal = nBaseSeverity + nSeverityDieRoll + getFumbleSeverityBonus(rSource, rTarget, rAction);
+	DebugPO.log("manager_fumble_po.lua", "getFumbleSeverity", "nSeverityBeforeReversal", nSeverityBeforeReversal);
+	local nFinalSeverity = math.min(24, 24 - nSeverityBeforeReversal);
+	DebugPO.log("manager_fumble_po.lua", "getFumbleSeverity", "nFinalSeverity", nFinalSeverity);
+	return nFinalSeverity;
+end
+
+
+-- CURRENTLY UNUSED
+function getFumbleSeverityBonus(rSource, rTarget, rAction)
+	-- attacker's fumble bonus
+	local nModBonus = EffectManager5E.getEffectsBonus(rSource, {"FUMBLESEVERITY"}, true, {}, rTarget);
+	if rAction.nCritSeverityMod then
+		nModBonus = nModBonus + rAction.nCritSeverityMod;
+	end
+end
+
+-- CURRENTLY UNUSED
+function calculateBaseFumbleSeverity(nAttackerThaco, nTargetAc, nAttackBonus)
+	local nToHitAc15 = nAttackerThaco - 15;
+	return nTargetAc - nToHitAc15 + nAttackBonus;
 end
 
 function getArmorTroubleResult()
@@ -682,10 +735,10 @@ end
 function getNormalHackmasterFumbleResult(nRollValue)
 	local sResult = "";
 	if nRollValue >= 985 then sResult = "Clumsiness; Slip, opponent gains +2 to next to hit roll, -4 Dex for one round and make check vs. 1/2 Dex or fall prone"
-	elseif nRollValue >= 969 then sResult = "Clumsiness; overexted, opponent gains +2 to next to-hit"  
+	elseif nRollValue >= 969 then sResult = "Clumsiness; overextended, opponent gains +2 to next to-hit"  
 	elseif nRollValue >= 953 then sResult = "Clumsiness; off balance +{1d4} penalty to next initiative"  
 	elseif nRollValue >= 937 then sResult = "Clumsiness; hinder ally - takes +{1d6} initiative penalty, suffers -{1d4+1} to hit penalty on next attack or have 25% chance of hitting you"  
-	elseif nRollValue >= 921 then sResult = "Clumsiness; overexted +d4 penalty to next initiative, opponent gains +2 to next attack roll"  
+	elseif nRollValue >= 921 then sResult = "Clumsiness; overextended +d4 penalty to next initiative, opponent gains +2 to next attack roll"  
 	elseif nRollValue >= 904 then sResult = "Hinderance; distracted, -4 to hit and no Dex bonus to AC for 1 round"  
 	elseif nRollValue >= 886 then sResult = "Hinderance; nearby ally is automatically hit"  
 	elseif nRollValue >= 869 then sResult = "Hinderance; blood in eyes -3 to hit for 1 turn"  

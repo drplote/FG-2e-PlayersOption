@@ -30,7 +30,11 @@ function onCritCommand(sCmd, sParams)
 		nSeverity = tonumber(aParams[2]);
 		nLocation = tonumber(aParams[3]);
 
-		if (sType == "a" or sType =="b" or sType == "c") and (nSeverity < 25 and nSeverity > 0) and (nLocation > 0 and nLocation < 10001)  then
+		if sType == "h" then 
+			sType = "s";
+		end
+
+		if (sType == "p" or sType =="b" or sType == "s") and (nSeverity < 25 and nSeverity > 0) and (nLocation > 0 and nLocation < 10001)  then
 			bValidParams = true;
 		end
 	end
@@ -92,7 +96,6 @@ function getCritResult(nSeverity, rHitLocation, aDamageTypes)
 		sResult = sResult .. "\rNo extra effect";
 	else
 		
-		local sEffect = "crit effect";
 		local bHasScar = math.random(1, 100) <= 5 * nSeverity;
 		local bPermanentDamage = nSeverity >= 13;
 		if bHasScar then
@@ -133,6 +136,10 @@ function getCritResult(nSeverity, rHitLocation, aDamageTypes)
 
 	end
 
+	rCrit.bHasScar = bHasScar;
+	rCrit.bPermanentDamage = bPermanentDamage;
+	rCrit.nBruiseDays = nBruiseDays;
+	rCrit.rCritEffect = rCritEffect;
 	rCrit.sHitLocation = rHitLocation.desc;
 	rCrit.nSeverity = nSeverity;
 	rCrit.message = sResult;

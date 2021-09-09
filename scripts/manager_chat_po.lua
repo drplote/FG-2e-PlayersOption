@@ -16,13 +16,7 @@ function deliverRateOfFireInitMessage(nodeCT, nNumAttacks)
 end
 
 function deliverChatMessage(sText, bBroadcast)
-	--local rMessage = ChatManager.createBaseMessage();
-	--if sType then
-	--	rMessage.type = sType;
-	--end
-	--rMessage.text = sText;
 	ChatManager.Message(sText, bBroadcast);
-	--ChatManager.SystemMessage(sText);
 end
 
 function deliverEndTurnFailedMessage(nodeChar)

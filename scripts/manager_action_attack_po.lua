@@ -409,7 +409,7 @@ function onAttackOverride(rSource, rTarget, rRoll)
   local sOptionHRFC = OptionsManager.getOption("HRFC");
   if rAction.sResult == "fumble" then
     if PlayerOptionManager.isUsingFumbleTables() then
-      FumbleManagerPO.handleFumble();
+      FumbleManagerPO.handleFumble(false, rAction, nDefenseVal);
     elseif sOptionHRFC == "both" or sOptionHRFC == "fumble" then
       ActionAttack.notifyApplyHRFC("Fumble");
     end
