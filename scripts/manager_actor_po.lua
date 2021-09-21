@@ -7,12 +7,20 @@ function isPC(nodeCT)
 end
 
 function getConstitution(rChar)
+  if not rChar then
+    return 10;
+  end
+
   local nodeActor = getNode(rChar);
   local nCon = DB.getValue(nodeActor, "abilities.constitution.total", DB.getValue(nodeActor, "abilities.constitution.score", 0));
   return nCon;
 end
 
 function getMaxHp(rChar)
+  if not rChar then
+    return 20;
+  end
+  
   local sType, nodeActor = ActorManager.getTypeAndNode(rChar);
   local nMaxHp = 0;
   

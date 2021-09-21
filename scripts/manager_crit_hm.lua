@@ -63,7 +63,7 @@ function getCritType(aDamageTypes)
 		elseif sFirstChar == "b" or sFirstChar == "c" then
 			sCritType = "c";
 		elseif sFirstChar == "p" then
-			sCritType = "p"
+			sCritType = "p";
 		else
 			sCritType = "h"; -- couldn't parse anything, so call it hacking.
 		end
@@ -87,12 +87,12 @@ function getCritEffects(sLocation, nSeverity, aDamageTypes)
 	return rCritEffect;
 end
 
-function getCritResult(nSeverity, rHitLocation, aDamageTypes)
+function getCritResult(nSeverity, rHitLocation, aDamageTypes, rSource, rTarget)
 	local rCrit = {};
 
 	local sResult = "[Severity: " .. nSeverity .. "]"
 	sResult = sResult .. "\r[Location (d10000=" .. rHitLocation.roll .. "): " .. rHitLocation.desc .. "(" .. rHitLocation.side .. ")]";
-	if nSeverity < 0 then	
+	if nSeverity <= 0 then	
 		sResult = sResult .. "\rNo extra effect";
 	else
 		
@@ -131,7 +131,7 @@ function getCritResult(nSeverity, rHitLocation, aDamageTypes)
 		if rCritEffect.db then
 			rCrit.dmgBonusDie = rCritEffect.db;
 		end
-		
+
 		StateManagerPO.setCritState(rSource, rTarget, rCrit);
 
 	end
@@ -151,7 +151,7 @@ function handleCrit(rRoll, rAction, nDefenseVal, rSource, rTarget)
 	local nSeverity = getCritSeverity(rRoll, rAction, nDefenseVal, rSource, rTarget);
 	local rHitLocation = HitLocationManagerPO.getHackmasterHitLocation(rSource, rTarget, rAction.sCalledShotLocation);
 	DebugPO.log("manager_crit_hm.lua", "handleCrit", "hit location", rHitLocation.desc);
-	return getCritResult(nSeverity, rHitLocation, rRoll.aDamageTypes);
+	return getCritResult(nSeverity, rHitLocation, rRoll.aDamageTypes, rSource, rTarget);
 end
 
 function getCritSeverity(rRoll, rAction, nDefenseVal, rSource, rTarget)

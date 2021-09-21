@@ -72,7 +72,7 @@ function deliverArmorBrokenMessage(sCharName, sItemName)
 end
 
 function deliverCriticalHitMessage(sMessage)
-	local bGmOnlyCritMessage = PlayerOptionManager.isHackmasterCritEnabled() and Session.IsHost;`
+	local bGmOnlyCritMessage = PlayerOptionManager.isHackmasterCritEnabled() and Session.IsHost;
 	deliverChatMessage("[CRITICAL HIT] " .. sMessage, bGmOnlyCritMessage);
 end
 
