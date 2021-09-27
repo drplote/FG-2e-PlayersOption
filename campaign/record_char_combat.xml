@@ -28,7 +28,7 @@
 					  return action(draginfo);
 					end
 
-					function onDoubleClick(x,y)
+					function onButtonPress(x,y)
 					  return action();
 					end
 				</script>
@@ -62,7 +62,7 @@
 					  return action(draginfo);
 					end
 
-					function onDoubleClick(x,y)
+					function onButtonPress(x,y)
 					  return action();
 					end
 				</script>
