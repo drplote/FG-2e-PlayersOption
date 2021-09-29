@@ -55,13 +55,18 @@ end
 
 function getSizeDifference(nodeAttacker, nodeDefender)
 	local nAttackerSize = ActorManagerPO.getSizeCategory(nodeAttacker) + getHitSizeBonus(nodeAttacker, nodeDefender);
-	local nDefenderSize = ActorManagerPO.getSizeCategory(nodeDefender);
+	local nDefenderSize = ActorManagerPO.getSizeCategory(nodeDefender) + getDefendSizeBonus(nodeAttacker, nodeDefender);
 	
 	return nAttackerSize - nDefenderSize;
 end
 
 function getHitSizeBonus(rSource, rTarget)
 	local nModBonus = EffectManager5E.getEffectsBonus(rSource, {"HITSIZE"}, true, {}, rTarget);
+	return nModBonus;
+end
+
+function getDefendSizeBonus(rSource, rTarget)
+	local nModBonus = EffectManager5E.getEffectsBonus(rTarget, {"DEFENDSIZE"}, true, {}, rSource);
 	return nModBonus;
 end
 
