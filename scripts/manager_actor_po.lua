@@ -408,6 +408,7 @@ function getSizeCategory(nodeActor)
 	end
 	
 	if not nSizeCategory then
+    DebugPO.log("couldn't find size... using default");
 		nSizeCategory = 3; -- If we couldn't figure it out, default to medium
 	end
 

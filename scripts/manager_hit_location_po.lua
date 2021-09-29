@@ -152,7 +152,8 @@ function getHackmasterHitLocation(rSource, rTarget, sCalledShotLocation)
 	if not nHitLocationRoll then	
 		local nLocationDieType = 10000;
 		local nLocationHitModifier = 0;
-		local nSizeDifference = getSizeDifference(nodeAttacker, nodeDefender);
+		local nSizeDifference = getSizeDifference(ActorManagerPO.getNode(rSource), ActorManagerPO.getNode(rTarget));
+		DebugPO.log("Size Difference =", nSizeDifference);
 		if nSizeDifference > 0 then
 			nLocationHitModifier = nLocationHitModifier + (1000 * nSizeDifference);
 		elseif nSizeDifference < 0  then
