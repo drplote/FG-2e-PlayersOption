@@ -55,7 +55,7 @@
   <template name="label_encounter_itemlist">
     <label  >
       <anchored>
-        <top parent="weapons" anchor="bottom" offset="5" />
+        <top parent="spells" anchor="bottom" offset="5" />
         <left offset="5"/>
       </anchored>
       <static textres="label_encounter_items" />
@@ -88,7 +88,7 @@
         end
       </script>
       <anchored>
-        <top parent="weapons" anchor="bottom" offset="5" />
+        <top parent="spells" anchor="bottom" offset="5" />
         <left parent="label_items" offset="3" anchor="right" relation="relative"/>
         <right offset="-5" />
       </anchored>
