@@ -214,7 +214,7 @@ function calcItemArmorClassOverride(nodeChar)
             nMainShieldTotal = nMainShieldTotal + ArmorManagerPO.getAcBase(vNode) + ArmorManagerPO.getMagicAcBonus(vNode);
         elseif bIsRingOrCloak then          
 	        -- we only want the "bonus" value for ring/cloaks/robes
-            nMainShieldTotal = nMainShieldTotal + ArmorManagerPO.getMagicAcBonus(vNode);
+            nMainArmorTotal = nMainArmorTotal - ArmorManagerPO.getMagicAcBonus(vNode);
         elseif bIsWarding then
             nMainArmorBase = DB.getValue(vNode, "ac", 0);      
             nMainArmorTotal = nMainArmorTotal - (DB.getValue(vNode, "bonus", 0));
