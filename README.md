@@ -1,6 +1,6 @@
 # I'M WORKING ON GETTING THIS UPDATED. IT'S MISSING QUITE A FEW FEATURES FROM THE LAST FEW MONTHS.
 
-# Player's Option rules for AD&D 2E
+# Hackmaster 4E and  2E Player's Option extension for Fantasy Grounds' AD&D 2E ruleset
 
 Extends the Fantasy Grounds 2e ruleset to support some of the rules from the "Player's Option" 2E books. Also includes some toggleable house rules that are similar to rules seen in Hackmaster 4th edition.
 
