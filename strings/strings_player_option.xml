@@ -22,7 +22,8 @@
     <string name="option_label_npc_ac_like_pc">Adjust NPC AC for items and abilities</string>
     <string name="option_label_allow_player_cheater_dice">Allow Player Cheater Dice</string>
     <string name="option_label_alternate_target_effect_modifiers">Alternate Condition Modifiers</string>
-    <string name="open_label_show_debug_messages">Show Debug Messages?</string>
+    <string name="option_label_show_debug_messages">Show Debug Messages?</string>
+    <string name="option_label_hide_enemies_from_player_ct">Hide Enemies From Player CT?</string>
     <string name="option_val_chat">Chat</string>
     <string name="option_val_console">Console</string>
 
@@ -54,7 +55,8 @@
     <string name="option_val_equal_magic">Equivalent magic</string>
     <string name="option_val_penetration">Penetration</string>
     <string name="option_val_both">Both</string>
-    <string name="open_label_radiant_necrotic_armor">Should Radiant/Necrotic damage hurt armor (if using armor damage?)</string>
+    <string name="option_label_radiant_necrotic_armor">Should Radiant/Necrotic damage hurt armor (if using armor damage?)</string>
+    option_label_hide_enemies_from_player_ct
 
     <!-- New Properties -->
     <string name="item_label_hp_lost">HP Lost</string>

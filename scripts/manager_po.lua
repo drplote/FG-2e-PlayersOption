@@ -28,6 +28,7 @@ sMoreDurableMagicShields = "HouseRule_MoreDurableMagicShields";
 sDebugOptionKey = "AdditionalAutomation_DebugOptions";
 sCoinWeightOptionKey = "HouseRule_CoinWeight";
 sRadiantNecroticArmor = "HouseRule_Do_Radiant_Necrotic_Damage_Armor";
+sHideEnemiesFromPlayerCT = "AdditionalAutomation_HideEnemiesFromPlayerCT";
 
 function onInit()
     registerOptions();
@@ -116,7 +117,9 @@ function registerOptions()
 
 	OptionsManager.registerOption2(sAlternateTargetEffectModifiers, false, "option_header_automation", "option_label_alternate_target_effect_modifiers", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 
-	OptionsManager.registerOption2(sDebugOptionKey, false, "option_header_automation", "open_label_show_debug_messages", "option_entry_cycler",{ labels = "option_val_chat|option_val_console", values = "chat|console", baselabel = "option_val_off", baseval = "off", default = "off" });
+	OptionsManager.registerOption2(sDebugOptionKey, false, "option_header_automation", "option_label_show_debug_messages", "option_entry_cycler",{ labels = "option_val_chat|option_val_console", values = "chat|console", baselabel = "option_val_off", baseval = "off", default = "off" });
+
+	OptionsManager.registerOption2(sHideEnemiesFromPlayerCT, false, "option_header_automation", "option_label_hide_enemies_from_player_ct", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
     
     -- House rules
@@ -154,8 +157,12 @@ function registerOptions()
 
 	OptionsManager.registerOption2(sCoinWeightOptionKey, false, "option_header_house_rule", "option_label_coin_weight", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
-	OptionsManager.registerOption2(sRadiantNecroticArmor, false, "option_header_house_rule", "open_label_radiant_necrotic_armor", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
+	OptionsManager.registerOption2(sRadiantNecroticArmor, false, "option_header_house_rule", "option_label_radiant_necrotic_armor", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
+end
+
+function shouldHideEnemiesFromPlayerCT()
+	return OptionsManager.isOption(sHideEnemiesFromPlayerCT, "on");
 end
 
 function shouldRadiantDamageHurtArmor()

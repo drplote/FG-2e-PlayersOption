@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<root>
+	<template name="list_ctbox_client" merge="replace">
+		<windowlist name="list">
+			<anchored to="contentanchor">
+				<top anchor="bottom" relation="relative" offset="5" />
+				<left offset="-30" />
+				<right offset="10" />
+				<bottom parent="" offset="-55" />
+			</anchored>
+			<datasource>.list</datasource>
+			<class>client_ct_entry</class>
+			<script file="ct/scripts/clientct_po.lua" />
+		</windowlist>
+	</template>
+</root>
