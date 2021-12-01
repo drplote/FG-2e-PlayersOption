@@ -27,6 +27,7 @@ sAlternateTargetEffectModifiers = "AdditionalAutomation_AlternateTargetEffectMod
 sMoreDurableMagicShields = "HouseRule_MoreDurableMagicShields";
 sDebugOptionKey = "AdditionalAutomation_DebugOptions";
 sCoinWeightOptionKey = "HouseRule_CoinWeight";
+sRadiantNecroticArmor = "HouseRule_Do_Radiant_Necrotic_Damage_Armor";
 
 function onInit()
     registerOptions();
@@ -153,6 +154,16 @@ function registerOptions()
 
 	OptionsManager.registerOption2(sCoinWeightOptionKey, false, "option_header_house_rule", "option_label_coin_weight", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
+	OptionsManager.registerOption2(sRadiantNecroticArmor, false, "option_header_house_rule", "open_label_radiant_necrotic_armor", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
+
+end
+
+function shouldRadiantDamageHurtArmor()
+	return OptionsManager.isOption(sRadiantNecroticArmor, "on");
+end
+
+function shouldNecroticDamageHurtArmor()
+	return OptionsManager.isOption(sRadiantNecroticArmor, "on");
 end
 
 function isUsing1eCoinWeight()

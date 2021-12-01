@@ -112,7 +112,15 @@ function canDamageTypeHurtArmor(aDmgTypes, nodeArmor)
         return false;
     else
        
-        local aDamagingTypes = {"acid","cold","fire","force","lightning","necrotic","radiant","thunder"};
+        local aDamagingTypes = {"acid","cold","fire","force","lightning","thunder"};
+        
+        if PlayerOptionManager.shouldRadiantDamageHurtArmor() then
+            table.insert(aDamagingTypes, "radiant");
+        end
+
+        if PlayerOptionManager.shouldNecroticDamageHurtArmor() then
+            table.insert(aDamagingTypes, "necrotic");
+        end
 
         if PlayerOptionManager.isMagicArmorDamagedByEqualMagic() then 
             if nBonus <= 6 then table.insert(aDamagingTypes, "magic +6"); end

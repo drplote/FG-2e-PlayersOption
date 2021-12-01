@@ -166,7 +166,7 @@ end
 
 function updateInitDisplay()
   updateInitResult();
-  if not shouldShowInit then
+  if not shouldShowInit() then
       initresult.setVisible(false);
       initresultpo.setVisible(false);
   elseif PlayerOptionManager.isUsingPhasedInitiative() then
