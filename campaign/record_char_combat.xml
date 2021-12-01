@@ -52,7 +52,11 @@
 					  local nodeCT = CombatManager.getCTFromNode(nodeChar);
 					  local nodeCTActive = CombatManager.getActiveCT();
 					  if nodeCT == nodeCTActive then
-						CombatManager.notifyEndTurn();
+					  	if Session.IsHost then
+					  		CombatManager.nextActor();
+					  	else
+							CombatManager.notifyEndTurn();
+						end
 					  else
 						ChatManagerPO.deliverEndTurnFailedMessage(nodeChar);
 					  end

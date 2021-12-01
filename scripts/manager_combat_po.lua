@@ -8,6 +8,8 @@ local fAddBattle;
 local fNextActor;
 local fRollTypeInit;
 local fTurnOffAllInitRolled;
+local fRollEntryInit;
+local fRollInit;
 
 OOB_MSGTYPE_DELAYTURN = "delayturn";
 OOB_MSGTYPE_REQUESTTURN = "requestturn";
@@ -46,10 +48,6 @@ function onInit()
     fNextActor = CombatManager.nextActor;
     CombatManager.nextActor = nextActorOverride;
 
-    fHandleEndTurn = CombatManager.handleEndTurn;
-    CombatManager.handleEndTurn = handleEndTurnOverride;
-    OOBManager.registerOOBMsgHandler(CombatManager.OOB_MSGTYPE_ENDTURN, handleEndTurnOverride);
-
     fRollTypeInit = CombatManager.rollTypeInit;
     CombatManager.rollTypeInit = rollTypeInitOverride;
 
@@ -75,14 +73,6 @@ function rollTypeInitOverride(sType, fRollCombatantEntryInit, ...)
     end
 
     return fRollTypeInit(sType, fRollCombatantEntryInit, ...);
-end
-
-function handleEndTurnOverride(msgOOB)
-    local rActor = ActorManager.resolveActor(CombatManager.getActiveCT());
-    local nodeActor = ActorManager.getCreatureNode(rActor);
-    if Session.IsHost or (nodeActor and nodeActor.getOwner() == msgOOB.user) then
-        CombatManager.nextActor();
-    end
 end
 
 function delayTurnOverride(nodeCT)
