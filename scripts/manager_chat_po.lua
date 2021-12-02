@@ -100,7 +100,7 @@ function deliverInitRollMessage(nPcInit, nNpcInit)
 
 end
 
-function deliverDetectMagicResults(aResults)
+function deliverDetectMagicResults(aResults, bSecret)
 	local sMsg = "Detect Magic results: ";
 	if not aResults or aResults == nil then
 		sMsg = sMsg .. "Nothing new detected";
@@ -109,5 +109,5 @@ function deliverDetectMagicResults(aResults)
 			sMsg = sMsg .. '\r' .. rResult.owner .. ' has ' .. rResult.itemName;
 		end
 	end
-	deliverChatMessage(sMsg);
+	deliverChatMessage(sMsg, bSecret);
 end
