@@ -99,3 +99,15 @@ function deliverInitRollMessage(nPcInit, nNpcInit)
 	deliverChatMessage(sMsg);
 
 end
+
+function deliverDetectMagicResults(aResults)
+	local sMsg = "Detect Magic results: ";
+	if not aResults or aResults == nil then
+		sMsg = sMsg .. "Nothing new detected";
+	else
+		for _, rResult in pairs(aResults) do
+			sMsg = sMsg .. '\r' .. rResult.owner .. ' has ' .. rResult.itemName;
+		end
+	end
+	deliverChatMessage(sMsg);
+end
