@@ -27,7 +27,7 @@ end
 
 function tagAsMagical(nodeItem)
 	local sName = getItemNameForPlayer(nodeItem);
-	if not sName:lower():find("%[magic%]") then
+	if not sName:lower():find("magic") then
 		DB.setValue(nodeItem, "nonid_name", "string", "[Magic]" .. ' ' .. sName);
 	end
 end
