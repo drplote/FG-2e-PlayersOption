@@ -53,6 +53,14 @@ function canArmorSoakDamageType(aDmgTypes)
         return true;
     else
         local aUnsoakableDamageTypes = {"psychic", "poison"};        
+
+        if not PlayerOptionManager.shouldRadiantDamageHurtArmor() then
+            table.insert(aUnsoakableDamageTypes, "radiant");
+        end
+
+        if not PlayerOptionManager.shouldNecroticDamageHurtArmor() then
+            table.insert(aUnsoakableDamageTypes, "necrotic");
+        end
         return not UtilityPO.intersects(aUnsoakableDamageTypes, aDmgTypes);
     end
 end

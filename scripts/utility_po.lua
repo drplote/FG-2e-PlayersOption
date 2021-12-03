@@ -124,3 +124,6 @@ function average(tt)
   return sum(tt) / #tt;
 end
 
+function stripWhitespace(str)
+  return str:gsub("%s+", "");
+end

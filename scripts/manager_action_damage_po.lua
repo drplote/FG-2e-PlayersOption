@@ -3,6 +3,7 @@ local fCheckReductionType;
 local fModDamage;
 local fApplyDamage;
 local fGetRoll;
+local fDecodeDamageText;
 
 function onInit()
     fOnDamageRoll = ActionDamage.onDamageRoll;
@@ -24,6 +25,30 @@ function onInit()
 
   fGetRoll = ActionDamage.getRoll;
   ActionDamage.getRoll = getRollOverride;
+
+  fDecodeDamageText = ActionDamage.decodeDamageText;
+  ActionDamage.decodeDamageText = decodeDamageTextOverride;
+end
+
+function decodeDamageTextOverride(nDamage, sDamageDesc)
+  local rDamageOutput = fDecodeDamageText(nDamage, sDamageDesc);
+  rDamageOutput.rArmorDamageInfo = {nPenetrationsHandled = 0};
+  for sDamageType, sDamageDice, sDamageSubTotal in string.gmatch(sDamageDesc, "%[TYPE: ([^(]*) %(([%d%+%-dD]+)%=(%d+)%)%]") do
+    sDamageType = UtilityPO.stripWhitespace(sDamageType);
+    local nDamageSubTotal = (tonumber(sDamageSubTotal) or 0);
+    local nDamageDice = 0;
+    for sNumDiceMatch in string.gmatch(sDamageDice, "(%d+)d") do
+      nDamageDice = nDamageDice + (tonumber(sNumDiceMatch) or 0);
+    end
+
+    if rDamageOutput.rArmorDamageInfo[sDamageType] == nil then
+      rDamageOutput.rArmorDamageInfo[sDamageType] = {unsoakedDamageDice = 0, damageSubTotal = 0};
+    end
+    rDamageOutput.rArmorDamageInfo[sDamageType].unsoakedDamageDice = rDamageOutput.rArmorDamageInfo[sDamageType].unsoakedDamageDice + nDamageDice;
+    rDamageOutput.rArmorDamageInfo[sDamageType].damageSubTotal = rDamageOutput.rArmorDamageInfo[sDamageType].damageSubTotal + nDamageSubTotal;
+  end
+
+  return rDamageOutput;
 end
 
 function getRollOverride(rActor, rAction)
@@ -518,7 +543,7 @@ function handleShieldAbsorb(rSource, rTarget, rDamageOutput, nTotal, aDice)
 	return nTotal;
 end
 
-function displayArmorDamageMessages(nodeTarget, nodeArmor, nDamageSoaked, nDamageTaken)
+function displayArmorDamageMessages(nodeTarget, nodeArmor, nDamageSoaked, nDamageTaken, sDamageType)
 	local sCharName = ActorManagerPO.getName(nodeTarget);
 	local sItemName = ItemManagerPO.getItemNameForPlayer(nodeArmor);
 
@@ -643,7 +668,7 @@ function getDamageAdjustOverride(rSource, rTarget, nDamage, rDamageOutput, aDice
 
     -- add support for "DA: # type" where damage # is absorbed from type damage and then that value is reduced the amount absorbed. --celestian
     local nAbsorbed = ActionDamage.getAbsorbedByType(rTarget,aSrcDmgClauseTypes,sRangeType,(nDamage-nLocalDamageAdjust));
-    nAbsorbed = nAbsorbed + handleArmorDamageAbsorb(rTarget, aDice, aSrcDmgClauseTypes, nDamage - nAbsorbed);
+    nAbsorbed = nAbsorbed + handleArmorDamageAbsorb(rTarget, aDice, aSrcDmgClauseTypes, nDamage - nAbsorbed, rDamageOutput.rArmorDamageInfo);
     if nAbsorbed > 0 then
       nLocalDamageAdjust = nLocalDamageAdjust - nAbsorbed;
       bAbsorb = true;
@@ -667,7 +692,7 @@ function getDamageAdjustOverride(rSource, rTarget, nDamage, rDamageOutput, aDice
 end
 
 
-function handleArmorDamageAbsorb(rTarget, aDice, aSrcDmgClauseTypes, nDamageToAbsorb)
+function handleArmorDamageAbsorb(rTarget, aDice, aSrcDmgClauseTypes, nDamageToAbsorb, rArmorDamageInfo)
 	local nAbsorbed = 0;
 	if not PlayerOptionManager.isUsingArmorDamage() then
 		return nAbsorbed;
@@ -678,15 +703,37 @@ function handleArmorDamageAbsorb(rTarget, aDice, aSrcDmgClauseTypes, nDamageToAb
 	local nodeArmor = ArmorManagerPO.getDamageableArmorWorn(nodeTarget);
 	local nArmorHpRemaining = ArmorManagerPO.getHpRemaining(nodeArmor);
 	local nSoakPerDie = ArmorManagerPO.getDamageReduction(nodeArmor, aSrcDmgClauseTypes);
-	local nPointsThatCanBeSoaked = math.min(DiceManagerPO.getNumOriginalDice(aDice) * nSoakPerDie, nDamageToAbsorb);
+  local sDamageType = UtilityPO.stripWhitespace(UtilityPO.toCSV(aSrcDmgClauseTypes));
+  
+  local rArmorDamageInfoForType = rArmorDamageInfo[sDamageType];
+  local nNumUnsoakedDice = 0;
+  if rArmorDamageInfoForType ~= nil then
+    nNumUnsoakedDice = rArmorDamageInfo[sDamageType].unsoakedDamageDice;
+  else
+    DiceManagerPO.getNumOriginalDice(aDice);
+    DebugPO.log("had a damage type we couldn't find armor soak information for: ", sDamageType, "rArmorDamageInfo", rArmorDamageInfo);
+  end
+  
+  
+	local nPointsThatCanBeSoaked = math.min(nNumUnsoakedDice * nSoakPerDie, nDamageToAbsorb);
 	local nDamageSoaked = math.min(nPointsThatCanBeSoaked, nArmorHpRemaining);
 	nAbsorbed = nDamageSoaked;
 	if nDamageSoaked > 0 then
 		local nArmorDamageTaken = nDamageSoaked;
+
 		if ArmorManagerPO.canDamageTypeHurtArmor(aSrcDmgClauseTypes, nodeArmor) then
 			ArmorManagerPO.damageArmor(nodeArmor, nDamageSoaked);
 		elseif PlayerOptionManager.isMagicArmorDamagedByPenetration() then
-      nArmorDamageTaken = math.min(nDamageSoaked, DiceManagerPO.getNumOriginalDiceThatPenetrated(aDice));
+      
+      -- This is a little hacky and doesn't actually check that the penetrations were rolled for this damage type, which could lead to armor 
+      -- taking damage when a non-armor-damaging damage type penetrates. However, teasing out which type caused the penetration is pretty
+      -- hard to do at this point, so for now I'm settling for this.
+
+      local nPenetration = math.min(nNumUnsoakedDice, DiceManagerPO.getNumOriginalDiceThatPenetrated(aDice) - rArmorDamageInfo.nPenetrationsHandled);
+      -- nArmorDamageTaken = math.min(nDamageSoaked, DiceManagerPO.getNumOriginalDiceThatPenetrated(aDice));
+      nArmorDamageTaken = math.min(nDamageSoaked, nPenetration);
+      rArmorDamageInfo.nPenetrationsHandled = rArmorDamageInfo.nPenetrationsHandled + nArmorDamageTaken;
+
       ArmorManagerPO.damageArmor(nodeArmor, nArmorDamageTaken);
     else
 			nArmorDamageTaken = 0;
@@ -697,7 +744,7 @@ function handleArmorDamageAbsorb(rTarget, aDice, aSrcDmgClauseTypes, nDamageToAb
     end
 
 		
-		displayArmorDamageMessages(nodeTarget, nodeArmor, nDamageSoaked, nArmorDamageTaken);
+		displayArmorDamageMessages(nodeTarget, nodeArmor, nDamageSoaked, nArmorDamageTaken, sDamageType);
 	end	
 	return nAbsorbed;
 end
@@ -748,7 +795,6 @@ function onDamageRollOverride(rSource, rRoll)
       DiceManagerPO.handlePenetration(rRoll, bExtraPenetration);
   end
 
-  DebugPO.log("rRoll", rRoll);
   if rRoll.sPowerType and rRoll.sPowerType == "arcane" and EffectManagerPO.hasSpellRazor(rSource) then
     local nNumDiceRolled = #rRoll.aDice; 
     if nNumDiceRolled > 0 then

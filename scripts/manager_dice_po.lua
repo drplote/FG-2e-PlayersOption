@@ -121,9 +121,10 @@ function createPenetrationDice(rRoll)
 	local sSign, sColor, sDieSides = vDie.type:match("^([%-%+]?)([dDrRgGbBpP])([%dF]+)");
 	if vDie.penetrationRolls then
 		for _, rPenRoll in ipairs(vDie.penetrationRolls) do
-			local newDie = {}
-			newDie.type = "r" .. sDieSides
-			newDie.result = rPenRoll - 1
+			local newDie = {};
+			newDie.type = "r" .. sDieSides;
+			newDie.result = rPenRoll - 1;
+			newDie.isPenetrationRoll = true;
 			table.insert(rRoll.aDice, newDie);
 		end		
 	end
@@ -136,7 +137,7 @@ function checkForPenetration(rRoll, penPlus)
 	local nSides = tonumber(sDieSides) or 0;
 	if needsPenetrationRoll(nSides, vDie.result, penPlus) then	
 		local lRolls = {};
-	  	getPenetrationRolls(lRolls, nSides, penPlus);
+	  getPenetrationRolls(lRolls, nSides, penPlus);
 		vDie.penetrationRolls = lRolls;
     end
   end
@@ -348,12 +349,8 @@ function getNumOriginalDiceThatPenetrated(aDice)
 	end
 
 	local nNumOriginalPenetrations = 0;
-	local nNumOriginalDice = getNumOriginalDice(aDice);
-	DebugPO.log("nNumOriginalDice", nNumOriginalDice);
-	local nIterator = 0;
 	for _, vDie in pairs(aDice) do
-		nIterator = nIterator + 1;
-		if nIterator <= nNumOriginalDice and vDie.penetrationRolls then
+		if vDie.penetrationRolls and not vDie.isPenetrationRoll then
 			nNumOriginalPenetrations = nNumOriginalPenetrations + 1;
 		end
 	end

@@ -62,8 +62,8 @@ function deliverTurnRequestMessage(nodeChar, nPreviousInit)
 	end
 end
 
-function deliverArmorSoakMessage(sCharName, sItemName, nDamageSoaked, nArmorDamageTaken)
-	local sDamageMsg = sCharName .. "'s " .. sItemName .. " soaks " .. nDamageSoaked .. " and takes " .. nArmorDamageTaken .. " damage.";
+function deliverArmorSoakMessage(sCharName, sItemName, nDamageSoaked, nArmorDamageTaken)	
+	local sDamageMsg = string.format("%s's %s soaks %s and takes %s damage.", sCharName, sItemName, nDamageSoaked, nArmorDamageTaken, sDamageType);
 	deliverChatMessage(sDamageMsg);
 end
 
