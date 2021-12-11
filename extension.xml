@@ -82,7 +82,8 @@
     <script name="PowerManagerPO" file="scripts/manager_power_po.lua" />
     <script name="LightingManagerPO" file="scripts/manager_lighting_po.lua" />
     <script name="DebugPO" file="scripts/debug_po.lua"/>
-    <script name="MagicDetectionMananger" file="scripts/magic_detection_manager_po.lua"/>
+    <script name="MagicDetectionMananger" file="scripts/manager_magic_detection_po.lua"/>
+    <script name="DMTools" file="scripts/dm_tools_po.lua"/>
 
     
   </base>
