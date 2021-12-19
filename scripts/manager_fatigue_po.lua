@@ -37,36 +37,13 @@ function resetFatigue(nodeChar)
 	StateManagerPO.clearFatigueState(nodeChar);
 end
 
-function getNpcFatigueFactor(nodeChar)
-	local sSpecialDefense = DB.getValue(nodeChar, "specialDefense", "");
-	local sFatigueFactor = DataManagerPO.parseFatigueFactorFromString(sSpecialDefense);
-	if not UtilityPO.isEmpty(sFatigueFactor) then
-		return tonumber(sFatigueFactor);
-	else
-		-- Absent any specification, we'll default monsters to slightly higher fatigue factor
-		-- because their penalties for failing are going to stack up quicker 
-		return 5;
-	end
-end
-
-function getFatigueFactor(nodeChar)
-	if ActorManager.isPC(nodeChar) then
-		return DB.getValue(nodeChar, "fatigue.factor", 5);
-	else
-		return getNpcFatigueFactor(nodeChar);
-	end
-end
 
 function setCurrentFatigue(nodeChar, nFatigue)
-	DB.setValue(nodeChar, "fatigue.score", "number", nFatigue);
+	ActorManagerPO.setCurrentFatigue(nodeChar, nFatigue);
 	ChatManagerPO.deliverChatMessage(ActorManager.getDisplayName(nodeChar) .. "'s fatigue is now " .. nFatigue .. ".");
 	if nFatigue == 0 then
 		removeAllFatigueEffects(nodeChar);
 	end
-end
-
-function getCurrentFatigue(nodeChar)
-	return DB.getValue(nodeChar, "fatigue.score", 0);
 end
 
 function handleFatigueForCombatants()
@@ -106,21 +83,21 @@ end
 
 function increaseFatigue(nodeChar)
 	if ActorManagerPO.canBeAffectedByFatigue(nodeChar) then
-		local nCurrentFatigue = getCurrentFatigue(nodeChar);
+		local nCurrentFatigue = ActorManagerPO.getCurrentFatigue(nodeChar);
 		local nNewFatigue = nCurrentFatigue + 1;
 		setCurrentFatigue(nodeChar, nNewFatigue);
-		if nNewFatigue > getFatigueFactor(nodeChar) then
+		if nNewFatigue > ActorManagerPO.getFatigueFactor(nodeChar) then
 			checkForFatiguePenalty(nodeChar);	
 		end
 	end
 end
 
 function decreaseFatigue(nodeChar)
-	local nCurrentFatigue = getCurrentFatigue(nodeChar);
+	local nCurrentFatigue = ActorManagerPO.getCurrentFatigue(nodeChar);
 	if nCurrentFatigue > 0 then
 		local nNewFatigue = nCurrentFatigue - 1;
 		setCurrentFatigue(nodeChar, nNewFatigue);
-		if nNewFatigue > 0 and nNewFatigue <= getFatigueFactor(nodeChar) then
+		if nNewFatigue > 0 and nNewFatigue <= ActorManagerPO.getFatigueFactor(nodeChar) then
 			checkToRemoveFatiguePenalty(nodeChar);
 		end
 	end
@@ -205,7 +182,7 @@ function checkForFatiguePenalty(nodeChar)
 	local sName = ActorManagerPO.getName(nodeChar);
 	local nFatigueCheckTarget = getFatigueCheckTarget(nodeChar);
 	local nFatigueCheckRoll = math.random(1, 20);
-	if nFatigueCheckRoll <= nFatigueCheckTarget  then
+	if nFatigueCheckRoll ~= 20 and nFatigueCheckRoll <= nFatigueCheckTarget  then -- 20 is auto-failure
 		local sMessage = sName .. " makes a fatigue save[" .. nFatigueCheckRoll .. " <= " .. nFatigueCheckTarget .. "]. No fatigue penalty gained.";
 		ChatManagerPO.deliverChatMessage(sMessage);
 	else	

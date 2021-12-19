@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <root>
+  <windowclass name="combattracker_host" merge="join">
+    <sheetdata>
+      <buttoncontrol insertafter="nextActorButton">
+        <anchored width="30" height="30">
+          <bottom offset="4" />
+          <left offset="40" />
+        </anchored>
+        <icon normal="moraleButton" pressed="moraleButtonPressed" />
+        <tooltip textres="ct_tooltip_moralebutton" />
+        <script>
+          function onButtonPress()
+            if Input.isShiftPressed() and Input.isAltPressed() and Input.isControlPressed() then
+              MoraleManagerPO.resetAllNpcMorale();  
+            else
+              local bForceCheck = Input.isShiftPressed() or Input.isAltPressed() or Input.isControlPressed();
+              MoraleManagerPO.checkAllNpcMorale(bForceCheck);
+            end
+          end
+        </script>
+    </buttoncontrol>
+    </sheetdata>
+  </windowclass>
+
   <windowclass name="combatants_entry_host" merge="join">
   	<script file="cta/scripts/cta_entry.lua" />
   	<sheetdata>
@@ -45,6 +68,12 @@
         <readonly />
       </stringcontrol>
       
+    </sheetdata>
+  </windowclass>
+
+  <windowclass name="selected_entry_header" merge="join">
+    <sheetdata>
+      <cta_moraleStatus name="moraleStatus" insertafter="wounds"/>
     </sheetdata>
   </windowclass>
 </root>

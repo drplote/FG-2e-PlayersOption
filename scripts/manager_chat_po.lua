@@ -111,3 +111,28 @@ function deliverDetectMagicResults(aResults, bSecret)
 	end
 	deliverChatMessage(sMsg, bSecret);
 end
+
+function deliverMoraleCheckResults(aResults, bSecret)
+	local sMsg = "Morale Check Results:\r-------------------- ";
+	if not aResults or aResults == nil then
+		sMsg = sMsg .. "No combatants found";
+	else
+		for _, rStatus in pairs(MoraleManagerPO.MoraleStatus) do
+			local aMatches = {};
+			for _, rResult in pairs(aResults) do
+				if rResult.moraleState.id == rStatus.id then
+					local carryoverPrefix = "";
+					if rResult.usingPreviousState then
+						carryoverPrefix = "*";
+					end
+
+					table.insert(aMatches, string.format("'%s%s'", carryoverPrefix, rResult.combatantName));
+				end
+			end
+			if #aMatches > 0 then
+				sMsg = sMsg .. string.format("\r%s: %s\r--------------------", rStatus.desc, UtilityPO.toCSV(aMatches));
+			end
+		end
+	end
+	deliverChatMessage(sMsg, bSecret);
+end

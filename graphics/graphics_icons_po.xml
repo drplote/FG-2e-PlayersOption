@@ -7,6 +7,8 @@
 
 
 <root>
+  <icon name="moraleButton" file="graphics/icons/truce_reversed.png" />
+  <icon name="moraleButtonPressed" file="graphics/icons/truce.png" />
   <icon name="endTurnButtonIcon" file="graphics/icons/end_turn_icon.png" />      
   <icon name="endTurnButtonIcon_pressed" file="graphics/icons/end_turn_icon_pressed.png" />      
   <icon name="requestTurnIcon" file="graphics/icons/request_turn_icon.png" />

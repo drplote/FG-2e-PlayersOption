@@ -23,24 +23,30 @@ aExceptional = {
 };
 
 function onInit()
-	Comm.registerSlashHandler("oxp", onCalcOsricXp)
+	Comm.registerSlashHandler("hmxp", onCalcXp);
+	Comm.registerSlashHandler("morale", onCheckMorale);
 end
 
-function onCalcOsricXp(sCmd, sParams)
+function parseParams(sParams)
 	local aParams = {};
 	if sParams then
 		for sParam in sParams:gmatch("%w+") do
 			table.insert(aParams, sParam);
 		end
 	end
+	return aParams;
+end
+
+function onCalcXp(sCmd, sParams)
+	local aParams = parseParams(sParams);
 
 	local nHd = 0;
 	local nSpecial = 0;
 	local nExceptional = 0;
-	local nMaxHp = 0;
+	local nHp = 0;
 
 	if #aParams == 0 then
-		ChatManagerPO.deliverChatMessage("Usage: /osricxp #hd #special #exceptional #maxhp")
+		ChatManagerPO.deliverChatMessage("Usage: /hmxp #hd #special #exceptional #hp")
 	else
 		nHd = tonumber(aParams[1]);
 	end
@@ -51,18 +57,18 @@ function onCalcOsricXp(sCmd, sParams)
 		nExceptional = tonumber(aParams[3])
 	end
 	if #aParams > 3 then
-		nMaxHp = tonumber(aParams[4])
+		nHp = tonumber(aParams[4])
 	else
-		nMaxHp = 8 * nHd;
+		nHp = 8 * nHd;
 	end
 
-	local nXp = calcOsricXp(nHd, nSpecial, nExceptional, nMaxHp);
+	local nXp = calcOsricXp(nHd, nSpecial, nExceptional, nHp);
 
-	local result = string.format("XP Value(%s hd, %s special, %s exceptional, %s max hp): %s", nHd, nSpecial, nExceptional, nMaxHp, nXp);
+	local result = string.format("XP Value(%s hd, %s special, %s exceptional, %s max hp): %s", nHd, nSpecial, nExceptional, nHp, nXp);
 	ChatManagerPO.deliverChatMessage(result);
 end
 
-function calcOsricXp(nHd, nSpecial, nExceptional, nMaxHp)
+function calcOsricXp(nHd, nSpecial, nExceptional, nHp)
 	if nHd > 21 then
 		nHd = 21;
 	elseif nHd < 0 then
@@ -74,7 +80,32 @@ function calcOsricXp(nHd, nSpecial, nExceptional, nMaxHp)
 	local nHdXp = aHdValues[nIndex];
 	local nSpecialXp = aSpecial[nIndex] * nSpecial;
 	local nExceptionalXp = aExceptional[nIndex] * nExceptional;
-	local nHpValue = aHpValues[nIndex] * nMaxHp;
+	local nHpValue = aHpValues[nIndex] * nHp;
 
 	return nHdXp + nSpecialXp + nExceptionalXp + nHpValue;
+end
+
+function onCheckMorale(sCmd, sParams)
+	if not Session.IsHost then
+		ChatManagerPO.deliverChatMessage("Only the DM can use /morale.");
+		return;
+	end
+
+	local aParams = parseParams(sParams);
+
+	local bReset = false;
+	local bForce = false;
+	if #aParams == 1 then
+		if aParams[1] == "reset" then
+			bReset = true;
+		elseif aParams[1] == "force" then
+			bForce = true;
+		end
+	end
+
+	if bReset then
+		MoraleManagerPO.resetAllNpcMorale();
+	else
+		MoraleManagerPO.checkAllNpcMorale(bForce);
+	end
 end

@@ -16,6 +16,22 @@ function getConstitution(rChar)
   return nCon;
 end
 
+function getWounds(rChar)
+  if not rChar then
+    return 0;
+  end
+  
+  local sType, nodeActor = ActorManager.getTypeAndNode(rChar);
+  local nWounds = 0;
+  
+  if sType == "pc" then
+    nWounds = DB.getValue(nodeActor, "hp.wounds", 0);
+  else
+    nWounds = DB.getValue(nodeActor, "wounds", 0);
+  end
+  return nWounds;
+end
+
 function getMaxHp(rChar)
   if not rChar then
     return 20;
@@ -29,7 +45,6 @@ function getMaxHp(rChar)
   else
     nMaxHp = DB.getValue(nodeActor, "hptotal", 0);
   end
-  DebugPO.log("manager_actor_po.getMaxHp", "nMaxHp", nMaxHp);
   return nMaxHp;
 end
 
@@ -499,4 +514,65 @@ function addWeapon(nodeActor, nodeSourceWeapon)
     end
   end
   addItem(nodeActor, nodeSourceWeapon);
+end
+
+function getMorale(nodeChar)
+  local sMorale = DB.getValue(nodeChar, "morale");
+  local nMorale = DataManagerPO.parseMoraleFromString(sMorale);
+  return nMorale;
+end
+
+function isFatigued(nodeChar)
+  return PlayerOptionManager.isUsingHackmasterFatigue() and getCurrentFatigue(nodeChar) > getFatigueFactor(nodeChar);
+end
+
+function getCurrentFatigue(nodeChar)
+  return DB.getValue(nodeChar, "fatigue.score", 0);
+end
+
+function setCurrentFatigue(nodeChar, nFatigue)
+  DB.setValue(nodeChar, "fatigue.score", "number", nFatigue);
+end
+
+function getFatigueFactor(nodeChar)
+  if ActorManager.isPC(nodeChar) then
+    return DB.getValue(nodeChar, "fatigue.factor", 5);
+  else
+    return getNpcFatigueFactor(nodeChar);
+  end
+end
+
+function getNpcFatigueFactor(nodeChar)
+  local sSpecialDefense = DB.getValue(nodeChar, "specialDefense", "");
+  local sFatigueFactor = DataManagerPO.parseFatigueFactorFromString(sSpecialDefense);
+  if not UtilityPO.isEmpty(sFatigueFactor) then
+    return tonumber(sFatigueFactor);
+  else
+    -- Absent any specification, we'll default monsters to slightly higher fatigue factor
+    -- because their penalties for failing are going to stack up quicker 
+    return 5;
+  end
+end
+
+function getRemainingHealthPercentage(nodeChar)
+  local rActor = ActorManager.resolveActor(nodeChar);
+  
+  local nMaxHp = getMaxHp(rActor);
+  local nWounds = getWounds(rActor);
+  local nCurrentHp = nMaxHp - nWounds;
+
+  return nCurrentHp  * 100 / nMaxHp;
+
+end
+
+function getMoraleStatus(nodeChar)
+  return DB.getValue(nodeChar, "moraleStatus", MoraleManagerPO.MoraleStatus.Unknown.id);
+end
+
+function setMoraleStatus(nodeChar, nStatus)
+    return DB.setValue(nodeChar, "moraleStatus", "number", nStatus);
+end
+
+function isAlignment(nodeChar, sAlignment)
+  return ActorManagerADND.isAlignment(nodeChar, sAlignment);
 end

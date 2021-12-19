@@ -207,8 +207,8 @@ end
 
 function onFatigueChanged()
 	local nodeChar = getDatabaseNode();
-	local nFatigueFactor = FatigueManagerPO.getFatigueFactor(nodeChar);
-	local nCurrentFatigue = FatigueManagerPO.getCurrentFatigue(nodeChar);
+	local nFatigueFactor = ActorManagerPO.getFatigueFactor(nodeChar);
+	local nCurrentFatigue = ActorManagerPO.getCurrentFatigue(nodeChar);
 
 	local sColor = ColorManager.COLOR_FULL;
 	if nCurrentFatigue > nFatigueFactor then

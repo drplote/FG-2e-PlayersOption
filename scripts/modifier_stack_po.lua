@@ -2,7 +2,7 @@ function onInit()
 end
 
 function peekModifierKey(sModifierKey)
-	return ModifierStack.modifierkeys[sModifierKey];
+	return ModifierManager.getRawKey(sModifierKey);
 end
 
 function hasSequencedInitModifierKey()
