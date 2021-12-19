@@ -11,13 +11,13 @@ function hasSequencedInitModifierKey()
 end
 
 function peekSequencedInitModifierKey()
-	if ModifierStack.modifierkeys["SEQUENCED_ATTACK_2"] then
+	if ModifierManager.getRawKey("SEQUENCED_ATTACK_2") then
 		return 2;
-	elseif ModifierStack.modifierkeys["SEQUENCED_ATTACK_3"] then
+	elseif ModifierManager.getRawKey("SEQUENCED_ATTACK_3") then
 		return 3;
-	elseif ModifierStack.modifierkeys["SEQUENCED_ATTACK_4"] then
+	elseif ModifierManager.getRawKey("SEQUENCED_ATTACK_4") then
 		return 4;
-	elseif ModifierStack.modifierkeys["SEQUENCED_ATTACK_5"] then
+	elseif ModifierManager.getRawKey("SEQUENCED_ATTACK_5") then
 		return 5;
 	end
 

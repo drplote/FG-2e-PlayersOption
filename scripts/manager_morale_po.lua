@@ -112,7 +112,7 @@ end
 
 function checkMorale(nodeChar)
 	
-	local nMoraleAttribute = ActorManagerPO.getMorale(nodeChar);
+	local nMoraleRating = ActorManagerPO.getMorale(nodeChar);
 
 	local rStatus = MoraleStatus.Unknown;
 
@@ -164,13 +164,14 @@ function getGlobalMoraleModifier()
 end
 
 function getIndividualMoraleModifier(nodeChar)
-	local nModifier = 0;
+	local rModifiers = {nTotal = 0};
+	
+	rModifiers.nAlignmentModifier = getAlignmentModifier(nodeChar);
+	rModifiers.nHpModifier = getPercentHpMoraleModifier(nodeChar);
+	rModifiers.nFatigueModifier = getFatigueModifier(nodeChar);
+	rModifiers.nTotal = rModifiers.nTotal + rModifiers.nAlignmentModifier + rModifiers.nHpModifier + rModifiers.nFatigueModifier;
 
-	nModifier = nModifier + getAlignmentModifier(nodeChar);
-	nModifier = nModifier + getPercentHpMoraleModifier(nodeChar);
-	nModifier = nModifier + getFatigueModifier(nodeChar);
-
-	return nModifier;
+	return rModifiers.nTotal;
 end
 
 function getAlignmentModifier(nodeChar)

@@ -186,7 +186,28 @@ function getActiveInit()
 	return DB.getValue(nodeActive, "initresult", 0);
 end
 
-function generateDefaultHackmasterInit(nodeCT, nodeWeapon)
+function generateDefaultHackmasterInitForNpc(nodeCT)
+	local nSpeedFactor = -1;
+	local nodeSlowestWeapon = nil;
+	
+	for _,nodeWeapon in pairs(DB.getChildren(nodeCT, "weaponlist")) do
+      local nSpeed = DB.getValue(nodeWeapon,"speedfactor",0);
+      if nSpeed > nSpeedFactor then
+        nSpeedFactor = nSpeed;
+        nodeSlowestWeapon = nodeWeapon;
+      end
+    end
+
+    local nInit = 1;
+    if nodeSlowestWeapon then
+		nInit = generateDefaultHackmasterInitForNpcWeapon(nodeCT, nodeSlowestWeapon);
+	else
+		nInit = CombatManagerADND.rollRandomInit();
+	end
+	return math.max(nInit, 1);
+end
+
+function generateDefaultHackmasterInitForNpcWeapon(nodeCT, nodeWeapon)
 	local rItem = WeaponManagerADND.builtInitiativeItem(nodeWeapon);
 	local rActor = ActorManager.resolveActor(nodeCT);	
 	local rRoll = ActionInitPO.getHackmasterInitRoll(rActor, true, rItem);
@@ -196,7 +217,6 @@ function generateDefaultHackmasterInit(nodeCT, nodeWeapon)
 	if rRoll.nDieType and rRoll.nDieType > 0 then
 		nInitResult = nInitResult + math.random(rRoll.nDieType);
 	end
-
 	nInitResult = nInitResult + rRoll.nMod;
 	return nInitResult;
 end
@@ -393,7 +413,7 @@ function clearActorInitQueueBelowThreshold(nodeCT, nThreshold)
 	end
 end
 
-function moveHackmasterActorToNextRound(nodeCT, nInitMOD)
+function moveHackmasterActorToNextRound(nodeCT, nInitMod)
 	local nInitResult = 0;
 	local nPreviousInitResult = DB.getValue(nodeCT, "previnitresult", 0);
 
@@ -410,7 +430,7 @@ function moveHackmasterActorToNextRound(nodeCT, nInitMOD)
 	    if (bIsPc and PlayerOptionManager.isDefaultingPcInitTo99()) or (not bIsPc and PlayerOptionManager.isDefaultingNpcInitTo99()) then
 	        nInitResult = 99;
 	    else
-	        nInitResult = CombatManagerADND.rollRandomInit(nInitMOD);
+	        nInitResult = math.max(1,CombatManagerADND.rollRandomInit(nInitMod));
 	    end
 	end
 	return nInitResult;

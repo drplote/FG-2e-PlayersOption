@@ -147,9 +147,15 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
       
       -- If healing from zero (or negative), then remove Stable effect and reset wounds to match HP
       if (nHealAmount > 0) and (nWounds >= nTotalHP) then
-        EffectManager.removeEffect(ActorManager.getCTNode(rTarget), "Stable");
-        nWounds = nTotalHP;
-        nHealAmount = 1; -- heals only restore 1 hp when below 0.
+        if PlayerOptionManager.shouldTreatDeathsDoorHealingSameAsAllOtherHealing() then
+          if (nWounds - nHealAmount <= nTotalHP) then
+            EffectManager.removeEffect(ActorManager.getCTNode(rTarget), "Stable");
+          end  
+        else
+          EffectManager.removeEffect(ActorManager.getCTNode(rTarget), "Stable");
+          nWounds = nTotalHP;
+          nHealAmount = 1; -- heals only restore 1 hp when below 0.
+        end
       end
 
       local nWoundHealAmount = math.min(nHealAmount, nWounds);

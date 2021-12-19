@@ -26,6 +26,7 @@
     <string name="option_label_hide_enemies_from_player_ct">Hide Enemies From Player CT?</string>
     <string name="option_val_chat">Chat</string>
     <string name="option_val_console">Console</string>
+    <string name="option_label_calculated_heal_below_zero">Treat Death's Door Healing Same As Normal Healing?</string>
 
 
     
