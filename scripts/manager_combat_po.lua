@@ -95,7 +95,7 @@ end
 
 function handleDelayTurn(msgOOB)
     local nodeCT = CombatManager.getActiveCT();
-    local rActor = ActorManager.getActorFromCT(nodeCT);
+    local rActor = ActorManagerPO.getActorFromCT(nodeCT);
     local sActorType = ActorManager.getType(rActor);
     local nodeActor = ActorManager.getCreatureNode(rActor);
     if PlayerOptionManager.isUsingPhasedInitiative() then
@@ -275,7 +275,7 @@ function rollEntryPhasedInitiative(nodeEntry)
     -- Inits: 0-1 top, 2-3 very fast, 4-5 fast, 6-7 average, 8-9 slow, 10-11 very slow, 12-13 bottom
 
     -- Get any effect modifiers
-    local rActor = ActorManager.getActorFromCT(nodeEntry);
+    local rActor = ActorManagerPO.getActorFromCT(nodeEntry);
     local sActorType = ActorManager.getType(rActor);
     local nodeActor = ActorManager.getCreatureNode(rActor);
     local nPhaseShift = getPhaseShiftForInitMod(nodeActor);

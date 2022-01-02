@@ -576,3 +576,7 @@ end
 function isAlignment(nodeChar, sAlignment)
   return ActorManagerADND.isAlignment(nodeChar, sAlignment);
 end
+
+function getActorFromCT(nodeEntry)
+  return ActorManager.resolveActor(nodeEntry);
+end
