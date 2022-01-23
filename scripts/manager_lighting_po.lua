@@ -1,7 +1,7 @@
-Torch = "LIGHT: 10/15 FFFFF3E1 flicker 25";
+Torch = "LIGHT: 10/15 FFFFF3E1"; -- Temporarily removed "flicker 25" from it for performance reasons
 BullseyeLantern = "LIGHT: 40/60 FFF9FEFF";
 HoodedLantern = "LIGHT: 20/30 FFF9FEFF";
-Candle = "LIGHT: 5 FFFFFCC3 flicker 100";
+Candle = "LIGHT: 5 FFFFFCC3"; -- Temporarily removed "flicker 25" from it for performance reasons
 LightSpell = "LIGHT: 20/20 FFFFFFFF";
 ContinualLightSpell = "LIGHT: 60/60 FFFFFFFF";
 DarknessSpell = "LIGHT: 15 darkness";

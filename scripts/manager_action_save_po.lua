@@ -16,11 +16,11 @@ function applySaveOverride(rSource, rOrigin, rAction, sUser)
 	if rAction and rAction.sSaveDesc == "TOP" then
 		if rAction.nTotal < rAction.nTarget then
 			local nodeChar = ActorManager.getCTNode(rSource);
+			local nDuration = rAction.nTarget - rAction.nTotal;
 			if nodeChar then 
-				EffectManager.addEffect("", "", ActorManager.getCTNode(rSource), 
-					{ sName = "Stunned", sLabel = "Stunned", nDuration = rAction.nTarget - rAction.nTotal }, true);
+				EffectManager.addEffect("", "", ActorManager.getCTNode(rSource), { sName = "Stunned", sLabel = "Stunned", nDuration = nDuration }, true);
+				EffectManager.addEffect("", "", ActorManager.getCTNode(rSource), { sName = "Prone", sLabel = "Prone", nDuration = nDuration }, true);
 			end
-			
 		end
 	end
 end
@@ -28,8 +28,7 @@ end
 
 function modSaveOverride(rSource, rTarget, rRoll)
 	addMagicalDefenseAdjustment(rSource, rTarget, rRoll);
-
-    HonorManagerPO.addSaveModifier(rSource, rRoll);
+  HonorManagerPO.addSaveModifier(rSource, rRoll);
 	fModSave(rSource, rTarget, rRoll);
 	addSpellPenetrationModifier(rSource, rTarget, rRoll);
 end

@@ -53,6 +53,16 @@ function onInit()
 
     fTurnOffAllInitRolled = CharlistManagerADND.turnOffAllInitRolled;
     CharlistManagerADND.turnOffAllInitRolled = turnOffAllInitRolledOverride;
+
+    CombatManager.setCustomCombatReset(resetInitPo);
+end
+
+function resetInitPo()
+    if PlayerOptionManager.isUsingHackmasterInitiative() then
+        for _,nodeCT in pairs(CombatManager.getCombatantNodes()) do
+            DB.setValue(nodeCT, "initresult", "number", 99);
+        end
+    end
 end
 
 function turnOffAllInitRolledOverride()

@@ -61,6 +61,9 @@ function getHonorProperties(nodeChar)
     elseif nScore >= DataCommonPO.aHonorThresholdsByLevel[nSaneLevel][2] and nScore <= DataCommonPO.aHonorThresholdsByLevel[nSaneLevel][3] then   
         sHonorWindow = "Great Honor";
         nHonorState = 1;
+    elseif nScore > DataCommonPO.aHonorThresholdsByLevel[nSaneLevel][3] then
+        sHonorWindow = "Too Much Honor";
+        nHonorState = 2;
     end
             
     local dbAbility = {};

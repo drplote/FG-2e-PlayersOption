@@ -134,7 +134,7 @@
     <string name="char_label_honor_dice">Honor Dice</string>
     <string name="char_tooltip_honor_dice">The die type you roll for your honor die</string>
     <string name="char_label_honor_window">Honor Window</string>
-    <string name="char_tooltip_honor_window">Great Honor gives +1 to every die rolled, 5% bonus XP, a 10% cost reduction on training, and one mulligan per session. Dishonor gives -1 to every die rolled, a 10% XP penalty, and a 10% cost increase on training.</string>
+    <string name="char_tooltip_honor_window">Great Honor gives +1 to every die rolled, 5% bonus XP, a 10% cost reduction on training, and one mulligan per session. Dishonor gives -1 to every die rolled, a 10% XP penalty, and a 10% cost increase on training. Too Much Honor increases the chance of random encounters and makes that PC more likely to be targeted by monsters.</string>
 
     <string name="modifier_label_calledshot">Called Shots</string>
     <string name="modifier_label_calledshot_abdomen">Abdomen</string>
