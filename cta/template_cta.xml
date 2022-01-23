@@ -42,6 +42,7 @@
 				function updateMoraleStatus()
 					local nodeChar = window.getDatabaseNode();
 					setValue(MoraleManagerPO.getBattleReadiness(nodeChar));
+					setVisible(not ActorManagerPO.isPC(nodeChar));
 				end
 			</script>
 			<readonly/>
