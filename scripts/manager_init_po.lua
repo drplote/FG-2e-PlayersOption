@@ -374,8 +374,8 @@ end
 function setActorFixedAttackRate(nodeChar, nNumAttacks)
 	local nodeCT = ActorManager.getCTNode(nodeChar);
 
-	if not nNumAttacks or nNumAttacks < 1 or nNumAttacks > 5 then
-		DebugPO.log("nNumAttacks", nNumAttacks, "Only support a value of 1-5");
+	if not nNumAttacks or nNumAttacks < 1 or nNumAttacks > 10 then
+		DebugPO.log("nNumAttacks", nNumAttacks, "Only support a value of 1-10");
 		return;
 	end
 
@@ -393,6 +393,16 @@ function setActorFixedAttackRate(nodeChar, nNumAttacks)
 		setActorInitQueue(nodeCT, {4, 7, 10});
 	elseif nNumAttacks == 5 then
 		setActorInitQueue(nodeCT, {3, 5, 7, 9});
+	elseif nNumAttacks == 6 then
+		setActorInitQueue(nodeCT, {3, 5, 6, 7, 9});
+	elseif nNumAttacks == 7 then
+		setActorInitQueue(nodeCT, {3, 4, 5, 7, 8, 9});
+	elseif nNumAttacks == 8 then
+		setActorInitQueue(nodeCT, {2, 3, 5, 6, 7, 9, 10});
+	elseif nNumAttacks == 9 then
+		setActorInitQueue(nodeCT, {2, 3, 4, 6, 7, 8, 9, 10});
+	elseif nNumAttacks == 10 then
+		setActorInitQueue(nodeCT, {2, 3, 4, 5, 6, 7, 8, 9, 10});
 	end
 
 	if ActorManagerPO.isPC(nodeCT) then
@@ -456,8 +466,10 @@ function getMeleeInitDieType()
 		return 3;
 	elseif nSequencedAttacks == 4 then
 		return 3;
-	elseif nSequencedAttacks == 5 then
+	elseif nSequencedAttacks >= 5 and nSequencedAttacks < 10 then
 		return 2;
+	elseif nSequencedAttacks >= 10 then
+		return 1;
 	else
 		return 10;
 	end

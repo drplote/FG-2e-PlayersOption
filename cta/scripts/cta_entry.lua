@@ -53,41 +53,47 @@ function performSequencedInitAction(nNumAttacks)
     InitManagerPO.rollSequencedAttackInit(getDatabaseNode(), nNumAttacks);
 end
 
+function deleteAndAddXp()
+    local nodeChar = CombatManagerADND.getNodeFromCT(getDatabaseNode());
+    PartyManagerPO.addEncounterNPC(nodeChar);
+    delete();
+end
+
 function performFixedSequenceInitAction(nNumAttacks)
     InitManagerPO.setActorFixedAttackRate(getDatabaseNode(), nNumAttacks);
 end
 
 function performCloneGroupInitAction()
-    local nodeChar = getDatabaseNode();
-    InitManagerPO.cloneInitToSimilarCreatures(nodeChar, true);
+    local nodeCT = getDatabaseNode();
+    InitManagerPO.cloneInitToSimilarCreatures(nodeCT, true);
 end
 
 function performInitAction(sModifierKey)
     if sModifierKey then
         ModifierStack.setModifierKey(sModifierKey, true);
     end
-    local nodeChar = getDatabaseNode();
-    local rActor = ActorManager.resolveActor(nodeChar);
+    local nodeCT = getDatabaseNode();
+    local rActor = ActorManager.resolveActor(nodeCT);
     ActionInit.performRoll(nil, rActor);
 end
 
 function performDelayAction(nDelay)
-    local nodeChar = getDatabaseNode();
+    local nodeCT = getDatabaseNode();
     if not nDelay then
-        InitManagerPO.delayActor(nodeChar);
+        InitManagerPO.delayActor(nodeCT);
     else
-        InitManagerPO.delayActorForSegments(nodeChar, nDelay);
+        InitManagerPO.delayActorForSegments(nodeCT, nDelay);
     end
 end
 
 function performEffectAction(sEffectName, isRemoving)
-    local nodeChar = getDatabaseNode();
+    local nodeCT = getDatabaseNode();
 
     if isRemoving then
-        EffectManager.removeEffect(nodeChar, sEffectName);
+        EffectManager.removeEffect(nodeCT, sEffectName);
     else
-        if not EffectManager5E.hasEffect(nodeChar, sEffectName, nil) then
-            EffectManager.addEffect("", "", nodeChar, { sName = sEffectName, sLabel = sEffectName, nDuration = 0 }, true);
+        if not EffectManager5E.hasEffect(nodeCT, sEffectName, nil) then
+            EffectManager.addEffect("", "", nodeCT, { sName = sEffectName, sLabel = sEffectName, nDuration = 0 }, true);
         end
     end
 end

@@ -1838,9 +1838,9 @@ function buildHackingCritMatrix()
 	aHackingCritMatrix["Head, top"][16] = {dm=4,a=7,d=7,b=1,u=true,sc=true};
 	aHackingCritMatrix["Head, top"][17] = {dm=4,a=7,d=7,b=1,u=true,sc=true};
 	aHackingCritMatrix["Head, top"][18] = {dm=4,a=8,d=8,b=1,v=1,u=true,sc=true};
-	aHackingCritMatrix["Head, top"][19] = {dm=4,a=8,d=8,bm=1,v=1,u=true,s=true,};
-	aHackingCritMatrix["Head, top"][20] = {dm=4,a=9,d=9,bm=1,v=1,u=true,s=true};
-	aHackingCritMatrix["Head, top"][21] = {cm=4,a=9,d=9,bs=1,v=1,u=true,s=true};
+	aHackingCritMatrix["Head, top"][19] = {dm=4,a=8,d=8,bm=1,v=1,u=true,sc=true,};
+	aHackingCritMatrix["Head, top"][20] = {dm=4,a=9,d=9,bm=1,v=1,u=true,sc=true};
+	aHackingCritMatrix["Head, top"][21] = {cm=4,a=9,d=9,bs=1,v=1,u=true,sc=true};
 	aHackingCritMatrix["Head, top"][22] = {dead="skull caved-in"};
 	aHackingCritMatrix["Head, top"][23] = {dead="brain goo"};
 	aHackingCritMatrix["Head, top"][24] = {dead="brain goo"};
@@ -3140,9 +3140,9 @@ function buildPuncturingCritMatrix()
 	aPuncturingCritMatrix["Head, top"][16] = {dm=4,a=7,d=7,t=1,u=true,sc=true};
 	aPuncturingCritMatrix["Head, top"][17] = {dm=4,a=7,d=7,mt=1,u=true,sc=true};
 	aPuncturingCritMatrix["Head, top"][18] = {dm=4,a=8,d=8,mt=1,ib=true,v=1,u=true,sc=true};
-	aPuncturingCritMatrix["Head, top"][19] = {dm=4,a=8,d=8,b=1,ib=true,v=1,u=true,s=true,};
-	aPuncturingCritMatrix["Head, top"][20] = {dm=4,a=9,d=9,b=1,ib=true,v=1,u=true,s=true};
-	aPuncturingCritMatrix["Head, top"][21] = {cm=4,a=9,d=9,bf=1,ib=true,v=1,u=true,s=true};
+	aPuncturingCritMatrix["Head, top"][19] = {dm=4,a=8,d=8,b=1,ib=true,v=1,u=true,sc=true,};
+	aPuncturingCritMatrix["Head, top"][20] = {dm=4,a=9,d=9,b=1,ib=true,v=1,u=true,sc=true};
+	aPuncturingCritMatrix["Head, top"][21] = {cm=4,a=9,d=9,bf=1,ib=true,v=1,u=true,sc=true};
 	aPuncturingCritMatrix["Head, top"][22] = {dead="skull caved-in"};
 	aPuncturingCritMatrix["Head, top"][23] = {dead="brain goo"};
 	aPuncturingCritMatrix["Head, top"][24] = {dead="brain goo"};

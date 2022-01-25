@@ -85,6 +85,7 @@
     <script name="MagicDetectionMananger" file="scripts/manager_magic_detection_po.lua"/>
     <script name="DMTools" file="scripts/dm_tools_po.lua"/>
     <script name="MoraleManagerPO" file="scripts/manager_morale_po.lua"/>
+    <script name="PartyManagerPO" file="scripts/manager_party_po.lua" />
 
     
   </base>

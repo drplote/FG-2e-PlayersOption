@@ -12,6 +12,12 @@ function initPlayerInitMenu(control)
 	control.registerMenuItem(Interface.getString("rate_of_fire_3_menuitem"), "threeIcon", 3, 3);
 	control.registerMenuItem(Interface.getString("rate_of_fire_4_menuitem"), "fourIcon", 3, 4);
 	control.registerMenuItem(Interface.getString("rate_of_fire_5_menuitem"), "fiveIcon", 3, 5);
+	control.registerMenuItem(Interface.getString("rate_of_fire_6_menuitem"), "sixIcon", 3, 6);
+	control.registerMenuItem(Interface.getString("rate_of_fire_7plus_menuitem"), "sevenPlusIcon", 3, 8);
+	control.registerMenuItem(Interface.getString("rate_of_fire_7_menuitem"), "sevenIcon", 3, 8, 8);
+	control.registerMenuItem(Interface.getString("rate_of_fire_8_menuitem"), "eightIcon", 3, 8, 1);
+	control.registerMenuItem(Interface.getString("rate_of_fire_9_menuitem"), "nineIcon", 3, 8, 2);
+	control.registerMenuItem(Interface.getString("rate_of_fire_10_menuitem"), "tenIcon", 3, 8, 3);
 
 end
 
@@ -28,6 +34,16 @@ function onPlayerInitMenuSelection(control, selection, subselection, sub2selecti
 		control.performFixedSequenceInitAction(4);
 	elseif selection == 3 and subselection == 5 then
 		control.performFixedSequenceInitAction(5);
+	elseif selection == 3 and subselection == 6 then
+		control.performFixedSequenceInitAction(6);
+	elseif selection == 3 and subselection == 8 and sub2selection == 8 then
+		control.performFixedSequenceInitAction(7);
+	elseif selection == 3 and subselection == 8 and sub2selection == 1 then
+		control.performFixedSequenceInitAction(8);
+	elseif selection == 3 and subselection == 8 and sub2selection == 2 then
+		control.performFixedSequenceInitAction(9);
+	elseif selection == 3 and subselection == 8 and sub2selection == 3 then
+		control.performFixedSequenceInitAction(10);
 	end
 end
 
@@ -164,6 +180,12 @@ function initCombatTrackerActionMenu(control)
 	control.registerMenuItem(Interface.getString("rate_of_fire_3_menuitem"), "threeIcon", 4, 3);
 	control.registerMenuItem(Interface.getString("rate_of_fire_4_menuitem"), "fourIcon", 4, 4);
 	control.registerMenuItem(Interface.getString("rate_of_fire_5_menuitem"), "fiveIcon", 4, 5);
+	control.registerMenuItem(Interface.getString("rate_of_fire_6_menuitem"), "sixIcon", 4, 6);
+	control.registerMenuItem(Interface.getString("rate_of_fire_7plus_menuitem"), "sevenPlusIcon", 4, 7);
+	control.registerMenuItem(Interface.getString("rate_of_fire_7_menuitem"), "sevenIcon", 4, 7, 7);
+	control.registerMenuItem(Interface.getString("rate_of_fire_8_menuitem"), "eightIcon", 4, 7, 8);
+	control.registerMenuItem(Interface.getString("rate_of_fire_9_menuitem"), "nineIcon", 4, 7, 1);
+	control.registerMenuItem(Interface.getString("rate_of_fire_10_menuitem"), "tenIcon", 4, 7, 2);
 
 	control.registerMenuItem(Interface.getString("attack_rate_menuitem"), "attackRateIcon", 5);
 	control.registerMenuItem(Interface.getString("attack_rate_1_menuitem"), "oneIcon", 5, 2);
@@ -171,6 +193,12 @@ function initCombatTrackerActionMenu(control)
 	control.registerMenuItem(Interface.getString("attack_rate_3_menuitem"), "threeIcon", 5, 4);
 	control.registerMenuItem(Interface.getString("attack_rate_4_menuitem"), "fourIcon", 5, 5);
 	control.registerMenuItem(Interface.getString("attack_rate_5_menuitem"), "fiveIcon", 5, 6);
+	control.registerMenuItem(Interface.getString("attack_rate_6_menuitem"), "sixIcon", 5, 7);
+	control.registerMenuItem(Interface.getString("attack_rate_7plus_menuitem"), "sevenPlusIcon", 5, 8);
+	control.registerMenuItem(Interface.getString("attack_rate_7_menuitem"), "sevenIcon", 5, 8, 8);
+	control.registerMenuItem(Interface.getString("attack_rate_8_menuitem"), "eightIcon", 5, 8, 1);
+	control.registerMenuItem(Interface.getString("attack_rate_9_menuitem"), "nineIcon", 5, 8, 2);
+	control.registerMenuItem(Interface.getString("attack_rate_10_menuitem"), "tenIcon", 5, 8, 3);
 
 	if not PlayerOptionManager.isUsingPhasedInitiative() then
 		control.registerMenuItem(Interface.getString("actor_init_menuitem"), "standardInitIcon", 8);
@@ -263,6 +291,16 @@ function onCombatTrackerActionMenuSelection(control, selection, subselection, su
 			control.performFixedSequenceInitAction(4);
 		elseif subselection == 5 then
 			control.performFixedSequenceInitAction(5);
+		elseif subselection == 6 then
+			control.performFixedSequenceInitAction(6);
+		elseif subselection == 7 and sub2selection == 7 then
+			control.performFixedSequenceInitAction(7);
+		elseif subselection == 7 and sub2selection == 8 then
+			control.performFixedSequenceInitAction(8);
+		elseif subselection == 7 and sub2selection == 1 then
+			control.performFixedSequenceInitAction(9);
+		elseif subselection == 7 and sub2selection == 2 then
+			control.performFixedSequenceInitAction(10);
 		end
 	elseif selection == 5 then
 		if subselection == 2 then
@@ -275,6 +313,16 @@ function onCombatTrackerActionMenuSelection(control, selection, subselection, su
 			control.performSequencedInitAction(4);
 		elseif subselection == 6 then
 			control.performSequencedInitAction(5);
+		elseif subselection == 7 then
+			control.performSequencedInitAction(6);
+		elseif subselection == 8 and sub2selection == 8 then
+			control.performSequencedInitAction(7);
+		elseif subselection == 8 and sub2selection == 1 then
+			control.performSequencedInitAction(8);
+		elseif subselection == 8 and sub2selection == 2 then
+			control.performSequencedInitAction(9);
+		elseif subselection == 8 and sub2selection == 3 then
+			control.performSequencedInitAction(10);
 		end
 	elseif not PlayerOptionManager.isUsingPhasedInitiative() then
 	    if selection == 8 then
@@ -417,6 +465,12 @@ function initCombatTrackerActorMenu(control)
 	control.registerMenuItem(Interface.getString("rate_of_fire_3_menuitem"), "threeIcon", 4, 3);
 	control.registerMenuItem(Interface.getString("rate_of_fire_4_menuitem"), "fourIcon", 4, 4);
 	control.registerMenuItem(Interface.getString("rate_of_fire_5_menuitem"), "fiveIcon", 4, 5);
+	control.registerMenuItem(Interface.getString("rate_of_fire_6_menuitem"), "sixIcon", 4, 6);
+	control.registerMenuItem(Interface.getString("rate_of_fire_7plus_menuitem"), "sevenPlusIcon", 4, 7);
+	control.registerMenuItem(Interface.getString("rate_of_fire_7_menuitem"), "sevenIcon", 4, 7, 7);
+	control.registerMenuItem(Interface.getString("rate_of_fire_8_menuitem"), "eightIcon", 4, 7, 8);
+	control.registerMenuItem(Interface.getString("rate_of_fire_9_menuitem"), "nineIcon", 4, 7, 1);
+	control.registerMenuItem(Interface.getString("rate_of_fire_10_menuitem"), "tenIcon", 4, 7, 2);
 
 	control.registerMenuItem(Interface.getString("attack_rate_menuitem"), "attackRateIcon", 5);
 	control.registerMenuItem(Interface.getString("attack_rate_1_menuitem"), "oneIcon", 5, 2);
@@ -424,9 +478,16 @@ function initCombatTrackerActorMenu(control)
 	control.registerMenuItem(Interface.getString("attack_rate_3_menuitem"), "threeIcon", 5, 4);
 	control.registerMenuItem(Interface.getString("attack_rate_4_menuitem"), "fourIcon", 5, 5);
 	control.registerMenuItem(Interface.getString("attack_rate_5_menuitem"), "fiveIcon", 5, 6);
+	control.registerMenuItem(Interface.getString("attack_rate_6_menuitem"), "sixIcon", 5, 7);
+	control.registerMenuItem(Interface.getString("attack_rate_7plus_menuitem"), "sevenPlusIcon", 5, 8);
+	control.registerMenuItem(Interface.getString("attack_rate_7_menuitem"), "sevenIcon", 5, 8, 8);
+	control.registerMenuItem(Interface.getString("attack_rate_8_menuitem"), "eightIcon", 5, 8, 1);
+	control.registerMenuItem(Interface.getString("attack_rate_9_menuitem"), "nineIcon", 5, 8, 2);
+	control.registerMenuItem(Interface.getString("attack_rate_10_menuitem"), "tenIcon", 5, 8, 3);
 
 	control.registerMenuItem(Interface.getString("list_menu_deleteitem"), "delete", 6);
     control.registerMenuItem(Interface.getString("list_menu_deleteconfirm"), "delete", 6, 7);
+    control.registerMenuItem(Interface.getString("list_menu_delete_and_add_xp"), "xpIcon", 6, 3);
 
     control.registerMenuItem(Interface.getString("lighting_vision_menuitem"), "lightingVisionIcon", 7);
     control.registerMenuItem(Interface.getString("weapon_glow_menuitem"), "weaponGlowMenuIcon", 7, 1);
@@ -527,6 +588,16 @@ function onCombatTrackerActorMenuSelection(control, selection, subselection, sub
 			control.performFixedSequenceInitAction(4);
 		elseif subselection == 5 then
 			control.performFixedSequenceInitAction(5);
+		elseif subselection == 6 then
+			control.performFixedSequenceInitAction(6);
+		elseif subselection == 7 and sub2selection == 7 then
+			control.performFixedSequenceInitAction(7);
+		elseif subselection == 7 and sub2selection == 8 then
+			control.performFixedSequenceInitAction(8);
+		elseif subselection == 7 and sub2selection == 1 then
+			control.performFixedSequenceInitAction(9);
+		elseif subselection == 7 and sub2selection == 2 then
+			control.performFixedSequenceInitAction(10);
 		end
 	elseif selection == 5 then -- melee attack sequence submenu
 		if subselection == 2 then
@@ -539,10 +610,22 @@ function onCombatTrackerActorMenuSelection(control, selection, subselection, sub
 			control.performSequencedInitAction(4);
 		elseif subselection == 6 then
 			control.performSequencedInitAction(5);
+		elseif subselection == 7 then
+			control.performSequencedInitAction(6);
+		elseif subselection == 8 and sub2selection == 8 then
+			control.performSequencedInitAction(7);
+		elseif subselection == 8 and sub2selection == 1 then
+			control.performSequencedInitAction(8);
+		elseif subselection == 8 and sub2selection == 2 then
+			control.performSequencedInitAction(9);
+		elseif subselection == 8 and sub2selection == 3 then
+			control.performSequencedInitAction(10);
 		end
-	end
-
-	if selection == 7 then -- vision and lighting submen u
+	elseif selection == 6 then
+		if subselection == 3 then
+			control.deleteAndAddXp();
+		end
+	elseif selection == 7 then -- vision and lighting submen u
 		local nodeActor = control.getCtNodeActor();
 		if subselection == 1 then -- weapon glow submenu
 			if sub2selection == 1 then 

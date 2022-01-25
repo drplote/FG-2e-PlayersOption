@@ -90,6 +90,46 @@ function handleApplyInitOverride(msgOOB)
 				InitManagerPO.addInitToActor(nodeCT, nNewInit + 4);
 				InitManagerPO.addInitToActor(nodeCT, nNewInit + 6);
 				InitManagerPO.addInitToActor(nodeCT, nNewInit + 8);
+			elseif nSequencedAttacks == 6 then
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 2);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 3);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 5);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 7);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 8);
+			elseif nSequencedAttacks == 7 then
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 2);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 3);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 4);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 6);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 7);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 8);
+			elseif nSequencedAttacks == 8 then
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 1);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 2);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 3);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 5);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 6);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 7);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 8);
+			elseif nSequencedAttacks == 9 then
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 1);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 2);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 3);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 4);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 5);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 6);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 7);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 8);
+			elseif nSequencedAttacks == 10 then
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 1);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 2);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 3);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 4);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 5);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 6);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 7);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 8);
+				InitManagerPO.addInitToActor(nodeCT, nNewInit + 9);
 			end
 		else
 			InitManagerPO.clearActorInitQueue(nodeCT);

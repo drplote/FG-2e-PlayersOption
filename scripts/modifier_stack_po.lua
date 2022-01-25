@@ -19,6 +19,16 @@ function peekSequencedInitModifierKey()
 		return 4;
 	elseif ModifierManager.getRawKey("SEQUENCED_ATTACK_5") then
 		return 5;
+	elseif ModifierManager.getRawKey("SEQUENCED_ATTACK_6") then
+		return 6;
+	elseif ModifierManager.getRawKey("SEQUENCED_ATTACK_7") then
+		return 7;
+	elseif ModifierManager.getRawKey("SEQUENCED_ATTACK_8") then
+		return 8;
+	elseif ModifierManager.getRawKey("SEQUENCED_ATTACK_9") then
+		return 9;
+	elseif ModifierManager.getRawKey("SEQUENCED_ATTACK_10") then
+		return 10;
 	end
 
 	return 0;
@@ -33,6 +43,16 @@ function getSequencedInitModifierKey()
 		return 4;
 	elseif ModifierStack.getModifierKey("SEQUENCED_ATTACK_5") then
 		return 5;
+	elseif ModifierStack.getModifierKey("SEQUENCED_ATTACK_6") then
+		return 6;
+	elseif ModifierStack.getModifierKey("SEQUENCED_ATTACK_7") then
+		return 7;
+	elseif ModifierStack.getModifierKey("SEQUENCED_ATTACK_8") then
+		return 8;
+	elseif ModifierStack.getModifierKey("SEQUENCED_ATTACK_9") then
+		return 9;
+	elseif ModifierStack.getModifierKey("SEQUENCED_ATTACK_10") then
+		return 10;
 	end
 
 	return 0;

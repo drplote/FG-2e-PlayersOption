@@ -216,8 +216,8 @@
     <string name="rate_of_fire_4_menuitem">4 attacks</string>
     <string name="rate_of_fire_5_menuitem">5 attacks</string>
     <string name="rate_of_fire_6_menuitem">6 attacks</string>
-    <string name="rate_of_fire_7_menuitem">7-10 attacks</string>
-    <string name="rate_of_fire_7plus_menuitem">7 attacks</string>
+    <string name="rate_of_fire_7plus_menuitem">7-10 attacks</string>
+    <string name="rate_of_fire_7_menuitem">7 attacks</string>
     <string name="rate_of_fire_8_menuitem">8 attacks</string>
     <string name="rate_of_fire_9_menuitem">9 attacks</string>
     <string name="rate_of_fire_10_menuitem">10 attacks</string>
@@ -228,6 +228,14 @@
     <string name="attack_rate_3_menuitem">3 attacks</string>
     <string name="attack_rate_4_menuitem">4 attacks</string>
     <string name="attack_rate_5_menuitem">5 attacks</string>
+    <string name="attack_rate_6_menuitem">6 attacks</string>
+    <string name="attack_rate_7_menuitem">7 attacks</string>
+    <string name="attack_rate_7plus_menuitem">7-10 attacks</string>
+    <string name="attack_rate_8_menuitem">8 attacks</string>
+    <string name="attack_rate_9_menuitem">9 attacks</string>
+    <string name="attack_rate_10_menuitem">10 attacks</string>
+
+    <string name="list_menu_delete_and_add_xp">Confirm and add XP</string>
 
     <string name="lighting_vision_menuitem">Lighting and Vision</string>
     <string name="weapon_glow_menuitem">Add Weapon Glow</string>

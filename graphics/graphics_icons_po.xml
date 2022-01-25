@@ -56,6 +56,7 @@
 
   <icon name="sterno_icon" file="graphics/icons/sterno_icon.png" />
   <icon name="blankIcon" file="graphics/icons/blank_icon.png" />
+  <icon name="xpIcon" file="graphics/icons/upgrade.png" />
 
   <icon name="attackSubmenuIcon" file="graphics/icons/attack_submenu_icon.png" />
 

@@ -68,7 +68,6 @@ end
 function turnOffAllInitRolledOverride()
   for _,vChild in pairs(CombatManager.getCombatantNodes()) do
     local rActor = ActorManager.resolveActor(vChild);
-    local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);  
     if not PlayerOptionManager.isUsingHackmasterInitiative() then
         DB.setValue(vChild, "initrolled", "number", 0);
     end
@@ -106,7 +105,6 @@ end
 function handleDelayTurn(msgOOB)
     local nodeCT = CombatManager.getActiveCT();
     local rActor = ActorManagerPO.getActorFromCT(nodeCT);
-    local sActorType = ActorManager.getType(rActor);
     local nodeActor = ActorManager.getCreatureNode(rActor);
     if PlayerOptionManager.isUsingPhasedInitiative() then
         delayThenNextActor(2);
@@ -286,7 +284,6 @@ function rollEntryPhasedInitiative(nodeEntry)
 
     -- Get any effect modifiers
     local rActor = ActorManagerPO.getActorFromCT(nodeEntry);
-    local sActorType = ActorManager.getType(rActor);
     local nodeActor = ActorManager.getCreatureNode(rActor);
     local nPhaseShift = getPhaseShiftForInitMod(nodeActor);
     
