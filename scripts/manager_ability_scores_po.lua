@@ -212,7 +212,7 @@ end
 
 function getComelinessProperties(nodeChar)
     local nScore = DB.getValue(nodeChar, "abilities.comeliness.total", DB.getValue(nodeChar, "abilities.comeliness.score", 0));
-    local rActor = ActorManager.getActor("", nodeChar);
+    local rActor = ActorManagerPO.getActor("", nodeChar);
     if rActor then
       -- adjust ability scores from effects!
       local sAbilityEffect = "BCOM";
@@ -241,7 +241,7 @@ function getHackmasterStrengthProperties(nodeChar)
     local nScore = DB.getValue(nodeChar, "abilities.strength.total", DB.getValue(nodeChar, "abilities.strength.score", 0));
     local nPercent = DB.getValue(nodeChar, "abilities.strength.percenttotal", DB.getValue(nodeChar, "abilities.strength.percenttotal", 0));
     
-    local rActor = ActorManager.getActor("", nodeChar);
+    local rActor = ActorManagerPO.getActor("", nodeChar);
 
     if rActor then
         -- adjust ability scores from effects!
@@ -297,7 +297,7 @@ function getHackmasterDexterityProperties(nodeChar)
     local nScore = DB.getValue(nodeChar, "abilities.dexterity.total", DB.getValue(nodeChar, "abilities.dexterity.score", 0));
 	local nPercent = DB.getValue(nodeChar, "abilities.dexterity.percenttotal", DB.getValue(nodeChar, "abilities.dexterity.percenttotal", 0));
 
-    local rActor = ActorManager.getActor("", nodeChar);
+    local rActor = ActorManagerPO.getActor("", nodeChar);
     if rActor then
         -- adjust ability scores from effects!
         local sAbilityEffect = "BDEX";
@@ -331,7 +331,7 @@ end
 function getHackmasterWisdomProperties(nodeChar)
     local nScore = DB.getValue(nodeChar, "abilities.wisdom.total", DB.getValue(nodeChar, "abilities.wisdom.score", 0));
     
-    local rActor = ActorManager.getActor("", nodeChar);
+    local rActor = ActorManagerPO.getActor("", nodeChar);
     if rActor then
         -- adjust ability scores from effects!
         local sAbilityEffect = "BWIS";
@@ -370,7 +370,7 @@ end
 
 function getHackmasterConstitutionProperties(nodeChar)
     local nScore = DB.getValue(nodeChar, "abilities.constitution.total", DB.getValue(nodeChar, "abilities.constitution.score", 0));
-    local rActor = ActorManager.getActor("", nodeChar);
+    local rActor = ActorManagerPO.getActor("", nodeChar);
     if rActor then
         -- adjust ability scores from effects!
         local sAbilityEffect = "BCON";
@@ -401,7 +401,7 @@ end
 
 function getHackmasterCharismaProperties(nodeChar)
     local nScore = DB.getValue(nodeChar, "abilities.charisma.total", DB.getValue(nodeChar, "abilities.charisma.score", 0));
-    local rActor = ActorManager.getActor("", nodeChar);
+    local rActor = ActorManagerPO.getActor("", nodeChar);
     if rActor then
       -- adjust ability scores from effects!
       local sAbilityEffect = "BCHA";
@@ -426,7 +426,7 @@ end
 
 function getHackmasterComelinessProperties(nodeChar)
     local nScore = DB.getValue(nodeChar, "abilities.comeliness.total", DB.getValue(nodeChar, "abilities.comeliness.score", 0));
-    local rActor = ActorManager.getActor("", nodeChar);
+    local rActor = ActorManagerPO.getActor("", nodeChar);
     if rActor then
       -- adjust ability scores from effects!
       local sAbilityEffect = "BCOM";
@@ -452,7 +452,7 @@ end
 
 function getHackmasterIntelligenceProperties(nodeChar)
     local nScore = DB.getValue(nodeChar, "abilities.intelligence.total", DB.getValue(nodeChar, "abilities.intelligence.score", 0));
-    local rActor = ActorManager.getActor("", nodeChar);
+    local rActor = ActorManagerPO.getActor("", nodeChar);
     if rActor then
         -- adjust ability scores from effects!
         local sAbilityEffect = "BINT";

@@ -533,7 +533,6 @@ function getActor()
 		nodeActor = node.getChild(actorpath[1]);
     end
     
-    --return ActorManager.getActor(actortype[1], nodeActor);
     return ActorManager.resolveActor( nodeActor);
 end
 

@@ -9,7 +9,7 @@ function update(bReadOnly)
 end
 
 function action(draginfo)
-  local rActor = ActorManager.getActor("", window.getDatabaseNode());
+  local rActor = ActorManager.resolveActor(window.getDatabaseNode());
    HonorManagerPO.rollHonorDice(rActor, draginfo);
   return true;
 end

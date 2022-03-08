@@ -51,9 +51,8 @@ function getHonorState(rChar)
 	if not rChar or not PlayerOptionManager.isHonorEnabled() then
 		return 0;
 	else
-		local sNodeType = ActorManager.getType(rChar);
 		local nodeChar = ActorManager.getCreatureNode(rChar);
-		if sNodeType == "pc" then
+		if ActorManager.isPC(rChar) then
 			return DB.getValue(nodeChar, "abilities.honor.honorState", 0);
 		else
 		  local sSpecialAttacks = DB.getValue(nodeChar, "specialAttacks", "");

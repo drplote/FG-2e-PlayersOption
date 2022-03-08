@@ -116,7 +116,7 @@ function getDefenseValue(rAttacker, rDefender, rRoll)
   
   local sDefenseStat = "dexterity";
 
-  local sDefenderType = ActorManager.getType(rDefender);
+  local sDefenderType = ActorManager.getRecordType(rDefender);
   local nodeDefender = ActorManager.getCreatureNode(rDefender);
   if not nodeDefender then
     return nil, 0, 0, nACShield;
@@ -579,4 +579,9 @@ end
 
 function getActorFromCT(nodeEntry)
   return ActorManager.resolveActor(nodeEntry);
+end
+
+function getActor(first, second)
+  -- Used to reroute deprecated call
+  return ActorManager.resolveActor(second);
 end

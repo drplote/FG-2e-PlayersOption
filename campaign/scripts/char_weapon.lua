@@ -5,7 +5,7 @@ end
 function onAttackAction(draginfo)
     local nodeWeapon = getDatabaseNode();
     local nodeChar = nodeWeapon.getChild("...")
-    local rActor = ActorManager.getActor("", nodeChar);
+    local rActor = ActorManagerPO.getActor("", nodeChar);
 
     -- add itemPath to rActor so that when effects are checked we can 
     -- make compare against action only effects
