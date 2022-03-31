@@ -369,3 +369,36 @@ function processPenetration(draginfo, penPlus)
 		end
 	end
 end
+
+function getDiceTotal(rRoll)
+	local nTotal = 0;
+	
+	for _,v in ipairs(rRoll.aDice) do
+		if not v.dropped then
+			if v.value then
+				nTotal = nTotal + v.value;
+			else
+				nTotal = nTotal + v.result;
+			end
+		end
+	end
+
+	return nTotal;
+end
+
+function applyBaseRollMultiplier(rRoll, nMultiplier)
+	if nMultiplier < 0 or nMultiplier == 1 then
+		return;
+	end
+
+	local nDiceTotal = getDiceTotal(rRoll);
+	local nNewResult = nDiceTotal * nMultiplier;
+	local nChange = nNewResult - nDiceTotal;
+	local sPlusMinus = "+";
+	if nMultiplier < 1 then
+		sPlusMinus = "-";
+	end
+
+	rRoll.nMod = rRoll.nMod + nChange;
+	rRoll.sDesc = rRoll.sDesc .. " [x" .. nMultiplier .. " = " .. sPlusMinus .. " " .. math.abs(nChange) .. "]"; 
+end

@@ -30,6 +30,7 @@ sCoinWeightOptionKey = "HouseRule_CoinWeight";
 sRadiantNecroticArmor = "HouseRule_Do_Radiant_Necrotic_Damage_Armor";
 sHideEnemiesFromPlayerCT = "AdditionalAutomation_HideEnemiesFromPlayerCT";
 sCalculatedHealBelowZero = "AdditionalAutomation_CalculatedHealBelowZero";
+sAlternateDmgxOptionKey = "AdditionalAutomation_AlternateDMGX";
 
 function onInit()
     registerOptions();
@@ -123,6 +124,8 @@ function registerOptions()
 	OptionsManager.registerOption2(sHideEnemiesFromPlayerCT, false, "option_header_automation", "option_label_hide_enemies_from_player_ct", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 
 	OptionsManager.registerOption2(sCalculatedHealBelowZero, false, "option_header_automation", "option_label_calculated_heal_below_zero", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
+
+	OptionsManager.registerOption2(sAlternateDmgxOptionKey, false, "option_header_automation", "option_label_alternate_dmgx", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
     
     -- House rules
@@ -162,6 +165,10 @@ function registerOptions()
 
 	OptionsManager.registerOption2(sRadiantNecroticArmor, false, "option_header_house_rule", "option_label_radiant_necrotic_armor", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
+end
+
+function shouldUseAlternateDmgx()
+	return OptionsManager.isOption(sAlternateDmgxOptionKey, "on");
 end
 
 function shouldTreatDeathsDoorHealingSameAsAllOtherHealing()

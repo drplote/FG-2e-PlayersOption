@@ -810,8 +810,94 @@ function onDamageRollOverride(rSource, rRoll)
   end
 
   HonorManagerPO.addDamageModifier(rSource, rRoll);
-  
-  fOnDamageRoll(rSource, rRoll);
+
+  -- Handle max damage
+  local bMax = rRoll.sDesc:match("%[MAX%]") or rRoll.sCriticalType:match("max");
+  if bMax then
+    for _,vDie in ipairs(rRoll.aDice) do
+      local sSign, sColor, sDieSides = vDie.type:match("^([%-%+]?)([dDrRgGbBpP])([%dF]+)");
+      if sDieSides then
+        local nResult;
+        if sDieSides == "F" then
+          nResult = 1;
+        else
+          nResult = tonumber(sDieSides) or 0;
+        end
+        
+        if sSign == "-" then
+          nResult = 0 - nResult;
+        end
+        
+        vDie.result = nResult;
+        vDie.value = nil;
+        if sColor == "d" or sColor == "D" then
+          if sSign == "-" then
+            vDie.type = "-b" .. sDieSides;
+          else
+            vDie.type = "b" .. sDieSides;
+          end
+        end
+      end
+    end
+    if rRoll.aDice.expr then
+      rRoll.aDice.expr = nil;
+    end
+  end
+
+  local bXTwoDamage = rRoll.sCriticalType:match("timestwo");
+  -- crit == x2, so we double the result of all rolls
+  if rRoll.bCritical and bXTwoDamage then
+    for _,vDie in ipairs(rRoll.aDice) do
+      local sSign, sColor, sDieSides = vDie.type:match("^([%-%+]?)([dDrRgGbBpP])([%dF]+)");
+      if sDieSides then
+        vDie.result = vDie.result * 2 or 0;
+        if sColor == "d" or sColor == "D" then
+          if sSign == "-" then
+            vDie.type = "-b" .. sDieSides;
+          else
+            vDie.type = "b" .. sDieSides;
+          end
+        end
+      end
+    end
+    if rRoll.aDice.expr then
+      rRoll.aDice.expr = nil;
+    end
+  end
+
+  -- check for damage multiplier and apply from effect DMGX
+  if rRoll.nDamageMultiplier then
+    local nMultiplier = tonumber(rRoll.nDamageMultiplier) or 1;
+    if nMultiplier < 0 then nMultiplier = 1; end;
+
+    if PlayerOptionManager.shouldUseAlternateDmgx() then
+      DiceManagerPO.applyBaseRollMultiplier(rRoll, nMultiplier);
+    else
+      -- add [x2] to the damage string for visual
+      rRoll.sDesc = rRoll.sDesc .. " [x" .. nMultiplier .. "]"; 
+      for _,vDie in ipairs(rRoll.aDice) do
+        local sSign, sColor, sDieSides = vDie.type:match("^([%-%+]?)([dDrRgGbBpP])([%dF]+)");
+        if sDieSides then
+          vDie.result = math.floor(vDie.result * nMultiplier);
+          -- without setting this things break now (post FGU)
+          vDie.value = vDie.result;
+          --
+          if sColor == "d" or sColor == "D" then
+            if sSign == "-" then
+              vDie.type = "-b" .. sDieSides;
+            else
+              vDie.type = "b" .. sDieSides;
+            end
+          end
+        end
+      end
+    end
+    if rRoll.aDice.expr then
+      rRoll.aDice.expr = nil;
+    end
+  end
+    
+  ActionDamage.decodeDamageTypes(rRoll, true);
 end
 
 function parseDamageTypes(rRoll)

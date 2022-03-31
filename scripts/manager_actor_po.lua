@@ -450,7 +450,7 @@ function canBeAffectedByFatigue(nodeActor)
   end
 
   local sType = DB.getValue(nodeActor, "type", ""):lower();
-  if sType:find("undead") then
+  if sType:find("undead") or sType:find("construct") then
     return false;
   end
 
@@ -469,7 +469,7 @@ function canBeAffectedByThresholdOfPain(rActor)
   end
 
   local sType = DB.getValue(nodeActor, "type", ""):lower();
-  if sType:find("undead") then
+  if sType:find("undead") or sType:find("construct") then
     return false;
   end
 
