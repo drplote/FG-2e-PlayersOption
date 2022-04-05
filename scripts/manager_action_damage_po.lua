@@ -36,11 +36,10 @@ function decodeDamageTextOverride(nDamage, sDamageDesc)
   for sDamageType, sDamageDice, sDamageSubTotal in string.gmatch(sDamageDesc, "%[TYPE: ([^(]*) %(([%d%+%-dD]+)%=(%d+)%)%]") do
     sDamageType = UtilityPO.stripWhitespace(sDamageType);
     local nDamageSubTotal = (tonumber(sDamageSubTotal) or 0);
-    local nDamageDice = 0;
+    local nDamageDice = 1;
     for sNumDiceMatch in string.gmatch(sDamageDice, "(%d+)d") do
-      nDamageDice = nDamageDice + (tonumber(sNumDiceMatch) or 0);
+      nDamageDice = nDamageDice + (tonumber(sNumDiceMatch) or 1);
     end
-
     if rDamageOutput.rArmorDamageInfo[sDamageType] == nil then
       rDamageOutput.rArmorDamageInfo[sDamageType] = {unsoakedDamageDice = 0, damageSubTotal = 0};
     end
