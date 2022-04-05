@@ -31,7 +31,7 @@ function deliverEndTurnFailedMessage(nodeChar)
 	end
 end
 
-function deliverDelayTurnMessage(nodeChar, nDelay)
+function deliverDelayTurnMessage(nodeChar, nDelay, bSecret)
 	if nodeChar then
 		local sName = DB.getValue(nodeChar, "name", "");
 		local sMessage = sName .. " delays their turn";
@@ -43,7 +43,7 @@ function deliverDelayTurnMessage(nodeChar, nDelay)
 			end
 			sMessage = sMessage .. ".";
 		end
-		deliverChatMessage(sMessage);
+		deliverChatMessage(sMessage, bSecret);
 	end
 end
 

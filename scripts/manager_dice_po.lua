@@ -393,6 +393,13 @@ function applyBaseRollMultiplier(rRoll, nMultiplier)
 
 	local nDiceTotal = getDiceTotal(rRoll);
 	local nNewResult = nDiceTotal * nMultiplier;
+	
+	if nMultiplier > 1 then
+		nNewResult = math.floor(nNewResult);
+	else
+		nNewResult = math.min(math.ceil(nNewResult), 1);
+	end
+
 	local nChange = nNewResult - nDiceTotal;
 	local sPlusMinus = "+";
 	if nMultiplier < 1 then

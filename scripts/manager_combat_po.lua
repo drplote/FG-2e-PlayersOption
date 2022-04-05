@@ -575,7 +575,7 @@ function delayThenNextActor(nInitDelay)
     end
 
     if nInitDelay > 0 then 
-        ChatManagerPO.deliverDelayTurnMessage(nodeActive, nInitDelay);
+        ChatManagerPO.deliverDelayTurnMessage(nodeActive, nInitDelay, not ActorManager.isPC(nodeActive) );
     end
 
     local bHasLaterInit = nNewActiveNodeInit ~= nPreviousInit;
