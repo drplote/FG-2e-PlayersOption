@@ -40,6 +40,10 @@ function isIdentified(nodeItem)
 	return DB.getValue(nodeItem, "isidentified", 1) == 1
 end
 
+function isMagicalArmor(nodeItem)
+	return ItemManager2.isArmor(nodeItem) and isMagical(nodeItem);
+end
+
 function isMagical(nodeItem)
 	local sTypeLower = StringManager.trim(DB.getValue(nodeItem, "type", "")):lower();
   	local sSubtypeLower = StringManager.trim(DB.getValue(nodeItem, "subtype", "")):lower();

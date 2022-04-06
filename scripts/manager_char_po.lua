@@ -14,8 +14,8 @@ function onInit()
   fUpdateMoveFromEncumbrance1e = CharManager.updateMoveFromEncumbrance1e;
   CharManager.updateMoveFromEncumbrance1e = updateMoveFromEncumbrance1eOverride;
 
-  fUpdateEncumbrance = CharManager.updateEncumbrance;
-  CharManager.updateEncumbrance = updateEncumbranceOverride;
+  fUpdateEncumbrance = CharEncumbranceManager.updateEncumbrance;
+  CharEncumbranceManager.updateEncumbrance = updateEncumbranceOverride;
 
   fRest = CharManager.rest;
   CharManager.rest = restOverride;
@@ -28,9 +28,34 @@ function restOverride(nodeChar, bLong)
   end
 end
 
+function getMagicArmorWeight(nodeChar)
+  local nWeight = 0;
+
+  for _,vNode in pairs(DB.getChildren(nodeChar, "inventorylist")) do
+    local nCarried = DB.getValue(vNode, "carried", 0);
+    if nCarried == 2 and ItemManagerPO.isMagicalArmor(vNode) then
+      nWeight = nWeight + DB.getValue(vNode, "weight", 0);
+    end
+  end
+
+  return nWeight;
+end
+
 function updateEncumbranceOverride(nodeChar)
     fUpdateEncumbrance(nodeChar);
     FatigueManagerPO.updateFatigueFactor(nodeChar);
+
+    if PlayerOptionManager.isUsingReducedEncumbranceForMagicArmor() then
+      local nCurrentLoad = DB.getValue(nodeChar, "encumbrance.load", 0);
+      local nMagicArmorWeight = getMagicArmorWeight(nodeChar);
+
+      if PlayerOptionManager.isUsingHalfEncumbranceForMagicArmor() then
+        nMagicArmorWeight = nMagicArmorWeight / 2;
+      end
+
+      DB.setValue(nodeChar, "encumbrance.load", "number", math.max(0, nCurrentLoad - nMagicArmorWeight));
+    end
+    
 end
 
 function getEncumbranceRank2eOverride(nodeChar)
