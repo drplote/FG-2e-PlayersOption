@@ -28,7 +28,7 @@
     <string name="option_val_console">Console</string>
     <string name="option_label_calculated_heal_below_zero">Treat Death's Door Healing Same As Normal Healing?</string>
     <string name="option_label_alternate_dmgx">DMGX modifies full roll rather than per die?</string>
-    <string name="option_label_magic_armor_encumbrance">Magic armor encumbrance reduction?</string>
+    <string name="option_label_magic_armor_encumbrance">Override Magic armor Encumbrance?</string>
     <string name="option_val_half">Half</string>
     <string name="option_val_full">Full</string>
 

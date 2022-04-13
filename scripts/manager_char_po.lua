@@ -28,41 +28,16 @@ function restOverride(nodeChar, bLong)
   end
 end
 
-function getMagicArmorWeight(nodeChar)
-  local nWeight = 0;
-
-  for _,vNode in pairs(DB.getChildren(nodeChar, "inventorylist")) do
-    local nCarried = DB.getValue(vNode, "carried", 0);
-    if nCarried == 2 and ItemManagerPO.isMagicalArmor(vNode) then
-      nWeight = nWeight + DB.getValue(vNode, "weight", 0);
-    end
-  end
-
-  return nWeight;
-end
-
 function updateEncumbranceOverride(nodeChar)
     fUpdateEncumbrance(nodeChar);
-    FatigueManagerPO.updateFatigueFactor(nodeChar);
-
-    if PlayerOptionManager.isUsingReducedEncumbranceForMagicArmor() then
-      local nCurrentLoad = DB.getValue(nodeChar, "encumbrance.load", 0);
-      local nMagicArmorWeight = getMagicArmorWeight(nodeChar);
-
-      if PlayerOptionManager.isUsingHalfEncumbranceForMagicArmor() then
-        nMagicArmorWeight = nMagicArmorWeight / 2;
-      end
-
-      DB.setValue(nodeChar, "encumbrance.load", "number", math.max(0, nCurrentLoad - nMagicArmorWeight));
-    end
-    
+    FatigueManagerPO.updateFatigueFactor(nodeChar);    
 end
 
 function getEncumbranceRank2eOverride(nodeChar)
     if PlayerOptionManager.isUsingHackmasterStats() then
         return getEncumbranceRank2eHackmaster(nodeChar);
     else
-        return fGetEncumbranceRank2e(nodeChar);
+        return getEncumbranceRank2eNonHackmaster(nodeChar);
     end
 end
 
@@ -72,6 +47,81 @@ function updateMoveFromEncumbrance1eOverride(nodeChar)
     else
         return fUpdateMoveFromEncumbrance1e(nodeChar);
     end
+end
+
+function getEncumbranceRank2eNonHackmaster(nodeChar) 
+  local b2e = (DataCommonADND.coreVersion == "2e");
+  if not b2e then
+    return "", 0, 0;
+  end
+  local nEncLight = 0.33;   -- 1/3
+  local nEncModerate = 0.5; -- 1/2
+  local nEncHeavy = 0.67;   -- 2/3
+  local nBaseEnc = 0; 
+  local sEncRank = "Normal";
+  local nBaseMove = DB.getValue(nodeChar, "speed.base", 0);
+  local nStrength = DB.getValue(nodeChar, "abilities.strength.score", 0);
+  local nPercent = DB.getValue(nodeChar, "abilities.strength.percent", 0);
+  local nWeightCarried = DB.getValue(nodeChar, "encumbrance.load", 0);
+  
+  if not PlayerOptionManager.isUsingFullEncumbranceForMagicArmor() then
+      -- magic armor doesn't count towards encumbrance
+    local bMagicArmor, nodeArmor = ItemManager2.isWearingMagicArmor(nodeChar);
+    if (bMagicArmor) then
+      local nArmorWT = DB.getValue(nodeArmor, "weight", 0);
+      if PlayerOptionManager.isUsingHalfEncumbranceForMagicArmor() then
+        nArmorWT = nArmorWT / 2;
+      end
+      nWeightCarried = nWeightCarried - nArmorWT;
+      if nWeightCarried < 0 then
+        nWeightCarried = 0;
+      end
+    end
+  end
+  --
+  
+  -- Deal with 18 01-100 strength
+  if ((nStrength == 18) and (nPercent > 0)) then
+    local nPercentRank = 50;
+    if (nPercent == 100) then 
+      nPercentRank = 100
+    elseif (nPercent >= 91 and nPercent <= 99) then
+      nPercentRank = 99
+    elseif (nPercent >= 76 and nPercent <= 90) then
+      nPercentRank = 90
+    elseif (nPercent >= 51 and nPercent <= 75) then
+      nPercentRank = 75
+    elseif (nPercent >= 1 and nPercent <= 50) then
+      nPercentRank = 50
+    end
+    nStrength = nPercentRank;
+  end
+  
+  -- determine if wt carried is greater than a encumbrance rank for strength value
+  if (nWeightCarried >= DataCommonADND.aStrength[nStrength][11]) then
+    nBaseEnc = (nBaseMove - 1); -- greater than max, base is 1
+    sEncRank = "MAX";
+  elseif (nWeightCarried >= DataCommonADND.aStrength[nStrength][10]) then
+    nBaseEnc = (nBaseMove - 1); -- greater than severe, base is 1
+    sEncRank = "Severe";
+  elseif (nWeightCarried >= DataCommonADND.aStrength[nStrength][9]) then
+    nBaseEnc = nBaseMove * nEncHeavy; -- greater than heavy
+    sEncRank = "Heavy";
+  elseif (nWeightCarried >= DataCommonADND.aStrength[nStrength][8]) then
+    nBaseEnc = nBaseMove * nEncModerate; -- greater than moderate
+    sEncRank = "Moderate";
+  elseif (nWeightCarried >= DataCommonADND.aStrength[nStrength][7]) then
+    nBaseEnc = nBaseMove * nEncLight; -- greater than light
+    sEncRank = "Light";
+  end
+
+  nBaseEnc = math.floor(nBaseEnc);
+  nBaseEnc = nBaseMove - nBaseEnc;
+  if (nBaseEnc < 1) then
+      nBaseEnc = 1;
+  end
+  
+  return sEncRank, nBaseEnc, nBaseMove
 end
 
 function getEncumbranceRank2eHackmaster(nodeChar) 
@@ -88,6 +138,21 @@ function getEncumbranceRank2eHackmaster(nodeChar)
   local nStrength = DB.getValue(nodeChar, "abilities.strength.score", 0);
   local nPercent = DB.getValue(nodeChar, "abilities.strength.percent", 0);
   local nWeightCarried = DB.getValue(nodeChar, "encumbrance.load", 0);
+
+  if not PlayerOptionManager.isUsingFullEncumbranceForMagicArmor() then
+      -- magic armor doesn't count towards encumbrance
+    local bMagicArmor, nodeArmor = ItemManager2.isWearingMagicArmor(nodeChar);
+    if (bMagicArmor) then
+      local nArmorWT = DB.getValue(nodeArmor, "weight", 0);
+      if PlayerOptionManager.isUsingHalfEncumbranceForMagicArmor() then
+        nArmorWT = nArmorWT / 2;
+      end
+      nWeightCarried = nWeightCarried - nArmorWT;
+      if nWeightCarried < 0 then
+        nWeightCarried = 0;
+      end
+    end
+  end
    
    -- HM4 mod: different strength spread
   nStrength = (nStrength * 2) - 1; 

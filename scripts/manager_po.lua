@@ -171,15 +171,15 @@ function registerOptions()
 
 end
 
-function isUsingReducedEncumbranceForMagicArmor()
-	return isUsingHalfEncumbranceForMagicArmor() or isUsingNoEncumbranceForMagicArmor();
+function isUsingOptionalEncumbranceForMagicArmor()
+	return isUsingHalfEncumbranceForMagicArmor() or isUsingFullEncumbranceForMagicArmor();
 end
 
 function isUsingHalfEncumbranceForMagicArmor()
 	return OptionsManager.isOption(sMagicArmorEncumbranceKey, "half");
 end
 
-function isUsingNoEncumbranceForMagicArmor()
+function isUsingFullEncumbranceForMagicArmor()
 	return OptionsManager.isOption(sMagicArmorEncumbranceKey, "full");
 end
 
