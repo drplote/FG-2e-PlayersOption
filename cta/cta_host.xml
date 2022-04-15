@@ -11,6 +11,19 @@
         <icon normal="moraleButton" pressed="moraleButtonPressed" />
         <tooltip textres="ct_tooltip_moralebutton" />
         <script>
+          function onInit()
+            OptionsManager.registerCallback(PlayerOptionManager.sMoraleTrackerKey, updateVisibility);
+            updateVisibility();
+          end
+
+          function onClose()
+            OptionsManager.unregisterCallback(PlayerOptionManager.sMoraleTrackerKey, updateVisibility);
+          end
+
+          function updateVisibility()
+            setVisible(PlayerOptionManager.isUsingMoraleTracker());
+          end
+
           function onButtonPress()
             if Input.isShiftPressed() and Input.isAltPressed() and Input.isControlPressed() then
               MoraleManagerPO.resetAllNpcMorale();  

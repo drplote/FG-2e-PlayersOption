@@ -32,6 +32,7 @@ sHideEnemiesFromPlayerCT = "AdditionalAutomation_HideEnemiesFromPlayerCT";
 sCalculatedHealBelowZero = "AdditionalAutomation_CalculatedHealBelowZero";
 sAlternateDmgxOptionKey = "AdditionalAutomation_AlternateDMGX";
 sMagicArmorEncumbranceKey = "AdditionalAutomation_MagicArmorEncumbrance";
+sMoraleTrackerKey = "AdditionalAutomation_MoraleTracker";
 
 
 function onInit()
@@ -130,6 +131,8 @@ function registerOptions()
 	OptionsManager.registerOption2(sAlternateDmgxOptionKey, false, "option_header_automation", "option_label_alternate_dmgx", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
 
 	OptionsManager.registerOption2(sMagicArmorEncumbranceKey, false, "option_header_automation", "option_label_magic_armor_encumbrance", "option_entry_cycler",{ labels = "option_val_off|option_val_half|option_val_full", values = "off|half|full", baselabel = "option_val_off", baseval = "off", default = "off" });
+
+	OptionsManager.registerOption2(sMoraleTrackerKey, false, "option_header_automation", "option_label_morale_tracker", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });
     
     
     -- House rules
@@ -169,6 +172,10 @@ function registerOptions()
 
 	OptionsManager.registerOption2(sRadiantNecroticArmor, false, "option_header_house_rule", "option_label_radiant_necrotic_armor", "option_entry_cycler",{ labels = "option_val_on", values = "on", baselabel = "option_val_off", baseval = "off", default = "off" });    
 
+end
+
+function isUsingMoraleTracker()
+	return OptionsManager.isOption(sMoraleTrackerKey, "on");
 end
 
 function isUsingOptionalEncumbranceForMagicArmor()

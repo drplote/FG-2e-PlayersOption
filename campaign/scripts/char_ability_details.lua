@@ -5,8 +5,8 @@ function onInit()
 end
 
 function onClose()
-	OptionsManager.registerCallback(PlayerOptionManager.sAddComeliness, onComelinessOptionChanged);
-	OptionsManager.registerCallback(PlayerOptionManager.sEnableHonor, onHonorOptionChanged);
+	OptionsManager.unregisterCallback(PlayerOptionManager.sAddComeliness, onComelinessOptionChanged);
+	OptionsManager.unregisterCallback(PlayerOptionManager.sEnableHonor, onHonorOptionChanged);
 end 
 
 function onComelinessOptionChanged()

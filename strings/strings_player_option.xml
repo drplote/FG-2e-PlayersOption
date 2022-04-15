@@ -31,6 +31,7 @@
     <string name="option_label_magic_armor_encumbrance">Override Magic armor Encumbrance?</string>
     <string name="option_val_half">Half</string>
     <string name="option_val_full">Full</string>
+    <string name="option_label_morale_tracker">Enable Morale Tracker</string>
 
     <!-- House Rule Options -->
     <string name="option_header_house_rule">Hackmaster House Rules (GM)</string>

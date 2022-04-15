@@ -28,21 +28,28 @@
 	<template name="cta_moraleStatus">
 		<stringcontrol name="moralestatuspo">
 			<script>
+
 				function onInit()
 					local node = window.getDatabaseNode();
 					DB.addHandler(DB.getPath(window.getDatabaseNode(), "moraleStatus"), "onUpdate", updateMoraleStatus);
+					OptionsManager.registerCallback(PlayerOptionManager.sMoraleTrackerKey, updateMoraleStatus);
 					
 					updateMoraleStatus();
 				end
 
 				function onClose()
 					DB.removeHandler(DB.getPath(window.getDatabaseNode(), "moraleStatus"), "onUpdate", updateMoraleStatus);
+					OptionsManager.unregisterCallback(PlayerOptionManager.sMoraleTrackerKey, updateMoraleStatus);
 				end
 
 				function updateMoraleStatus()
-					local nodeChar = window.getDatabaseNode();
-					setValue(MoraleManagerPO.getBattleReadiness(nodeChar));
-					setVisible(not ActorManagerPO.isPC(nodeChar));
+					if not PlayerOptionManager.isUsingMoraleTracker() then
+						setVisible(false);
+					else
+						local nodeChar = window.getDatabaseNode();
+						setValue(MoraleManagerPO.getBattleReadiness(nodeChar));
+						setVisible(not ActorManagerPO.isPC(nodeChar));
+					end
 				end
 			</script>
 			<readonly/>
