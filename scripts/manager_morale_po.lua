@@ -166,22 +166,11 @@ end
 function getIndividualMoraleModifier(nodeChar)
 	local rModifiers = {nTotal = 0};
 	
-	rModifiers.nAlignmentModifier = getAlignmentModifier(nodeChar);
 	rModifiers.nHpModifier = getPercentHpMoraleModifier(nodeChar);
 	rModifiers.nFatigueModifier = getFatigueModifier(nodeChar);
-	rModifiers.nTotal = rModifiers.nTotal + rModifiers.nAlignmentModifier + rModifiers.nHpModifier + rModifiers.nFatigueModifier;
+	rModifiers.nTotal = rModifiers.nTotal + rModifiers.nHpModifier + rModifiers.nFatigueModifier;
 
 	return rModifiers.nTotal;
-end
-
-function getAlignmentModifier(nodeChar)
-	if ActorManagerPO.isAlignment(nodeChar, "lawful") then
-		return -1;
-	elseif ActorManagerPO.isAlignment(nodeChar, "chaotic") then
-		return 1;
-	else
-		return 0;
-	end
 end
 
 function getFatigueModifier(nodeChar)
