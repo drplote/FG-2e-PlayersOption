@@ -350,8 +350,10 @@ function getNumOriginalDiceThatPenetrated(aDice)
 
 	local nNumOriginalPenetrations = 0;
 	for _, vDie in pairs(aDice) do
-		if vDie.penetrationRolls and not vDie.isPenetrationRoll then
-			nNumOriginalPenetrations = nNumOriginalPenetrations + 1;
+		if type(vDie) == 'table' then
+			if vDie.penetrationRolls and not vDie.isPenetrationRoll then
+				nNumOriginalPenetrations = nNumOriginalPenetrations + 1;
+			end
 		end
 	end
 	return nNumOriginalPenetrations;

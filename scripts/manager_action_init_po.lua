@@ -209,6 +209,7 @@ function getHackmasterInitRoll(rActor, bSecretRoll, rItem)
 		return getFixedInitiativeRoll(10);
 	end
 	
+	local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
 	local rRoll = {};
 	rRoll.sType = "init";
 	rRoll.nMod = 0;
@@ -225,9 +226,16 @@ function getHackmasterInitRoll(rActor, bSecretRoll, rItem)
 	elseif rItem and rItem.spellPath then -- Spells either go on a fixed initiative, or in +1d4 segments if they have material components  	
 		bIsSpell = true;
 		rRoll.sDesc = rRoll.sDesc .. "[Spell]";
-		if DB.getValue(DB.findNode(rItem.spellPath), "components", ""):match("M") then -- Does it have material componenets?
-			rRoll.aDice = { "d4" };
-			rRoll.nDieType = 4;
+		local nReactionAdj = DB.getValue(nodeActor, "abilities.dexterity.reactionadj", 0);
+		local nBaseMaterialComponentDie = 4;
+		local nFinalMaterialComponentDie = nBaseMaterialComponentDie - nReactionAdj;
+		DebugPO.log("nReactionAdj", nReactionAdj);
+		DebugPO.log("nBaseMaterialComponentDie", nBaseMaterialComponentDie);
+		DebugPO.log("nFinalMaterialComponentDie", nFinalMaterialComponentDie);
+		if nFinalMaterialComponentDie > 0 and DB.getValue(DB.findNode(rItem.spellPath), "components", ""):match("M") then -- Does it have material componenets?
+			rRoll.aDice = { "d" .. nFinalMaterialComponentDie };
+			rRoll.nDieType = nFinalMaterialComponentDie;
+			DebugPO.log("rRoll", rRoll);
 		else
 			rRoll.aDice = { "d0" };
 			rRoll.nDieType = 0;
@@ -249,10 +257,9 @@ function getHackmasterInitRoll(rActor, bSecretRoll, rItem)
 
 
     -- Determine the modifier and ability to use for this roll
-    local sAbility = nil;
-    local sActorType, nodeActor = ActorManager.getTypeAndNode(rActor);
+  local sAbility = nil;
 	if nodeActor then
-		if not bIsFixedInitiative then
+		if not bIsFixedInitiative and not bIsSpell then
 			modifyRollForDexterity(rActor, rRoll);
 		end
 	    if rItem and not bIsFixedInitiative and not bIsSpell and not rItem.isNil then    		
