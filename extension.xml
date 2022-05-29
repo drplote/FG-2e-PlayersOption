@@ -33,9 +33,6 @@
 
     <includefile source="desktop/desktop_classes.xml" />
 
-    <includefile source="utility/utility_modifiers.xml" />
-
-
     <includefile source="cta/cta_host.xml"/>
     <includefile source="cta/template_cta.xml"/>
     <includefile source="ct/ct_client.xml" />
@@ -85,6 +82,7 @@
     <script name="DMTools" file="scripts/dm_tools_po.lua"/>
     <script name="MoraleManagerPO" file="scripts/manager_morale_po.lua"/>
     <script name="PartyManagerPO" file="scripts/manager_party_po.lua" />
+    <script name="DesktopPO" file="scripts/data_desktop_po.lua" />
 
     
   </base>
