@@ -63,6 +63,13 @@ function getEncumbranceRank2eNonHackmaster(nodeChar)
   local nStrength = DB.getValue(nodeChar, "abilities.strength.score", 0);
   local nPercent = DB.getValue(nodeChar, "abilities.strength.percent", 0);
   local nWeightCarried = DB.getValue(nodeChar, "encumbrance.load", 0);
+
+  if nStrength <= 0 then
+    nStrength = 1;
+  end
+  if nStrength >= 25 then
+    nStrength = 25;
+  end
   
   if not PlayerOptionManager.isUsingFullEncumbranceForMagicArmor() then
       -- magic armor doesn't count towards encumbrance
@@ -138,6 +145,13 @@ function getEncumbranceRank2eHackmaster(nodeChar)
   local nStrength = DB.getValue(nodeChar, "abilities.strength.score", 0);
   local nPercent = DB.getValue(nodeChar, "abilities.strength.percent", 0);
   local nWeightCarried = DB.getValue(nodeChar, "encumbrance.load", 0);
+
+  if nStrength <= 0 then
+    nStrength = 1;
+  end
+  if nStrength >= 25 then
+    nStrength = 25;
+  end
 
   if not PlayerOptionManager.isUsingFullEncumbranceForMagicArmor() then
       -- magic armor doesn't count towards encumbrance
