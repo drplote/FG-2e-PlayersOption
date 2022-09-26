@@ -12,8 +12,8 @@
         <script>
           function onDiceLanded(draginfo)
             local bRes = DiceManagerPO.onDiceLanded(draginfo)
-            if not bRes then
-              bRes = super.onDiceLanded(draginfo)
+            if not bRes and super.onDiceLanded then
+                bRes = super.onDiceLanded(draginfo)
             end
             return bRes
           end
