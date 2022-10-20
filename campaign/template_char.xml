@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <root>
 
-  <template name="button_charinit" merge="replace">
+  <template name="button_charinit">
     <buttoncontrol>
       <icon normal="button_initiative" pressed="button_initiative_down" />
       <script>
@@ -49,7 +49,7 @@
     </buttoncontrol>
   </template>
 
-  <template name="button_charinitdelay" merge="replace">
+  <template name="button_charinitdelay">
     <buttoncontrol>
       <icon normal="button_initdelay" pressed="button_initdelay_down" />
       <script>

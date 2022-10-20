@@ -153,7 +153,7 @@
     </basicnumber>
   </template>
 
-  <template name="button_charinitdelay" merge="replace">
+  <template name="button_charinitdelay">
     <buttoncontrol>
       <icon normal="button_initdelay" pressed="button_initdelay_down" />
       <script>

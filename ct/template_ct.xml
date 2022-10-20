@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <root>
-	<template name="list_ctbox_client" merge="replace">
+	<template name="list_ctbox_client">
 		<windowlist name="list">
 			<anchored to="contentanchor">
 				<top anchor="bottom" relation="relative" offset="5" />
