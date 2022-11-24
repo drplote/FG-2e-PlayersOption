@@ -27,7 +27,9 @@ end
 
 function onNameUpdated(vNode)
 	for _,w in pairs(getWindows()) do
-		w.target_summary.onTargetsChanged();
+		if (w and w.target_summary) then
+			w.target_summary.onTargetsChanged();
+		end
 	end
 end
 

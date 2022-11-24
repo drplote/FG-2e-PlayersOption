@@ -1,10 +1,10 @@
 local fRollNpcHitPoints;
 local fCopySourceToNodeCT;
-local fAddCTANPC;
+--local fAddCTANPC;
 local fNotifyEndTurn;
 local fRollInitOverride; 
 local fDelayTurn;
-local fAddBattle;
+--local fAddBattle;
 local fNextActor;
 local fRollTypeInit;
 local fTurnOffAllInitRolled;
@@ -15,20 +15,20 @@ OOB_MSGTYPE_DELAYTURN = "delayturn";
 OOB_MSGTYPE_REQUESTTURN = "requestturn";
 
 function onInit()
-    fRollNpcHitPoints = CombatManagerADND.rollNPCHitPoints;
-    CombatManagerADND.rollNPCHitPoints = rollNPCHitPointsOverride;
+    fRollNpcHitPoints = CombatRecordManagerADND.rollNPCHitPoints;
+    CombatRecordManagerADND.rollNPCHitPoints = rollNPCHitPointsOverride;
 
     fRollEntryInit = CombatManagerADND.rollEntryInit;
     CombatManagerADND.rollEntryInit = rollEntryInitOverride;
     CombatManager2.rollEntryInit = rollEntryInitOverride; -- We have to override this because CombatManagerADND overrode this
 
-    fCopySourceToNodeCT = CombatManagerADND.copySourceToNodeCT;
-    CombatManagerADND.copySourceToNodeCT = copySourceToNodeCTOverride;
+    fCopySourceToNodeCT = CombatRecordManagerADND.helperCopyCTSourceToNode;
+    CombatRecordManagerADND.helperCopyCTSourceToNode = copySourceToNodeCTOverride;
 
     CombatManager.setCustomRoundStart(onRoundStart);
 
-    fAddCTANPC = CombatManagerADND.addCTANPC;
-    CombatManagerADND.addCTANPC = addCTANPCOverride;
+    --fAddCTANPC = CombatRecordManagerADND.onNPCAdd;
+    --CombatRecordManagerADND.onNPCAdd = addCTANPCOverride;
 
     fNotifyEndTurn = CombatManager.notifyEndTurn;
     CombatManager.notifyEndTurn = notifyEndTurnOverride;
@@ -41,9 +41,9 @@ function onInit()
     fDelayTurn = CombatManagerADND.delayTurn;
     CombatManagerADND.delayTurn = delayTurnOverride;
 
-    fAddBattle = CombatManagerADND.addBattle;
-    CombatManagerADND.addBattle = addBattleOverride;
-    CombatManager.addBattle = addBattleOverride;
+    --fAddBattle = CombatRecordManagerADND.helperAddBattleNPC;
+    --CombatRecordManagerADND.helperAddBattleNPC = addBattleOverride;
+    --CombatManager.addBattle = addBattleOverride;
 
     fNextActor = CombatManager.nextActor;
     CombatManager.nextActor = nextActorOverride;
@@ -180,14 +180,14 @@ function notifyRequestTurn(nodeChar)
     Comm.deliverOOBMessage(msgOOB, "");
 end
 
-function addCTANPCOverride(sClass, nodeNPC, sNamedInBattle)
-    local nodeEntry = fAddCTANPC(sClass, nodeNPC, sNamedInBattle);
-    CombatManagerADND.copySourceToNodeCT(nodeNPC, nodeEntry);
-    return nodeEntry;
-end 
+--function addCTANPCOverride(sClass, nodeNPC, sNamedInBattle)
+--    local nodeEntry = fAddCTANPC(sClass, nodeNPC, sNamedInBattle);
+--    CombatManagerADND.helperCopyCTSourceToNode(nodeNPC, nodeEntry);
+--    return nodeEntry;
+--end 
 
-function copySourceToNodeCTOverride(nodeSource, nodeCT)
-    fCopySourceToNodeCT(nodeSource, nodeCT);
+function copySourceToNodeCTOverride(nodeSource, nodeCT, tChildren)
+    fCopySourceToNodeCT(nodeSource, nodeCT, tChildren);
     if PlayerOptionManager.shouldUseDynamicNpcAc() then
         -- Need to recalc item AC after they've loaded items from source or their
         -- AC from armor doesn't work correctly.
@@ -627,7 +627,7 @@ function delayThenNextActor(nInitDelay)
 end
 
 
-function addBattleOverride(nodeBattle)
+--[[function addBattleOverride(nodeBattle)
     local aModulesToLoad = {};
     local sTargetNPCList = LibraryData.getCustomData("battle", "npclist") or "npclist";
     for _, vNPCItem in pairs(DB.getChildren(nodeBattle, sTargetNPCList)) do
@@ -795,7 +795,7 @@ function addBattleOverride(nodeBattle)
     end
     
     Interface.openWindow("combattracker_host", "combattracker");
-end
+end --]]
 
 function getSimilarCreaturesInCT(nodeEntry)
     local aCreatures = {};
