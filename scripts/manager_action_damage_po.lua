@@ -435,7 +435,7 @@ function applyDamageOverride(rSource, rTarget, bSecret, sDamage, nTotal, aDice)
     if OptionsManager.getOption("OPTIONAL_ARMORDP") == 'on' then
       -- armor takes 1 damage each time "damaged"
       local nodeCT = DB.findNode(ActorManager.getCTNodeName(rTarget));
-      local nodeChar = CombatManagerADND.getNodeFromCT(nodeCT);
+      local nodeChar = ActorManager.getCreatureNode(nodeCT);
       ActionDamage.damageArmorWorn(nodeChar,1);
     end
 

@@ -12,7 +12,7 @@ function handleRoundStart()
   if PlayerOptionManager.isUsingThresholdOfPain() then
     local aCombatants = CombatManager.getCombatantNodes();
     for _, ctNode in pairs(aCombatants) do
-        local nodeChar = CombatManagerADND.getNodeFromCT(ctNode);
+        local nodeChar = ActorManager.getCreatureNode(ctNode);
         StateManagerPO.clearTraumaDamage(nodeChar);
     end
   end

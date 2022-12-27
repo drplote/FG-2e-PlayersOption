@@ -54,7 +54,7 @@ function performSequencedInitAction(nNumAttacks)
 end
 
 function deleteAndAddXp()
-    local nodeChar = CombatManagerADND.getNodeFromCT(getDatabaseNode());
+    local nodeChar = ActorManager.getCreatureNode(getDatabaseNode());
     PartyManagerPO.addEncounterNPC(nodeChar);
     delete();
 end

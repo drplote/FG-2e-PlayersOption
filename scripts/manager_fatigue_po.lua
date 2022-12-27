@@ -27,7 +27,8 @@ end
 function clearFatigueState()
 	local aCombatants = CombatManager.getCombatantNodes();
 	for _, nodeCT in pairs(aCombatants) do
-		local nodeChar = CombatManagerADND.getNodeFromCT(nodeCT);
+	    local nodeChar = ActorManager.getCreatureNode(nodeCT);
+        DebugPO.log("clearFatigueState-ForLoop-nodeChar", nodeChar);
 		StateManagerPO.clearFatigueState(nodeChar);	
 	end
 end
@@ -48,8 +49,8 @@ end
 
 function handleFatigueForCombatants()
 	local aCombatants = CombatManager.getCombatantNodes();
-	for _, ctNode in pairs(aCombatants) do
-		local nodeChar = CombatManagerADND.getNodeFromCT(ctNode);
+	for _, nodeCT in pairs(aCombatants) do
+	    local nodeChar = ActorManager.getCreatureNode(nodeCT);
 		local nFatigue = StateManagerPO.getFatigueState(nodeChar);
 		if nFatigue == 2 then
 			increaseFatigue(nodeChar);
@@ -82,6 +83,7 @@ function updateFatigueFactor(nodeChar)
 end
 
 function increaseFatigue(nodeChar)
+    DebugPO.log("nodeChar before call to canBeAffectedbyFatigue", nodeChar);
 	if ActorManagerPO.canBeAffectedByFatigue(nodeChar) then
 		local nCurrentFatigue = ActorManagerPO.getCurrentFatigue(nodeChar);
 		local nNewFatigue = nCurrentFatigue + 1;
@@ -106,7 +108,7 @@ end
 
 function getFatigueEffectsForChar(nodeChar)
 	local aFatigueEffects = {};
-	local nodeCT = CharManager.getCTNodeByNodeChar(nodeChar);
+	local nodeCT = ActorManager.getCTNode(nodeChar);
 	for _, nodeEffect in pairs(DB.getChildren(nodeCT, "effects")) do
 		local sEffectLabel = DB.getValue(nodeEffect, "label");
 		if sEffectLabel:match(sFatigueEffectPrefix) then
@@ -122,7 +124,7 @@ function addFatigueEffect(nodeChar)
 		sFatigueEffect = sFatigueEffectNPC;
 	end
 
-	local nodeCT = CharManager.getCTNodeByNodeChar(nodeChar);
+	local nodeCT = ActorManager.getCTNode(nodeChar);
 	EffectManager.addEffect("", "", nodeCT, { sName = sFatigueEffect, sLabel = sFatigueEffect, nDuration = 0 }, true);
 end
 

@@ -44,7 +44,7 @@ end
 function resetAllNpcMorale()
 	local aCombatants = CombatManager.getCombatantNodes();
 	for _, nodeCT in pairs(aCombatants) do
-		local nodeChar = CombatManagerADND.getNodeFromCT(nodeCT);
+		local nodeChar = ActorManager.getCreatureNode(nodeCT);
 		if not ActorManagerPO.isPC(nodeChar) then
 			ActorManagerPO.setMoraleStatus(nodeChar, MoraleStatus.Unknown.id);
 		end
@@ -57,7 +57,7 @@ function checkAllNpcMorale(bForceCheck)
 
 	local aCombatants = CombatManager.getCombatantNodes();
 	for _, nodeCT in pairs(aCombatants) do
-		local nodeChar = CombatManagerADND.getNodeFromCT(nodeCT);
+		local nodeChar = ActorManager.getCreatureNode(nodeCT);
 		if not ActorManagerPO.isPC(nodeChar) then
 			table.insert(aResults, handleMoraleCheck(nodeChar, bForceCheck));
 		end
