@@ -304,7 +304,7 @@
 			<!-- comeliness  base -->
 			<label_ability_details_stat name="comeliness_label" insertafter="charisma_percent_total">
 				<anchored>
-				  <top offset="305" />
+				  <top offset="1" />
 				  <left offset="30" />
 				</anchored>
 				<static textres="comeliness" />
@@ -350,7 +350,7 @@
 			<!-- comeliness percent base -->
 			<label_ability_details name="comeliness_percent_label">
 				<anchored >
-					<top  offset="330" />
+					<top  offset="1" />
 					<left offset="30" />
 				</anchored>
 			<static textres="char_label_ability_details_percent_com" />

@@ -1,4 +1,17 @@
 function onInit()
+	Comm.registerSlashHandler("clearmodifiers", onClearModifiers)
+end
+
+function onClearModifiers(sCmd, sParams)
+	ChatManagerPO.deliverChatMessage("Clearing all temporary combat modifiers (such as rear attack, no dexterity, etc");
+	ModifierStackPO.clearModifiers();
+end
+
+function clearModifiers()
+	for k, v in pairs(ModifierManager._tKeysActive) do
+		DebugPO.log("k", k, "v", v);
+		ModifierManager.setKey(k, false, true);
+	end
 end
 
 function peekModifierKey(sModifierKey)
