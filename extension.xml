@@ -3,7 +3,7 @@
 <root version="3.0" release="1.0">
 
   <properties>
-    <name>2E Player's Option and more (BETA)</name>
+    <name>2E Player's Option and more</name>
     <version>1.27</version>
     <loadorder>99</loadorder>
     <description>
