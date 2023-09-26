@@ -87,10 +87,13 @@ function applyAttackOverride(rSource, rTarget, msgOOB)
     sAttackTypeFull = "[ATTACK (?)]";
   end
   msgLong.text = msgLong.text .. sAttackTypeFull;
-  
+   
   -- add in weapon used for attack for sound trigger search
   if (sWeaponType and sWeaponType ~= "") then
     msgShort.text = msgShort.text .. "(" .. sWeaponType .. ")";
+  end
+  if (sWeaponName and sWeaponName ~= "") then
+    msgLong.text = msgLong.text .. " (" .. StringManager.capitalizeAll(sWeaponName) .. ")";
   end
 
   if rTarget then
