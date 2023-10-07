@@ -35,8 +35,9 @@ function onInit()
     OOBManager.registerOOBMsgHandler(OOB_MSGTYPE_DELAYTURN, handleDelayTurn);
     OOBManager.registerOOBMsgHandler(OOB_MSGTYPE_REQUESTTURN, handleRequestTurn);
 
-    fRollInit = CombatManager2.rollInit;
-    CombatManager2.rollInit = rollInitOverride;
+    -- bugfix - c&t phased init - CombatManager2 no longer held reference to the correct fuction, using CombatManagerADND solves issue
+    fRollInit = CombatManagerADND.rollInit;
+    CombatManagerADND.rollInit = rollInitOverride;
 
     fDelayTurn = CombatManagerADND.delayTurn;
     CombatManagerADND.delayTurn = delayTurnOverride;
