@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <root>
-  <font name="shieldhitfont">
-    <fgffile name="graphics/fonts/regular-10.fgf" />
-    <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="16" />
-    <color value="#DF7401" />
-  </font>
-	
+    <font name="shieldhitfont">
+        <fgffile name="graphics/fonts/regular-10.fgf" />
+        <ttf file="graphics/fonts/Noto_Sans/NotoSans-Regular.ttf" name="Noto Sans" size="16" />
+        <color value="#DF7401" />
+    </font>
+
 </root>

@@ -1,10 +1,10 @@
 local fRollNpcHitPoints;
 local fCopySourceToNodeCT;
---local fAddCTANPC;
+-- local fAddCTANPC;
 local fNotifyEndTurn;
-local fRollInitOverride; 
+local fRollInitOverride;
 local fDelayTurn;
---local fAddBattle;
+-- local fAddBattle;
 local fNextActor;
 local fRollTypeInit;
 local fTurnOffAllInitRolled;
@@ -27,8 +27,8 @@ function onInit()
 
     CombatManager.setCustomRoundStart(onRoundStart);
 
-    --fAddCTANPC = CombatRecordManagerADND.onNPCAdd;
-    --CombatRecordManagerADND.onNPCAdd = addCTANPCOverride;
+    -- fAddCTANPC = CombatRecordManagerADND.onNPCAdd;
+    -- CombatRecordManagerADND.onNPCAdd = addCTANPCOverride;
 
     fNotifyEndTurn = CombatManager.notifyEndTurn;
     CombatManager.notifyEndTurn = notifyEndTurnOverride;
@@ -42,9 +42,9 @@ function onInit()
     fDelayTurn = CombatManagerADND.delayTurn;
     CombatManagerADND.delayTurn = delayTurnOverride;
 
-    --fAddBattle = CombatRecordManagerADND.helperAddBattleNPC;
-    --CombatRecordManagerADND.helperAddBattleNPC = addBattleOverride;
-    --CombatManager.addBattle = addBattleOverride;
+    -- fAddBattle = CombatRecordManagerADND.helperAddBattleNPC;
+    -- CombatRecordManagerADND.helperAddBattleNPC = addBattleOverride;
+    -- CombatManager.addBattle = addBattleOverride;
 
     fNextActor = CombatManager.nextActor;
     CombatManager.nextActor = nextActorOverride;
@@ -60,26 +60,26 @@ end
 
 function resetInitPo()
     if PlayerOptionManager.isUsingHackmasterInitiative() then
-        for _,nodeCT in pairs(CombatManager.getCombatantNodes()) do
+        for _, nodeCT in pairs(CombatManager.getCombatantNodes()) do
             DB.setValue(nodeCT, "initresult", "number", 99);
         end
     end
 end
 
 function turnOffAllInitRolledOverride()
-  for _,vChild in pairs(CombatManager.getCombatantNodes()) do
-    local rActor = ActorManager.resolveActor(vChild);
-    if not PlayerOptionManager.isUsingHackmasterInitiative() then
-        DB.setValue(vChild, "initrolled", "number", 0);
+    for _, vChild in pairs(CombatManager.getCombatantNodes()) do
+        local rActor = ActorManager.resolveActor(vChild);
+        if not PlayerOptionManager.isUsingHackmasterInitiative() then
+            DB.setValue(vChild, "initrolled", "number", 0);
+        end
     end
-  end
 end
 
 function rollTypeInitOverride(sType, fRollCombatantEntryInit, ...)
     if PlayerOptionManager.isUsingHackmasterInitiative() then
-        for _,v in pairs(CombatManager.getCombatantNodes()) do
+        for _, v in pairs(CombatManager.getCombatantNodes()) do
             DB.setValue(v, "previnitresult", "number", DB.getValue(v, "initresult", 0));
-        end   
+        end
     end
 
     return fRollTypeInit(sType, fRollCombatantEntryInit, ...);
@@ -141,11 +141,11 @@ function handleRequestTurn(msgOOB)
     end
 end
 
-
 function moveActorToEndOfInit(nodeCT)
     fNextActor();
 
-    CombatManagerADND.showCTMessageADND(nodeEntry, DB.getValue(nodeCT, "name", "") .. " " .. Interface.getString("char_initdelay_message"));
+    CombatManagerADND.showCTMessageADND(nodeEntry, DB.getValue(nodeCT, "name", "") .. " " ..
+        Interface.getString("char_initdelay_message"));
     local nNewInit = CombatManagerADND.getLastInitiative() + 1;
     DB.setValue(nodeCT, "initresult", "number", nNewInit);
 end
@@ -181,11 +181,11 @@ function notifyRequestTurn(nodeChar)
     Comm.deliverOOBMessage(msgOOB, "");
 end
 
---function addCTANPCOverride(sClass, nodeNPC, sNamedInBattle)
+-- function addCTANPCOverride(sClass, nodeNPC, sNamedInBattle)
 --    local nodeEntry = fAddCTANPC(sClass, nodeNPC, sNamedInBattle);
 --    CombatManagerADND.helperCopyCTSourceToNode(nodeNPC, nodeEntry);
 --    return nodeEntry;
---end 
+-- end 
 
 function copySourceToNodeCTOverride(nodeSource, nodeCT, tChildren)
     fCopySourceToNodeCT(nodeSource, nodeCT, tChildren);
@@ -202,11 +202,11 @@ function onRoundStart()
         FatigueManagerPO.clearFatigueState();
     end
     StateManagerPO.handleRoundStart();
-    
+
     if PlayerOptionManager.shouldRingBellOnRoundStart() then
         for _, sUserName in pairs(User.getActiveUsers()) do
             User.ringBell(sUserName);
-        end       
+        end
         User.ringBell();
     end
 end
@@ -239,7 +239,7 @@ function getPhaseShiftForInitMod(nodeActor)
         nPhaseShift = math.floor(nInitMod / 3);
     end
     return nPhaseShift;
-end 
+end
 
 function getFinalInitForActor(nodeActor, nInitPhase, bAllowInitEffects)
     local bIsPc = ActorManager.isPC(nodeActor);
@@ -253,7 +253,6 @@ function getFinalInitForActor(nodeActor, nInitPhase, bAllowInitEffects)
         nGroupInitRoll = StateManagerPO.getNpcInit();
         nOtherGroupInitRoll = StateManagerPO.getPcInit();
     end
-
 
     if nGroupInitRoll == 1 then
         nInitPhase = nInitPhase - 1;
@@ -287,7 +286,7 @@ function rollEntryPhasedInitiative(nodeEntry)
     local rActor = ActorManagerPO.getActorFromCT(nodeEntry);
     local nodeActor = ActorManager.getCreatureNode(rActor);
     local nPhaseShift = getPhaseShiftForInitMod(nodeActor);
-    
+
     -- For PCs, we always roll unique initiative
     local sClass, sRecord = DB.getValue(nodeEntry, "link", "", "");
     if sClass == "charsheet" then
@@ -301,13 +300,13 @@ function rollEntryPhasedInitiative(nodeEntry)
         local nInitPhase = InitManagerPO.getWorstPossiblePhaseForActor(nodeActor);
         local nInitResult = getFinalInitForActor(nodeActor, nInitPhase, true);
         DB.setValue(nodeEntry, "initresult", "number", nInitResult);
-    end 
+    end
 end
 
 function rollEntryInitOverride(nodeEntry)
     if PlayerOptionManager.isUsingPhasedInitiative() then
         rollEntryPhasedInitiative(nodeEntry);
-        return; 
+        return;
     end
 
     if not nodeEntry then
@@ -321,7 +320,7 @@ function rollEntryInitOverride(nodeEntry)
     local rActor = ActorManager.resolveActor(nodeEntry);
     local aEffectDice, nEffectBonus = EffectManager5E.getEffectsBonus(rActor, "INIT");
     local nInitMOD = StringManager.evalDice(aEffectDice, nEffectBonus);
-    
+
     -- Check for the ADVINIT effect
     local bADV = EffectManager5E.hasEffectCondition(rActor, "ADVINIT");
 
@@ -329,7 +328,7 @@ function rollEntryInitOverride(nodeEntry)
     local sClass, sRecord = DB.getValue(nodeEntry, "link", "", "");
     if sClass == "charsheet" then
         local nodeChar = DB.findNode(sRecord);
-        local nInitPC = DB.getValue(nodeChar,"initiative.total",0);
+        local nInitPC = DB.getValue(nodeChar, "initiative.total", 0);
         local nInitResult = 0;
         if sOptPCVNPCINIT == "on" then
             if CombatManagerADND.PC_LASTINIT == 0 then
@@ -350,7 +349,7 @@ function rollEntryInitOverride(nodeEntry)
                 end
             end
         end
-    
+
         DB.setValue(nodeEntry, "initresult", "number", nInitResult);
         return;
     else -- it's an npc
@@ -358,10 +357,10 @@ function rollEntryInitOverride(nodeEntry)
         if sOptPCVNPCINIT == "on" then
             local nInitResult = 0;
             if CombatManagerADND.NPC_LASTINIT == 0 then
-            nInitResult = CombatManagerADND.rollRandomInit(0, bADV);
-            CombatManagerADND.NPC_LASTINIT = nInitResult;
+                nInitResult = CombatManagerADND.rollRandomInit(0, bADV);
+                CombatManagerADND.NPC_LASTINIT = nInitResult;
             else
-            nInitResult = CombatManagerADND.NPC_LASTINIT;
+                nInitResult = CombatManagerADND.NPC_LASTINIT;
             end
             DB.setValue(nodeEntry, "initresult", "number", nInitResult);
             return;
@@ -369,13 +368,13 @@ function rollEntryInitOverride(nodeEntry)
 
         -- for npcs we allow them to have custom initiative. Check for it 
         -- and set nInit.
-        local nTotal = DB.getValue(nodeEntry,"initiative.total",0);
+        local nTotal = DB.getValue(nodeEntry, "initiative.total", 0);
         -- flip through weaponlist, get the largest speedfactor as default
         local nSpeedFactor = nil;
 
         local nodeSlowestWeapon = nil;
-        for _,nodeWeapon in pairs(DB.getChildren(nodeEntry, "weaponlist")) do
-            local nSpeed = DB.getValue(nodeWeapon,"speedfactor",0);
+        for _, nodeWeapon in pairs(DB.getChildren(nodeEntry, "weaponlist")) do
+            local nSpeed = DB.getValue(nodeWeapon, "speedfactor", 0);
             if not nSpeedFactor or nSpeed > nSpeedFactor then
                 nSpeedFactor = nSpeed;
                 nodeSlowestWeapon = nodeWeapon;
@@ -383,16 +382,17 @@ function rollEntryInitOverride(nodeEntry)
         end
 
         if nSpeedFactor then
-            nInit = nSpeedFactor + nInitMOD ;
+            nInit = nSpeedFactor + nInitMOD;
             if PlayerOptionManager.isUsingHackmasterInitiative() then
                 nInit = nInit - 5;
             end
-        elseif (nTotal ~= 0) then 
-            nInit = nTotal + nInitMOD ;
+        elseif (nTotal ~= 0) then
+            nInit = nTotal + nInitMOD;
         end
 
         --[[ IF we ignore size/mods, clear nInit ]]
-        if OptionsManager.getOption("OPTIONAL_INIT_SIZEMODS") ~= "on" and not PlayerOptionManager.isUsingHackmasterInitiative() then
+        if OptionsManager.getOption("OPTIONAL_INIT_SIZEMODS") ~= "on" and
+            not PlayerOptionManager.isUsingHackmasterInitiative() then
             nInit = 0;
         end
         -- For NPCs, if NPC init option is not group, then roll unique initiative
@@ -415,15 +415,14 @@ function rollEntryInitOverride(nodeEntry)
             return;
         end
 
-
         -- For NPCs with group option enabled
         -- Get the entry's database node name and creature name
-        local sStripName = CombatManager.stripCreatureNumber(DB.getValue(nodeEntry, "name", ""));      
+        local sStripName = CombatManager.stripCreatureNumber(DB.getValue(nodeEntry, "name", ""));
         -- Iterate through list looking for other creature's with same name and faction
         local nLastInit = nil;
         if sStripName ~= "" then
             local sEntryFaction = DB.getValue(nodeEntry, "friendfoe", "");
-            for _,v in pairs(CombatManager.getCombatantNodes()) do
+            for _, v in pairs(CombatManager.getCombatantNodes()) do
                 if v.getName() ~= nodeEntry.getName() then
                     if DB.getValue(v, "friendfoe", "") == sEntryFaction then
                         local sTemp = CombatManager.stripCreatureNumber(DB.getValue(v, "name", ""));
@@ -450,52 +449,51 @@ function rollEntryInitOverride(nodeEntry)
                 DB.setValue(nodeEntry, "initresult", "number", nInitResult);
             end
         end
-    end 
+    end
 end
 
 function rollNPCHitPointsOverride(nodeChar)
     return fRollNpcHitPoints(nodeChar) + getHpKicker(nodeChar);
 end
 
-
 function getHpKicker(nodeChar)
     if not PlayerOptionManager.isHpKickerEnabled() then
         return 0;
-    end;
+    end
 
     return getKickerFromSize(nodeChar);
 end
 
 function getKickerFromSize(nodeNpc)
-  if DB.getValue(nodeNpc, "hd", 0) == 0 then 
-    return 0; -- If it has 0 HD, don't give it a kicker.
-  end
-  
-  local nSizeCategory = ActorManagerPO.getSizeCategory(nodeNpc);  
-  local nKicker = 20;
-  
-  local bUseSizeBasedKicker = PlayerOptionManager.isKickerSizeBased();
-  
-  if bUseSizeBasedKicker then
-    if nSizeCategory == 1 then -- tiny
-      nKicker = 0;
-    elseif nSizeCategory == 2 then -- small
-      nKicker = 10;
-    elseif nSizeCategory == 3 then -- medium
-      nKicker = 20;
-    elseif nSizeCategory == 4 then -- large
-      nKicker = 30;
-    elseif nSizeCategory == 5 then -- huge
-      nKicker = 40;
-    elseif nSizeCategory == 6 then -- gargantuan
-      nKicker = 50;
+    if DB.getValue(nodeNpc, "hd", 0) == 0 then
+        return 0; -- If it has 0 HD, don't give it a kicker.
     end
-  elseif nSizeCategory == 1 then
-    nKicker = 10;
-  end
-  
-  return nKicker;
-  
+
+    local nSizeCategory = ActorManagerPO.getSizeCategory(nodeNpc);
+    local nKicker = 20;
+
+    local bUseSizeBasedKicker = PlayerOptionManager.isKickerSizeBased();
+
+    if bUseSizeBasedKicker then
+        if nSizeCategory == 1 then -- tiny
+            nKicker = 0;
+        elseif nSizeCategory == 2 then -- small
+            nKicker = 10;
+        elseif nSizeCategory == 3 then -- medium
+            nKicker = 20;
+        elseif nSizeCategory == 4 then -- large
+            nKicker = 30;
+        elseif nSizeCategory == 5 then -- huge
+            nKicker = 40;
+        elseif nSizeCategory == 6 then -- gargantuan
+            nKicker = 50;
+        end
+    elseif nSizeCategory == 1 then
+        nKicker = 10;
+    end
+
+    return nKicker;
+
 end
 
 function nextActorOverride()
@@ -503,7 +501,7 @@ function nextActorOverride()
         if Input.isShiftPressed() or Input.isAltPressed() or Input.isControlPressed() then
             delayThenNextActor(2);
         else
-           fNextActor();
+            fNextActor();
         end
     else
         delayThenNextActor(0);
@@ -518,20 +516,20 @@ function delayThenNextActor(nInitDelay)
     local nodeActive = CombatManager.getActiveCT();
     local nPreviousInit = DB.getValue(nodeActive, "initresult");
     local nIndexActive = 0;
-    
+
     -- Check the skip hidden NPC option
     local bSkipHidden = OptionsManager.isOption("CTSH", "on");
     local bSkipDeadNPC = OptionsManager.isOption("CT_SKIP_DEAD_NPC", "on");
-    
+
     -- Determine the next actor
     local nodeNext = nil;
     local aEntries = CombatManager.getSortedCombatantList();
     if #aEntries > 0 then
         if nodeActive then
-            for i = 1,#aEntries do
+            for i = 1, #aEntries do
                 if aEntries[i] == nodeActive then
                     nIndexActive = i;
-                    break;
+                    break
                 end
             end
         end
@@ -540,18 +538,18 @@ function delayThenNextActor(nInitDelay)
             for i = nIndexActive + 1, #aEntries do
                 if DB.getValue(aEntries[i], "friendfoe", "") == "friend" then
                     nIndexNext = i;
-                    break;
+                    break
                 else
-                    local nPercentWounded,_ = ActorHealthManager.getWoundPercent(aEntries[i]);
+                    local nPercentWounded, _ = ActorHealthManager.getWoundPercent(aEntries[i]);
                     local bisNPC = (not ActorManager.isPC(aEntries[i]));
                     -- is the actor dead?
                     local bSkipDead = (bSkipDeadNPC and bisNPC and nPercentWounded >= 1);
                     -- is the actor hidden?
                     local bSkipHiddenActor = (bSkipHidden and CombatManager.isCTHidden(aEntries[i]));
-                  
+
                     if (not bSkipDead and not bSkipHiddenActor) then
                         nIndexNext = i;
-                        break;
+                        break
                     end
                 end
             end
@@ -575,8 +573,8 @@ function delayThenNextActor(nInitDelay)
         nNewActiveNodeInit = InitManagerPO.popActorInitFromQueue(nodeActive);
     end
 
-    if nInitDelay > 0 then 
-        ChatManagerPO.deliverDelayTurnMessage(nodeActive, nInitDelay, not ActorManager.isPC(nodeActive) );
+    if nInitDelay > 0 then
+        ChatManagerPO.deliverDelayTurnMessage(nodeActive, nInitDelay, not ActorManager.isPC(nodeActive));
     end
 
     local bHasLaterInit = nNewActiveNodeInit ~= nPreviousInit;
@@ -586,18 +584,18 @@ function delayThenNextActor(nInitDelay)
         local nNextActorInit = DB.getValue(nodeNext, "initresult");
         local bShouldGoToNextActor = not bHasLaterInit or (nNextActorInit <= nNewActiveNodeInit);
 
-        if bShouldGoToNextActor then 
+        if bShouldGoToNextActor then
             -- End turn for current actor
             CombatManager.onTurnEndEvent(nodeActive);
-        
+
             -- Process effects in between current and next actors
             if nodeActive then
                 CombatManager.onInitChangeEvent(nodeActive, nodeNext);
             else
                 CombatManager.onInitChangeEvent(nil, nodeNext);
             end
-            
-            DB.setValue(nodeActive, "initresult", "number", nNewActiveNodeInit);    
+
+            DB.setValue(nodeActive, "initresult", "number", nNewActiveNodeInit);
             -- Start turn for next actor
             local bShouldSwitchActor = (not bHasLaterInit) or CombatManagerADND.sortfuncADnD(nodeNext, nodeActive);
 
@@ -610,13 +608,13 @@ function delayThenNextActor(nInitDelay)
                 CombatManager.nextRound(1);
             end
         else
-            DB.setValue(nodeActive, "initresult", "number", nNewActiveNodeInit);     
+            DB.setValue(nodeActive, "initresult", "number", nNewActiveNodeInit);
             if PlayerOptionManager.isUsingHackmasterInitiative() and nNewActiveNodeInit > 10 then
                 CombatManager.nextRound(1);
             end
         end
     else
-        DB.setValue(nodeActive, "initresult", "number", nNewActiveNodeInit);    
+        DB.setValue(nodeActive, "initresult", "number", nNewActiveNodeInit);
 
         if bSkipHidden or bSkipDeadNPC then
             for i = nIndexActive + 1, #aEntries do
@@ -626,7 +624,6 @@ function delayThenNextActor(nInitDelay)
         CombatManager.nextRound(1);
     end
 end
-
 
 --[[function addBattleOverride(nodeBattle)
     local aModulesToLoad = {};
@@ -803,7 +800,7 @@ function getSimilarCreaturesInCT(nodeEntry)
     local sStripName = CombatManager.stripCreatureNumber(DB.getValue(nodeEntry, "name", ""));
     if sStripName ~= "" then
         local sEntryFaction = DB.getValue(nodeEntry, "friendfoe", "");
-        for _,v in pairs(CombatManager.getCombatantNodes()) do
+        for _, v in pairs(CombatManager.getCombatantNodes()) do
             if v.getName() ~= nodeEntry.getName() then
                 if DB.getValue(v, "friendfoe", "") == sEntryFaction then
                     local sTemp = CombatManager.stripCreatureNumber(DB.getValue(v, "name", ""));

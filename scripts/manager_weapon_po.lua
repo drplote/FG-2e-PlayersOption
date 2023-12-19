@@ -44,7 +44,7 @@ function getSizeCategoryFromNode(nodeWeapon, canReturnDefault)
     local nSizeCategory = nil;
     if nodeWeapon then
         local sProperties = DB.getValue(nodeWeapon, "properties", "");
-            nSizeCategory = DataManagerPO.parseSizeFromProperties(sProperties);
+        nSizeCategory = DataManagerPO.parseSizeFromProperties(sProperties);
         if not nSizeCategory and canReturnDefault then
             nSizeCategory = getDefaultWeaponSizeCategory(nodeWeapon);
         end
@@ -65,27 +65,27 @@ function tryGetNaturalWeaponSizeCategory(nodeWeapon, nodeAttacker)
 end
 
 function getDefaultWeaponSizeCategory(nodeWeapon)
-	local sName = DB.getValue(nodeWeapon, "name", ""):lower();
-	for sWeaponName, sSize in pairs(DataCommonPO.aDefaultWeaponSizes) do
-		if sName:find(sWeaponName) then
-			return DataManagerPO.parseSizeString(sSize);
-		end
-	end
+    local sName = DB.getValue(nodeWeapon, "name", ""):lower();
+    for sWeaponName, sSize in pairs(DataCommonPO.aDefaultWeaponSizes) do
+        if sName:find(sWeaponName) then
+            return DataManagerPO.parseSizeString(sSize);
+        end
+    end
     DebugPO.log("couldn't find size for ", sName);
     return nil;
 end
 
 function getDamageTypes(nodeWeapon)
-    if not nodeWeapon then 
-        return nil; 
-    end;
-    
+    if not nodeWeapon then
+        return nil;
+    end
+
     return getDamageTypesFromDamageList(nodeWeapon);
 end
 
 function getDamageTypesFromDamageList(nodeWeapon)
     local aDamageTypes = {};
-    
+
     for _, nodeDamage in pairs(DB.getChildren(nodeWeapon, "damagelist")) do
         local sDamageType = DB.getValue(nodeDamage, "type", "");
         for _, sExpectedDamageType in pairs(DataCommon.dmgtypes) do
@@ -93,8 +93,8 @@ function getDamageTypesFromDamageList(nodeWeapon)
                 UtilityPO.addIfUnique(aDamageTypes, sExpectedDamageType);
             end
         end
-    end 
-    
+    end
+
     return aDamageTypes;
 end
 
@@ -118,7 +118,7 @@ function isDamageType(sDamageType, aDamageTypeNames)
         end
     end
     return false;
-end 
+end
 
 function encodeDamageTypes(aDamageTypes)
     if not aDamageTypes then

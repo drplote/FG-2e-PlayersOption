@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <root>
-	<windowclass name="combat_mini_section" merge="join" insertbefore="combat_thaco_matrix">
-		<sheetdata>
+    <windowclass name="combat_mini_section" merge="join" insertbefore="combat_thaco_matrix">
+        <sheetdata>
 
-			<button_surprise name="surprise_total_roll" source="surprise.total" merge="replace">
-		        <anchored height="25" width="20" >
-  		        	<top offset="15" />
-			    	<left anchor="center" offset="-80"/>
-        		</anchored>
-			</button_surprise>
+            <button_surprise name="surprise_total_roll" source="surprise.total" merge="replace">
+                <anchored height="25" width="20">
+                    <top offset="15" />
+                    <left anchor="center" offset="-80"/>
+                </anchored>
+            </button_surprise>
 
-			<buttoncontrol name="requestTurnButton">
-				<anchored height="25" width="20" >
-					<top offset="15" />
-					<left parent="surprise_total_roll" anchor="right" relation="relative" offset="15" />
-				</anchored>
-				<icon normal="requestTurnIcon" pressed="requestTurnIcon_pressed" />
-				<script>         
+            <buttoncontrol name="requestTurnButton">
+                <anchored height="25" width="20">
+                    <top offset="15" />
+                    <left parent="surprise_total_roll" anchor="right" relation="relative" offset="15" />
+                </anchored>
+                <icon normal="requestTurnIcon" pressed="requestTurnIcon_pressed" />
+                <script>         
 					function action(draginfo)
 					  local nodeChar = window.getDatabaseNode();
 					  CombatManagerPO.notifyRequestTurn(nodeChar);
@@ -31,22 +31,22 @@
 					function onButtonPress(x,y)
 					  return action();
 					end
-				</script>
-				<frame name="fielddark" offset="7,5,7,5" />
-				<stateframe>
-					<hover name="rowshade" offset="7,5,7,5" />
-				</stateframe>
-				<tooltip textres="char_label_request_turn_tooltip" />
-			</buttoncontrol>
+                </script>
+                <frame name="fielddark" offset="7,5,7,5" />
+                <stateframe>
+                    <hover name="rowshade" offset="7,5,7,5" />
+                </stateframe>
+                <tooltip textres="char_label_request_turn_tooltip" />
+            </buttoncontrol>
 
 
-			<buttoncontrol name="endturnbutton">
-				<anchored height="25" width="20" >
-					<top offset="15" />
-					<left parent="surprise_total_roll" anchor="right" relation="relative" offset="15" />
-				</anchored>
-				<icon normal="endTurnButtonIcon" pressed="endTurnButtonIcon_pressed" />
-				<script>         
+            <buttoncontrol name="endturnbutton">
+                <anchored height="25" width="20">
+                    <top offset="15" />
+                    <left parent="surprise_total_roll" anchor="right" relation="relative" offset="15" />
+                </anchored>
+                <icon normal="endTurnButtonIcon" pressed="endTurnButtonIcon_pressed" />
+                <script>         
 					function action(draginfo)
 		   			  local nodeChar = window.getDatabaseNode();
 					  local nodeCT = CombatManager.getCTFromNode(nodeChar);
@@ -69,29 +69,29 @@
 					function onButtonPress(x,y)
 					  return action();
 					end
-				</script>
-				<frame name="fielddark" offset="7,5,7,5" />
-				<stateframe>
-					<hover name="rowshade" offset="7,5,7,5" />
-				</stateframe>
-				<tooltip textres="char_label_end_turn_tooltip" />
-			</buttoncontrol>
+                </script>
+                <frame name="fielddark" offset="7,5,7,5" />
+                <stateframe>
+                    <hover name="rowshade" offset="7,5,7,5" />
+                </stateframe>
+                <tooltip textres="char_label_end_turn_tooltip" />
+            </buttoncontrol>
 
-			<label_fieldtop name="label_endturnbutton">
-				<anchored to="endturnbutton" />
-				<font>regular10</font>
-				<center />
-				<static textres="char_label_end_turn" />
-				<tooltip textres="char_label_end_turn_tooltip" />
-			</label_fieldtop>
+            <label_fieldtop name="label_endturnbutton">
+                <anchored to="endturnbutton" />
+                <font>regular10</font>
+                <center />
+                <static textres="char_label_end_turn" />
+                <tooltip textres="char_label_end_turn_tooltip" />
+            </label_fieldtop>
 
-			<label_fieldtop name="label_requestTurnButton">
-				<anchored to="requestTurnButton" />
-				<font>regular10</font>
-				<center />
-				<static textres="char_label_request_turn" />
-				<tooltip textres="char_label_request_turn_tooltip" />
-			</label_fieldtop>
-		</sheetdata>
-	</windowclass>
+            <label_fieldtop name="label_requestTurnButton">
+                <anchored to="requestTurnButton" />
+                <font>regular10</font>
+                <center />
+                <static textres="char_label_request_turn" />
+                <tooltip textres="char_label_request_turn_tooltip" />
+            </label_fieldtop>
+        </sheetdata>
+    </windowclass>
 </root>
