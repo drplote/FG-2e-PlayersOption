@@ -3,17 +3,17 @@
 <root>
     <!-- Player's Option Rules -->
     <string name="option_header_po">Player's Option Rules (GM)</string>
-    <string name="option_label_critical_hits">Combat &amp; Tactics Critical Hits</string>
+	<string name="option_label_critical_hits">Combat &amp; Tactics Critical Hits</string>
     <string name="option_label_phased_initiative">Combat &amp; Tactics Initiative</string>
     <string name="option_val_nat18AndHitBy5">Nat 18+, hit by 5</string>
     <string name="option_val_nat20AndHitBy5">As base, hit by 5</string>
     <string name="option_val_anyNat20">As base ruleset</string>
-
+	
     <!-- Additional Automation Options -->
-    <string name="option_header_automation">Additional Automation (GM)</string>
+	<string name="option_header_automation">Additional Automation (GM)</string>
     <string name="option_label_weapontype_vs_armor_mods">Weapon vs Armor to-hit modifiers</string>
-    <string name="option_label_stricter_resistance">Stricter Resistance Rules</string>
-    <string name="option_label_generate_hit_locations">Generate Hit Locations</string>
+	<string name="option_label_stricter_resistance">Stricter Resistance Rules</string>
+	<string name="option_label_generate_hit_locations">Generate Hit Locations</string>
     <string name="option_val_hm">Hackmaster</string>
     <string name="option_val_po">Player's Option</string>
     <string name="option_label_default_pc_init_to_99">Set Unrolled PC Init to 99</string>
@@ -62,7 +62,7 @@
     <string name="option_label_radiant_necrotic_armor">Should Radiant/Necrotic damage hurt armor (if using armor damage?)</string>
     option_label_hide_enemies_from_player_ct
 
-        <!-- New Properties -->
+    <!-- New Properties -->
     <string name="item_label_hp_lost">HP Lost</string>
     <string name="item_label_hp_lost_tooltip">The amount of damage this armor has taken</string>
 

@@ -1,8 +1,8 @@
 <root>
-    <windowclass name="battlerandom_npc" merge="join">
-        <sheetdata>
-            <label_randomencounter_itemlist name="label_items" />
-            <number_randomencounter_items name="items" />
-        </sheetdata>
-    </windowclass>
+	<windowclass name="battlerandom_npc" merge="join">
+		<sheetdata>
+			<label_randomencounter_itemlist name="label_items" />
+			<number_randomencounter_items name="items" />
+		</sheetdata>
+	</windowclass>
 </root>

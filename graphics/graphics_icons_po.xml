@@ -7,121 +7,121 @@
 
 
 <root>
-    <icon name="moraleButton" file="graphics/icons/truce_reversed.png" />
-    <icon name="moraleButtonPressed" file="graphics/icons/truce.png" />
-    <icon name="endTurnButtonIcon" file="graphics/icons/end_turn_icon.png" />
-    <icon name="endTurnButtonIcon_pressed" file="graphics/icons/end_turn_icon_pressed.png" />
-    <icon name="requestTurnIcon" file="graphics/icons/request_turn_icon.png" />
-    <icon name="requestTurnIcon_pressed" file="graphics/icons/request_turn_icon_pressed.png" />
+  <icon name="moraleButton" file="graphics/icons/truce_reversed.png" />
+  <icon name="moraleButtonPressed" file="graphics/icons/truce.png" />
+  <icon name="endTurnButtonIcon" file="graphics/icons/end_turn_icon.png" />      
+  <icon name="endTurnButtonIcon_pressed" file="graphics/icons/end_turn_icon_pressed.png" />      
+  <icon name="requestTurnIcon" file="graphics/icons/request_turn_icon.png" />
+  <icon name="requestTurnIcon_pressed" file="graphics/icons/request_turn_icon_pressed.png" />
 
-    <icon name="delayTurnButtonIcon" file="graphics/icons/delay_turn.png" />
-    <icon name="delayTurn1ButtonIcon" file="graphics/icons/delay_turn1.png" />
-    <icon name="delayTurn2ButtonIcon" file="graphics/icons/delay_turn2.png" />
-    <icon name="delayTurn3ButtonIcon" file="graphics/icons/delay_turn3.png" />
-    <icon name="delayTurn4ButtonIcon" file="graphics/icons/delay_turn4.png" />
-    <icon name="delayTurn5ButtonIcon" file="graphics/icons/delay_turn5.png" />
-    <icon name="delayTurn6ButtonIcon" file="graphics/icons/delay_turn6.png" />
-    <icon name="delayTurn7ButtonIcon" file="graphics/icons/delay_turn7.png" />
-    <icon name="delayTurn8ButtonIcon" file="graphics/icons/delay_turn8.png" />
-    <icon name="delayTurn9ButtonIcon" file="graphics/icons/delay_turn9.png" />
-    <icon name="delayTurn10ButtonIcon" file="graphics/icons/delay_turn10.png" />
+  <icon name="delayTurnButtonIcon" file="graphics/icons/delay_turn.png" />
+  <icon name="delayTurn1ButtonIcon" file="graphics/icons/delay_turn1.png" />
+  <icon name="delayTurn2ButtonIcon" file="graphics/icons/delay_turn2.png" />
+  <icon name="delayTurn3ButtonIcon" file="graphics/icons/delay_turn3.png" />
+  <icon name="delayTurn4ButtonIcon" file="graphics/icons/delay_turn4.png" />
+  <icon name="delayTurn5ButtonIcon" file="graphics/icons/delay_turn5.png" />
+  <icon name="delayTurn6ButtonIcon" file="graphics/icons/delay_turn6.png" />
+  <icon name="delayTurn7ButtonIcon" file="graphics/icons/delay_turn7.png" />
+  <icon name="delayTurn8ButtonIcon" file="graphics/icons/delay_turn8.png" />
+  <icon name="delayTurn9ButtonIcon" file="graphics/icons/delay_turn9.png" />
+  <icon name="delayTurn10ButtonIcon" file="graphics/icons/delay_turn10.png" />
 
-    <icon name="concealmentIcon" file="graphics/icons/concealment_icon.png" />
-    <icon name="coverIcon" file="graphics/icons/cover_icon.png" />
-    <icon name="25percentIcon" file="graphics/icons/25_percent_icon.png" />
-    <icon name="50percentIcon" file="graphics/icons/50_percent_icon.png" />
-    <icon name="75percentIcon" file="graphics/icons/75_percent_icon.png" />
-    <icon name="90percentIcon" file="graphics/icons/90_percent_icon.png" />
+  <icon name="concealmentIcon" file="graphics/icons/concealment_icon.png" />
+  <icon name="coverIcon" file="graphics/icons/cover_icon.png" />
+  <icon name="25percentIcon" file="graphics/icons/25_percent_icon.png" />
+  <icon name="50percentIcon" file="graphics/icons/50_percent_icon.png" />
+  <icon name="75percentIcon" file="graphics/icons/75_percent_icon.png" />
+  <icon name="90percentIcon" file="graphics/icons/90_percent_icon.png" />
 
-    <icon name="calledShotIcon" file="graphics/icons/called_shot_icon.png" />
-    <icon name="calledShotTorsoIcon" file="graphics/icons/called_shot_torso.png" />
-    <icon name="calledShotHeadIcon" file="graphics/icons/called_shot_head.png" />
-    <icon name="calledShotArmIcon" file="graphics/icons/called_shot_arm.png" />
-    <icon name="calledShotLegIcon" file="graphics/icons/called_shot_leg.png" />
-    <icon name="calledShotAbdomenIcon" file="graphics/icons/called_shot_abdomen.png" />
-    <icon name="calledShotNeckIcon" file="graphics/icons/called_shot_neck.png" />
+  <icon name="calledShotIcon" file="graphics/icons/called_shot_icon.png" />
+  <icon name="calledShotTorsoIcon" file="graphics/icons/called_shot_torso.png" />
+  <icon name="calledShotHeadIcon" file="graphics/icons/called_shot_head.png" />
+  <icon name="calledShotArmIcon" file="graphics/icons/called_shot_arm.png" />
+  <icon name="calledShotLegIcon" file="graphics/icons/called_shot_leg.png" />
+  <icon name="calledShotAbdomenIcon" file="graphics/icons/called_shot_abdomen.png" />
+  <icon name="calledShotNeckIcon" file="graphics/icons/called_shot_neck.png" />
+  
+  <icon name="standardAttackIcon" file="graphics/icons/standard_attack_icon.png" />
+  <icon name="defenderModifiersIcon" file="graphics/icons/defender_modifiers_icon.png" />
+  <icon name="rearAttackModifierIcon" file="graphics/icons/rear_attack_icon.png" />
+  <icon name="noDexAttackModifierIcon" file="graphics/icons/no_dex_modifier_icon.png" />
+  <icon name="noShieldAttackModifierIcon" file="graphics/icons/no_shield_modifier_icon.png" />
+  <icon name="touchAttackModifierIcon" file="graphics/icons/touch_attack_modifier_icon.png" />
+  <icon name="chargeAttackModifierIcon" file="graphics/icons/charge_icon.png" />
 
-    <icon name="standardAttackIcon" file="graphics/icons/standard_attack_icon.png" />
-    <icon name="defenderModifiersIcon" file="graphics/icons/defender_modifiers_icon.png" />
-    <icon name="rearAttackModifierIcon" file="graphics/icons/rear_attack_icon.png" />
-    <icon name="noDexAttackModifierIcon" file="graphics/icons/no_dex_modifier_icon.png" />
-    <icon name="noShieldAttackModifierIcon" file="graphics/icons/no_shield_modifier_icon.png" />
-    <icon name="touchAttackModifierIcon" file="graphics/icons/touch_attack_modifier_icon.png" />
-    <icon name="chargeAttackModifierIcon" file="graphics/icons/charge_icon.png" />
+  <icon name="standardInitIcon" file="graphics/icons/standard_init_icon.png" />
+  <icon name="lastInitHmIcon" file="graphics/icons/last_init_hm_icon.png" />
+  <icon name="lastInitIcon" file="graphics/icons/last_init_icon.png" />
+  <icon name="firstInitIcon" file="graphics/icons/first_init_icon.png" />
 
-    <icon name="standardInitIcon" file="graphics/icons/standard_init_icon.png" />
-    <icon name="lastInitHmIcon" file="graphics/icons/last_init_hm_icon.png" />
-    <icon name="lastInitIcon" file="graphics/icons/last_init_icon.png" />
-    <icon name="firstInitIcon" file="graphics/icons/first_init_icon.png" />
+  <icon name="sterno_icon" file="graphics/icons/sterno_icon.png" />
+  <icon name="blankIcon" file="graphics/icons/blank_icon.png" />
+  <icon name="xpIcon" file="graphics/icons/upgrade.png" />
 
-    <icon name="sterno_icon" file="graphics/icons/sterno_icon.png" />
-    <icon name="blankIcon" file="graphics/icons/blank_icon.png" />
-    <icon name="xpIcon" file="graphics/icons/upgrade.png" />
+  <icon name="attackSubmenuIcon" file="graphics/icons/attack_submenu_icon.png" />
 
-    <icon name="attackSubmenuIcon" file="graphics/icons/attack_submenu_icon.png" />
+  <icon name="cheaterDiceSubmenuIcon" file="graphics/icons/nat_20_icon.png" />
+  <icon name="nat20Icon" file="graphics/icons/nat_20_icon.png" />
+  <icon name="nat1Icon" file="graphics/icons/nat_1_icon.png" />
 
-    <icon name="cheaterDiceSubmenuIcon" file="graphics/icons/nat_20_icon.png" />
-    <icon name="nat20Icon" file="graphics/icons/nat_20_icon.png" />
-    <icon name="nat1Icon" file="graphics/icons/nat_1_icon.png" />
+  <icon name="effectsSubmenuIcon" file="graphics/icons/effects_submenu_icon.png" />
+  <icon name="blindEffectIcon" file="graphics/icons/blind_effect_icon.png" />
+  <icon name="invisibleEffectIcon" file="graphics/icons/invisible_effect_icon.png" />
+  <icon name="paralyzedEffectIcon" file="graphics/icons/paralyzed_effect_icon.png" />
+  <icon name="proneEffectIcon" file="graphics/icons/prone_effect_icon.png" />
+  <icon name="stunnedEffectIcon" file="graphics/icons/stunned_effect_icon.png" />
+  <icon name="unconsciousEffectIcon" file="graphics/icons/unconscious_effect_icon.png" />
+  <icon name="restrainedEffectIcon" file="graphics/icons/restrained_effect_icon.png" />
+  <icon name="noDexterityEffectIcon" file="graphics/icons/no_dex_effect_icon.png" />
+  <icon name="addEffectIcon" file="graphics/icons/plus_icon.png" />
+  <icon name="removeEffectIcon" file="graphics/icons/minus_icon.png" />
 
-    <icon name="effectsSubmenuIcon" file="graphics/icons/effects_submenu_icon.png" />
-    <icon name="blindEffectIcon" file="graphics/icons/blind_effect_icon.png" />
-    <icon name="invisibleEffectIcon" file="graphics/icons/invisible_effect_icon.png" />
-    <icon name="paralyzedEffectIcon" file="graphics/icons/paralyzed_effect_icon.png" />
-    <icon name="proneEffectIcon" file="graphics/icons/prone_effect_icon.png" />
-    <icon name="stunnedEffectIcon" file="graphics/icons/stunned_effect_icon.png" />
-    <icon name="unconsciousEffectIcon" file="graphics/icons/unconscious_effect_icon.png" />
-    <icon name="restrainedEffectIcon" file="graphics/icons/restrained_effect_icon.png" />
-    <icon name="noDexterityEffectIcon" file="graphics/icons/no_dex_effect_icon.png" />
-    <icon name="addEffectIcon" file="graphics/icons/plus_icon.png" />
-    <icon name="removeEffectIcon" file="graphics/icons/minus_icon.png" />
+  <icon name="groupIcon" file="graphics/icons/group_icon.png" />
+  <icon name="cloneIcon" file="graphics/icons/clone_icon.png" />
+  <icon name="rollDiceIcon" file="graphics/icons/rolling_dice_icon.png" />
 
-    <icon name="groupIcon" file="graphics/icons/group_icon.png" />
-    <icon name="cloneIcon" file="graphics/icons/clone_icon.png" />
-    <icon name="rollDiceIcon" file="graphics/icons/rolling_dice_icon.png" />
+  <icon name="rateOfFireIcon" file="graphics/icons/rate_of_fire_icon.png" />
+  <icon name="attackRateIcon" file="graphics/icons/attack_rate_icon.png" />
 
-    <icon name="rateOfFireIcon" file="graphics/icons/rate_of_fire_icon.png" />
-    <icon name="attackRateIcon" file="graphics/icons/attack_rate_icon.png" />
-
-    <icon name="oneIcon" file="graphics/icons/1_icon.png" />
-    <icon name="twoIcon" file="graphics/icons/2_icon.png" />
-    <icon name="threeIcon" file="graphics/icons/3_icon.png" />
-    <icon name="fourIcon" file="graphics/icons/4_icon.png" />
-    <icon name="fiveIcon" file="graphics/icons/5_icon.png" />
-    <icon name="sixIcon" file="graphics/icons/6_icon.png" />
-    <icon name="sevenIcon" file="graphics/icons/7_icon.png" />
-    <icon name="sevenPlusIcon" file="graphics/icons/7plus_icon.png" />
-    <icon name="eightIcon" file="graphics/icons/8_icon.png" />
-    <icon name="nineIcon" file="graphics/icons/9_icon.png" />
-    <icon name="tenIcon" file="graphics/icons/10_icon.png" />
+  <icon name="oneIcon" file="graphics/icons/1_icon.png" />
+  <icon name="twoIcon" file="graphics/icons/2_icon.png" />
+  <icon name="threeIcon" file="graphics/icons/3_icon.png" />
+  <icon name="fourIcon" file="graphics/icons/4_icon.png" />
+  <icon name="fiveIcon" file="graphics/icons/5_icon.png" />
+  <icon name="sixIcon" file="graphics/icons/6_icon.png" />
+  <icon name="sevenIcon" file="graphics/icons/7_icon.png" />
+  <icon name="sevenPlusIcon" file="graphics/icons/7plus_icon.png" />
+  <icon name="eightIcon" file="graphics/icons/8_icon.png" />
+  <icon name="nineIcon" file="graphics/icons/9_icon.png" />
+  <icon name="tenIcon" file="graphics/icons/10_icon.png" />
 
 
-    <icon name="lightingVisionIcon" file="graphics/icons/LightingMenu.png" />
-    <icon name="weaponGlowMenuIcon" file="graphics/icons/WeaponGlow.png" />
-    <icon name="blueColorIcon" file="graphics/icons/blue.png" />
-    <icon name="redColorIcon" file="graphics/icons/red.png" />
-    <icon name="greenColorIcon" file="graphics/icons/green.png" />
-    <icon name="orangeColorIcon" file="graphics/icons/orange.png" />
-    <icon name="yellowColorIcon" file="graphics/icons/yellow.png" />
-    <icon name="purpleColorIcon" file="graphics/icons/purple.png" />
-    <icon name="whiteColorIcon" file="graphics/icons/white.png" />
-    <icon name="removeLightsIcon" file="graphics/icons/RemoveLight.png" />
-    <icon name="torchIcon" file="graphics/icons/torch.png" />
-    <icon name="lanternIcon" file="graphics/icons/lantern.png" />
-    <icon name="candleIcon" file="graphics/icons/candle.png" />
-    <icon name="visionMenuIcon" file="graphics/icons/VisionMenu.png" />
-    <icon name="infravision120Icon" file="graphics/icons/Infravision120.png" />
-    <icon name="truesightIcon" file="graphics/icons/Truesight.png" />
-    <icon name="blindsight60Icon" file="graphics/icons/Blindsight60.png" />
-    <icon name="blindsight120Icon" file="graphics/icons/Blindsight120.png" />
-    <icon name="infravision30Icon" file="graphics/icons/Infravision30.png" />
-    <icon name="infravision60Icon" file="graphics/icons/Infravision60.png" />
-    <icon name="infravision90Icon" file="graphics/icons/Infravision90.png" />
-    <icon name="lightingSpellsMenuIcon" file="graphics/icons/spell-book.png" />
-    <icon name="light20Icon" file="graphics/icons/Light20.png" />
-    <icon name="light60Icon" file="graphics/icons/Light60.png" />
-    <icon name="darkness15Icon" file="graphics/icons/Darkness15.png" />
-    <icon name="darkness60Icon" file="graphics/icons/Darkness60.png" />
+  <icon name="lightingVisionIcon" file="graphics/icons/LightingMenu.png" />
+  <icon name="weaponGlowMenuIcon" file="graphics/icons/WeaponGlow.png" />
+  <icon name="blueColorIcon" file="graphics/icons/blue.png" />
+  <icon name="redColorIcon" file="graphics/icons/red.png" />
+  <icon name="greenColorIcon" file="graphics/icons/green.png" />
+  <icon name="orangeColorIcon" file="graphics/icons/orange.png" />
+  <icon name="yellowColorIcon" file="graphics/icons/yellow.png" />
+  <icon name="purpleColorIcon" file="graphics/icons/purple.png" />
+  <icon name="whiteColorIcon" file="graphics/icons/white.png" />
+  <icon name="removeLightsIcon" file="graphics/icons/RemoveLight.png" />
+  <icon name="torchIcon" file="graphics/icons/torch.png" />
+  <icon name="lanternIcon" file="graphics/icons/lantern.png" />
+  <icon name="candleIcon" file="graphics/icons/candle.png" />
+  <icon name="visionMenuIcon" file="graphics/icons/VisionMenu.png" />
+  <icon name="infravision120Icon" file="graphics/icons/Infravision120.png" />
+  <icon name="truesightIcon" file="graphics/icons/Truesight.png" />
+  <icon name="blindsight60Icon" file="graphics/icons/Blindsight60.png" />
+  <icon name="blindsight120Icon" file="graphics/icons/Blindsight120.png" />
+  <icon name="infravision30Icon" file="graphics/icons/Infravision30.png" />
+  <icon name="infravision60Icon" file="graphics/icons/Infravision60.png" />
+  <icon name="infravision90Icon" file="graphics/icons/Infravision90.png" />
+  <icon name="lightingSpellsMenuIcon" file="graphics/icons/spell-book.png" />
+  <icon name="light20Icon" file="graphics/icons/Light20.png" />
+  <icon name="light60Icon" file="graphics/icons/Light60.png" />
+  <icon name="darkness15Icon" file="graphics/icons/Darkness15.png" />
+  <icon name="darkness60Icon" file="graphics/icons/Darkness60.png" />
 
 </root>
 

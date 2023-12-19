@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <root>
 
-    <template name="button_charinit">
-        <buttoncontrol>
-            <icon normal="button_initiative" pressed="button_initiative_down" />
-            <script>
+  <template name="button_charinit">
+    <buttoncontrol>
+      <icon normal="button_initiative" pressed="button_initiative_down" />
+      <script>
         function onInit()
           OptionsManager.registerCallback(PlayerOptionManager.sHackmasterInitKey, initMenuItems);
           OptionsManager.registerCallback(PlayerOptionManager.sPhasedInitiativeOptionKey, initMenuItems);
@@ -41,18 +41,18 @@
         function onButtonPress(x,y)
           return action();
         end
-            </script>
-            <frame name="fielddark" offset="7,5,7,5" />
-            <stateframe>
-                <hover name="rowshade" offset="7,5,7,5" />
-            </stateframe>
-        </buttoncontrol>
-    </template>
+      </script>
+      <frame name="fielddark" offset="7,5,7,5" />
+      <stateframe>
+        <hover name="rowshade" offset="7,5,7,5" />
+      </stateframe>
+    </buttoncontrol>
+  </template>
 
-    <template name="button_charinitdelay">
-        <buttoncontrol>
-            <icon normal="button_initdelay" pressed="button_initdelay_down" />
-            <script>
+  <template name="button_charinitdelay">
+    <buttoncontrol>
+      <icon normal="button_initdelay" pressed="button_initdelay_down" />
+      <script>
 
         function onInit()
           OptionsManager.registerCallback(PlayerOptionManager.sPhasedInitiativeOptionKey, initMenuItems);
@@ -89,13 +89,13 @@
         function onButtonPress(x,y)
           return action();
         end
-            </script>
-            <frame name="fielddark" offset="7,5,7,5" />
-            <stateframe>
-                <hover name="rowshade" offset="7,5,7,5" />
-            </stateframe>
-            <tooltip textres="char_initdelay_tooltip" />
-        </buttoncontrol>
-    </template>
+      </script>
+      <frame name="fielddark" offset="7,5,7,5" />
+      <stateframe>
+        <hover name="rowshade" offset="7,5,7,5" />
+      </stateframe>
+      <tooltip textres="char_initdelay_tooltip" />
+    </buttoncontrol>
+  </template>
 
 </root>

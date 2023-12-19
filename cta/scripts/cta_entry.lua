@@ -1,11 +1,12 @@
 function onInit()
     super.onInit();
     local node = getDatabaseNode();
-    OptionsManager.registerCallback(PlayerOptionManager.sPhasedInitiativeOptionKey, update);
+    OptionsManager.registerCallback(PlayerOptionManager.sPhasedInitiativeOptionKey, update);   
     DB.addHandler(DB.getPath(node, "initresult"), "onUpdate", update);
     DB.addHandler(DB.getPath(node, "initQueue"), "onUpdate", update);
     update();
 end
+
 
 function onClose()
     super.onClose();
@@ -18,7 +19,7 @@ function updateInitResult()
     local node = getDatabaseNode();
     if PlayerOptionManager.isUsingPhasedInitiative() then
         local nInitResult = DB.getValue(node, "initresult", 12);
-        local sPhaseName = InitManagerPO.getPhaseName(math.floor(nInitResult / 2));
+        local sPhaseName = InitManagerPO.getPhaseName(math.floor(nInitResult/2));
         initresultpo.setValue(sPhaseName);
     else
         local sInitQueue = DB.getValue(node, "initQueue");
@@ -33,7 +34,7 @@ function update()
         initresultpo.setVisible(true);
     else
         initresult.setVisible(true);
-
+        
         if InitManagerPO.hasAdditionalInitsInQueue(getDatabaseNode()) then
             initresultpo.setVisible(true);
         else
@@ -44,8 +45,8 @@ function update()
 end
 
 function onMenuSelection(selection, subselection, subsubselection)
-    RadialMenuManagerPO.onCombatTrackerActorMenuSelection(self, selection, subselection, subsubselection);
-    super.onMenuSelection(selection, subselection);
+  RadialMenuManagerPO.onCombatTrackerActorMenuSelection(self, selection, subselection, subsubselection);
+  super.onMenuSelection(selection, subselection);
 end
 
 function performSequencedInitAction(nNumAttacks)
@@ -92,11 +93,7 @@ function performEffectAction(sEffectName, isRemoving)
         EffectManager.removeEffect(nodeCT, sEffectName);
     else
         if not EffectManager5E.hasEffect(nodeCT, sEffectName, nil) then
-            EffectManager.addEffect("", "", nodeCT, {
-                sName = sEffectName,
-                sLabel = sEffectName,
-                nDuration = 0
-            }, true);
+            EffectManager.addEffect("", "", nodeCT, { sName = sEffectName, sLabel = sEffectName, nDuration = 0 }, true);
         end
     end
 end

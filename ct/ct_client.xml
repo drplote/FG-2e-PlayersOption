@@ -6,10 +6,10 @@
 -->
 
 <root>
-    <windowclass name="client_ct_entry" merge="join">
-        <script file="ct/scripts/clientct_entry_po.lua" />
-        <sheetdata>
-            <string_clientct_initresultpo name="initresultpo" insertbefore="initresult" />
-        </sheetdata>
-    </windowclass>
+  <windowclass name="client_ct_entry" merge="join">
+    <script file="ct/scripts/clientct_entry_po.lua" />
+    <sheetdata>
+      <string_clientct_initresultpo name="initresultpo" insertbefore="initresult" />
+    </sheetdata>
+  </windowclass>
 </root>
