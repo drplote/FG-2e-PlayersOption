@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
-<root version="3.0" release="1.0" >
+<root version="3.0" release="1.0">
 
   <properties>
     <name>2E Player's Option and more</name>
@@ -17,8 +17,8 @@
   </properties>
 
   <announcement text="https://forge.fantasygrounds.com/shop/items/78/view Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v1.27). Some radial menu icons taken from game-icons.net and used under CC by 3.0 license" font="emotefont" icon="sterno_icon" />
-  <base>    
-    
+  <base>
+
     <includefile source="graphics/graphics_fonts_po.xml" />
     <includefile source="graphics/graphics_icons_po.xml"/>
 
@@ -36,7 +36,7 @@
     <includefile source="cta/template_cta.xml"/>
     <includefile source="ct/ct_client.xml" />
     <includefile source="ct/template_ct.xml"/>
-    
+
     <includefile source="strings/strings_player_option.xml"/>
 
 
@@ -51,12 +51,12 @@
     <script name="ArmorManagerPO" file="scripts/manager_armor_po.lua" />
     <script name="DataCommonPO" file="scripts/data_common_po.lua" />
     <script name="UtilityPO" file="scripts/utility_po.lua" />
-  	<script name="HitLocationManagerPO" file="scripts/manager_hit_location_po.lua" />
-  	<script name="CritManagerPO" file="scripts/manager_crit_po.lua" />
-  	<script name="CombatCalcManagerPO" file="scripts/manager_combat_calc_po.lua" />
-  	<script name="ItemManagerPO" file="scripts/manager_item_po.lua" />
-  	<script name="DataManagerPO" file="scripts/manager_data_po.lua" />
-  	<script name="ActorManagerPO" file="scripts/manager_actor_po.lua" />
+    <script name="HitLocationManagerPO" file="scripts/manager_hit_location_po.lua" />
+    <script name="CritManagerPO" file="scripts/manager_crit_po.lua" />
+    <script name="CombatCalcManagerPO" file="scripts/manager_combat_calc_po.lua" />
+    <script name="ItemManagerPO" file="scripts/manager_item_po.lua" />
+    <script name="DataManagerPO" file="scripts/manager_data_po.lua" />
+    <script name="ActorManagerPO" file="scripts/manager_actor_po.lua" />
     <script name="CharManagerPO" file="scripts/manager_char_po.lua" />
     <script name="ChatManagerPO" file="scripts/manager_chat_po.lua" />
     <script name="StateManagerPO" file="scripts/manager_state_po.lua" />
@@ -83,7 +83,7 @@
     <script name="PartyManagerPO" file="scripts/manager_party_po.lua" />
     <script name="DesktopPO" file="scripts/data_desktop_po.lua" />
 
-    
+
   </base>
-    
+
 </root>
