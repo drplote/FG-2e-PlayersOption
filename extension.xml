@@ -2,88 +2,77 @@
 
 <root version="3.0" release="1.0">
 
-  <properties>
-    <name>2E Player's Option and more</name>
-    <version>1.28</version>
-    <loadorder>99</loadorder>
-    <description>
-      <text>Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v1.28)</text>
-      <website></website>
-      <author>Sterno</author>
-    </description>
-    <ruleset>
-      <name>2E</name>
-    </ruleset>
-  </properties>
+    <properties>
+        <name>2E Player's Option and more</name>
+        <version>1.28</version>
+        <loadorder>99</loadorder>
+        <description>
+            <text>Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v1.28)</text>
+            <website></website>
+            <author>Sterno</author>
+        </description>
+        <ruleset>
+            <name>2E</name>
+        </ruleset>
+    </properties>
 
-  <announcement text="https://forge.fantasygrounds.com/shop/items/78/view Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v1.27). Some radial menu icons taken from game-icons.net and used under CC by 3.0 license" font="emotefont" icon="sterno_icon" />
-  <base>
-
-    <includefile source="graphics/graphics_fonts_po.xml" />
-    <includefile source="graphics/graphics_icons_po.xml"/>
-
-    <includefile source="campaign/template_po.xml" />
-    <includefile source="campaign/record_char_weapon.xml"/>
-    <includefile source="campaign/record_item.xml" />
-    <includefile source="campaign/record_char_main.xml" />
-    <includefile source="campaign/record_char_combat.xml" />
-    <includefile source="campaign/template_char.xml" />
-    <includefile source="campaign/template_char_adnd.xml" />
-
-    <includefile source="desktop/desktop_classes.xml" />
-
-    <includefile source="cta/cta_host.xml"/>
-    <includefile source="cta/template_cta.xml"/>
-    <includefile source="ct/ct_client.xml" />
-    <includefile source="ct/template_ct.xml"/>
-
-    <includefile source="strings/strings_player_option.xml"/>
-
-
-
-    <script name="PlayerOptionManager" file="scripts/manager_po.lua"/>
-    <script name="DiceManagerPO" file="scripts/manager_dice_po.lua"/>
-    <script name="ActionHealPO" file="scripts/manager_action_heal_po.lua" />
-    <script name="ActionDamagePO" file="scripts/manager_action_damage_po.lua" />
-    <script name="ActionAttackPO" file="scripts/manager_action_attack_po.lua" />
-    <script name="CombatManagerPO" file="scripts/manager_combat_po.lua" />
-    <script name="WeaponManagerPO" file="scripts/manager_weapon_po.lua" />
-    <script name="ArmorManagerPO" file="scripts/manager_armor_po.lua" />
-    <script name="DataCommonPO" file="scripts/data_common_po.lua" />
-    <script name="UtilityPO" file="scripts/utility_po.lua" />
-    <script name="HitLocationManagerPO" file="scripts/manager_hit_location_po.lua" />
-    <script name="CritManagerPO" file="scripts/manager_crit_po.lua" />
-    <script name="CombatCalcManagerPO" file="scripts/manager_combat_calc_po.lua" />
-    <script name="ItemManagerPO" file="scripts/manager_item_po.lua" />
-    <script name="DataManagerPO" file="scripts/manager_data_po.lua" />
-    <script name="ActorManagerPO" file="scripts/manager_actor_po.lua" />
-    <script name="CharManagerPO" file="scripts/manager_char_po.lua" />
-    <script name="ChatManagerPO" file="scripts/manager_chat_po.lua" />
-    <script name="StateManagerPO" file="scripts/manager_state_po.lua" />
-    <script name="ActionSavePO" file="scripts/manager_action_save_po.lua" />
-    <script name="AbilityScorePO" file="scripts/manager_ability_scores_po.lua" />
-    <script name="ActionInitPO" file="scripts/manager_action_init_po.lua" />
-    <script name="FumbleManagerPO" file="scripts/manager_fumble_po.lua" />
-    <script name="CharBackgroundManagerPO" file="scripts/manager_char_background_po.lua" />
-    <script name="FatigueManagerPO" file="scripts/manager_fatigue_po.lua" />
-    <script name="ActionPowerPO" file="scripts/manager_action_power_po.lua" />
-    <script name="InitManagerPO" file="scripts/manager_init_po.lua" />
-    <script name="EffectManagerPO" file="scripts/manager_effect_po.lua" />
-    <script name="HonorManagerPO" file="scripts/manager_honor_po.lua"/>
-    <script name="ActionCheckPO" file="scripts/manager_action_check_po.lua"/>
-    <script name="CritManagerHM" file="scripts/manager_crit_hm.lua" />
-    <script name="RadialMenuManagerPO" file="scripts/manager_radial_menu_po.lua" />
-    <script name="ModifierStackPO" file="scripts/modifier_stack_po.lua" />
-    <script name="PowerManagerPO" file="scripts/manager_power_po.lua" />
-    <script name="LightingManagerPO" file="scripts/manager_lighting_po.lua" />
-    <script name="DebugPO" file="scripts/debug_po.lua"/>
-    <script name="MagicDetectionMananger" file="scripts/manager_magic_detection_po.lua"/>
-    <script name="DMTools" file="scripts/dm_tools_po.lua"/>
-    <script name="MoraleManagerPO" file="scripts/manager_morale_po.lua"/>
-    <script name="PartyManagerPO" file="scripts/manager_party_po.lua" />
-    <script name="DesktopPO" file="scripts/data_desktop_po.lua" />
-
-
-  </base>
-
+    <announcement text="https://forge.fantasygrounds.com/shop/items/78/view Player's Option rules, Hackmaster house rules, and automation enhancements for 2E -- by Sterno (v1.28). Some radial menu icons taken from game-icons.net and used under CC by 3.0 license" font="emotefont" icon="sterno_icon" />
+    <base>
+        <includefile source="graphics/graphics_fonts_po.xml" />
+        <includefile source="graphics/graphics_icons_po.xml"/>
+        <includefile source="campaign/template_po.xml" />
+        <includefile source="campaign/record_char_weapon.xml"/>
+        <includefile source="campaign/record_item.xml" />
+        <includefile source="campaign/record_char_main.xml" />
+        <includefile source="campaign/record_char_combat.xml" />
+        <includefile source="campaign/template_char.xml" />
+        <includefile source="campaign/template_char_adnd.xml" />
+        <includefile source="desktop/desktop_classes.xml" />
+        <includefile source="cta/cta_host.xml"/>
+        <includefile source="cta/template_cta.xml"/>
+        <includefile source="ct/ct_client.xml" />
+        <includefile source="ct/template_ct.xml"/>
+        <includefile source="strings/strings_player_option.xml"/>
+        <script name="PlayerOptionManager" file="scripts/manager_po.lua"/>
+        <script name="DiceManagerPO" file="scripts/manager_dice_po.lua"/>
+        <script name="ActionHealPO" file="scripts/manager_action_heal_po.lua" />
+        <script name="ActionDamagePO" file="scripts/manager_action_damage_po.lua" />
+        <script name="ActionAttackPO" file="scripts/manager_action_attack_po.lua" />
+        <script name="CombatManagerPO" file="scripts/manager_combat_po.lua" />
+        <script name="WeaponManagerPO" file="scripts/manager_weapon_po.lua" />
+        <script name="ArmorManagerPO" file="scripts/manager_armor_po.lua" />
+        <script name="DataCommonPO" file="scripts/data_common_po.lua" />
+        <script name="UtilityPO" file="scripts/utility_po.lua" />
+        <script name="HitLocationManagerPO" file="scripts/manager_hit_location_po.lua" />
+        <script name="CritManagerPO" file="scripts/manager_crit_po.lua" />
+        <script name="CombatCalcManagerPO" file="scripts/manager_combat_calc_po.lua" />
+        <script name="ItemManagerPO" file="scripts/manager_item_po.lua" />
+        <script name="DataManagerPO" file="scripts/manager_data_po.lua" />
+        <script name="ActorManagerPO" file="scripts/manager_actor_po.lua" />
+        <script name="CharManagerPO" file="scripts/manager_char_po.lua" />
+        <script name="ChatManagerPO" file="scripts/manager_chat_po.lua" />
+        <script name="StateManagerPO" file="scripts/manager_state_po.lua" />
+        <script name="ActionSavePO" file="scripts/manager_action_save_po.lua" />
+        <script name="AbilityScorePO" file="scripts/manager_ability_scores_po.lua" />
+        <script name="ActionInitPO" file="scripts/manager_action_init_po.lua" />
+        <script name="FumbleManagerPO" file="scripts/manager_fumble_po.lua" />
+        <script name="CharBackgroundManagerPO" file="scripts/manager_char_background_po.lua" />
+        <script name="FatigueManagerPO" file="scripts/manager_fatigue_po.lua" />
+        <script name="ActionPowerPO" file="scripts/manager_action_power_po.lua" />
+        <script name="InitManagerPO" file="scripts/manager_init_po.lua" />
+        <script name="EffectManagerPO" file="scripts/manager_effect_po.lua" />
+        <script name="HonorManagerPO" file="scripts/manager_honor_po.lua"/>
+        <script name="ActionCheckPO" file="scripts/manager_action_check_po.lua"/>
+        <script name="CritManagerHM" file="scripts/manager_crit_hm.lua" />
+        <script name="RadialMenuManagerPO" file="scripts/manager_radial_menu_po.lua" />
+        <script name="ModifierStackPO" file="scripts/modifier_stack_po.lua" />
+        <script name="PowerManagerPO" file="scripts/manager_power_po.lua" />
+        <script name="LightingManagerPO" file="scripts/manager_lighting_po.lua" />
+        <script name="DebugPO" file="scripts/debug_po.lua"/>
+        <script name="MagicDetectionMananger" file="scripts/manager_magic_detection_po.lua"/>
+        <script name="DMTools" file="scripts/dm_tools_po.lua"/>
+        <script name="MoraleManagerPO" file="scripts/manager_morale_po.lua"/>
+        <script name="PartyManagerPO" file="scripts/manager_party_po.lua" />
+        <script name="DesktopPO" file="scripts/data_desktop_po.lua" />
+    </base>
 </root>
