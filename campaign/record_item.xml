@@ -2,19 +2,19 @@
 
 <root>
 
-  <windowclass name="item_main" merge="join">
-	<script file="campaign/scripts/item_main.lua" />
-    <sheetdata>
-	  
-	  <label_column name="label_hp_lost" insertbefore="header_armor_and_modifier" >
-        <static textres="item_label_hp_lost" />
-        <tooltip textres="item_label_hp_lost_tooltip" />
-      </label_column>
-      <number_columnh name="hpLost" source="hpLost" insertbefore="header_armor_and_modifier">
-        <default>0</default>
-      </number_columnh>
-      
-    </sheetdata>
-  </windowclass>
-    
+    <windowclass name="item_main" merge="join">
+        <script file="campaign/scripts/item_main.lua" />
+        <sheetdata>
+
+            <label_column name="label_hp_lost" insertbefore="header_armor_and_modifier">
+                <static textres="item_label_hp_lost" />
+                <tooltip textres="item_label_hp_lost_tooltip" />
+            </label_column>
+            <number_columnh name="hpLost" source="hpLost" insertbefore="header_armor_and_modifier">
+                <default>0</default>
+            </number_columnh>
+
+        </sheetdata>
+    </windowclass>
+
 </root>

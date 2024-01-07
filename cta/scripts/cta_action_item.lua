@@ -1,5 +1,4 @@
 -- Most of this file was copy and pasted from the 2E ruleset. Couldn't just extend the control's script because the control wasn't named.
-
 -- list of entries and their locations
 aHyperEntries = {}
 
@@ -11,7 +10,7 @@ local rAttackRecord = nil;
 local rInitRecord = nil;
 
 function onInit()
-	createRadialMenu(); -- NOTE: This is one of the few changes to this file
+    createRadialMenu(); -- NOTE: This is one of the few changes to this file
 
     nodeAction = window.getDatabaseNode();
     DB.addHandler(DB.getPath(nodeAction), "onChildUpdate", refreshText);
@@ -23,7 +22,7 @@ function onClose()
 end
 
 function createRadialMenu()
-	RadialMenuManagerPO.initCombatTrackerActionMenu(self);
+    RadialMenuManagerPO.initCombatTrackerActionMenu(self);
 
     registerMenuItem(Interface.getString("list_menu_deleteitem"), "delete", 6);
     registerMenuItem(Interface.getString("list_menu_deleteconfirm"), "delete", 6, 7);
@@ -35,9 +34,9 @@ end
 function onMenuSelection(selection, subselection, subsubselection)
     if selection == 6 and subselection == 7 then
         nodeAction.delete();
-	else -- NOTE: This is one of the few changes to this file
-		RadialMenuManagerPO.onCombatTrackerActionMenuSelection(self, selection, subselection, subsubselection);
-	end
+    else -- NOTE: This is one of the few changes to this file
+        RadialMenuManagerPO.onCombatTrackerActionMenuSelection(self, selection, subselection, subsubselection);
+    end
 end
 
 function performFixedSequenceInitAction(nNumAttacks)
@@ -79,69 +78,75 @@ function performDelayAction(nDelay)
 end
 
 function performChargeAction()
-	local nodeChar = nodeAction.getChild("...");
-	local nodeCT = ActorManager.getCTNode(nodeChar);
+    local nodeChar = nodeAction.getChild("...");
+    local nodeCT = ActorManager.getCTNode(nodeChar);
     local nCurrentInit = DB.getValue(nodeCT, "initresult", 0);
 
-	EffectManager.addEffect("", "", nodeCT, { sName = "Charged", sLabel = "Charged", nDuration = 1, nInit = nCurrentInit }, true);
-	performAttackAction();
+    EffectManager.addEffect("", "", nodeCT, {
+        sName = "Charged",
+        sLabel = "Charged",
+        nDuration = 1,
+        nInit = nCurrentInit
+    }, true);
+    performAttackAction();
 end
 
 function performAttackAction(sModifierKey)
-	if sModifierKey then
-		ModifierStack.setModifierKey(sModifierKey, true);
-	end
-	actionAbility(nil, rAttackRecord);
+    if sModifierKey then
+        ModifierStack.setModifierKey(sModifierKey, true);
+    end
+    actionAbility(nil, rAttackRecord);
 end
 
 local powerUsePeriodPretty = {
     ["once"] = "charges",
-    ["enc"]  = "rest",
+    ["enc"] = "rest"
 }
 --[[
 
     Rebuild text list
 
-]]--
+]] --
 function refreshText()
     local nodeEntry = nodeAction;
     -- determine if we're using weapons or powers
     local bWeaponEntry = nodeAction.getPath():match("(%.weaponlist%.)") == '.weaponlist.';
     local bPowerEntry = not bWeaponEntry;
     local sText = "";
-    --Debug.console("cta_action_item.lua","refreshText","nodeEntry",nodeEntry);            
+    -- Debug.console("cta_action_item.lua","refreshText","nodeEntry",nodeEntry);            
 
     -- action name
     local rRecordName = {};
     rRecordName.type = 'name'
-    rRecordName.name = DB.getValue(nodeEntry,"name","no-name-set");
+    rRecordName.name = DB.getValue(nodeEntry, "name", "no-name-set");
     -- special tweaks for powers
     if bPowerEntry then
-        local nMemorized = DB.getValue(nodeEntry,"memorized",0);
-        local nLevel = DB.getValue(nodeEntry,"level",0);
-        local nPrepared = DB.getValue(nodeEntry,"prepared",0);
-        local nHasCast  = DB.getValue(nodeEntry,"cast",0);
-        local sUsesperiod = DB.getValue(nodeEntry,"usesperiod","");
+        local nMemorized = DB.getValue(nodeEntry, "memorized", 0);
+        local nLevel = DB.getValue(nodeEntry, "level", 0);
+        local nPrepared = DB.getValue(nodeEntry, "prepared", 0);
+        local nHasCast = DB.getValue(nodeEntry, "cast", 0);
+        local sUsesperiod = DB.getValue(nodeEntry, "usesperiod", "");
         local sUsesPeriodPretty = powerUsePeriodPretty[sUsesperiod];
         if nMemorized > 0 then
             rRecordName.name = rRecordName.name .. " x" .. nMemorized;
             rRecordName.name = rRecordName.name .. " (lvl " .. nLevel .. ")"
         elseif nPrepared and sUsesperiod:len() > 0 then
-            rRecordName.name = rRecordName.name .. " [" .. StringManager.capitalize(sUsesPeriodPretty) .. " x" .. (nPrepared-nHasCast) .. "]" ;
+            rRecordName.name = rRecordName.name .. " [" .. StringManager.capitalize(sUsesPeriodPretty) .. " x" ..
+                                   (nPrepared - nHasCast) .. "]";
         elseif nPrepared > 1 then
-            rRecordName.name = rRecordName.name .. " x" .. (nPrepared-nHasCast);
-        elseif sUsesperiod:len() > 0 then            
-            rRecordName.name = rRecordName.name .. " [" .. StringManager.capitalize(sUsesPeriodPretty) .. "]" ;
+            rRecordName.name = rRecordName.name .. " x" .. (nPrepared - nHasCast);
+        elseif sUsesperiod:len() > 0 then
+            rRecordName.name = rRecordName.name .. " [" .. StringManager.capitalize(sUsesPeriodPretty) .. "]";
         elseif nLevel > 0 then
             rRecordName.name = rRecordName.name .. " (lvl " .. nLevel .. ")"
         end
     end
-    sText = addHyperTextRecord(sText,rRecordName,nodeEntry,true,true);
+    sText = addHyperTextRecord(sText, rRecordName, nodeEntry, true, true);
 
     if bWeaponEntry then
-        sText = addWeaponEntry(sText,nodeEntry)
+        sText = addWeaponEntry(sText, nodeEntry)
     elseif bPowerEntry then
-        sText = addPowerEntry(sText,nodeEntry)
+        sText = addPowerEntry(sText, nodeEntry)
     else
         -- unknown action type
     end
@@ -164,31 +169,31 @@ function refreshText()
         sText = "Empty";
     end
 
-    --Debug.console("cta_action_item.lua","refreshText","sText",sText);           
+    -- Debug.console("cta_action_item.lua","refreshText","sText",sText);           
     setValue(sText);
 end
 --[[
     Add a power entry
 ]]
-function addPowerEntry(sText,nodeEntry)
+function addPowerEntry(sText, nodeEntry)
     -- action init
     local rRecordInit = {};
     rRecordInit.type = 'powerinitiative'
     rRecordInit.name = 'INIT'
-    local nCastInit = DB.getValue(nodeEntry,"castinitiative",1);
+    local nCastInit = DB.getValue(nodeEntry, "castinitiative", 1);
     if nCastInit ~= 0 then
         rRecordInit.tooltiptext = 'Initiative ' .. UtilityManagerADND.getNumberSign(nCastInit);
     end
 
-    sText = addHyperTextRecord(sText,rRecordInit,nodeEntry);
+    sText = addHyperTextRecord(sText, rRecordInit, nodeEntry);
 
     -- mini-action button(s)
-    local aSortedActions = sortByOrders(DB.getChildren(nodeEntry,"actions"));
+    local aSortedActions = sortByOrders(DB.getChildren(nodeEntry, "actions"));
     local bCastFound = false;
     if #aSortedActions > 0 then
-        for _,nodeMiniAction in pairs(aSortedActions) do
+        for _, nodeMiniAction in pairs(aSortedActions) do
             local rRecord = {};
-            sText, bCastFound = addMiniAction(sText, nodeMiniAction,rRecord,bCastFound);
+            sText, bCastFound = addMiniAction(sText, nodeMiniAction, rRecord, bCastFound);
         end
     end
 
@@ -199,17 +204,17 @@ end
 local miniActionTypeToShortName = {
     ["effect"] = "eff",
     ["damage"] = "dmg",
-    ["powerdamage"] = "dmg",
-  };
+    ["powerdamage"] = "dmg"
+};
 -- used to replace certain 
-  local miniActionPowerTypeConversion = {
-      ["damage"] = "powerdamage",
-  }
+local miniActionPowerTypeConversion = {
+    ["damage"] = "powerdamage"
+}
 --[[
     Add a mini power action (save,dmg,effect/etc)
 ]]
 function addMiniAction(sText, nodeMiniAction, rRecordACTION, bCastFound, sNailedType)
-    local sType = DB.getValue(nodeMiniAction,'type');
+    local sType = DB.getValue(nodeMiniAction, 'type');
     -- sanity checking 
     if not sType and not sNailedType then
         return sText, bCastFound;
@@ -242,9 +247,9 @@ function addMiniAction(sText, nodeMiniAction, rRecordACTION, bCastFound, sNailed
     if sType == 'cast' and not bCastFound then
         bCastFound = true;
     end
-    local sSaveType = DB.getValue(nodeMiniAction,"savetype");
-    local nSaveMod = DB.getValue(nodeMiniAction,"savedcmod",0);
-    local sOnMissSave = DB.getValue(nodeMiniAction,"onmissdamage");
+    local sSaveType = DB.getValue(nodeMiniAction, "savetype");
+    local nSaveMod = DB.getValue(nodeMiniAction, "savedcmod", 0);
+    local sOnMissSave = DB.getValue(nodeMiniAction, "onmissdamage");
     local sMod = UtilityManagerADND.getNumberSign(nSaveMod);
     -- if spell is save, include save type in command
     if sType == 'cast' and sSaveType then
@@ -265,10 +270,10 @@ function addMiniAction(sText, nodeMiniAction, rRecordACTION, bCastFound, sNailed
             rRecordACTION.name = rRecordACTION.name .. " (" .. StringManager.capitalize(sOnMissSave) .. ")";
         end
     elseif sType == 'effect' then
-        local sLabel = DB.getValue(nodeMiniAction,"label","");
-        local sAddendum = DB.getValue(nodeMiniAction,"label",""):match("^[%w]+");
+        local sLabel = DB.getValue(nodeMiniAction, "label", "");
+        local sAddendum = DB.getValue(nodeMiniAction, "label", ""):match("^[%w]+");
         if sLabel ~= sAddendum then
-            sTooltipText =  sLabel;
+            sTooltipText = sLabel;
         end
         if not sAddendum or sAddendum:len() < 1 then
             sAddendum = sLabel;
@@ -277,10 +282,10 @@ function addMiniAction(sText, nodeMiniAction, rRecordACTION, bCastFound, sNailed
             rRecordACTION.name = rRecordACTION.name .. ": " .. sAddendum;
         end
     elseif sType == miniActionPowerTypeConversion['damage'] then
-        local sDMG   = PowerManager.getActionDamageText(nodeMiniAction);
+        local sDMG = PowerManager.getActionDamageText(nodeMiniAction);
         rRecordACTION.name = rRecordACTION.name .. " " .. sDMG;
     elseif sType == 'heal' then
-        local sHeal   = PowerManager.getActionHealText(nodeMiniAction);
+        local sHeal = PowerManager.getActionHealText(nodeMiniAction);
         rRecordACTION.name = rRecordACTION.name .. " " .. sHeal;
     end
 
@@ -288,21 +293,21 @@ function addMiniAction(sText, nodeMiniAction, rRecordACTION, bCastFound, sNailed
         rRecordACTION.tooltiptext = sTooltipText;
     end
 
-    sText = addHyperTextRecord(sText,rRecordACTION,nodeMiniAction);
+    sText = addHyperTextRecord(sText, rRecordACTION, nodeMiniAction);
 
     -- since "save" is not a action type we insert one here
     if sType == 'cast' and sSaveType then
         local rRecordSave = {}
-        sText, bCastFound = addMiniAction(sText, nodeMiniAction,rRecordSave,bCastFound,'save');
+        sText, bCastFound = addMiniAction(sText, nodeMiniAction, rRecordSave, bCastFound, 'save');
     end
-    
+
     return sText, bCastFound;
 end
 
 --[[
     Add a weapon entry 
 ]]
-function addWeaponEntry(sText,nodeEntry)
+function addWeaponEntry(sText, nodeEntry)
 
     -- action init
     local rRecordInit = {};
@@ -310,17 +315,18 @@ function addWeaponEntry(sText,nodeEntry)
     rRecordInit.name = 'INIT'
     rInitRecord = rRecordInit;
 
-    sText = addHyperTextRecord(sText,rRecordInit,nodeEntry);
+    sText = addHyperTextRecord(sText, rRecordInit, nodeEntry);
 
     -- action atk
     local rRecordATK = {};
     rRecordATK.type = 'attack'
-    rRecordATK.name = 'ATK'  .. "(" .. WeaponManagerADND.getRange(nodeEntry) .. ")" .. WeaponManagerADND.onAttackChanged(nodeEntry);
-    sText = addHyperTextRecord(sText,rRecordATK,nodeEntry);
+    rRecordATK.name = 'ATK' .. "(" .. WeaponManagerADND.getRange(nodeEntry) .. ")" ..
+                          WeaponManagerADND.onAttackChanged(nodeEntry);
+    sText = addHyperTextRecord(sText, rRecordATK, nodeEntry);
     rAttackRecord = rRecordATK;
 
     -- action dmg(s)
-    for _,nodeDamage in pairs(UtilityManager.getSortedTable(DB.getChildren(nodeEntry,"damagelist"))) do
+    for _, nodeDamage in pairs(UtilityManager.getSortedTable(DB.getChildren(nodeEntry, "damagelist"))) do
         local rRecordDMG = {};
         local sDMG, sTooltipText = WeaponManagerADND.onDamageChanged(nodeDamage);
         rRecordDMG.type = 'damage'
@@ -328,7 +334,7 @@ function addWeaponEntry(sText,nodeEntry)
         if sTooltipText:len() > 0 then
             rRecordDMG.tooltiptext = sTooltipText;
         end
-        sText = addHyperTextRecord(sText,rRecordDMG,nodeDamage);
+        sText = addHyperTextRecord(sText, rRecordDMG, nodeDamage);
     end
     return sText;
 end
@@ -336,19 +342,19 @@ end
 --[[
     Add record to text, set values, particularly the nStart/nEnd
 ]]
-function addHyperTextRecord(sText,rRecord,nodeEntry,bNoBrackets,bNoHighlight)
+function addHyperTextRecord(sText, rRecord, nodeEntry, bNoBrackets, bNoHighlight)
     rRecord.recordpath = nodeEntry.getPath();
     if not bNoBrackets then
         sText = sText .. "[";
     end
-    
+
     if bNoHighlight then
         rRecord.nStart = 0;
     else
         rRecord.nStart = sText:len() + 1;
     end
     if rRecord.name:len() < 1 then
-        Debug.console("cta_action_item.lua","addHyperTextRecord","Name empty: rRecord",rRecord); 
+        Debug.console("cta_action_item.lua", "addHyperTextRecord", "Name empty: rRecord", rRecord);
     end
     sText = sText .. rRecord.name;
 
@@ -364,7 +370,7 @@ function addHyperTextRecord(sText,rRecord,nodeEntry,bNoBrackets,bNoHighlight)
         sText = sText .. " ";
     end
 
-    table.insert(aHyperEntries,rRecord);
+    table.insert(aHyperEntries, rRecord);
 
     return sText;
 end
@@ -373,7 +379,7 @@ end
     When hovering over the template control
 ]]
 function onHover(oncontrol)
---Debug.console("cta_action_item.lua","onHover","oncontrol",oncontrol);                
+    -- Debug.console("cta_action_item.lua","onHover","oncontrol",oncontrol);                
     if dragging then
         return;
     end
@@ -382,7 +388,7 @@ function onHover(oncontrol)
     if not oncontrol then
         -- Clear hover tracking
         hoverOnEntry = nil;
-        
+
         -- Clear any selections
         setSelectionPosition(0);
         setTooltipText('');
@@ -402,7 +408,7 @@ function onHoverUpdate(x, y)
     local nMouseIndex = getIndexAt(x, y);
     -- Clear any memory of the last hover update
     hoverOnEntry = nil;
-    
+
     -- Find the entry they have hovered over
     if #aHyperEntries > 0 then
         for _, v in pairs(aHyperEntries) do
@@ -416,7 +422,7 @@ function onHoverUpdate(x, y)
                 end
                 setCursorPosition(v.nStart);
                 setSelectionPosition(v.nEnd);
-                break;
+                break
             end
         end
     end
@@ -424,12 +430,12 @@ function onHoverUpdate(x, y)
     -- Reset the cursor
     setHoverCursor("arrow");
 end
-    
-    --[[
+
+--[[
     When clicking on the highlighted text run this
 ]]
 function onClickDown(button, x, y)
-    --Debug.console("cta_action_item.lua","onClickDown","button",button);       
+    -- Debug.console("cta_action_item.lua","onClickDown","button",button);       
     if hoverOnEntry then
         clickOnEntry = hoverOnEntry;
     end
@@ -446,17 +452,16 @@ end
 
 ]]
 function onDoubleClick(x, y)
-    --Debug.console("cta_action_item.lua","onDoubleClick","x",x);          
+    -- Debug.console("cta_action_item.lua","onDoubleClick","x",x);          
     actionAbility(nil, clickOnEntry);
     return true;
 end
-
 
 --[[
     Not implemented yet
 ]]
 function onDragStart(button, x, y, draginfo)
---Debug.console("cta_action_item.lua","onDragStart","draginfo",draginfo);        
+    -- Debug.console("cta_action_item.lua","onDragStart","draginfo",draginfo);        
     dragging = false;
     if clickOnEntry then
         dragging = actionAbility(draginfo, clickOnEntry);
@@ -474,40 +479,40 @@ function onDragEnd(dragdata)
     setCursorPosition(0);
     setSelectionPosition(0);
     setTooltipText('');
-	dragging = false;
-end        
+    dragging = false;
+end
 
 --[[
     Run action
 ]]
-function actionAbility(draginfo, rRecord)       
-	local bResult = true;
+function actionAbility(draginfo, rRecord)
+    local bResult = true;
     if not rRecord then
         return false;
     end
-	-- USAGE
-	if rRecord.type == "usage" then
-		if draginfo then
-			bResult = false;
-		elseif rPower.sUsage == "USED" then
-			rechargePower(rPower);
-		else
-			usePower(rPower);
-		end
-	-- ATTACK
+    -- USAGE
+    if rRecord.type == "usage" then
+        if draginfo then
+            bResult = false;
+        elseif rPower.sUsage == "USED" then
+            rechargePower(rPower);
+        else
+            usePower(rPower);
+        end
+        -- ATTACK
     elseif rRecord.type == "attack" then
-        WeaponManagerADND.onAttackAction(draginfo, getActor(),nodeAction);
-	-- SAVE VS
-	elseif rRecord.type == "save" then
-        PowerManagerADND.onCastAction(draginfo, getActor(), DB.findNode(rRecord.recordpath),'save');
-	-- DAMAGE
+        WeaponManagerADND.onAttackAction(draginfo, getActor(), nodeAction);
+        -- SAVE VS
+    elseif rRecord.type == "save" then
+        PowerManagerADND.onCastAction(draginfo, getActor(), DB.findNode(rRecord.recordpath), 'save');
+        -- DAMAGE
     elseif rRecord.type == "damage" then
-        WeaponManagerADND.onDamageActionSingle(draginfo, getActor(),DB.findNode(rRecord.recordpath));
-	-- HEAL
-	elseif rRecord.type == "heal" then
-        --ActionHeal.performRoll(draginfo, getActor(), rAction);
+        WeaponManagerADND.onDamageActionSingle(draginfo, getActor(), DB.findNode(rRecord.recordpath));
+        -- HEAL
+    elseif rRecord.type == "heal" then
+        -- ActionHeal.performRoll(draginfo, getActor(), rAction);
         PowerManagerADND.onHealAction(draginfo, getActor(), DB.findNode(rRecord.recordpath))
-	-- EFFECT
+        -- EFFECT
     elseif rRecord.type == "effect" then
         PowerManagerADND.onEffectAction(draginfo, getActor(), DB.findNode(rRecord.recordpath))
     elseif rRecord.type == "initiative" then
@@ -527,27 +532,27 @@ end
 
 ]]
 function getActor()
-	local nodeActor = nil;
-	local node = nodeAction;
-	if node then
-		nodeActor = node.getChild(actorpath[1]);
+    local nodeActor = nil;
+    local node = nodeAction;
+    if node then
+        nodeActor = node.getChild(actorpath[1]);
     end
-    
-    return ActorManager.resolveActor( nodeActor);
+
+    return ActorManager.resolveActor(nodeActor);
 end
 
 --[[
     Convenience function to sort by order
 ]]
 function sortByOrders(aTable)
-    local function sortByOrder(a,b)
-        return DB.getValue(a,"order") < DB.getValue(b,"order");
+    local function sortByOrder(a, b)
+        return DB.getValue(a, "order") < DB.getValue(b, "order");
     end
     local aSorted = {};
-    for _,v in pairs(aTable) do
-        table.insert(aSorted,v);
+    for _, v in pairs(aTable) do
+        table.insert(aSorted, v);
     end
-    table.sort(aSorted,sortByOrder);
+    table.sort(aSorted, sortByOrder);
     return aSorted;
 end
 
@@ -555,13 +560,13 @@ end
     Convenience function to sort by level
 ]]
 function sortByLevels(aTable)
-    local function sortByLevel(a,b)
-        return DB.getValue(a,"level") < DB.getValue(b,"level");
+    local function sortByLevel(a, b)
+        return DB.getValue(a, "level") < DB.getValue(b, "level");
     end
     local aSorted = {};
-    for _,v in pairs(aTable) do
-        table.insert(aSorted,v);
+    for _, v in pairs(aTable) do
+        table.insert(aSorted, v);
     end
-    table.sort(aSorted,sortByLevel);
+    table.sort(aSorted, sortByLevel);
     return aSorted;
 end

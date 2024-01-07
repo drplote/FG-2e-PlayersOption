@@ -17,7 +17,6 @@ Orange = "FFFF7D00";
 Purple = "FFF364FF";
 White = "FFFFFFFF";
 
-
 DefaultDistance = 60;
 Infravision = "VISION: %s infravision";
 Blindsight = "VISION: %s blindsight";
@@ -27,54 +26,53 @@ function onInit()
 end
 
 function removeAllLights(nodeActor)
-	if not nodeActor then
-		return;
-	end
+    if not nodeActor then
+        return;
+    end
 
-	EffectManagerPO.removeEffectsThatMatch(nodeActor, "LIGHT:");
+    EffectManagerPO.removeEffectsThatMatch(nodeActor, "LIGHT:");
 end
 
 function addInfravision(nodeActor, nDistance)
-	addVision(nodeActor, Infravision, nDistance);
+    addVision(nodeActor, Infravision, nDistance);
 end
 
 function addBlindsight(nodeActor, nDistance)
-	addVision(nodeActor, Blindsight, nDistance);
+    addVision(nodeActor, Blindsight, nDistance);
 end
 
 function addTruesight(nodeActor, nDistance)
-	addVision(nodeActor, Truesight, nDistance);
+    addVision(nodeActor, Truesight, nDistance);
 end
 
 function addVision(nodeActor, sVisionType, nDistance)
-	if not nodeActor or not sVisionType then
-		return;
-	end
+    if not nodeActor or not sVisionType then
+        return;
+    end
 
-	if not nDistance then 
-		nDistance = DefaultDistance;
-	end
+    if not nDistance then
+        nDistance = DefaultDistance;
+    end
 
-	EffectManagerPO.requestAddEffect(nodeActor, string.format(sVisionType, nDistance));
+    EffectManagerPO.requestAddEffect(nodeActor, string.format(sVisionType, nDistance));
 end
 
-
 function addLight(nodeActor, sEffect)
-	if not nodeActor or not sEffect then
-		return;
-	end
+    if not nodeActor or not sEffect then
+        return;
+    end
 
-	EffectManagerPO.requestAddEffect(nodeActor, sEffect);
+    EffectManagerPO.requestAddEffect(nodeActor, sEffect);
 end
 
 function addWeaponGlow(nodeActor, sGlowColor)
-	if not nodeActor then
-		return;
-	end
+    if not nodeActor then
+        return;
+    end
 
-	if not sGlowColor then
-		sGlowColor = DefaultGlowColor;
-	end
+    if not sGlowColor then
+        sGlowColor = DefaultGlowColor;
+    end
 
-	EffectManagerPO.requestAddEffect(nodeActor, string.format(WeaponGlow, sGlowColor));
+    EffectManagerPO.requestAddEffect(nodeActor, string.format(WeaponGlow, sGlowColor));
 end

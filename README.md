@@ -1,18 +1,18 @@
 # I'M WORKING ON GETTING THIS UPDATED. IT'S MISSING QUITE A FEW FEATURES FROM THE LAST FEW MONTHS.
 
-# Hackmaster 4E and  2E Player's Option extension for Fantasy Grounds' AD&D 2E ruleset
+# Hackmaster 4E and 2E Player's Option extension for Fantasy Grounds' AD&D 2E ruleset
 
 Extends the Fantasy Grounds 2e ruleset to support some of the rules from the "Player's Option" 2E books. Also includes some toggleable house rules that are similar to rules seen in Hackmaster 4th edition.
 
 All rules are toggleable via Preferences, so you can pick and choose which of these you want. They are split up in preferences under different headers. Note that in some cases (such as with critical hits), enabling these options might ignore other options you have selected from base 2E ruleset preferences.
 
-## Installation	
+## Installation
 
 This is no different than any other Fantasy Grounds extension. You basically just need to download this repository, place it all in a .zip file, rename the .zip file to ".ext", and drop it in your Fantasy Grounds extensions folder.
 
 ## A note on customization
 
-If you know your way around unpacking and repacking extensions, take a look at "scripts/data_common_po.lua". I tried to pull all hardcoded data (such as default race sizes, weapon types, crit tables, etc) there. 
+If you know your way around unpacking and repacking extensions, take a look at "scripts/data_common_po.lua". I tried to pull all hardcoded data (such as default race sizes, weapon types, crit tables, etc) there.
 
 ## "Always-on" features
 
@@ -20,7 +20,7 @@ There are a number of quality of life improvements in this section that you don'
 
 ### New Effects
 
-**DMGDX**: This is similar to the ruleset's "DMGX" effect, except instead of multiplying the final damage result, it multiplies the number of damage dice rolled. For example, a 1d6+2 damage attack with "DMGX:2" would effectively result in (1d6+2)*2, whereas DMGDX:2 would effectively result in 2d6+2.
+**DMGDX**: This is similar to the ruleset's "DMGX" effect, except instead of multiplying the final damage result, it multiplies the number of damage dice rolled. For example, a 1d6+2 damage attack with "DMGX:2" would effectively result in (1d6+2)\*2, whereas DMGDX:2 would effectively result in 2d6+2.
 
 **CRITSIZE**: Added a "CRITSIZE: n" effect that is used with the Player's Option. Any actor with this effect on his weapon is treated as "n" size categories larger when generating critical hit severity if they have this effect. For instance, if you were using a Longsword (Size M) but had a CRITSIZE: 2 effect on you, the longsword would be treated as Size H for determining crit effects, which means it would likely be rolling bigger dice to determine crit severity (as per the Player's Option crit rules).
 
@@ -48,7 +48,6 @@ There are a number of quality of life improvements in this section that you don'
 
 **SAVE**: SAVE is an existing effect from the 2e ruleset that gives you a save bonus version. For example, SAVE: 1 gives you a bonus to all saves, while SAVE: 1 fire would give you a bonus to all spells that have "fire" in their casting properties. I've extended this to also support schools of magic, so now "SAVE: 1 illusion" would give you a +1 bonus to save versus illusion spells, such as an illusionist would have.
 
-
 ### "Items" section on Encounter records
 
 Added an "Items" section in the Encounters box so that you can spawn NPCs with items already-equipped.
@@ -71,31 +70,31 @@ There are a number of changes to the "Actions" tab on the player character sheet
 
 Delay, Act, and Done buttons were added to the top section of the Actions tab.
 
-* Delay - Double-clicking this button delays your turn depending on which initiative system you're using. In base 2e, it moves your initiative to after every other actor. In Hackmaster, it adds 10 to your initiative (the number of segments in one round). In Player's Option Initiative, it delays you one phase. Currently, a player can only delay when it's their turn.
-* Act - Used by a player when it isn't their turn to immediately move their initiative to the segment just after whatever the current initiative is. It's basically meant for people who were waiting to act until something happened... when it finally does, they can slap this button and they'll be able to act 1 later in the initiative order. It proved too complicated to try to slot them in right after the current actor given how the code sorts people who are all tied for initiative, so sometimes if there were multiple actors tied when this button was pressed, the player hitting "act" might still have to wait for a few other actors to complete their turns.
-* Done - Ends the player's turn (if it is their turn).
+-   Delay - Double-clicking this button delays your turn depending on which initiative system you're using. In base 2e, it moves your initiative to after every other actor. In Hackmaster, it adds 10 to your initiative (the number of segments in one round). In Player's Option Initiative, it delays you one phase. Currently, a player can only delay when it's their turn.
+-   Act - Used by a player when it isn't their turn to immediately move their initiative to the segment just after whatever the current initiative is. It's basically meant for people who were waiting to act until something happened... when it finally does, they can slap this button and they'll be able to act 1 later in the initiative order. It proved too complicated to try to slot them in right after the current actor given how the code sorts people who are all tied for initiative, so sometimes if there were multiple actors tied when this button was pressed, the player hitting "act" might still have to wait for a few other actors to complete their turns.
+-   Done - Ends the player's turn (if it is their turn).
 
 #### Player Attack Action Radial Menus
 
 Radial menu options were added to the weapons section of the player character sheet. Right-clicking on the attack button will bring up a radial menu that has the following buttons:
 
-* Cheater Dice - Brings up a submenu that lets you either automatically roll a 1 or a 20 on your roll. This menu item only appears if the "Allow Player Cheater Dice" option is enabled.
-* Standard Attack - The same as if you'd just clicked the attack button. Does nothing special.
-* Attack Type Modifiers - Brings up a submenu that lets you roll an attack with one of the specified modifiers applied (rear attack, touch attack, no dexterity, no shield).
-* Called Shots - Brings up a submenu that allows you to roll an attack while targeting a certain location. Applies a modifier of -4 unless the "HM Called Shot Modifiers" option is enabled (in which case, the modifier depends on what you're targeting), and also makes sure the shot targets that location if you're using the "Generate Hit Locations" option or either of the critical hit systems.
-* Add Concealment Modifier - Brings up a submenu that rolls an attack while applying the appropriate penalty for the selected level of concealment.
-* Add Cover Modifier - Brings up a submenu that rolls an attack while applying the appropriate penalty for the selected level of cover.
+-   Cheater Dice - Brings up a submenu that lets you either automatically roll a 1 or a 20 on your roll. This menu item only appears if the "Allow Player Cheater Dice" option is enabled.
+-   Standard Attack - The same as if you'd just clicked the attack button. Does nothing special.
+-   Attack Type Modifiers - Brings up a submenu that lets you roll an attack with one of the specified modifiers applied (rear attack, touch attack, no dexterity, no shield).
+-   Called Shots - Brings up a submenu that allows you to roll an attack while targeting a certain location. Applies a modifier of -4 unless the "HM Called Shot Modifiers" option is enabled (in which case, the modifier depends on what you're targeting), and also makes sure the shot targets that location if you're using the "Generate Hit Locations" option or either of the critical hit systems.
+-   Add Concealment Modifier - Brings up a submenu that rolls an attack while applying the appropriate penalty for the selected level of concealment.
+-   Add Cover Modifier - Brings up a submenu that rolls an attack while applying the appropriate penalty for the selected level of cover.
 
 Additionally, if a player right-clicks on the initiative button of their weapon, they'll see the following options:
 
-* Roll Additional Attack - Rolls an additional initiative for the character using the weapon. See the "Initiatiave and Multiple Attacks" section for more details.
-* Specify Rate of Fire - Sets the PC initiative based on their ranged weapon rate of fire, as per the Hackmaster ranged weapon fire initiative rules. See the "Initiatiave and multiple attacks" section for more details. For instance, a bow that fires twice a round always fires on 1 and 6. 
+-   Roll Additional Attack - Rolls an additional initiative for the character using the weapon. See the "Initiatiave and Multiple Attacks" section for more details.
+-   Specify Rate of Fire - Sets the PC initiative based on their ranged weapon rate of fire, as per the Hackmaster ranged weapon fire initiative rules. See the "Initiatiave and multiple attacks" section for more details. For instance, a bow that fires twice a round always fires on 1 and 6.
 
 Radial menu options were added for the "Init" button at the top section of the Actions tab.
 
-* Roll a d10 for initiative - Does the same thing as double-clicking the init button. Rolls a d10 for initiative.
-* Go at the start of the round - Does just that... sets the PC initiative to 1.
-* Go at the end of the round - Sets the initiative to whatever would be the end of round in the selected initiative system. For Hackmaster, this would be 10. For basic 2E, this would be 99.
+-   Roll a d10 for initiative - Does the same thing as double-clicking the init button. Rolls a d10 for initiative.
+-   Go at the start of the round - Does just that... sets the PC initiative to 1.
+-   Go at the end of the round - Sets the initiative to whatever would be the end of round in the selected initiative system. For Hackmaster, this would be 10. For basic 2E, this would be 99.
 
 Radial menu options were added to the "Delay" button at the top section of the Actions tab. The "Delay one round" button acts the same as if you'd double-clicked the delay buttons. The other options on the menu all allow you to delay your initiative from 1 to 10 segments.
 
@@ -103,37 +102,37 @@ Radial menu options were added to the "Delay" button at the top section of the A
 
 #### Action Line Radial Menus
 
-Radial menus were added to the action lines of actors in the combat tracker (these are basically the lines that show you weapons, init buttons, attack buttons, etc). 
+Radial menus were added to the action lines of actors in the combat tracker (these are basically the lines that show you weapons, init buttons, attack buttons, etc).
 
-* Roll Additional Attack - Rolls an additional initiative for the character using the weapon. See the "Initiatiave and multiple attacks" section for more details.
-* Attack Submenu - Opens a submenu that presents all of the same options that were available on the player's attack button radial menu on their character sheets. See the "PLayer Attack Action Radial Menus" above for descriptions of these.
-* Specify Rate of Fire - Sets the actor initiative based on their ranged weapon rate of fire, as per the Hackmaster ranged weapon fire initiative rules. See the "Initiatiave and multiple attacks" section for more details. For instance, a bow that fires twice a round always fires on 1 and 6. 
-* Specify Number of Natural Attacks - Sets the actor initiative based on their natural weapon attack rate, as per the Hackmaster rules. See the "Initiatiave and multiple attacks" section for more details. For instance, a monster with claw/claw/bite would end up going on 1d3, 1d3+3, and 1d3+6.
-* Initiative - Opens a submenu with initiative options for that actor
-  * Roll a d10 for initiative - The same as double-clicking on the weapon init button.
-  * Go at the start of the round - Sets initiative to 1
-  * Go at the end of the round - Sets the initiative to whatever would be the end of round in the selected initiative system. For Hackmaster, this would be 10. For basic 2E, this would be 99.
-  * Copy this creature's init to similar unrolled creatures - This takes whatever the creature's initiative (or set of initiatives, if it has multiple attacks) and copies it to any other creature with the same basic name that hasn't already rolled its own inititive. This is mainly only useful when combined with creatures that have multiple attacks. For example, say you have 10 goblins, 9 of which are shooting bows and one of which is using a shortsword, and you are using Hackmaster initiative. First, roll the initiative for the goblin with the shortsword normally. Then select one of the archer and use the "Specify Rate of Fire" command to set it's rate of fire with the bow. Finally, select that archer again and use this "copy" option to automatically copy that archer's initiative. It will automatically copy it to the other 8 goblins who hadn't been specified yet.
-  * Delay - Brings up the delay menu which lets you delay 1-10 segments or for a full turn.
-  * Roll init and apply to similar unrolled creatures - This functions a lot like the basic 2E functionality of autorolling NPC initiative when a round starts, except in this case you're specifying which weapon to use, whereas the basic 2E ruleset just looks for whatever is slowest. Does not affect any creature which has already rolled. So for instance, if you have 10 bugbears and one is using a two-handed sword and 9 are using shortswords, you might first roll for the two-handed sword wielding bugbear, then select one of the other's and choose this option to roll the other 9 a shortsword initiatives all at once.
-  * Go at the end of the round - Sets the initiative to whatever would be the end of round in the selected initiative system. For Hackmaster, this would be 10. For basic 2E, this would be 99.
+-   Roll Additional Attack - Rolls an additional initiative for the character using the weapon. See the "Initiatiave and multiple attacks" section for more details.
+-   Attack Submenu - Opens a submenu that presents all of the same options that were available on the player's attack button radial menu on their character sheets. See the "PLayer Attack Action Radial Menus" above for descriptions of these.
+-   Specify Rate of Fire - Sets the actor initiative based on their ranged weapon rate of fire, as per the Hackmaster ranged weapon fire initiative rules. See the "Initiatiave and multiple attacks" section for more details. For instance, a bow that fires twice a round always fires on 1 and 6.
+-   Specify Number of Natural Attacks - Sets the actor initiative based on their natural weapon attack rate, as per the Hackmaster rules. See the "Initiatiave and multiple attacks" section for more details. For instance, a monster with claw/claw/bite would end up going on 1d3, 1d3+3, and 1d3+6.
+-   Initiative - Opens a submenu with initiative options for that actor
+    -   Roll a d10 for initiative - The same as double-clicking on the weapon init button.
+    -   Go at the start of the round - Sets initiative to 1
+    -   Go at the end of the round - Sets the initiative to whatever would be the end of round in the selected initiative system. For Hackmaster, this would be 10. For basic 2E, this would be 99.
+    -   Copy this creature's init to similar unrolled creatures - This takes whatever the creature's initiative (or set of initiatives, if it has multiple attacks) and copies it to any other creature with the same basic name that hasn't already rolled its own inititive. This is mainly only useful when combined with creatures that have multiple attacks. For example, say you have 10 goblins, 9 of which are shooting bows and one of which is using a shortsword, and you are using Hackmaster initiative. First, roll the initiative for the goblin with the shortsword normally. Then select one of the archer and use the "Specify Rate of Fire" command to set it's rate of fire with the bow. Finally, select that archer again and use this "copy" option to automatically copy that archer's initiative. It will automatically copy it to the other 8 goblins who hadn't been specified yet.
+    -   Delay - Brings up the delay menu which lets you delay 1-10 segments or for a full turn.
+    -   Roll init and apply to similar unrolled creatures - This functions a lot like the basic 2E functionality of autorolling NPC initiative when a round starts, except in this case you're specifying which weapon to use, whereas the basic 2E ruleset just looks for whatever is slowest. Does not affect any creature which has already rolled. So for instance, if you have 10 bugbears and one is using a two-handed sword and 9 are using shortswords, you might first roll for the two-handed sword wielding bugbear, then select one of the other's and choose this option to roll the other 9 a shortsword initiatives all at once.
+    -   Go at the end of the round - Sets the initiative to whatever would be the end of round in the selected initiative system. For Hackmaster, this would be 10. For basic 2E, this would be 99.
 
 #### CT Actor Radial Menus
 
 These radial menu options were added when right-clicking on the actor "badge" in the lefthand part of the GM combat tracker.
 
-* Add/Remove Effects - Gives you the means to quickly add or remove specific effects (No Dexterity, Restrained, Unconscious, Prone, Stunned, Blinded, Invisible) to the actor.
-* Specify Rate of Fire - Sets the actor initiative based on their ranged weapon rate of fire, as per the Hackmaster ranged weapon fire initiative rules. See the "Initiatiave and multiple attacks" section for more details. For instance, a bow that fires twice a round always fires on 1 and 6. 
-* Specify Number of Natural Attacks - Sets the actor initiative based on their natural weapon attack rate, as per the Hackmaster rules. See the "Initiatiave and multiple attacks" section for more details. For instance, a monster with claw/claw/bite would end up going on 1d3, 1d3+3, and 1d3+6.
-* Lighting and Vision - Opens a submenu with options for adding light sources or vision types the actor. Obviously isn't going to do much for you if you're using FGC, which doesn't support vision and lighting!
-  * Add Weapon Glow - Opens a submenu that lets you choose a color (blue, red, green, orange, yellow, purple, and white) and then adds a light meant to simulate the glow of magical weapons.
-  * Remove all light sources - Finds any "LIGHT" effect on the actor and removes it.
-  * Torch - Adds a light source meant to simulate torchlight.
-  * Lantern - Adds a light source meant to simulate hooded lantern light.
-  * Candle - Adds a light source meant to simulate candle light.
-  * Light/Darkness Spells - Opens a submenu that has options to simulate the spells Light (20'), Continual Light (60'), Darkness (15'), and Continual Darkness (60').
-  * Add Vision Type - Opens a submenu that has options that let you add Infravision (30', 60', 90', or 120'), Blindsight (60' or 120'), or Truesight (240') to the actor.
-* Initiative - Opens a submenu that works just like the Initiative menu mentioned above in the "Action Line Radial Menus" section.
+-   Add/Remove Effects - Gives you the means to quickly add or remove specific effects (No Dexterity, Restrained, Unconscious, Prone, Stunned, Blinded, Invisible) to the actor.
+-   Specify Rate of Fire - Sets the actor initiative based on their ranged weapon rate of fire, as per the Hackmaster ranged weapon fire initiative rules. See the "Initiatiave and multiple attacks" section for more details. For instance, a bow that fires twice a round always fires on 1 and 6.
+-   Specify Number of Natural Attacks - Sets the actor initiative based on their natural weapon attack rate, as per the Hackmaster rules. See the "Initiatiave and multiple attacks" section for more details. For instance, a monster with claw/claw/bite would end up going on 1d3, 1d3+3, and 1d3+6.
+-   Lighting and Vision - Opens a submenu with options for adding light sources or vision types the actor. Obviously isn't going to do much for you if you're using FGC, which doesn't support vision and lighting!
+    -   Add Weapon Glow - Opens a submenu that lets you choose a color (blue, red, green, orange, yellow, purple, and white) and then adds a light meant to simulate the glow of magical weapons.
+    -   Remove all light sources - Finds any "LIGHT" effect on the actor and removes it.
+    -   Torch - Adds a light source meant to simulate torchlight.
+    -   Lantern - Adds a light source meant to simulate hooded lantern light.
+    -   Candle - Adds a light source meant to simulate candle light.
+    -   Light/Darkness Spells - Opens a submenu that has options to simulate the spells Light (20'), Continual Light (60'), Darkness (15'), and Continual Darkness (60').
+    -   Add Vision Type - Opens a submenu that has options that let you add Infravision (30', 60', 90', or 120'), Blindsight (60' or 120'), or Truesight (240') to the actor.
+-   Initiative - Opens a submenu that works just like the Initiative menu mentioned above in the "Action Line Radial Menus" section.
 
 ## Player's Option Rules
 
@@ -143,27 +142,31 @@ The options in this section add automation for the 2E set of "Player's Option" b
 
 Enabling this option will use the crit tables from Player's Option: Combat & Tactics. This will override whatever crit settings you specified in the core ruleset's preferences for critical hits. The toggle options include:
 
-* Off - This option won't be used, and whatever you had set up in the base ruleset for crits will be used as normal.
-* 18+, hit by 5 - This is how C&T crits are determined by rules as written. If a natural 18 or better is rolled, and the target is hit by at least 5, a crit occurs.
-* As base, hit by 5 - Same as above, except now you need a nat 20 instead of an 18 or better (or less than a nat 20 if the weapon has a crit threshold defined as in the base ruleset).
-* As base ruleset - Crits occur on a natural 20 (or less, if a crit threshold is defined on the weapon, as per the base ruleset), regardless of if that would have hit, or by how much.
+-   Off - This option won't be used, and whatever you had set up in the base ruleset for crits will be used as normal.
+-   18+, hit by 5 - This is how C&T crits are determined by rules as written. If a natural 18 or better is rolled, and the target is hit by at least 5, a crit occurs.
+-   As base, hit by 5 - Same as above, except now you need a nat 20 instead of an 18 or better (or less than a nat 20 if the weapon has a crit threshold defined as in the base ruleset).
+-   As base ruleset - Crits occur on a natural 20 (or less, if a crit threshold is defined on the weapon, as per the base ruleset), regardless of if that would have hit, or by how much.
 
 Note that this option and the "Hackmaster Critical Hits" option cannot be enabled at the same time. Enabling one will disable the other.
 
 Right now, when a crit is detected, a crit result is generated per the C&T tables and reported as text. Eventually I plan to add more automation to the crit effects, but right now other than displaying the crit effect message as part of the attack roll output, the only part that's automated is that when you roll damage, it will be either x2 or x3 damage dice, as per the C&T rules, and will roll a death save for you (which has no actual automation effect... it just saves you from doing it manually). Note that the following pieces of information are needed to generate a crit result, and in some cases I had to make assumptions:
 
 #### Creature Type:
+
 This is needed to determine which crit table to roll on for the target. Currently, this pulls from the monster's "type" entry looking for the words "humanoid", "animal", or "monster". Note that nothing in the Monster Manual actually has the type of "monster"... I end up using this as the default if "humanoid" or "animal" isn't found. It isn't perfect though... say you critically hit a skeleton. It's not type "humanoid" in the Monster Manual, as it's undead... however, it definitely seems like it should roll on the "humanoid" table and not the "monster" table (where things like having a tail are assumed). I've create two tables, "aDefaultCreatureTypesByName" and "aDefaultCreatureTypesByType, in "data_common_po.lua", which you could edit to add monster names and the creature type you'd like them to be treated as for crits. I do plan to go through and add many monsters from the MM that might need correction (skeleton is already done!), but right now you might get some creatures treated as "monster" when you think they'd better fit into another category. Sorry! If you'd like to volunteer some time and provide some mappings for me, I'll be sure to add them to the extension! Currently the only mappings are the name "skeleton" to type humanoid, and the type "giant" to type "humanoid".
 
 #### Creature Size:
+
 Target creature size is needed to determine critical hit severity. This is parsed from the "size" entry in the pc or npc's record. If no valid value is found (because it's empty, or gibberish), it will default to medium for NPCs, or default to a size based on the selected race of a PC (or, if that still fails becasue it's a race that isn't recognized from the PHB, medium for a PC).
 
 #### Weapon Type:
-The damage type of the weapon is needed to determine which crit table to roll on. I try to determine the damage type of the weapon by looking at all of the possible damage types on the action that was used to roll the attack. If, for example, you attack with a morningstar from the PHB, this will look at the damage entries and see that it has bludgeoning and piercing damage. If multiple damage types (of the bludgeoning, piercing, and slashing types) are found, it will randomly select one to roll the critical hit against. If none of those damage types are found (because they weren't set, or maybe the weapon only does fire damage) no critical hit will be rolled. 
+
+The damage type of the weapon is needed to determine which crit table to roll on. I try to determine the damage type of the weapon by looking at all of the possible damage types on the action that was used to roll the attack. If, for example, you attack with a morningstar from the PHB, this will look at the damage entries and see that it has bludgeoning and piercing damage. If multiple damage types (of the bludgeoning, piercing, and slashing types) are found, it will randomly select one to roll the critical hit against. If none of those damage types are found (because they weren't set, or maybe the weapon only does fire damage) no critical hit will be rolled.
 
 **A planned near-future improvement is to allow this to be specified in the "properties" section of a weapon item, and it will look there first before digging into the damage entries.**
 
 #### Weapon Size:
+
 Weapon size is needed to determine critical hit severity. Since this isn't currently recorded in the base 2E ruleset, it will first try to look at the "properties" field on the attack action for text in the format "Size: s", where "s" could be "Tiny, Small, Medium, Large, Huge, Gargantuan" (or just the first letter of those). If it sees nothing recognizable there, it will look for an item in the creature's inventory that the attack action may have come from, and if it finds one, looks at the properties of that weapon in the same manner.
 
 Failing all that (which will fail, if you haven't specifically entered values yourself for those actions or items), I need to make a best guess. Here's how I do it:
@@ -180,7 +183,7 @@ Enabling this option switches from standard 2E initiative to the intiative syste
 
 The phase a given character or creature acts on is determined by a number of factors. First off, each character has a base initiative that's based on their size, speed, and encumbrance. Tiny and Small creatures are very fast, man-sized creatures are fast, large creatures are average, huge creatures are slow, and gargantuan creatures are very slow. This is adjusted one phase quicker for creatures with a movement rate of 18" or greater, and slower by one phase for creatures with a movement rate of 6" or less. Being moderately enumbered make initiative one phase slower, while being heavily encumbered is two phases slower and severely encumbered is three phases slower. For most unecumbered PCs, they'll usually end up with a base initiative phase of "fast".
 
-If a character is just moving or acting in a way that doesn't involve a spell or weapon, they use their base initiative. If they're casting a spell, their initiative is based on the casting speed of the spell. Spells with a casting time of 3 or less are fast, 4-6 are average, 7-9 are slow, and full round cast times are "very slow". 
+If a character is just moving or acting in a way that doesn't involve a spell or weapon, they use their base initiative. If they're casting a spell, their initiative is based on the casting speed of the spell. Spells with a casting time of 3 or less are fast, 4-6 are average, 7-9 are slow, and full round cast times are "very slow".
 
 If instead the character is using a weapon, they'll end up taking whichever initiative phase is worse... their base initiative phase or their weapon's initiative phase. The Player's Option book has a list of all weapons and what their speed phases are, but in lieu of coding that all in and making users of this mod maintain a new property on all the weapons, I instead based it on the weapon's "weapon speed" that already existed in 2E, and based it off what's in the Player's Option book. It led me to these ranges for weapno speed: Weapon speed <= 0 is very fast, 1-4 is fast, 5-7 is average, 8-13 is slow, and 14+ is very slow. If you are using the "Reaction Adjustment Affects Init" option of this mod, the way it works it to add or subtract your reaction adjustment to the weapon speed before determing the phase. It has no affect on spells or base initiative.
 
@@ -195,8 +198,6 @@ DMs can hit the "delay" button on the comgbat tracker to drop the current actor'
 This can also be useful if a character states they're delaying their action. Just delay them a phase, move on, and when you get to them again ask if they want to go yet.
 
 Players can accomplish this same effect by hitting the "delay" button at the top of their action tab.
-
-
 
 #### How this works behind the scenes in Fantasy Grounds
 
@@ -222,7 +223,6 @@ Right now, when a character "rolls" their initiative for a weapon or spell like 
 
 Player Characters who have not yet rolled initiative (such as when a new round starts) default to their "very slow-" phase. If your bothers can't be bothered to roll, they can just go last!
 
-
 ## Automation Improvements
 
 ### Adjust NPC AC for items and abilities
@@ -239,13 +239,13 @@ Enables the radial menu option in the players' action tab for them to automatica
 
 In the base ruleset, a defender being Prone, Unconscious, Restrained, Stunned, or Paralyzed loses their dexterity bonus to AC and their shield bonus. Restrained/Stunned grant a +4 to-hit (but don't stack with each other), Prone/Unconscious grant a +4 to-hit vs melee (but don't stack with each other, but do stack with restrained/stunned), and Paralyzed grants no bonus. This doesn't make sense to me... paralyzed seems equivalent (or worse) to restrained/stunned, and I don't see how being restrained and unconscious makes you easier to hit than simply being unconscious. If you enable this option, the following changes occur.
 
-* Prone, Unconscious, Restrained, Stunned, and Paralyzed won't stack. Whichever is the most detrimental is what will apply.
-* Paralyzed grants the same +4 to-hit that Restrained and Stunned gain.
-* Prone still allows for shield use.
+-   Prone, Unconscious, Restrained, Stunned, and Paralyzed won't stack. Whichever is the most detrimental is what will apply.
+-   Paralyzed grants the same +4 to-hit that Restrained and Stunned gain.
+-   Prone still allows for shield use.
 
 ### Generate Hit Locations
 
-This option lets you use either the Hackmaster system or the Player's Option system for generating a hit location (taking into account called shots if one was made). Toggling this option on simply adds some text in the chat window during a hit to indicate where the attacker hit. It has no real effect other than adding some additional flavor to combat. Note that this option being off doesn't effect critical hits; those are required for the Hackmaster or Player's Option critical hits to work and generate a hit location even if this option is disabled. This particular option is basically just for flavor. 
+This option lets you use either the Hackmaster system or the Player's Option system for generating a hit location (taking into account called shots if one was made). Toggling this option on simply adds some text in the chat window during a hit to indicate where the attacker hit. It has no real effect other than adding some additional flavor to combat. Note that this option being off doesn't effect critical hits; those are required for the Hackmaster or Player's Option critical hits to work and generate a hit location even if this option is disabled. This particular option is basically just for flavor.
 
 ### Ring Bell on Round Start
 
@@ -260,11 +260,13 @@ Overrides whatever base ruleset behavior you had defined to set NPC initiatives 
 Normally when a new round starts, players get a random initiative roll, which they then almost always just reroll anyway. I prefer to have it set them to a 99 initiative so that it's clearer they haven't rolled for their specific action yet. Does not affect NPC initiative behavior.
 
 ### Stricter Resistance Rules
+
 In the current implementation of the 2E ruleset, if a creature (such as a skeleton) resists slashing and piercing damage, they'll take half damage from any slashing or piercing attack... even if other damage types are involved. So, for instance, if a cleric bashes the skeleton with a morningstar, which is a bludgeoning/piercing weapon, the skeleton will only take half damage. I believe the intent in AD&D was that the most favorable damage type to the attacker was used when multiple damage types are involved. Enabling this option would require the target to resist all damage types of the attack to take half damage, not just one of them. A side effect of this that you may or may not like is that if you made a magical flaming longsword that does "slashing, fire" damage, the skeleton wouldn't resist any because while it resists slashing, it doesn't resist fire. You might disagree with me that it should work this way, and that's cool! That's why all these options are toggleable!
 
 Note: I find that there are some bugs with this that I haven't worked out yet. Basically, it fixes some things that are broken in the base ruleset, but break some things that work there. This is probably only an option you want to enable for very specific fights when you see things aren't working correctly. I'll try to put some focus on fixing this soon to get the best of both worlds.
 
 ### Weapon vs Armor to-hit Modifiers
+
 This option automates the optional 2E rule that gives attack bonuses and penalties depending on the damage type of the weapon vs the armor type worn. These are the "Weapon Type vs Armor Modifiers" seen on Table 52 of the Revised 2E PHB. The 2E ruleset currently implements these as modifiers that you can select before you roll an attack. Toggling this option removes the need to do that manually as it will attempt to automate it by looking at the attacker's weapon and the target's armor. This option doesn't work if it can't determine those things (such as a generic NPC "orc" that might have an AC of 5 but doesn't actually have any worn armor in its inventory), or in the case where a weapon type can't be determined. If you actually equip armor on an NPC, it will use these modifiers, even though the actual creature's AC won't change due to the armor you equipped to it.
 
 If an attacker's weapon does more than one damage type (such as a morningstar), it will assume the damage type most favorable to the attacker is hitting. If the defender is for some reason wearing more than one suit of armor, it will assume that the most favorable set of armor is being worn.
@@ -279,25 +281,21 @@ I try to determine the damage type of the weapon by looking at all of the possib
 
 The armor type is determined by doing a partial match on the armor's name. So if the armor your character has equipped is "Chain Mail", it will have no trouble matching this to the chain mail armor type. Likewise, it will have no problem with "+3 chain mail", "Chain mail +3", or even "Steve's Super Awesome Set of Chain Mail armor". As long as the words chain mail are there, it will be happy. If you typo it as "chian mail", you're out of luck. Likewise, if your armor is for some reason named "chain mail plate mail" or something else that would give two hits, the results are going to be kind of unpredictable. So don't do that.
 
-Example #1: Joe the 1st level Fighter swings his Longsword at an orc. The GM pulled this orc straight out of the Monster Manual, so the NPC record for the orc doesn't have any equipped armor in its inventory. Joe's attack roll is normal. 
+Example #1: Joe the 1st level Fighter swings his Longsword at an orc. The GM pulled this orc straight out of the Monster Manual, so the NPC record for the orc doesn't have any equipped armor in its inventory. Joe's attack roll is normal.
 
 Example #2: This time, the GM decides that the orc probably has an AC of 6 because it's wearing chain mail. He copies the NPC record "orc" from the Monster Manual, drags some chain mail to its inventory, and equips it. This doesn't actually have an effect on the orc's AC, because the 2E ruleset currently doesn't support that. However, now when Joe the 1st level Fighter attacks the orc with his longsword, he gets a -2 to his attack roll because chain mail is more effective against slashing weapons.
 
 You can specify the modifiers a type of armor should receive in the "properties" section of the armor item record. The syntax is "Slashing: n", "Bludgeoning: n", or "Piercing: n", where n is the to-hit roll modifier versus that damage type. For instance, Field Plate per the book would have "Slashing: -3;Piercing: -1".
 
-
 ### Set Unrolled PC Init to 99
 
 Normally when a new round starts, players get a random initiative roll, which they then almost always just reroll anyway. I prefer to have it set them to a 99 initiative so that it's clearer they haven't rolled for their specific action yet. NPCs still use the default behavior of the 2e ruleset.
-
-
-
 
 ## Hackmaster-style House Rules
 
 Originally, I set out to write a ruleset for Hackmaster 4e. After doing a lot of work on it, I decided I didnt really want to play Hackmaster 4e. I wanted to play AD&D 2e with just a few of the HM4 rules cherry-picked from it. Here they are!
 
-### Armor Damage 
+### Armor Damage
 
 Hackmaster 4th edition had system of armor damage that was more complicated than the one from the 2E Fighter's Handbook that's currently coded into the 2E ruleset. In the Hackmaster ruleset, armor damage is "staged" and after armor receives a certain amount of damage, it drops one AC level of effectiveness. It continues dropping in levels as it takes damage until it is eventually destroyed. Armor takes 1 (or possibly more, for some armors) point of damage for every die of damage rolled against it. It also soaks that much of the hit, preventing some of the damage from reaching the player.
 
@@ -307,7 +305,7 @@ There are some special rules around how and when armor takes damage. If armor is
 
 Note: Using this optional rule requires setting up the armor records with information about how the armor should degrade, though I did include default values for all of the armor whose names match those in the AD&D 2E PHB.
 
-You can specify how much damage the armor should soak per damage die by entering "DR: n" in the armor's "Properties" text area, where n is the amount to soak per die. If not provided, it defaults to 1. 
+You can specify how much damage the armor should soak per damage die by entering "DR: n" in the armor's "Properties" text area, where n is the amount to soak per die. If not provided, it defaults to 1.
 
 You can specify how many hit points the armor has at each level of protection by entering "HP: `[n1, n2, n3, n4, etc]`" in the "Properties" text area, where n1 is the amount of damage the armor takes before it drops its first point of AC, n2 is the amount it takes before dropping the 2nd point of AC, etc.
 
@@ -319,7 +317,7 @@ Example #3: The 10th level magic-user in Joe's party lets loose with a fireball 
 
 A new UI section appears at the bottom of a character's "Main" when this option is enabled which shows their current armor and shield, as well as how much damage those have taken and how many levels of AC they've lost due to damage.
 
-#### Shield Hits and Damage 
+#### Shield Hits and Damage
 
 Hackmaster 4th edition had the concept of shield hits and shield damage. The damage portion worked somewhat similar to the armor damage house rule, except that instead of soaking 1 point of damage per die, shields soak full damage. However, this only comes into play when a shield hit occurs. A shield hit occurs whenever a player is only missed because of their AC bonus from a shield. If so, the attacker rolls damage normally, but all the damage is first applied to the shield directly. If the shield is destroyed, any remaining damage is applied to the player.
 
@@ -331,7 +329,7 @@ You can hold "ALT" while rolling damage against a combatant to force the damage 
 
 #### Armor Damage Immunity
 
-Note that armor can't soak certain types of damage (psychic, poison), nor is it hurt by it. 
+Note that armor can't soak certain types of damage (psychic, poison), nor is it hurt by it.
 
 Also, if you want to make armor immune to a certain damage type. Say, for example, you create some magical "Molten Plate Mail" that's forged from the fires of hell and glows with molten fury... you probably don't want fire to damage the armor. In the "properties" of the armor record, you can put "IMMUNE: fire" and it will no longer take fire damage (but will still soak it).
 
@@ -375,7 +373,7 @@ It should go without saying this is all automated, by the way, because who the h
 
 Monsters are a little different. Because stats aren't as relevant for monsters are most just have 10 across the board in the Monstrous Manual records, the fatigue effect for monsters is -1 ATK and -1 AC instead of -1 STR and -1 DEX. This is different than Hackmaster, which says every time a monster would need a fatigue check, do a morale check instead to have them run away. I say, do both! Also note that monsters make their fatigue checks a little differently, as per HM rules. Instead of trying to roll under the average of Con + Wis, they try to roll under their morale score. If there is no morale score (or it's some gibberish I can't parse), it defaults to average of Con + Wis just like players, which is usually going to mean 9 or 10, since that's what most monsters have in their stats by default.
 
-Also note that Fatigue Factor for a monsters is a little different. Player's used half their Con, modified by encumbrance. This wouldn't work for most monsters. Hackmaster had a supplemental book, the Hacklopedia Monster Matrix, which had fatigue factors for every single monster. I might eventually input all those, but for now, they just use 6 by default. That's a tiny bit better than the average player, and eyeballing the values in the Monster Matrix, not bad as an overall average value. Obviously, though, a dragon might have more fatigue than a goblin. If you want to manually set their Fatigue Factor, you can do so by putting "FF: n" in the Special Defenses section of their NPC record, where "n" is the number you want to use. 
+Also note that Fatigue Factor for a monsters is a little different. Player's used half their Con, modified by encumbrance. This wouldn't work for most monsters. Hackmaster had a supplemental book, the Hacklopedia Monster Matrix, which had fatigue factors for every single monster. I might eventually input all those, but for now, they just use 6 by default. That's a tiny bit better than the average player, and eyeballing the values in the Monster Matrix, not bad as an overall average value. Obviously, though, a dragon might have more fatigue than a goblin. If you want to manually set their Fatigue Factor, you can do so by putting "FF: n" in the Special Defenses section of their NPC record, where "n" is the number you want to use.
 
 Also note that you can make a monster completely skip fatigue checks by putting "NOFATIGUE" in their Special Defenses section.
 
@@ -426,17 +424,15 @@ Hackmaster had a concept of penetration dice, where if you roll the maximum on a
 
 Dice that penetrate will show up in the chat window roll as blue, and the extra dice rolled will show up as red (unless they too penetrate, and then they'll show up as blue). When the extra dice appear in the chat window, they'll already have had 1 subtracted from their roll (so it will be showing their modified value, not their "rolled" value). You really shouldn't need to worry about, as the total will be right, but I've noticed a lot of people questioning whether or not the -1 was actually occurring correctly when penetration dice are involved in VTTs.
 
-You can manually roll penetrate die by typing /pen or /diep, followed by the dice you want to roll. For example, "/pen 4d8". 
+You can manually roll penetrate die by typing /pen or /diep, followed by the dice you want to roll. For example, "/pen 4d8".
 
 Example #1: Joe the fighter swings at an ogre with his longsword and hits. He rolls 1d8 for damage and rolls an 8. Rolling again, he gets another 8. Rolling again, he gets a 5. The damage total would be 8 + (8-1) + (5-1) = 19. Not bad!
 
 Example #2: Joe the fighter swings at the ogre again, hoping to finish it off. He rolls 1d8 for damage, rolls an 8 again, and starts thinking how nice it would be to have another hit like in example #1. Rolling again, however, he rolls a 1, and his celebration is cut short. His total damage is 8 + 0. His celebration is cut short as he doesn't actually get any bonus damage.
 
-
 ### Reaction Adjustment Affects Init
 
 This option applies the Dexterity Reaction Adjustment value to any rolled initiative. I've noticed that you might have to toggle this with the character sheet open for it to update properly when you enable or disable the option. Be aware of it though I hope to fix that issue in the future.
-
 
 ### Threshold of Pain
 
@@ -452,11 +448,6 @@ Allows you to use the Hackmaster fumble tables when a 1 is rolled. Also has an o
 
 Has a few options to control how magical armor can be damaged (assuming the armor damage option is enabled).
 
-* Off - Magic armor doesn't take damage. Or maybe always takes damage. Honestly, I don't think I've ever tested this.
-* Equivalent Magic - Magic armor and shields take damage the same way normal armor and shields would so long as the magic bonus of the weapon hitting it is equal to or greater than the magic bonus of the armor or shield.
-* Penetration - Magic armor takes 1 point of damage for each original damage die that rolls penetration. Note that if a die penetrates and penetrates again, that only counts once. The magic bonus of the weapon (if any) is irrelevant in this option. For shields, it's similar except instead of one point per die that penetrates, the damage done to the shield is the amount of damage that was rolled on penetration dice.
-
-
-
-
-
+-   Off - Magic armor doesn't take damage. Or maybe always takes damage. Honestly, I don't think I've ever tested this.
+-   Equivalent Magic - Magic armor and shields take damage the same way normal armor and shields would so long as the magic bonus of the weapon hitting it is equal to or greater than the magic bonus of the armor or shield.
+-   Penetration - Magic armor takes 1 point of damage for each original damage die that rolls penetration. Note that if a die penetrates and penetrates again, that only counts once. The magic bonus of the weapon (if any) is irrelevant in this option. For shields, it's similar except instead of one point per die that penetrates, the damage done to the shield is the amount of damage that was rolled on penetration dice.

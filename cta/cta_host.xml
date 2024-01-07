@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <root>
-  <windowclass name="combattracker_host" merge="join">
-    <sheetdata>
-      <buttoncontrol insertafter="nextActorButton">
-        <anchored width="30" height="30">
-          <bottom offset="4" />
-          <left offset="40" />
-        </anchored>
-        <icon normal="moraleButton" pressed="moraleButtonPressed" />
-        <tooltip textres="ct_tooltip_moralebutton" />
-        <script>
+    <windowclass name="combattracker_host" merge="join">
+        <sheetdata>
+            <buttoncontrol insertafter="nextActorButton">
+                <anchored width="30" height="30">
+                    <bottom offset="4" />
+                    <left offset="40" />
+                </anchored>
+                <icon normal="moraleButton" pressed="moraleButtonPressed" />
+                <tooltip textres="ct_tooltip_moralebutton" />
+                <script>
           function onInit()
             OptionsManager.registerCallback(PlayerOptionManager.sMoraleTrackerKey, updateVisibility);
             updateVisibility();
@@ -32,61 +32,61 @@
               MoraleManagerPO.checkAllNpcMorale(bForceCheck);
             end
           end
-        </script>
-    </buttoncontrol>
-    </sheetdata>
-  </windowclass>
+                </script>
+            </buttoncontrol>
+        </sheetdata>
+    </windowclass>
 
-  <windowclass name="combatants_entry_host" merge="join">
-  	<script file="cta/scripts/cta_entry.lua" />
-  	<sheetdata>
-  		<button_ctaentry_initresultpo name="initresultpo" insertbefore="initresult" />
-  	</sheetdata>
-  </windowclass>
+    <windowclass name="combatants_entry_host" merge="join">
+        <script file="cta/scripts/cta_entry.lua" />
+        <sheetdata>
+            <button_ctaentry_initresultpo name="initresultpo" insertbefore="initresult" />
+        </sheetdata>
+    </windowclass>
 
-  <windowclass name="cta_weapon_item_hypertext">
-    <margins control="0,2,0,2" />
-    <sheetdata merge="replace">
-      <anchor_right name="rightanchor" />
-      <anchor_left name="leftanchor" />
+    <windowclass name="cta_weapon_item_hypertext">
+        <margins control="0,2,0,2" />
+        <sheetdata merge="replace">
+            <anchor_right name="rightanchor" />
+            <anchor_left name="leftanchor" />
 
-      <cta_link_action name="shortcut">
-        <anchored width="20" height="20">
-          <top  />
-          <left parent="leftanchor" anchor="right" relation="relative" offset="1" />
-        </anchored>
-      </cta_link_action>
+            <cta_link_action name="shortcut">
+                <anchored width="20" height="20">
+                    <top  />
+                    <left parent="leftanchor" anchor="right" relation="relative" offset="1" />
+                </anchored>
+            </cta_link_action>
 
-      <detail_button_weapon_action name="activatedetail">
-        <anchored width="20" >
-          <top offset="0" />
-          <right parent="rightanchor" anchor="left" relation="relative" offset="-3" />
-        </anchored>
-        <class>item</class>
-      </detail_button_weapon_action>
+            <detail_button_weapon_action name="activatedetail">
+                <anchored width="20">
+                    <top offset="0" />
+                    <right parent="rightanchor" anchor="left" relation="relative" offset="-3" />
+                </anchored>
+                <class>item</class>
+            </detail_button_weapon_action>
 
-      <stringcontrol>
-        <script file="cta/scripts/cta_action_item.lua" />
-        <anchored>
-          <top />
-          <left parent="leftanchor" anchor="right" relation="relative" offset="5" />
-          <right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
-        </anchored>
-        <font>regular11</font>
-        <lineoffset default="on" mergerule="replace">1</lineoffset>
-			  <multilinespacing>16</multilinespacing>
-        <cursor hover="arrow" />
-        <actorpath>...</actorpath>
-        <actortype>ct</actortype>
-        <readonly />
-      </stringcontrol>
-      
-    </sheetdata>
-  </windowclass>
+            <stringcontrol>
+                <script file="cta/scripts/cta_action_item.lua" />
+                <anchored>
+                    <top />
+                    <left parent="leftanchor" anchor="right" relation="relative" offset="5" />
+                    <right parent="rightanchor" anchor="left" relation="relative" offset="-5" />
+                </anchored>
+                <font>regular11</font>
+                <lineoffset default="on" mergerule="replace">1</lineoffset>
+                <multilinespacing>16</multilinespacing>
+                <cursor hover="arrow" />
+                <actorpath>...</actorpath>
+                <actortype>ct</actortype>
+                <readonly />
+            </stringcontrol>
 
-  <windowclass name="selected_entry_header" merge="join">
-    <sheetdata>
-      <cta_moraleStatus name="moraleStatus" insertafter="wounds"/>
-    </sheetdata>
-  </windowclass>
+        </sheetdata>
+    </windowclass>
+
+    <windowclass name="selected_entry_header" merge="join">
+        <sheetdata>
+            <cta_moraleStatus name="moraleStatus" insertafter="wounds"/>
+        </sheetdata>
+    </windowclass>
 </root>
