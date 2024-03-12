@@ -56,8 +56,35 @@ function onInit()
     CharlistManagerADND.turnOffAllInitRolled = turnOffAllInitRolledOverride;
 
     CombatManager.setCustomCombatReset(resetInitPo);
+
+    -- override to ensure the new carousel works with the "hide enemies from tracker" option this extension exposes
+    CombatManager.isCTHidden = isCTHiddenOverride;
 end
 
+-- override
+-- core rpg function from CombatManager - add additional logic to handle shouldHideEnemiesFromPlayerCT bit
+function isCTHiddenOverride(vEntry)
+    local nodeCT = CombatManager.resolveNode(vEntry);
+    if not nodeCT then
+        return false;
+    end
+
+    if CombatManager.getFactionFromCT(nodeCT) == "friend" then
+        return false;
+    end
+
+    -- extended here
+    if PlayerOptionManager.shouldHideEnemiesFromPlayerCT() then
+        -- Debug.chat('HIDE FOES FROM COMBAT LIST');
+        return true;
+    end
+
+    if CombatManager.getTokenVisibilityFromCT(nodeCT) then
+        return false;
+    end
+    return true;
+end
+ 
 function resetInitPo()
     if PlayerOptionManager.isUsingHackmasterInitiative() then
         for _, nodeCT in pairs(CombatManager.getCombatantNodes()) do
