@@ -32,6 +32,7 @@
     <string name="option_val_half">Half</string>
     <string name="option_val_full">Full</string>
     <string name="option_label_morale_tracker">Enable Morale Tracker</string>
+    <string name="option_label_complete_fighters_handbook">Enable Complete Fighters Handbook Options</string>
 
     <!-- House Rule Options -->
     <string name="option_header_house_rule">Hackmaster House Rules (GM)</string>
@@ -60,8 +61,7 @@
     <string name="option_val_penetration">Penetration</string>
     <string name="option_val_both">Both</string>
     <string name="option_label_radiant_necrotic_armor">Should Radiant/Necrotic damage hurt armor (if using armor damage?)</string>
-    option_label_hide_enemies_from_player_ct
-
+   
         <!-- New Properties -->
     <string name="item_label_hp_lost">HP Lost</string>
     <string name="item_label_hp_lost_tooltip">The amount of damage this armor has taken</string>

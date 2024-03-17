@@ -33,6 +33,7 @@ sCalculatedHealBelowZero = "AdditionalAutomation_CalculatedHealBelowZero";
 sAlternateDmgxOptionKey = "AdditionalAutomation_AlternateDMGX";
 sMagicArmorEncumbranceKey = "AdditionalAutomation_MagicArmorEncumbrance";
 sMoraleTrackerKey = "AdditionalAutomation_MoraleTracker";
+sCompleteFightersHandbook = "AdditionalAutomation_ComplteFightersOptions";
 
 function onInit()
     registerOptions();
@@ -115,6 +116,15 @@ function registerOptions()
         });
 
     -- Additional Automation
+    OptionsManager.registerOption2(sCompleteFightersHandbook, false, "option_header_automation",
+        "option_label_complete_fighters_handbook", "option_entry_cycler", {
+            labels = "option_val_on",
+            values = "on",
+            baselabel = "option_val_off",
+            baseval = "off",
+            default = "off"
+        });
+
     OptionsManager.registerOption2(sWeaponTypeVsArmorOptionKey, false, "option_header_automation",
         "option_label_weapontype_vs_armor_mods", "option_entry_cycler", {
             labels = "option_val_on",
@@ -622,4 +632,8 @@ end
 
 function isPenetrationDiceEnabled()
     return OptionsManager.isOption(sPenetrationOptionKey, "on");
+end
+
+function isCompleteFightersHandbookOptionsEnabled()
+    return OptionsManager.isOption(sCompleteFightersHandbook, "on");
 end

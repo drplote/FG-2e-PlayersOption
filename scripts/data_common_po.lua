@@ -21,6 +21,47 @@ aHonorThresholdsByLevel = {};
 aCalledShotModifiers = {};
 aHackmasterCalledShotsRanges = {};
 
+-- complete fighters handbook armor penalities
+cfhArmorPenalties = {
+    ["robes"] = 0,
+    ["garments"] = 0,
+    ["studded leather"] = -1,
+    ["leather armor"] = 0,
+    ["padded armor"] = 0,
+    ["ring mail"] = -1,
+    ["ringmail"] = -1,
+    ["scale mail"] = -2,
+    ["scalemail"] = -2,
+    ["hide armor"] = -3,
+    ["brigandine"] = -2,
+    ["chain mail"] = -2,
+    ["chainmail"] = -2,
+    ["chain"] = -2,
+    ["bronze plate mail"] = -3,
+    ["banded mail"] = -2,
+    ["bandedmail"] = -2,
+    ["splint mail"] = -2,
+    ["splintmail"] = -2,
+    ["splint"] = -2,
+    ["half plate"] = -2,
+    ["field plate"] = -3,
+    ["full plate"] = -3,
+    ["plate mail"] = -3,
+    ["platemail"] = -3,
+    ["plate"] = -3,
+    ["buckler"] = 0,
+    ["small shield"] = -1,
+    ["shield, small"] = -1,
+    ["medium shield"] = -2,
+    ["shield, medium"] = -2,
+    ["body shield"] = -3,
+    ["shield, body"] = -3,
+    ["tower shield"] = -4,
+    ["shield, tower"] = -4,
+    ["shield"] = -1
+};
+
+
 function onInit()
 
     initializeDefaultArmorVsDamageTypeModifiers();
