@@ -19,7 +19,7 @@ end
 -- Implements the armor penalties (DEX) from the complete fighters handbook - chapter 5 - effects of armor
 function setArmorPenaltyAdjustements(nodeActor, rRoll)
 
-    if not PlayerOptionManager.isCompleteFightersHandbookOptionsEnabled() then
+    if not PlayerOptionManager.isCfhDexPenaltyArmorOptionsEnabled() then
         return;
     end
 
@@ -36,8 +36,12 @@ function setArmorPenaltyAdjustements(nodeActor, rRoll)
         -- if fuzzy match found, concat message/modifiers
         for sValue, index in pairs(DataCommonPO.cfhArmorPenalties) do
             if string.find(sValue, sArmorNameLower) then
-                rRoll.nMod = rRoll.nMod + index;
-                rRoll.sDesc = rRoll.sDesc .. " [" .. sArmorName .. " " .. index .. "]";
+                -- Debug.chat(index);
+                if (index ~= 0) then
+                    -- Debug.chat('penalty -- apply');
+                    rRoll.nMod = rRoll.nMod + index;
+                    rRoll.sDesc = rRoll.sDesc .. " [" .. sArmorName .. " " .. index .. "]";
+                end
             end
         end
     end

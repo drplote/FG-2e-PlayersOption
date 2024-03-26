@@ -32,7 +32,7 @@
     <string name="option_val_half">Half</string>
     <string name="option_val_full">Full</string>
     <string name="option_label_morale_tracker">Enable Morale Tracker</string>
-    <string name="option_label_complete_fighters_handbook">Enable Complete Fighters Handbook Options</string>
+    <string name="option_label_cfh_dex_penalty_armor">Complete Fighters Handbook: Dex penalties for Armor</string>
 
     <!-- House Rule Options -->
     <string name="option_header_house_rule">Hackmaster House Rules (GM)</string>

@@ -33,7 +33,7 @@ sCalculatedHealBelowZero = "AdditionalAutomation_CalculatedHealBelowZero";
 sAlternateDmgxOptionKey = "AdditionalAutomation_AlternateDMGX";
 sMagicArmorEncumbranceKey = "AdditionalAutomation_MagicArmorEncumbrance";
 sMoraleTrackerKey = "AdditionalAutomation_MoraleTracker";
-sCompleteFightersHandbook = "AdditionalAutomation_ComplteFightersOptions";
+sCfhDexPenaltyArmor = "AdditionalAutomation_CFH_DexPenaltyArmor";
 
 function onInit()
     registerOptions();
@@ -115,9 +115,9 @@ function registerOptions()
             default = "off"
         });
 
-    -- Additional Automation
-    OptionsManager.registerOption2(sCompleteFightersHandbook, false, "option_header_automation",
-        "option_label_complete_fighters_handbook", "option_entry_cycler", {
+    -- Complete fighters handbook - dex checks/skills penalties for armor type
+    OptionsManager.registerOption2(sCfhDexPenaltyArmor, false, "option_header_automation",
+        "option_label_cfh_dex_penalty_armor", "option_entry_cycler", {
             labels = "option_val_on",
             values = "on",
             baselabel = "option_val_off",
@@ -634,6 +634,6 @@ function isPenetrationDiceEnabled()
     return OptionsManager.isOption(sPenetrationOptionKey, "on");
 end
 
-function isCompleteFightersHandbookOptionsEnabled()
-    return OptionsManager.isOption(sCompleteFightersHandbook, "on");
+function isCfhDexPenaltyArmorOptionsEnabled()
+    return OptionsManager.isOption(sCfhDexPenaltyArmor, "on");
 end

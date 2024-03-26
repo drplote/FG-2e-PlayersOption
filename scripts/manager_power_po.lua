@@ -122,7 +122,7 @@ function getCasterLevelByTypeOverride(nodeCaster, sSpellType, bIsPC, nodeSpell)
 
         local aSpellSchools = nil;
         if nodeSpell then
-            local sSpellSchools = LibraryData5E.sanitizevNodeText(DB.getValue(nodeSpell, "school", ""):lower());
+            local sSpellSchools = LibraryDataADND.sanitizevNodeText(DB.getValue(nodeSpell, "school", ""):lower());
             if sSpellSchools ~= "" then
                 aSpellSchools = UtilityPO.fromCSV(sSpellSchools);
             end
@@ -167,7 +167,7 @@ function getPowerRollOverride(rActor, nodeAction, sSubRoll)
         local nodeSpell = nodeAction.getChild("...");
         rAction.sPowerType = DB.getValue(nodeSpell, "type", ""):lower();
 
-        local sPowerSchools = LibraryData5E.sanitizevNodeText(DB.getValue(nodeSpell, "school", ""):lower());
+        local sPowerSchools = LibraryDataADND.sanitizevNodeText(DB.getValue(nodeSpell, "school", ""):lower());
         rAction.sPowerSchool = sPowerSchools;
 
         -- Add schools of magic to the power properties so we can modify saves based on it.

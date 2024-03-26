@@ -60,8 +60,6 @@ cfhArmorPenalties = {
     ["shield, tower"] = -4,
     ["shield"] = -1
 };
-
-
 function onInit()
 
     initializeDefaultArmorVsDamageTypeModifiers();
