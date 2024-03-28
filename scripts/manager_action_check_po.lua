@@ -23,12 +23,14 @@ function setArmorPenaltyAdjustements(nodeActor, rRoll)
         return;
     end
 
-    local strDesc = rRoll.sDesc;
+    -- get roll data and remove all whitespace/lowercase to check if dex based
+    local strDesc = rRoll.sDesc:gsub("%s+", ""):lower();
+    local arArmorPenaltyList = {};
+    local isDexBased = string.find(strDesc, '%[check%]dexterity') or string.find(strDesc, '%[mod:dex%]');
 
     -- Debug.chat(strDesc);
 
-    -- DEX based skills/checks only
-    if string.find(strDesc, 'Dexterity') or string.find(strDesc, 'DEX') then
+    if isDexBased then
 
         -- Debug.chat('DEX BASED CHECK AND/OR SKILL WAS DETECTED');
 
@@ -43,16 +45,20 @@ function setArmorPenaltyAdjustements(nodeActor, rRoll)
             local nIndex = 0;
 
             -- if fuzzy match found, concat message/modifiers
-            for sValue, index in pairs(DataCommonPO.cfhArmorPenalties) do
-
+            for sValue, penalty in pairs(DataCommonPO.cfhArmorPenalties) do
                 if string.find(sArmorNameLower, sValue) then
-                    if (index ~= 0) then
+                    if (penalty ~= 0) then
                         sArmorNameLower = '';
-                        rRoll.nMod = rRoll.nMod + index;
-                        rRoll.sDesc = rRoll.sDesc .. " [" .. sArmorName .. " " .. index .. "]";
+                        rRoll.nMod = rRoll.nMod + penalty;
+                        rRoll.sDesc = rRoll.sDesc .. " [" .. sArmorName .. " " .. penalty .. "]";
                     end
                 end
             end
         end
+
+        -- if next(arArmorPenaltyList) ~= nil then
+
+        -- end
+
     end
 end
