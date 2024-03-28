@@ -23,24 +23,34 @@ function setArmorPenaltyAdjustements(nodeActor, rRoll)
         return;
     end
 
-    -- get all armor/sheilds
-    local _, aArmorWorn = ItemManager2.getArmorWorn(nodeActor);
+    local strDesc = rRoll.sDesc;
 
-    -- iterate each armor found and cross check with the armor penalty table
-    for _, nodeItem in ipairs(aArmorWorn) do
+    -- Debug.chat(strDesc);
 
-        local sArmorName = DB.getValue(nodeItem, "name", "");
-        local sArmorNameLower = DB.getValue(nodeItem, "name", ""):lower();
-        local nIndex = 0;
+    -- DEX based skills/checks only
+    if string.find(strDesc, 'Dexterity') or string.find(strDesc, 'DEX') then
 
-        -- if fuzzy match found, concat message/modifiers
-        for sValue, index in pairs(DataCommonPO.cfhArmorPenalties) do
-            if string.find(sValue, sArmorNameLower) then
-                -- Debug.chat(index);
-                if (index ~= 0) then
-                    -- Debug.chat('penalty -- apply');
-                    rRoll.nMod = rRoll.nMod + index;
-                    rRoll.sDesc = rRoll.sDesc .. " [" .. sArmorName .. " " .. index .. "]";
+        -- Debug.chat('DEX BASED CHECK AND/OR SKILL WAS DETECTED');
+
+        -- get all armor/sheilds
+        local _, aArmorWorn = ItemManager2.getArmorWorn(nodeActor);
+
+        -- iterate each armor found and cross check with the armor penalty table
+        for _, nodeItem in ipairs(aArmorWorn) do
+
+            local sArmorName = DB.getValue(nodeItem, "name", "");
+            local sArmorNameLower = DB.getValue(nodeItem, "name", ""):lower();
+            local nIndex = 0;
+
+            -- if fuzzy match found, concat message/modifiers
+            for sValue, index in pairs(DataCommonPO.cfhArmorPenalties) do
+
+                if string.find(sArmorNameLower, sValue) then
+                    if (index ~= 0) then
+                        sArmorNameLower = '';
+                        rRoll.nMod = rRoll.nMod + index;
+                        rRoll.sDesc = rRoll.sDesc .. " [" .. sArmorName .. " " .. index .. "]";
+                    end
                 end
             end
         end
