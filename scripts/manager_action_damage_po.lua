@@ -2,11 +2,12 @@ local fOnDamageRoll;
 local fCheckReductionType;
 local fModDamage;
 local fApplyDamage;
+local fGetDamageAdjust;
 local fGetRoll;
 local fDecodeDamageText;
 
 function onInit()
-    fOnDamageRoll = ActionDamage.onDamageRoll;
+    fOnDamageRoll = ActionDamage.onDamageRoll; -- check update
     ActionDamage.onDamageRoll = onDamageRollOverride;
     ActionsManager.registerPostRollHandler("damage", onDamageRollOverride);
 
@@ -17,10 +18,10 @@ function onInit()
     ActionDamage.modDamage = modDamageOverride;
     ActionsManager.registerModHandler("damage", modDamageOverride);
 
-    fGetDamageAdjust = ActionDamage.getDamageAdjust;
+    fGetDamageAdjust = ActionDamage.getDamageAdjust; -- check update
     ActionDamage.getDamageAdjust = getDamageAdjustOverride;
 
-    fApplyDamage = ActionDamage.applyDamage;
+    fApplyDamage = ActionDamage.applyDamage; -- check update
     ActionDamage.applyDamage = applyDamageOverride;
 
     fGetRoll = ActionDamage.getRoll;

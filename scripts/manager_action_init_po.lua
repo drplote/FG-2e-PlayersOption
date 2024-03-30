@@ -12,12 +12,12 @@ function onInit()
     fPerformRoll = ActionInit.performRoll;
     ActionInit.performRoll = performRollOverride;
 
-    fHandleApplyInit = ActionInit.handleApplyInit;
+    fHandleApplyInit = ActionInit.handleApplyInit; -- check update
     ActionInit.handleApplyInit = handleApplyInitOverride;
 
     OOBManager.registerOOBMsgHandler(OOB_MSGTYPE_APPLYINIT, handleApplyInitOverride);
 
-    fNotifyApplyInit = ActionInit.notifyApplyInit;
+    fNotifyApplyInit = ActionInit.notifyApplyInit; -- check update
     ActionInit.notifyApplyInit = notifyApplyInitOverride;
 end
 

@@ -11,7 +11,7 @@ function onInit()
     ActionAttack.modAttack = modAttackOverride;
     ActionsManager.registerModHandler("attack", modAttackOverride);
 
-    fOnAttack = ActionAttack.onAttack;
+    fOnAttack = ActionAttack.onAttack; -- check update
     ActionAttack.onAttack = onAttackOverride;
     ActionsManager.registerResultHandler("attack", onAttackOverride);
 
@@ -24,7 +24,7 @@ function onInit()
     fGetRoll = ActionAttack.getRoll;
     ActionAttack.getRoll = getRollOverride;
 
-    fApplyAttack = ActionAttack.applyAttack;
+    fApplyAttack = ActionAttack.applyAttack; -- check upate
     ActionAttack.applyAttack = applyAttackOverride;
 
     fGetTHACO = ActionAttack.getTHACO;
@@ -154,6 +154,9 @@ function getRollOverride(rActor, rAction)
 end
 
 function onAttackOverride(rSource, rTarget, rRoll)
+
+    Debug.printstack();
+
     if #(rRoll.aDice) > 0 then
         if ModifierStack.getModifierKey("ATK_NAT_20") then
             if not Session.IsHost then
