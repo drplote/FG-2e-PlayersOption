@@ -37,14 +37,13 @@ function getTHACOOverride(rActor)
         return fGetTHACO(rActor);
     end
 
-    local bOptAscendingAC = (OptionsManager.getOption("HouseRule_ASCENDING_AC"):match("on") ~= nil);
+    local bOptAscendingAC =
+        (OptionsManager.getOption("HouseRule_ASCENDING_AC"):match("on") ~= nil);
 
     local nTHACO = 20;
     local sActorType = ActorManagerPO.getType(rActor);
     local nodeActor = ActorManagerPO.getCreatureNode(rActor);
-    if not nodeActor then
-        return 0;
-    end
+    if not nodeActor then return 0; end
     -- get pc thaco value
     if ActorManager.isPC(nodeActor) then
         nTHACO = DB.getValue(nodeActor, "combat.thaco.score", 20);
@@ -76,12 +75,8 @@ function applyAttackOverride(rSource, rTarget, msgOOB)
     local sWeaponType = msgOOB.sWeaponType; -- 'R' or 'M' or 'P'
     local sPCExtendedText = msgOOB.sPCExtendedText; -- includes AC hit
 
-    local msgShort = {
-        font = "msgfont"
-    };
-    local msgLong = {
-        font = "msgfont"
-    };
+    local msgShort = {font = "msgfont"};
+    local msgLong = {font = "msgfont"};
 
     msgShort.text = "Attack ->";
     msgLong.text = "Attack [" .. nTotal .. "] ->";
@@ -97,12 +92,15 @@ function applyAttackOverride(rSource, rTarget, msgOOB)
         msgShort.text = msgShort.text .. "(" .. sWeaponType .. ")";
     end
     if (sWeaponName and sWeaponName ~= "") then
-        msgLong.text = msgLong.text .. " (" .. StringManager.capitalizeAll(sWeaponName) .. ")";
+        msgLong.text = msgLong.text .. " (" ..
+                           StringManager.capitalizeAll(sWeaponName) .. ")";
     end
 
     if rTarget then
-        msgShort.text = msgShort.text .. " [at " .. ActorManager.getDisplayName(rTarget) .. "]";
-        msgLong.text = msgLong.text .. " [at " .. ActorManager.getDisplayName(rTarget) .. "]";
+        msgShort.text = msgShort.text .. " [at " ..
+                            ActorManager.getDisplayName(rTarget) .. "]";
+        msgLong.text = msgLong.text .. " [at " ..
+                           ActorManager.getDisplayName(rTarget) .. "]";
     end
 
     if sDMResults ~= "" then
@@ -115,9 +113,7 @@ function applyAttackOverride(rSource, rTarget, msgOOB)
 
     local bPsionicPower = false;
     local sType = string.match(sDesc, "%[ATTACK %((%w+)%)%]");
-    if sType and sType == "P" then
-        bPsionicPower = true;
-    end
+    if sType and sType == "P" then bPsionicPower = true; end
 
     msgShort.icon = "roll_attack";
     if string.match(sDMResults, "%[CRITICAL HIT%]") then
@@ -161,12 +157,16 @@ function onAttackOverride(rSource, rTarget, rRoll)
     if #(rRoll.aDice) > 0 then
         if ModifierStack.getModifierKey("ATK_NAT_20") then
             if not Session.IsHost then
-                rRoll.sDesc = rRoll.sDesc .. "[" .. Interface.getString("message_manualroll") .. "]";
+                rRoll.sDesc = rRoll.sDesc .. "[" ..
+                                  Interface.getString("message_manualroll") ..
+                                  "]";
             end
             rRoll.aDice[1].result = 20;
         elseif ModifierStack.getModifierKey("ATK_NAT_1") then
             if not Session.IsHost then
-                rRoll.sDesc = rRoll.sDesc .. "[" .. Interface.getString("message_manualroll") .. "]";
+                rRoll.sDesc = rRoll.sDesc .. "[" ..
+                                  Interface.getString("message_manualroll") ..
+                                  "]";
             end
             rRoll.aDice[1].result = 1;
         end
@@ -180,9 +180,11 @@ function onAttackOverride(rSource, rTarget, rRoll)
         rSource.weaponPath = rRoll.weaponPath;
     end
     if rSource and not rSource.aDamageTypes then
-        rSource.aDamageTypes = WeaponManagerPO.decodeDamageTypes(rRoll.aDamageTypes);
+        rSource.aDamageTypes = WeaponManagerPO.decodeDamageTypes(
+                                   rRoll.aDamageTypes);
     end
-    local bOptAscendingAC = (OptionsManager.getOption("HouseRule_ASCENDING_AC"):match("on") ~= nil);
+    local bOptAscendingAC =
+        (OptionsManager.getOption("HouseRule_ASCENDING_AC"):match("on") ~= nil);
     local bOptSHRR = (OptionsManager.getOption("SHRR") ~= "off");
     local bOptREVL = (OptionsManager.getOption("REVL") == "on");
     local is2e = (DataCommonADND.coreVersion == "2e");
@@ -229,9 +231,11 @@ function onAttackOverride(rSource, rTarget, rRoll)
     --  local bCanCrit = true;
     -- insert AC hit
     local nACHit = (20 - (rAction.nTotal + rRoll.nBaseAttack));
-    if DataCommonADND.coreVersion == "1e" or DataCommonADND.coreVersion == "becmi" then
+    if DataCommonADND.coreVersion == "1e" or DataCommonADND.coreVersion ==
+        "becmi" then
         local nodeForMatrix = DB.findNode(rSource.sCreatureNode);
-        nACHit = CombatManagerADND.getACHitFromMatrix(nodeForMatrix, nAttackMatrixRoll);
+        nACHit = CombatManagerADND.getACHitFromMatrix(nodeForMatrix,
+                                                      nAttackMatrixRoll);
     elseif bOptAscendingAC then -- you can't have AscendingAC and 1e Matrix (right now)
         nACHit = (rAction.nTotal + rRoll.nBaseAttack);
     end
@@ -251,25 +255,25 @@ function onAttackOverride(rSource, rTarget, rRoll)
             -- adjust bCanCrit based on target AC, if they need roll+bab 20 to hit target ac then they cant crit
             -- bCanCrit = (not bPsionic and canCrit(rRoll.nBaseAttack,nDefenseVal));
             local nTargetAC = (20 - nDefenseVal);
-            if bOptAscendingAC then
-                nTargetAC = nDefenseVal;
-            end
+            if bOptAscendingAC then nTargetAC = nDefenseVal; end
             if (bPsionic) then
                 -- rMessage.text = rMessage.text .. "[Hit-MAC: " .. nACHit .. " vs. ".. nTargetAC .." ]" .. table.concat(rAction.aMessages, " ");
                 -- rMessage.text = rMessage.text .. table.concat(rAction.aMessages, " ");
-                table.insert(rAction.aMessages, "[Hit-MAC: " .. nACHit .. " vs. " .. nTargetAC .. " ]");
+                table.insert(rAction.aMessages, "[Hit-MAC: " .. nACHit ..
+                                 " vs. " .. nTargetAC .. " ]");
             else
                 -- rMessage.text = rMessage.text .. "[Hit-AC: " .. nACHit .. " vs. ".. nTargetAC .." ]" .. table.concat(rAction.aMessages, " ");
                 -- rMessage.text = rMessage.text .. table.concat(rAction.aMessages, " ");
-                table.insert(rAction.aMessages, "[Hit-AC: " .. nACHit .. " vs. " .. nTargetAC .. " ]");
+                table.insert(rAction.aMessages,
+                             "[Hit-AC: " .. nACHit .. " vs. " .. nTargetAC ..
+                                 " ]");
             end
         end
-    elseif nDefenseVal and bPsionic and not rRoll.Psionic_DisciplineType:match("attack") then -- no source but nDefenseVal and not a psionic attack (it's a power)
+    elseif nDefenseVal and bPsionic and
+        not rRoll.Psionic_DisciplineType:match("attack") then -- no source but nDefenseVal and not a psionic attack (it's a power)
         -- bCanCrit = false;
         local nTargetAC = (20 - nDefenseVal);
-        if bOptAscendingAC then
-            nTargetAC = nDefenseVal;
-        end
+        if bOptAscendingAC then nTargetAC = nDefenseVal; end
         -- rMessage.text = rMessage.text .. "[Hit-MAC: " .. nACHit .. " vs. ".. nTargetAC .." ]" .. table.concat(rAction.aMessages, " ");
         -- rMessage.text = rMessage.text .. table.concat(rAction.aMessages, " ");
     end
@@ -297,7 +301,8 @@ function onAttackOverride(rSource, rTarget, rRoll)
         bHitTarget = true;
         rAction.sResult = "crit";
         if PlayerOptionManager.isAnyCritEnabled() then
-            rCrit = CritManagerPO.handleCrit(rRoll, rAction, nDefenseVal, rSource, rTarget);
+            rCrit = CritManagerPO.handleCrit(rRoll, rAction, nDefenseVal,
+                                             rSource, rTarget);
             if rCrit and PlayerOptionManager.isGenerateHitLocationsEnabled() then
                 addHitLocationToAction(rAction, rCrit.sHitLocation);
             end
@@ -310,7 +315,8 @@ function onAttackOverride(rSource, rTarget, rRoll)
     elseif rAction.nFirstDie == 1 then
         rAction.sResult = "fumble";
         if bPsionic then
-            local sAdjustPSPText = adjustPSPs(rSource, tonumber(rRoll.Psionic_PSPOnFail));
+            local sAdjustPSPText = adjustPSPs(rSource,
+                                              tonumber(rRoll.Psionic_PSPOnFail));
             rMessage.icon = "roll_psionic_hit";
             rMessage.text = rMessage.text .. sAdjustPSPText;
         end
@@ -323,7 +329,8 @@ function onAttackOverride(rSource, rTarget, rRoll)
         if (rTarget == nil and rRoll.Psionic_DisciplineType:match("attack")) then
             -- psionic attacks only work with a target, powers however have target MACs so... this lovely confusing mess.
         else
-            if (is2e and bHit) or (not is2e and not bOptAscendingAC and bMatrixHit) then
+            if (is2e and bHit) or
+                (not is2e and not bOptAscendingAC and bMatrixHit) then
                 -- nFirstDie = natural roll, nat 20 == auto-hit, if you can't crit you can still hit on a 20
                 -- if rAction.nTotal >= nDefenseVal or rAction.nFirstDie == 20 then
                 -------------------------------------
@@ -354,13 +361,15 @@ function onAttackOverride(rSource, rTarget, rRoll)
                 rMessage.icon = "chat_miss";
                 rAction.sResult = "miss";
                 if bPsionic then
-                    local sAdjustPSPText = adjustPSPs(rSource, tonumber(rRoll.Psionic_PSPOnFail));
+                    local sAdjustPSPText =
+                        adjustPSPs(rSource, tonumber(rRoll.Psionic_PSPOnFail));
                     rMessage.icon = "roll_psionic_miss";
                     rMessage.text = rMessage.text .. sAdjustPSPText;
                 end
 
                 if PlayerOptionManager.isUsingArmorDamage() then
-                    if nACShield < 0 and (nTargetDecendingAC - nACShield) >= nACHit then
+                    if nACShield < 0 and (nTargetDecendingAC - nACShield) >=
+                        nACHit then
                         StateManagerPO.setShieldHitState(rSource, rTarget);
                         rMessage.font = "shieldhitfont";
                         sExtendedText = sExtendedText .. "[SHIELD]";
@@ -376,7 +385,8 @@ function onAttackOverride(rSource, rTarget, rRoll)
     end
 
     if not rTarget then
-        rMessage.text = rMessage.text .. " " .. table.concat(rAction.aMessages, " ");
+        rMessage.text = rMessage.text .. " " ..
+                            table.concat(rAction.aMessages, " ");
     end
 
     Comm.deliverChatMessage(rMessage);
@@ -389,8 +399,9 @@ function onAttackOverride(rSource, rTarget, rRoll)
         rResults.sWeaponType = rRoll.range;
         rResults.sPCExtendedText = sExtendedText;
 
-        ActionAttack.notifyApplyAttack(rSource, rTarget, rMessage.secret, rRoll.sType, rRoll.sDesc, rAction.nTotal,
-            rResults);
+        ActionAttack.notifyApplyAttack(rSource, rTarget, rMessage.secret,
+                                       rRoll.sType, rRoll.sDesc, rAction.nTotal,
+                                       rResults);
     end
 
     -- TRACK CRITICAL STATE
@@ -409,7 +420,9 @@ function onAttackOverride(rSource, rTarget, rRoll)
     if rTarget then
         if (rAction.sResult == "miss" or rAction.sResult == "fumble") then
             if rRoll.bRemoveOnMiss then
-                TargetingManager.removeTarget(ActorManager.getCTNodeName(rSource), ActorManager.getCTNodeName(rTarget));
+                TargetingManager.removeTarget(
+                    ActorManager.getCTNodeName(rSource),
+                    ActorManager.getCTNodeName(rTarget));
             end
         end
     end
@@ -423,20 +436,26 @@ function onAttackOverride(rSource, rTarget, rRoll)
             ActionAttack.notifyApplyHRFC("Fumble");
         end
     end
-    if rAction.sResult == "crit" and ((sOptionHRFC == "both") or (sOptionHRFC == "criticalhit")) then
+    if rAction.sResult == "crit" and
+        ((sOptionHRFC == "both") or (sOptionHRFC == "criticalhit")) then
         ActionAttack.notifyApplyHRFC("Critical Hit");
     end
 
     -- check for MIRRORIMAGE and STONESKIN /etc...
     if rTarget and bHitTarget and not bPsionic then
-        local _, nStoneSkinCount, _ = EffectManager5E.getEffectsBonus(rTarget, {"STONESKIN"}, false, nil);
-        local _, nMirrorCount, nEffectCount = EffectManager5E.getEffectsBonus(rTarget, {"MIRRORIMAGE"}, false, nil);
+        local _, nStoneSkinCount, _ = EffectManager5E.getEffectsBonus(rTarget,
+                                                                      {
+            "STONESKIN"
+        }, false, nil);
+        local _, nMirrorCount, nEffectCount =
+            EffectManager5E.getEffectsBonus(rTarget, {"MIRRORIMAGE"}, false, nil);
         if (nStoneSkinCount > 0) then
             -- remove a stoneskin from count
             local nodeCT = ActorManager.getCTNode(rTarget);
             EffectManagerADND.removeEffectCount(nodeCT, "STONESKIN", 1);
             local rMessage = ActionsManager.createActionMessage(rSource, rRoll);
-            rMessage.text = "[STONESKIN HIT] " .. Interface.getString("chat_combat_hit_stoneskin");
+            rMessage.text = "[STONESKIN HIT] " ..
+                                Interface.getString("chat_combat_hit_stoneskin");
             Comm.deliverChatMessage(rMessage);
         elseif nMirrorCount > 0 then
             local aMirrorDice = {"d100"};
@@ -454,20 +473,28 @@ function onAttackOverride(rSource, rTarget, rRoll)
             ActionsManager.roll(rSource, rTarget, rMirrorRoll, false);
         else
             -- check to see if displaced
-            local bDisplacedTarget = (EffectManager5E.hasEffect(rTarget, "DISPLACED", nil));
+            local bDisplacedTarget = (EffectManager5E.hasEffect(rTarget,
+                                                                "DISPLACED", nil));
             local sDisplacementTag = "DISPLACEMENT_" ..
-                                         UtilityManagerADND.alphaOnly(ActorManager.getDisplayName(rTarget));
+                                         UtilityManagerADND.alphaOnly(
+                                             ActorManager.getDisplayName(rTarget));
             -- if UtilityManagerADND.containsAny(aEquipmentList, "displacement" ) and not EffectManager5E.hasEffect(rSource, sDisplacementTag) then
-            if bDisplacedTarget and not EffectManager5E.hasEffect(rSource, sDisplacementTag) then
-                EffectManager.addEffect("", "", ActorManager.getCTNode(rSource), {
+            if bDisplacedTarget and
+                not EffectManager5E.hasEffect(rSource, sDisplacementTag) then
+                EffectManager.addEffect("", "", ActorManager.getCTNode(rSource),
+                                        {
                     sName = sDisplacementTag,
                     sLabel = sDisplacementTag,
                     nDuration = 1,
                     sUnits = "minute",
                     nGMOnly = 1
                 }, false);
-                local rMessage = ActionsManager.createActionMessage(rSource, rRoll);
-                rMessage.text = "[DISPLACEMENT] " .. string.format(Interface.getString("chat_combat_hit_displacement"));
+                local rMessage = ActionsManager.createActionMessage(rSource,
+                                                                    rRoll);
+                rMessage.text = "[DISPLACEMENT] " ..
+                                    string.format(
+                                        Interface.getString(
+                                            "chat_combat_hit_displacement"));
                 Comm.deliverChatMessage(rMessage);
             end
         end
@@ -491,14 +518,16 @@ end
 
 function applyAlternateEffectModifiers(rTarget, rRoll)
     local sAttackType = string.match(rRoll.sDesc, "%[ATTACK *%((%w+)%)%]");
-    if not sAttackType then
-        sAttackType = "M";
-    end
+    if not sAttackType then sAttackType = "M"; end
 
-    local bIsProneOrUnconscious = EffectManager5E.hasEffectCondition(rTarget, "Prone") or
-                                      EffectManager5E.hasEffectCondition(rTarget, "Unconscious");
-    local bIsStunnedOrRestrained = EffectManager5E.hasEffectCondition(rTarget, "Restrained") or
-                                       EffectManager5E.hasEffectCondition(rTarget, "Stunned");
+    local bIsProneOrUnconscious = EffectManager5E.hasEffectCondition(rTarget,
+                                                                     "Prone") or
+                                      EffectManager5E.hasEffectCondition(
+                                          rTarget, "Unconscious");
+    local bIsStunnedOrRestrained = EffectManager5E.hasEffectCondition(rTarget,
+                                                                      "Restrained") or
+                                       EffectManager5E.hasEffectCondition(
+                                           rTarget, "Stunned");
 
     if sAttackType == "M" and bIsProneOrUnconscious and bIsStunnedOrRestrained then
         -- 2E ruleset adds 4 for restrained/stunned and 4 for unconscious/prone. I don't think they should stack, so remove the extra +4.
@@ -515,7 +544,8 @@ end
 function modAttackOverride(rSource, rTarget, rRoll)
     StateManagerPO.clearShieldHitState(rSource);
     if rSource and not rSource.aDamageTypes then
-        rSource.aDamageTypes = WeaponManagerPO.decodeDamageTypes(rRoll.aDamageTypes);
+        rSource.aDamageTypes = WeaponManagerPO.decodeDamageTypes(
+                                   rRoll.aDamageTypes);
     end
     fModAttack(rSource, rTarget, rRoll);
 
@@ -536,7 +566,8 @@ function modAttackOverride(rSource, rTarget, rRoll)
 end
 
 function addHitLocationToAction(rAction, sHitLocation)
-    table.insert(rAction.aMessages, string.format("[Location: %s]", sHitLocation));
+    table.insert(rAction.aMessages,
+                 string.format("[Location: %s]", sHitLocation));
 end
 
 function addHitLocation(rSource, rTarget, rAction)
@@ -544,8 +575,9 @@ function addHitLocation(rSource, rTarget, rAction)
         local nodeAttacker = ActorManagerPO.getCreatureNode(rSource);
         local nodeDefender = ActorManagerPO.getCreatureNode(rTarget);
         if nodeAttacker and nodeDefender then
-            local rHitLocation = HitLocationManagerPO.getHitLocation(nodeAttacker, nodeDefender,
-                rAction.sCalledShotLocation);
+            local rHitLocation = HitLocationManagerPO.getHitLocation(
+                                     nodeAttacker, nodeDefender,
+                                     rAction.sCalledShotLocation);
             addHitLocationToAction(rAction, rHitLocation.desc);
         end
     end
@@ -556,7 +588,8 @@ function getCalledShotModifiers(sCalledShotLocation, rTarget)
     local nCritThresholdMod = 0;
     local nCritSeverityMod = 0;
     if PlayerOptionManager.isHackmasterCalledShotsEnabled() then
-        local rCalledShotInfo = DataCommonPO.aCalledShotModifiers[sCalledShotLocation];
+        local rCalledShotInfo =
+            DataCommonPO.aCalledShotModifiers[sCalledShotLocation];
         if rCalledShotInfo then
             local nodeActor = ActorManagerPO.getNode(rTarget);
             local nTargetSize = ActorManagerPO.getSizeCategory(nodeActor);
@@ -599,31 +632,33 @@ function addCalledShotMods(rSource, rTarget, rRoll)
         local nCritThresholdMod;
         local nCritSeverityMod;
 
-        nCalledShotMod, nCritThresholdMod, nCritSeverityMod = getCalledShotModifiers(sCalledShotLocation, rTarget);
+        nCalledShotMod, nCritThresholdMod, nCritSeverityMod =
+            getCalledShotModifiers(sCalledShotLocation, rTarget);
         rRoll.sCalledShotLocation = sCalledShotLocation;
         rRoll.nCritThresholdMod = nCritThresholdMod;
         rRoll.nCritSeverityMod = nCritSeverityMod;
-        rRoll.sDesc = rRoll.sDesc .. string.format(" [Called Shot: %s (%s)]", sCalledShotLocation, nCalledShotMod);
+        rRoll.sDesc = rRoll.sDesc ..
+                          string.format(" [Called Shot: %s (%s)]",
+                                        sCalledShotLocation, nCalledShotMod);
         rRoll.nMod = rRoll.nMod + nCalledShotMod;
     end
 end
 
 function addWeaponTypeVsArmorMods(rSource, rTarget, rRoll)
-    local sArmorType, sDamageType, nMod = ArmorManagerPO.getHitModifiersForSourceVsCharacter(rSource, rTarget);
+    local sArmorType, sDamageType, nMod =
+        ArmorManagerPO.getHitModifiersForSourceVsCharacter(rSource, rTarget);
     addWeaponTypeVsArmorModToRoll(rRoll, sDamageType, sArmorType, nMod);
 end
 
 function addWeaponTypeVsArmorModToRoll(rRoll, sDamageType, sArmor, nMod)
-    if nMod == 0 or nMod == nil then
-        return;
-    end
+    if nMod == 0 or nMod == nil then return; end
 
     local sMod = tostring(nMod);
-    if nMod > 0 then
-        sMod = "+" .. sMod;
-    end
+    if nMod > 0 then sMod = "+" .. sMod; end
 
-    rRoll.sDesc = rRoll.sDesc .. string.format(" [WvA: %s v %s (%s)]", sDamageType, sArmor, sMod);
+    rRoll.sDesc = rRoll.sDesc ..
+                      string.format(" [WvA: %s v %s (%s)]", sDamageType, sArmor,
+                                    sMod);
     rRoll.nMod = rRoll.nMod + nMod;
 end
 
